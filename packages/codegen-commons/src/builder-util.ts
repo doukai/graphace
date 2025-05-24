@@ -164,6 +164,7 @@ export function isSelectField(typeName: string, fieldName: string, fieldTypeName
             .find(fieldConfig => fieldConfig.name === fieldName)?.select !== false ||
         false
 }
+
 export function isTableField(typeName: string, fieldName: string): boolean {
     return (builderConfig?.objects || [])
         .filter(objectConfig => objectConfig.name === typeName || objectConfig.name === 'any')
@@ -308,12 +309,14 @@ export const getObjectFieldInfo = (schema: GraphQLSchema, name: string, fieldNam
         .find(fileInfo => fileInfo.fieldName === fieldName);
 }
 
-export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): FieldInfo[] => {
+export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType, subFields: boolean | undefined = true): FieldInfo[] => {
     if (isObjectType(type)) {
         return Object.values(type.getFields())
             .filter(field => !isIntrospection(field.name))
             .map(field => {
                 const fieldType = getFieldType(field.type);
+                const isListType = fieldTypeIsList(field.type);
+                const isTable = isListType && isTableField(type.name, field.name);
                 return {
                     fieldName: field.name,
                     originalFieldName: getOriginalFieldName(field),
@@ -328,18 +331,19 @@ export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType): Fi
                             inputType: arg.type.toString(),
                             defaultValue: arg.defaultValue
                         })),
+                    fields: isTable && subFields ? getFieldInfos(schema, fieldType, false) : undefined,
                     isScalarType: isScalarType(fieldType),
                     isEnumType: isEnumType(fieldType),
                     isLeafType: isLeafType(fieldType),
                     isObjectType: isObjectType(fieldType),
                     isNonNullType: isNonNullType(field.type),
-                    isListType: fieldTypeIsList(field.type),
+                    isListType,
                     isAggregate: isAggregate(field.name),
                     isConnection: isConnection(field.name),
                     isNamed: fieldTypeIsNamedStruct(field.type),
                     isFile: fieldTypeIsFile(field.type),
                     isSelect: isSelectField(type.name, field.name, fieldType.name),
-                    isTable: fieldTypeIsList(field.type) && isTableField(type.name, field.name),
+                    isTable,
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
                     inGraphQL: inGraphQLField(type.name, field.name, fieldType.name),

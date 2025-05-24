@@ -42,6 +42,25 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
         id
         name
       }
+      {%- elsif field.isListType == false and field.isTable %}
+      {{ field.fieldName }} {
+        {%- for subField in field.fields %}
+        {%- if subField.isLeafType and subField.isAggregate == false %}
+        {{ subField.fieldName }}
+        {%- elsif subField.isFile %}
+        {{ subField.fieldName }} {
+          id
+          name
+        }
+        {%- elsif subField.isNamed and subField.isAggregate == false %}
+        {{ subField.fieldName }}{% if subField.isListType and subField.isSelect == false %}(first: 3){% endif %} {
+          {{ subField.fieldTypeIdName }}
+          name
+          description
+        }
+        {%- endif %}
+        {%- endfor %}
+      }
       {%- elsif field.isNamed and field.isAggregate == false %}
       {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
         {{ field.fieldTypeIdName }}
