@@ -6,7 +6,7 @@
 	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
-	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | camelCase }}/{{ name }}Form.svelte';
+	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Form.svelte';
 	import { getLoadEvent } from '~/utils';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { {{ name }}, Mutation{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
@@ -52,7 +52,7 @@
 	const query_{{ name | camelCase }}_Store = createQuery_{{ name | camelCase }}_Store(getLoadEvent());
 	$: node = $query_{{ name | camelCase }}_Store.response.data?.{{ name | camelCase }};
 	const mutation_{{ name | camelCase }}_Store = createMutation_{{ name | camelCase }}_Store(getLoadEvent());
-	export let close: () => void | undefined = undefined;
+	export let close: (() => void) | undefined = undefined;
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;
@@ -73,7 +73,11 @@
 	}
 
 	if (where && value && !value.where) {
-		value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+		if (textFieldName) {
+			value = { where: { {{ idName }}: { val: value.{{ idName }} } }, [textFieldName]: value?.[textFieldName] };
+		} else {
+			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+		}
 	}
 
 	const query = () => {
@@ -106,7 +110,9 @@
 						if (clearAfterSelect) {
 							value = {};
 						}
-						close();
+						if (close) {
+							close();
+						}
 					}
 				});
 			})
@@ -118,8 +124,29 @@
 
 <Dialog bind:close>
 	<svelte:fragment slot="trigger" let:trigger let:zIndex>
-		<button use:melt={trigger}
-			class="btn {className}"
+		<div class="tooltip md:hidden" data-tip={text}>
+			<button
+				use:melt={trigger}
+				class="btn {className} max-sm:btn-square"
+				{disabled}
+				on:click={(e) => {
+					if (value?.{{ idName }}) {
+						query();
+					}
+				{% raw %}}}{% endraw %}
+			>
+				<slot name="sm">
+					{#if text}
+						{text}
+					{:else}
+						{$LL.ui.button.select()}
+					{/if}
+				</slot>
+			</button>
+		</div>
+		<button
+			use:melt={trigger}
+			class="btn {className} max-md:hidden"
 			{disabled}
 			on:click={(e) => {
 				if (value?.{{ idName }}) {
@@ -127,11 +154,13 @@
 				}
 			{% raw %}}}{% endraw %}
 		>
-			{#if text}
-				{text}
-			{:else}
-				{$LL.ui.button.select()}
-			{/if}
+			<slot>
+				{#if text}
+					{text}
+				{:else}
+					{$LL.ui.button.select()}
+				{/if}
+			</slot>
 		</button>
 	</svelte:fragment>
 	<svelte:fragment let:zIndex>
@@ -152,7 +181,11 @@
 						text = original?.[textFieldName] + '';
 					}
 					if (where) {
-						value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+						if (textFieldName) {
+							value = { where: { {{ idName }}: { val: original.{{ idName }} } }, [textFieldName]: original?.[textFieldName] };
+						} else {
+							value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+						}
 					} else {
 						value = original;
 					}
@@ -161,7 +194,9 @@
 						if (clearAfterSelect) {
 							value = {};
 						}
-						close();
+						if (close) {
+							close();
+						}
 					} else {
 						mutation(e.detail.value);
 					}
@@ -177,7 +212,9 @@
 						if (clearAfterSelect) {
 							value = {};
 						}
-						close();
+						if (close) {
+							close();
+						}
 					} else {
 						modal.open({
 							title: $LL.{{ appName }}.components.modal.removeModalTitle(),

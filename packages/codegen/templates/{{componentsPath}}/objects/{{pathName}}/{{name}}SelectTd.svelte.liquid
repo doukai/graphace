@@ -7,6 +7,7 @@
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { type Option, Td } from '@graphace/ui';
+	import type { StructQueryStores } from '@graphace/ui-graphql';
 	import {{ name }}Select from './{{ name }}Select.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
@@ -29,15 +30,42 @@
 		save: {};
 	}>();
 
+	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
+	const query = { fieldName: '{{ name | camelCase }}List', idName: '{{ idName }}' };
+
 	let selected: Option | Option[] | undefined;
 
-	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.{{ idName }}
-		}));
+	$: if (Array.isArray(value)) {
+		if(value.some((item) => !item?.name)){
+			namedQueryStore
+				.fetch(query, {
+					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
+				})
+				.then(
+					(response) =>
+						(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
+							label: item?.name,
+							value: item?.{{ idName }}
+						})))
+				);
+		} else {
+			selected = value?.map((item) => ({
+				label: item?.name,
+				value: item?.{{ idName }} || item?.where?.{{ idName }}?.val
+			}))
+		}
 	} else if (value) {
-		selected = { label: value.name, value: value.{{ idName }} };
+		if (!value.name) {
+			namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
+				(response) =>
+					(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
+						label: item?.name,
+						value: item?.{{ idName }}
+					}))?.[0])
+			);
+		} else {
+			selected = { label: value?.name, value: value?.{{ idName }} || value.where?.{{ idName }}?.val };
+		}
 	}
 
 	let mutation = (): void => {

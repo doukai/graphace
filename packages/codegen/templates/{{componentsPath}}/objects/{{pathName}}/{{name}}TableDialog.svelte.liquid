@@ -56,7 +56,7 @@
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
 	export let selectedIdList: (string | null | undefined)[] | undefined = [];
-	export let close: () => void | undefined = undefined;
+	export let close: (() => void) | undefined = undefined;
 	
 	$: if (Array.isArray(value)) {
 		if (textFieldName) {
@@ -112,12 +112,23 @@
 	if (Array.isArray(value)) {
 		selectedIdList = value?.map((node) => node?.{{ idName }} || node?.where?.{{ idName }}?.val);
 		if (where && value.some((item) => !item?.where)) {
-			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+			if (textFieldName) {
+				value = value.map((item) => ({
+					where: { {{ idName }}: { val: item?.{{ idName }} } },
+					[textFieldName]: item?.[textFieldName]
+				}));
+			} else {
+				value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+			}
 		}
 	} else if (value) {
 		selectedIdList = [value.{{ idName }} || value?.where?.{{ idName }}?.val];
 		if (where && !value.where) {
-			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+			if (textFieldName) {
+				value = { where: { {{ idName }}: { val: value.{{ idName }} } }, [textFieldName]: value?.[textFieldName] };
+			} else {
+				value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+			}
 		}
 	}
 
@@ -136,12 +147,35 @@
 
 <Dialog bind:close>
 	<svelte:fragment slot="trigger" let:trigger let:zIndex>
-		<button use:melt={trigger} class="btn {className}" {disabled} on:click={(e) => query(1)}>
-			{#if text}
-				{text}
-			{:else}
-				{$LL.ui.button.select()}
-			{/if}
+		<div class="tooltip md:hidden" data-tip={text}>
+			<button
+				use:melt={trigger}
+				class="btn {className} max-sm:btn-square"
+				{disabled}
+				on:click={(e) => query(1)}
+			>
+				<slot name="sm">
+					{#if text}
+						{text}
+					{:else}
+						{$LL.ui.button.select()}
+					{/if}
+				</slot>
+			</button>
+		</div>
+		<button
+			use:melt={trigger}
+			class="btn {className} max-md:hidden"
+			{disabled}
+			on:click={(e) => query(1)}
+		>
+			<slot>
+				{#if text}
+					{text}
+				{:else}
+					{$LL.ui.button.select()}
+				{/if}
+			</slot>
 		</button>
 	</svelte:fragment>
 	<svelte:fragment let:zIndex>
@@ -189,7 +223,14 @@
 						}
 					}
 					if (where) {
-						value = original.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+						if (textFieldName) {
+							value = original.map((item) => ({
+								where: { {{ idName }}: { val: item?.{{ idName }} } },
+								[textFieldName]: item?.[textFieldName]
+							}));
+						} else {
+							value = original.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+						}
 					} else {
 						value = original;
 					}
@@ -198,7 +239,11 @@
 						text = original?.[textFieldName] + '';
 					}
 					if (where) {
-						value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+						if (textFieldName) {
+							value = { where: { {{ idName }}: { val: original.{{ idName }} } }, [textFieldName]: original?.[textFieldName] };
+						} else {
+							value = { where: { {{ idName }}: { val: original.{{ idName }} } } };
+						}
 					} else {
 						value = original;
 					}
@@ -208,7 +253,9 @@
 				}
 
 				dispatch('select', { value, original });
-				close();
+				if (close) {
+					close();
+				}
 			{% raw %}}}{% endraw %}
 			on:search={(e) => {
 				if (e.detail.value) {
@@ -230,10 +277,10 @@
 			on:query={(e) => query()}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./{{ name | camelCase }}/${e.detail.value.{{ idName }}}`);
+					to(`./{{ name | paramCase }}/${e.detail.value.{{ idName }}}`);
 				}
 			{% raw %}}}{% endraw %}
-			on:create={(e) => to('./{{ name | camelCase }}/_')}
+			on:create={(e) => to('./{{ name | paramCase }}/_')}
 		/>
 		<div class="divider" />
 		<Pagination

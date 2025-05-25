@@ -12,7 +12,6 @@
 	{%- endfor %}
 	{%- for table in tables %}
 	import {{ table }}Table from '~/{{ componentsPath }}/objects/{{ table | paramCase }}/{{ table }}Table.svelte';
-	import {{ table }}FormDialog from '~/{{ componentsPath }}/objects/{{ table | paramCase }}/{{ table }}FormDialog.svelte';
 	{%- endfor %}
 	{%- for dialog in nonSelects %}
 	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
@@ -86,8 +85,11 @@
 			{#if !fields.{{ field.fieldName }}?.hidden}
 				{%- if field.isTable %}
 				<div class="col-span-full">
+					<div class="divider" />
 					<{{ field.fieldTypeName }}Table
 						title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						showCreateDialog
+						showEditDialog
 						showRemoveButton
 						bind:value={value.{{ field.fieldName }}}
 						errors={errors.{{ field.fieldName }}}
@@ -98,17 +100,11 @@
 								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
 							}
 						{% raw %}}}{% endraw %}
-					>
-						<{{ field.fieldTypeName }}FormDialog
-							select
-							clearAfterSelect
-							class="btn-accent"
-							on:select={(e) => {
-								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }} || []), e.detail.value];
-							{% raw %}}}{% endraw %}
-						/>
-					</{{ field.fieldTypeName }}Table>
+					/>
 					<ErrorLabels errors={errors.{{ field.fieldName }}} />
+					{%- if forloop.last == false %}
+					<div class="divider" />
+					{%- endif %}
 				</div>
 				{%- else %}
 				<FormControl let:id>
@@ -156,6 +152,7 @@
 						<{{ field.fieldTypeName }}TableDialog
 							bind:value={value.{{ field.fieldName }}}
 							where
+							class="btn-link"
 							{%- if field.isNamed %}
 							textFieldName="name"
 							{%- endif %}

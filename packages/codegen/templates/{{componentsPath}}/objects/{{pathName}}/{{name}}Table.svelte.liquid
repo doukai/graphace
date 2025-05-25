@@ -3,11 +3,12 @@
 	import type { Readable } from 'svelte/store';
 	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel } from '@steeze-ui/heroicons';
+	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel, Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
 	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td, {% endfor %}{% if hasFileField %}FileTd, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	import {{ name }}Filter from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Filter.svelte';
+	import {{ name }}FormDialog from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}FormDialog.svelte';
 	{%- for enum in enums %}
 	import {{ enum }}Th from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Th.svelte';
 	import {{ enum }}Td from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Td.svelte';
@@ -36,10 +37,12 @@
 	export let isMutating: boolean = false;
 	export let errors: Record<number, Errors> = {};
 	export let showEditButton: boolean = false;
+	export let showEditDialog: boolean = false;
 	export let showRemoveButton: boolean = false;
 	export let showUnbindButton: boolean = false;
 	export let showSaveButton: boolean = false;
 	export let showCreateButton: boolean = false;
+	export let showCreateDialog: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
 	export let showSearchInput: boolean = false;
@@ -134,6 +137,19 @@
 				</{{ name }}Filter>
 			</div>
 		</svelte:fragment>
+		{#if showCreateDialog}
+			<{{ name }}FormDialog
+				text={$LL.ui.button.create()}
+				select
+				clearAfterSelect
+				class="btn-accent"
+				on:select={(e) => {
+					value = [...(value || []), e.detail.value];
+				{% raw %}}}{% endraw %}
+			>
+				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+			</{{ name }}FormDialog>
+		{/if}
 		<slot />
 	</Buttons>
 </div>
@@ -156,7 +172,7 @@
 								} else {
 									selectedIdList = [
 										...selectedIdList.filter(
-											(selectedId) => !value.some((node) => node?.{{ idName }} === selectedId)
+											(selectedId) => !value?.some((node) => node?.{{ idName }} === selectedId)
 										)
 									];
 								}
@@ -270,6 +286,7 @@
 										<{{ field.fieldTypeName }}TableDialog
 											bind:value={node.{{ field.fieldName }}}
 											where
+											class="btn-link"
 											{%- if field.isNamed %}
 											textFieldName="name"
 											{%- endif %}
@@ -296,6 +313,17 @@
 											<Icon src={PencilSquare} solid />
 										</button>
 									</div>
+								{/if}
+								{#if showEditDialog}
+									<{{ name }}FormDialog
+										text={$LL.{{ appName }}.components.table.editBtn()}
+										class="btn btn-square btn-ghost btn-xs"
+										bind:value={node}
+										select
+									>
+										<Icon slot="sm" src={PencilSquare} solid />
+										<Icon src={PencilSquare} solid />
+									</{{ name }}FormDialog>
 								{/if}
 								{#if showUnbindButton}
 									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
@@ -361,6 +389,17 @@
 												<Icon src={PencilSquare} solid />
 											</button>
 										</div>
+									{/if}
+									{#if showEditDialog}
+										<{{ name }}FormDialog
+											text={$LL.{{ appName }}.components.table.editBtn()}
+											class="btn btn-square btn-ghost btn-xs"
+											bind:value={node}
+											select
+										>
+											<Icon slot="sm" src={PencilSquare} solid />
+											<Icon src={PencilSquare} solid />
+										</{{ name }}FormDialog>
 									{/if}
 									{#if showUnbindButton}
 										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
@@ -448,6 +487,7 @@
 											<{{ field.fieldTypeName }}TableDialog
 												bind:value={node.{{ field.fieldName }}}
 												where
+												class="btn-link"
 												{%- if field.isNamed %}
 												textFieldName="name"
 												{%- endif %}

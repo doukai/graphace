@@ -55,11 +55,11 @@
 		} else {
 			selected = value?.map((item) => ({
 				label: item?.name,
-				value: item?.{{ idName }}
+				value: item?.{{ idName }} || item?.where?.{{ idName }}?.val
 			}))
 		}
 		if (where && value.some((item) => !item?.where)) {
-			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } } }));
+			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } }, name: item?.name }));
 		}
 	} else if (value) {
 		if (!value.name) {
@@ -71,10 +71,10 @@
 					}))?.[0])
 			);
 		} else {
-			selected = { label: value?.name, value: value?.{{ idName }} };
+			selected = { label: value?.name, value: value?.{{ idName }} || value.where?.{{ idName }}?.val };
 		}
 		if (where && !value.where) {
-			value = { where: { {{ idName }}: { val: value.{{ idName }} } } };
+			value = { where: { {{ idName }}: { val: value.{{ idName }} } }, name: value.name };
 		}
 	} else if (val) {
 		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val } }).then(
@@ -110,7 +110,10 @@
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
 			if (where) {
-				value = e.detail.value.map((item) => ({ where: { {{ idName }}: { val: item.value } } }));
+				value = e.detail.value.map((item) => ({
+					where: { {{ idName }}: { val: item.value } },
+					name: item.label
+				}));
 			} else {
 				value = e.detail.value.map((item) => ({ {{ idName }}: item.value, name: item.label }));
 			}
@@ -118,7 +121,7 @@
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
 			if (where) {
-				value = { where: { {{ idName }}: { val: e.detail.value.value } } };
+				value = { where: { {{ idName }}: { val: e.detail.value.value } }, name: e.detail.value.label };
 			} else {
 				value = { {{ idName }}: e.detail.value.value, name: e.detail.value.label };
 			}
