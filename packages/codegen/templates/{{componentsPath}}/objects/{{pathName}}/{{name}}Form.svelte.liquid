@@ -20,6 +20,7 @@
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	
 	export let value: {{ name }}Input | null | undefined = undefined;
+	export let where: boolean = false;
 	export let isFetching: boolean = false;
 	export let isMutating: boolean = false;
 	export let errors: Record<string, Errors> = {};
@@ -34,7 +35,7 @@
 	export { className as class };
 	export let fields: {
 		{%- for field in fields %}
-		{{ field.fieldName }}: Option | undefined;
+		{{ field.fieldName }}?: Option | undefined;
 		{%- endfor %}
 	} = {
 		{%- for field in fields %}
@@ -50,6 +51,10 @@
 		save: { value: {{ name }}Input | null | undefined };
 		back: {};
 	}>();
+
+	if (where && value?.{{ idName }} && !value.where) {
+		value.where = { {{ idName }}: { val: value.{{ idName }} } };
+	}
 </script>
 
 <div class="flex justify-end sm:justify-between">
@@ -92,6 +97,7 @@
 						showEditDialog
 						showRemoveButton
 						bind:value={value.{{ field.fieldName }}}
+						where
 						errors={errors.{{ field.fieldName }}}
 						{isFetching}
 						{isMutating}

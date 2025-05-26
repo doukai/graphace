@@ -12,7 +12,6 @@
 		undefined;
 	export let errors: Errors | undefined = undefined;
 	export let disabled = false;
-	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
 

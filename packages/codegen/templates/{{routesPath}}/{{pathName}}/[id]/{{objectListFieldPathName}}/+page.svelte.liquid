@@ -74,6 +74,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
@@ -103,6 +104,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				console.error(validErrors);
 				errors = validErrors.{{ fieldInfo.fieldName }}.iterms;
 			});
 	};

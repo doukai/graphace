@@ -62,6 +62,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
@@ -91,6 +92,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				console.error(validErrors);
 				errors = validErrors.{{ fieldInfo.fieldName }}.iterms;
 			});
 	};
@@ -103,6 +105,7 @@
 			{showUnbindButton}
 			showBackButton={$canBack}
 			bind:value
+			where
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
 			isMutating={$mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching || $mutation_{{ fieldObjectInfo.name | camelCase }}_Store.isFetching}

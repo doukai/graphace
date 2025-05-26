@@ -149,6 +149,7 @@
 									});
 							})
 							.catch((validErrors) => {
+								console.error(validErrors);
 								errors = validErrors.list?.iterms;
 							});
 					{% raw %}}}{% endraw %}

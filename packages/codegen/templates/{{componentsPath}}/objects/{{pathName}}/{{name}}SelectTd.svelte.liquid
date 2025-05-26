@@ -14,6 +14,7 @@
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
+	export let where = false;
 	export let name: string;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
@@ -54,6 +55,9 @@
 				value: item?.{{ idName }} || item?.where?.{{ idName }}?.val
 			}))
 		}
+		if (where && value.some((item) => !item?.where)) {
+			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } }, name: item?.name }));
+		}
 	} else if (value) {
 		if (!value.name) {
 			namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
@@ -65,6 +69,9 @@
 			);
 		} else {
 			selected = { label: value?.name, value: value?.{{ idName }} || value.where?.{{ idName }}?.val };
+		}
+		if (where && !value.where) {
+			value = { where: { {{ idName }}: { val: value.{{ idName }} } }, name: value.name };
 		}
 	}
 
@@ -126,12 +133,12 @@
 			<{{ name }}Select
 				{name}
 				{list}
+				{where}
 				{disabled}
 				{readonly}
 				{placeholder}
 				bind:value
 				bind:selected
-				where
 			/>
 			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
 				<button

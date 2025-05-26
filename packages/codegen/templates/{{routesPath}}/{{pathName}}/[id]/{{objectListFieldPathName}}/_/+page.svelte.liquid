@@ -53,6 +53,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				console.error(validErrors);
 				errors = validErrors.{{ fieldInfo.fieldName }}?.iterms[0]?.iterms;
 			});
 	};

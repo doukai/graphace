@@ -26,7 +26,7 @@
 	const permissions = getContext<PermissionsStore>('permissions');
 	export let fields: {
 		{%- for field in fields %}
-		{{ field.fieldName }}: Option | undefined;
+		{{ field.fieldName }}?: Option | undefined;
 		{%- endfor %}
 	} = {
 		{%- for field in fields %}

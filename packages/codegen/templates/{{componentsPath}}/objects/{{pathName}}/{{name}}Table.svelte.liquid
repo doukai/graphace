@@ -33,6 +33,7 @@
 	export let args: {{ queryTypeName }}{{ name }}ListArgs = {};
 	export let orderBy: {{ name }}OrderBy = {};
 	export let selectedIdList: (string | null | undefined)[] = [];
+	export let where: boolean = false;
 	export let isFetching: boolean = false;
 	export let isMutating: boolean = false;
 	export let errors: Record<number, Errors> = {};
@@ -48,11 +49,11 @@
 	export let showSearchInput: boolean = false;
 	export let title: string | undefined = undefined;
 	export let zIndex: number = 0;
-	let className: string | undefined = undefined;
+	let className: string | undefined = 'table-pin-rows table-pin-cols';
 	export { className as class };
 	export let fields: {
 		{%- for field in fields %}
-		{{ field.fieldName }}: Option | undefined;
+		{{ field.fieldName }}?: Option | undefined;
 		{%- endfor %}
 	} = {
 		{%- for field in fields %}
@@ -84,6 +85,19 @@
 	}>();
 
 	let selectAll: boolean;
+
+	if (
+		where &&
+		value
+			?.filter((item) => item?.{{ idName }} !== undefined && item?.{{ idName }} !== null)
+			.some((item) => !item?.where)
+	) {
+		value.forEach((item) => {
+			if (item?.{{ idName }}) {
+				item.where = { {{ idName }}: { val: item.{{ idName }} } };
+			}
+		});
+	}
 </script>
 
 <div class="flex sm:justify-between">
@@ -140,6 +154,7 @@
 		{#if showCreateDialog}
 			<{{ name }}FormDialog
 				text={$LL.ui.button.create()}
+				{fields}
 				select
 				clearAfterSelect
 				class="btn-accent"
@@ -260,6 +275,7 @@
 									{%- if field.isListType %}
 									list
 									{%- endif %}
+									where
 									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
 									readonly={fields.{{ field.fieldName }}?.readonly}
 									disabled={fields.{{ field.fieldName }}?.disabled}
@@ -280,7 +296,6 @@
 											path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 											name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 											on:goto
-											{zIndex}
 										/>
 									{:else}
 										<{{ field.fieldTypeName }}TableDialog
@@ -320,6 +335,7 @@
 										class="btn btn-square btn-ghost btn-xs"
 										bind:value={node}
 										select
+										{fields}
 									>
 										<Icon slot="sm" src={PencilSquare} solid />
 										<Icon src={PencilSquare} solid />
@@ -396,6 +412,7 @@
 											class="btn btn-square btn-ghost btn-xs"
 											bind:value={node}
 											select
+											{fields}
 										>
 											<Icon slot="sm" src={PencilSquare} solid />
 											<Icon src={PencilSquare} solid />

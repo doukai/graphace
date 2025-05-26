@@ -56,6 +56,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
@@ -68,6 +69,7 @@
 			showRemoveButton
 			showBackButton={$canBack}
 			bind:value
+			where
 			{errors}
 			isFetching={$query_{{ name| camelCase }}_Store.isFetching}
 			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
