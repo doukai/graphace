@@ -6,9 +6,9 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Td } from '@graphace/ui';
+	import { FormControl, Td } from '@graphace/ui';
+	import { StringInput } from '~';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
-	import { StringInput } from '../input';
 
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
@@ -84,35 +84,39 @@
 	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
-			<StringInput
-				{id}
-				{name}
-				bind:value
-				{list}
-				on:save
-				{readonly}
-				{disabled}
-				{placeholder}
-				{errors}
-			/>
-			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
-				<button
+			<FormControl>
+				<StringInput
+					{id}
+					{name}
+					bind:value
+					{list}
+					on:save
+					{readonly}
 					{disabled}
-					class="btn btn-square btn-primary"
-					on:click|preventDefault={(e) => mutation()}
-				>
-					<Icon src={Check} class="h-5 w-5" />
-				</button>
-			</div>
-			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.clear()}>
-				<button
-					{disabled}
-					class="btn btn-square btn-outline btn-error"
-					on:click|preventDefault={(e) => clean()}
-				>
-					<Icon src={XMark} class="h-5 w-5" />
-				</button>
-			</div>
+					{placeholder}
+					{errors}
+				/>
+			</FormControl>
+			{#if !readonly}
+				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
+					<button
+						{disabled}
+						class="btn btn-square btn-primary"
+						on:click|preventDefault={(e) => mutation()}
+					>
+						<Icon src={Check} class="h-5 w-5" />
+					</button>
+				</div>
+				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.clear()}>
+					<button
+						{disabled}
+						class="btn btn-square btn-outline btn-error"
+						on:click|preventDefault={(e) => clean()}
+					>
+						<Icon src={XMark} class="h-5 w-5" />
+					</button>
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}

@@ -478,6 +478,7 @@
 										{%- if field.isListType %}
 										list
 										{%- endif %}
+										where
 										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
 										readonly={fields.{{ field.fieldName }}?.readonly}
 										disabled={fields.{{ field.fieldName }}?.disabled}
@@ -498,7 +499,6 @@
 												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 												name={node.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 												on:goto
-												{zIndex}
 											/>
 										{:else}
 											<{{ field.fieldTypeName }}TableDialog
