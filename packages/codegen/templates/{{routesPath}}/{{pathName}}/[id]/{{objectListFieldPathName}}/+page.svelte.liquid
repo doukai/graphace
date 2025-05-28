@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors, JsonSchema{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
@@ -220,7 +222,6 @@
 				{%- if fieldInfo.pairFieldName %}
 				args={% raw %}{{{% endraw %} not: true, {{ fieldInfo.pairFieldName }}: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } } {% raw %}}}{% endraw %}
 				{%- endif %}
-				where
 				class="btn-accent"
 				on:select={(e) => {
 					if (Array.isArray(e.detail.value)) {
@@ -229,7 +230,9 @@
 						merge([e.detail.value]);
 					}
 				{% raw %}}}{% endraw %}
-			/>
+			>
+				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+			</{{ fieldObjectInfo.name }}TableDialog>
 		</{{ fieldObjectInfo.name }}Table>
 		<div class="divider" />
 		<Pagination

@@ -20,7 +20,6 @@
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	
 	export let value: {{ name }}Input | null | undefined = undefined;
-	export let where: boolean = false;
 	export let isFetching: boolean = false;
 	export let isMutating: boolean = false;
 	export let errors: Record<string, Errors> = {};
@@ -51,10 +50,6 @@
 		save: { value: {{ name }}Input | null | undefined };
 		back: {};
 	}>();
-
-	if (where && value?.{{ idName }} && !value.where) {
-		value.where = { {{ idName }}: { val: value.{{ idName }} } };
-	}
 </script>
 
 <div class="flex justify-end sm:justify-between">
@@ -97,7 +92,6 @@
 						showEditDialog
 						showRemoveButton
 						bind:value={value.{{ field.fieldName }}}
-						where
 						errors={errors.{{ field.fieldName }}}
 						{isFetching}
 						{isMutating}
@@ -136,7 +130,6 @@
 						name="{{ field.fieldName }}"
 						errors={errors.{{ field.fieldName }}}
 						bind:value={value.{{ field.fieldName }}}
-						where
 						readonly={fields.{{ field.fieldName }}?.readonly}
 						disabled={fields.{{ field.fieldName }}?.disabled}
 						{%- if field.isListType %}
@@ -146,18 +139,18 @@
 					{%- else %}
 					{#if value.{{idName}}}
 						<ObjectLink
+							bind:value={value.{{ field.fieldName }}}
 							{%- if field.isNamed %}
-							namedStruct={value.{{ field.fieldName }}}
+							textFieldName="name"
 							{%- endif %}
-							disabled={fields.{{ field.fieldName }}?.disabled}
 							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-							name={value.{% if isNamed %}name{% else %}{{ idName }}{% endif %} + ':' + $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+							name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+							disabled={fields.{{ field.fieldName }}?.disabled}
 							on:goto
 						/>
 					{:else}
 						<{{ field.fieldTypeName }}TableDialog
 							bind:value={value.{{ field.fieldName }}}
-							where
 							class="btn-link"
 							{%- if field.isNamed %}
 							textFieldName="name"

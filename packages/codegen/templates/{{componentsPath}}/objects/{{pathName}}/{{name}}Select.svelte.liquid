@@ -9,7 +9,6 @@
 	export let name: string | undefined = undefined;
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let selected: Option | Option[] | undefined = undefined;
-	export let where = false;
 	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
 	export let errors: Errors | undefined = undefined;
@@ -40,41 +39,46 @@
 	$: loading = $namedQueryStore.isFetching;
 
 	$: if (Array.isArray(value)) {
+		if (value.some((item) => item?.{{ idName }} && !item?.where)) {
+			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } }, name: item?.name }));
+		}
 		if(value.some((item) => !item?.name)){
 			namedQueryStore
 				.fetch(query, {
-					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
+					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.where?.{{ idName }}?.val) }
 				})
-				.then(
-					(response) =>
-						(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
-							label: item?.name,
-							value: item?.{{ idName }}
-						})))
-				);
+				.then((response) => {
+					value = response.data?.{{ name | camelCase }}List?.map((item) => ({
+						name: item?.name,
+						where: { {{ idName }}: { val: item?.{{ idName }} } }
+					}));
+					selected = value?.map((item) => ({
+						label: item?.name,
+						value: item?.where?.{{ idName }}?.val
+					}));
+				});
 		} else {
 			selected = value?.map((item) => ({
 				label: item?.name,
-				value: item?.{{ idName }} || item?.where?.{{ idName }}?.val
+				value: item?.where?.{{ idName }}?.val
 			}))
 		}
-		if (where && value.some((item) => !item?.where)) {
-			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } }, name: item?.name }));
-		}
 	} else if (value) {
-		if (!value.name) {
-			namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
-				(response) =>
-					(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
-						label: item?.name,
-						value: item?.{{ idName }}
-					}))?.[0])
-			);
-		} else {
-			selected = { label: value?.name, value: value?.{{ idName }} || value.where?.{{ idName }}?.val };
-		}
-		if (where && !value.where) {
+		if (value?.{{ idName }} && !value.where) {
 			value = { where: { {{ idName }}: { val: value.{{ idName }} } }, name: value.name };
+		}
+		if (!value.name) {
+			namedQueryStore
+				.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.where?.{{ idName }}?.val } })
+				.then((response) => {
+					value = response.data?.{{ name | camelCase }}List?.map((item) => ({
+						name: item?.name,
+						where: { {{ idName }}: { val: item?.{{ idName }} } }
+					}))?.[0];
+					selected = { label: value?.name, value: value?.where?.{{ idName }}?.val };
+				});
+		} else {
+			selected = { label: value?.name, value: value.where?.{{ idName }}?.val };
 		}
 	} else if (val) {
 		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val } }).then(
@@ -109,22 +113,14 @@
 	bind:value={selected}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
-			if (where) {
-				value = e.detail.value.map((item) => ({
-					where: { {{ idName }}: { val: item.value } },
-					name: item.label
-				}));
-			} else {
-				value = e.detail.value.map((item) => ({ {{ idName }}: item.value, name: item.label }));
-			}
+			value = e.detail.value.map((item) => ({
+				where: { {{ idName }}: { val: item.value } },
+				name: item.label
+			}));
 			arr = e.detail.value.map((item) => item.value);
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			if (where) {
-				value = { where: { {{ idName }}: { val: e.detail.value.value } }, name: e.detail.value.label };
-			} else {
-				value = { {{ idName }}: e.detail.value.value, name: e.detail.value.label };
-			}
+			value = { where: { {{ idName }}: { val: e.detail.value.value } }, name: e.detail.value.label };
 			val = e.detail.value.value;
 			arr = [];
 		} else {

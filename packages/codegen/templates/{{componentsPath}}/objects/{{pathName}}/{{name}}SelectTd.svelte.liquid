@@ -14,7 +14,6 @@
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
-	export let where = false;
 	export let name: string;
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
@@ -36,42 +35,47 @@
 
 	let selected: Option | Option[] | undefined;
 
-	$: if (Array.isArray(value)) {
+	if (Array.isArray(value)) {
+		if (value.some((item) => item?.{{ idName }} && !item?.where)) {
+			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } }, name: item?.name }));
+		}
 		if(value.some((item) => !item?.name)){
 			namedQueryStore
 				.fetch(query, {
-					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }} || item?.where?.{{ idName }}?.val) }
+					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.where?.{{ idName }}?.val) }
 				})
-				.then(
-					(response) =>
-						(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
-							label: item?.name,
-							value: item?.{{ idName }}
-						})))
-				);
+				.then((response) => {
+					value = response.data?.{{ name | camelCase }}List?.map((item) => ({
+						name: item?.name,
+						where: { {{ idName }}: { val: item?.{{ idName }} } }
+					}));
+					selected = value?.map((item) => ({
+						label: item?.name,
+						value: item?.where?.{{ idName }}?.val
+					}));
+				});
 		} else {
 			selected = value?.map((item) => ({
 				label: item?.name,
-				value: item?.{{ idName }} || item?.where?.{{ idName }}?.val
+				value: item?.where?.{{ idName }}?.val
 			}))
 		}
-		if (where && value.some((item) => !item?.where)) {
-			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } }, name: item?.name }));
-		}
 	} else if (value) {
-		if (!value.name) {
-			namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} || value.where?.{{ idName }}?.val } }).then(
-				(response) =>
-					(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
-						label: item?.name,
-						value: item?.{{ idName }}
-					}))?.[0])
-			);
-		} else {
-			selected = { label: value?.name, value: value?.{{ idName }} || value.where?.{{ idName }}?.val };
-		}
-		if (where && !value.where) {
+		if (value?.{{ idName }} && !value.where) {
 			value = { where: { {{ idName }}: { val: value.{{ idName }} } }, name: value.name };
+		}
+		if (!value.name) {
+			namedQueryStore
+				.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.where?.{{ idName }}?.val } })
+				.then((response) => {
+					value = response.data?.{{ name | camelCase }}List?.map((item) => ({
+						name: item?.name,
+						where: { {{ idName }}: { val: item?.{{ idName }} } }
+					}))?.[0];
+					selected = { label: value?.name, value: value?.where?.{{ idName }}?.val };
+				});
+		} else {
+			selected = { label: value?.name, value: value.where?.{{ idName }}?.val };
 		}
 	}
 
@@ -134,7 +138,6 @@
 				<{{ name }}Select
 					{name}
 					{list}
-					{where}
 					{disabled}
 					{readonly}
 					{placeholder}
