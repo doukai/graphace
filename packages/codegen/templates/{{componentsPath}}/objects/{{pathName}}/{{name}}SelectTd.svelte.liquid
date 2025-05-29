@@ -35,7 +35,7 @@
 
 	let selected: Option | Option[] | undefined;
 
-	if (Array.isArray(value)) {
+	$: if (Array.isArray(value)) {
 		if (value.some((item) => item?.{{ idName }} && !item?.where)) {
 			value = value.map((item) => ({ where: { {{ idName }}: { val: item?.{{ idName }} } }, name: item?.name }));
 		}

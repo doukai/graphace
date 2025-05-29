@@ -2,7 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading } from '@graphace/ui';
+	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
 	import { type Option, {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Input.svelte';
@@ -99,6 +99,7 @@
 							if (e.detail.row !== undefined) {
 								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
 							}
+						on:goto={(e) => to(`../{{ field.fieldTypeName | paramCase }}/${e.detail.path}`, e.detail.name)}
 						{% raw %}}}{% endraw %}
 					/>
 					<ErrorLabels errors={errors.{{ field.fieldName }}} />
