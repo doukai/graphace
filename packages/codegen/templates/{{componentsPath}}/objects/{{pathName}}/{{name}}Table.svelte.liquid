@@ -84,6 +84,14 @@
 	}>();
 
 	let selectAll: boolean;
+
+	if (Array.isArray(value)) {
+		value.forEach((item) => {
+			if (item?.{{idName}} && !item.where) {
+				item.where = { {{idName}}: { val: item.{{idName}} } };
+			}
+		});
+	}
 </script>
 
 <div class="flex sm:justify-between">

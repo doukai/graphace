@@ -70,6 +70,15 @@ export function fieldIsNotIgnore(fieldName: string, fieldTypeName: string): bool
         (!isRef(fieldName) || (builderConfig?.includeRef || false));
 }
 
+export function graphqlFieldIsNotIgnore(fieldName: string, fieldTypeName: string): boolean {
+    const originalFieldTypeName = fieldTypeName.lastIndexOf(connectionSuffix) === -1 ?
+        fieldTypeName :
+        fieldTypeName.substring(0, fieldTypeName.lastIndexOf(connectionSuffix));
+    return builderConfig?.objects?.find(objectConfig => objectConfig.name === originalFieldTypeName)?.ignore !== true &&
+        builderConfig?.enums?.find(enumConfig => enumConfig.name === originalFieldTypeName)?.ignore !== true &&
+        (!isRelation(originalFieldTypeName) || (builderConfig?.includeRelation || false));
+}
+
 export function inGraphQLField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
     const originalTypeName = typeName.lastIndexOf(connectionSuffix) === -1 ?
         typeName :
@@ -81,7 +90,7 @@ export function inGraphQLField(typeName: string, fieldName: string, fieldTypeNam
             fieldConfig.inGraphQL === false || fieldConfig.ignore === true
         )
         .some(fieldConfig => fieldConfig.name === fieldName) &&
-        fieldIsNotIgnore(fieldName, fieldTypeName);
+        graphqlFieldIsNotIgnore(fieldName, fieldTypeName);
 }
 
 export function inQueryField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
@@ -93,7 +102,7 @@ export function inQueryField(typeName: string, fieldName: string, fieldTypeName:
         .flatMap(objectConfig => objectConfig.fields || [])
         .filter(fieldConfig => fieldConfig.inQuery === false || fieldConfig.ignore === true)
         .some(fieldConfig => fieldConfig.name === fieldName) &&
-        fieldIsNotIgnore(fieldName, fieldTypeName);
+        graphqlFieldIsNotIgnore(fieldName, fieldTypeName);
 }
 
 export function inMutationField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
@@ -105,7 +114,7 @@ export function inMutationField(typeName: string, fieldName: string, fieldTypeNa
         .flatMap(objectConfig => objectConfig.fields || [])
         .filter(fieldConfig => fieldConfig.inMutation === false || fieldConfig.ignore === true)
         .some(fieldConfig => fieldConfig.name === fieldName) &&
-        fieldIsNotIgnore(fieldName, fieldTypeName);
+        graphqlFieldIsNotIgnore(fieldName, fieldTypeName);
 }
 
 export function inSubscriptionField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
@@ -117,7 +126,7 @@ export function inSubscriptionField(typeName: string, fieldName: string, fieldTy
         .flatMap(objectConfig => objectConfig.fields || [])
         .filter(fieldConfig => fieldConfig.inSubscription === false || fieldConfig.ignore === true)
         .some(fieldConfig => fieldConfig.name === fieldName) &&
-        fieldIsNotIgnore(fieldName, fieldTypeName);
+        graphqlFieldIsNotIgnore(fieldName, fieldTypeName);
 }
 
 export function inListField(typeName: string, fieldName: string, fieldTypeName: string): boolean {

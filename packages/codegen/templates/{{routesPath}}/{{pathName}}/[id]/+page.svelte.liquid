@@ -20,7 +20,6 @@
 	const permissions = getContext<PermissionsStore>('permissions');
 	{%- endif %}
 
-	$: {{ idName }} = data.{{ idName }};
 	$: query_{{ name | camelCase }}_Store = data.query_{{ name | camelCase }}_Store as Query_{{ name | camelCase }}_Store;
 	$: node = $query_{{ name | camelCase }}_Store.response.data?.{{ name | camelCase }};
 	$: mutation_{{ name | camelCase }}_Store = data.mutation_{{ name | camelCase }}_Store as Mutation_{{ name | camelCase }}_Store;
@@ -36,9 +35,6 @@
 	}
 
 	const mutation = (args: {{ mutationTypeName }}{{ name }}Args) => {
-		if ({{ idName }}) {
-			args.where = { {{ idName }}: { val: {{ idName }} } };
-		}
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', args, $locale)
 			.then((data) => {
 				errors = {};

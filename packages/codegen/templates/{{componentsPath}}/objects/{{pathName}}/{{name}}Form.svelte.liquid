@@ -50,6 +50,10 @@
 		save: { value: {{ name }}Input | null | undefined };
 		back: {};
 	}>();
+
+	if (value?.{{idName}} && !value.where) {
+		value.where = { {{idName}}: { val: value.{{idName}} } };
+	}
 </script>
 
 <div class="flex justify-end sm:justify-between">
@@ -99,8 +103,8 @@
 							if (e.detail.row !== undefined) {
 								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
 							}
-						on:goto={(e) => to(`../{{ field.fieldTypeName | paramCase }}/${e.detail.path}`, e.detail.name)}
 						{% raw %}}}{% endraw %}
+						on:goto={(e) => to(`../{{ field.fieldTypeName | paramCase }}/${e.detail.path}`, e.detail.name)}
 					/>
 					<ErrorLabels errors={errors.{{ field.fieldName }}} />
 					{%- if forloop.last == false %}
