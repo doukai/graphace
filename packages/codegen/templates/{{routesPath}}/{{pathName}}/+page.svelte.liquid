@@ -33,6 +33,7 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
+	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -52,8 +53,10 @@
 		const row = nodes
 			?.map((node) => node?.{{ idName }})
 			?.indexOf(args.{{ idName }} || args.where?.{{ idName }}?.val || undefined);
+		validating = true;
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
@@ -79,6 +82,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
 				console.error(validErrors);
 				if (row !== -1 && row !== undefined) {
 					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
@@ -100,7 +104,7 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
-			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
+			isMutating={validating || $mutation_{{ name | camelCase }}_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fields %}
 				{{ field.fieldName }}: {

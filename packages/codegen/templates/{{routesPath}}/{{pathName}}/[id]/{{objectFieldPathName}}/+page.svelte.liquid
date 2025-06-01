@@ -36,6 +36,7 @@
 	let value = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
+	let validating = false;
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;
@@ -43,8 +44,10 @@
 	}
 
 	const mutation = (args: {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args) => {
+		validating = true;
 		validate('{{ mutationTypeName }}_{{ fieldObjectInfo.name | camelCase }}_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_{{ fieldObjectInfo.name | camelCase }}_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -64,14 +67,17 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
 				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: {{ fieldObjectInfo.name }}Input | null) => {
+		validating = true;
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ fieldInfo.fieldName }}: args }, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({
 					{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
@@ -94,6 +100,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
 				console.error(validErrors);
 				errors = validErrors.{{ fieldInfo.fieldName }}.iterms;
 			});
@@ -109,7 +116,7 @@
 			bind:value
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
-			isMutating={$mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching || $mutation_{{ fieldObjectInfo.name | camelCase }}_Store.isFetching}
+			isMutating={validating || $mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching || $mutation_{{ fieldObjectInfo.name | camelCase }}_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fieldObjectInfo.fields %}
 				{{ field.fieldName }}: {

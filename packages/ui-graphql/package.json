@@ -52,14 +52,12 @@
 		"@iconify/svelte": ">=3.1.0",
 		"@melt-ui/pp": ">=0.3.0",
 		"@melt-ui/svelte": ">=0.83.0",
-		"@revolist/svelte-datagrid": ">=4.0.0",
 		"@steeze-ui/heroicons": ">=2.3.0",
 		"@steeze-ui/svelte-icon": ">=1.5.0",
 		"@sveltejs/kit": ">=2.0.0",
 		"@sveltejs/vite-plugin-svelte": ">=3.0.0",
 		"nanoid": ">=4.0.0",
-		"svelte": ">=4.0.0",
-		"xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+		"svelte": ">=4.0.0"
 	},
 	"publishConfig": {
 		"access": "public"

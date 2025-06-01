@@ -36,22 +36,6 @@ const en: BaseTranslation = {
 			save: "save",
 			clear: "clear"
 		}
-	},
-	grid: {
-		buttons: {
-			refresh: 'Refresh',
-			save: 'Save',
-			new: 'New',
-			append: 'Append',
-			remove: 'Remove',
-			ok: 'ok',
-			canel: 'Canel',
-			export: 'Export',
-			import: 'Import'
-		},
-		message: {
-			requiredField: 'Missing required fields'
-		}
 	}
 }
 

@@ -1,15 +1,13 @@
 import {{ name }}Form from "./{{ name }}Form.svelte";
 import {{ name }}Table from "./{{ name }}Table.svelte";
+import {{ name }}FormDialog from "./{{ name }}FormDialog.svelte";
 import {{ name }}TableDialog from "./{{ name }}TableDialog.svelte";
 import {{ name }}Filter from "./{{ name }}Filter.svelte";
 import {{ name }}Th from "./{{ name }}Th.svelte";
-import {{ name }} from "./{{ name }}.svelte";
 import {{ name }}Agg from "./{{ name }}Agg.svelte";
 import {{ name }}Bar from "./{{ name }}Bar.svelte";
 import {{ name }}Line from "./{{ name }}Line.svelte";
 import {{ name }}Pie from "./{{ name }}Pie.svelte";
-import {{ name }}Grid from "./{{ name }}Grid.svelte";
-import {{ name }}AggGrid from "./{{ name }}AggGrid.svelte";
 import {{ name }}AggTable from "./{{ name }}AggTable.svelte";
 {%- if isNamed %}
 import {{ name }}Select from "./{{ name }}Select.svelte";
@@ -20,16 +18,14 @@ import {{ name }}SelectTd from "./{{ name }}SelectTd.svelte";
 export {
   {{ name }}Form,
   {{ name }}Table,
+  {{ name }}FormDialog,
   {{ name }}TableDialog,
   {{ name }}Filter,
   {{ name }}Th,
-  {{ name }},
   {{ name }}Agg,
   {{ name }}Bar,
   {{ name }}Line,
   {{ name }}Pie,
-  {{ name }}Grid,
-  {{ name }}AggGrid,
   {{ name }}AggTable{% if isNamed %},
   {{ name }}Select,
   {{ name }}SelectFilter,

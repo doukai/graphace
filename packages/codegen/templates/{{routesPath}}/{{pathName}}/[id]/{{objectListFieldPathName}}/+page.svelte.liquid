@@ -39,6 +39,7 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
+	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -55,8 +56,10 @@
 	};
 
 	const mutation = (args: {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args) => {
+		validating = true;
 		validate('{{ mutationTypeName }}_{{ fieldObjectInfo.name | camelCase }}_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_{{ fieldObjectInfo.name | camelCase }}_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -76,14 +79,17 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
 				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: {{ fieldObjectInfo.name }}Input[]) => {
+		validating = true;
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ fieldInfo.fieldName }}: args }, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({
 					{{ name | camelCase }}_{{ idName }}: {{ name | camelCase }}?.{{ idName }},
@@ -106,6 +112,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
 				console.error(validErrors);
 				errors = validErrors.{{ fieldInfo.fieldName }}.iterms;
 			});
@@ -125,7 +132,7 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store.isFetching}
-			isMutating={$mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching || $mutation_{{ fieldObjectInfo.name | camelCase }}_Store.isFetching}
+			isMutating={validating || $mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching || $mutation_{{ fieldObjectInfo.name | camelCase }}_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fieldObjectInfo.fields %}
 				{{ field.fieldName }}: {

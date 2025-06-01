@@ -36,22 +36,6 @@ const zh: NamespaceUiGraphqlTranslation = {
 			save: "保存",
 			clear: "清除"
 		}
-	},
-	grid: {
-		buttons: {
-			refresh: '刷新',
-			save: '保存',
-			new: '新页',
-			append: '新行',
-			remove: '移除',
-			ok: '确认',
-			canel: '撤销',
-			export: '导出',
-			import: '导入'
-		},
-		message: {
-			requiredField: '缺少必要的字段'
-		}
 	}
 }
 

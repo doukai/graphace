@@ -29,14 +29,17 @@
 
 	let value = {};
 	let errors: Record<string, Errors> = {};
+	let validating = false;
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;
 	}
 
 	const mutation = (args: {{ mutationTypeName }}{{ name }}Args) => {
+		validating = true;
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_{{ name | camelCase }}_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -56,6 +59,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
 				console.error(validErrors);
 				errors = validErrors;
 			});
@@ -71,7 +75,7 @@
 			bind:value
 			{errors}
 			isFetching={$query_{{ name| camelCase }}_Store.isFetching}
-			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
+			isMutating={validating || $mutation_{{ name | camelCase }}_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fields %}
 				{{ field.fieldName }}: {
