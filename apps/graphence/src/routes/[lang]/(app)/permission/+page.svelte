@@ -25,6 +25,7 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
+	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -44,8 +45,10 @@
 		const row = nodes
 			?.map((node) => node?.name)
 			?.indexOf(args.name || args.where?.name?.val || undefined);
+		validating = true;
 		validate('Mutation_permission_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
@@ -71,6 +74,8 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				if (row !== -1 && row !== undefined) {
 					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
 				}
@@ -81,16 +86,17 @@
 <Card>
 	<CardBody>
 		<PermissionTable
-			showRemoveButton={true}
-			showEditButton={true}
-			showCreateButton={true}
+			showRemoveButton
+			showEditButton
+			showCreateButton
 			showBackButton={$canBack}
+			showSearchInput
 			value={nodes}
 			bind:args
 			bind:orderBy
 			{errors}
 			isFetching={$query_permissionConnection_Store.isFetching}
-			isMutating={$mutation_permission_Store.isFetching}
+			isMutating={validating || $mutation_permission_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Permission::name::WRITE'),

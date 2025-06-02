@@ -163,6 +163,148 @@ const zh: NamespaceGraphqlTranslation = {
 				}
 			}
 		},
+		GroupRoleRelation: {
+			name: '角色 组 关系',
+			fields: {
+				id: {
+					name: 'ID',
+				},
+				roleRef: {
+					name: '角色 引用',
+				},
+				role: {
+					name: '角色',
+				},
+				groupRef: {
+					name: '组 引用',
+				},
+				group: {
+					name: '组',
+				},
+				isDeprecated: {
+					name: '已移除',
+				},
+				version: {
+					name: '版本',
+				},
+				realmId: {
+					name: '域',
+				},
+				createUserId: {
+					name: '创建者',
+				},
+				createTime: {
+					name: '创建时间',
+				},
+				updateUserId: {
+					name: '更新者',
+				},
+				updateTime: {
+					name: '更新时间',
+				},
+				createGroupId: {
+					name: '创建组',
+				},
+				idCount: {
+					name: '角色 组 关系 数量',
+				},
+				idMax: {
+					name: 'ID 最大值',
+				},
+				idMin: {
+					name: 'ID 最小值',
+				},
+				roleRefCount: {
+					name: '角色 引用 数量',
+				},
+				roleRefMax: {
+					name: '角色 引用 最大值',
+				},
+				roleRefMin: {
+					name: '角色 引用 最小值',
+				},
+				groupRefCount: {
+					name: '组 引用 数量',
+				},
+				groupRefMax: {
+					name: '组 引用 最大值',
+				},
+				groupRefMin: {
+					name: '组 引用 最小值',
+				}
+			}
+		},
+		GroupUserRelation: {
+			name: '用户 组 关系',
+			fields: {
+				id: {
+					name: 'ID',
+				},
+				userRef: {
+					name: '用户 引用',
+				},
+				user: {
+					name: '用户',
+				},
+				groupRef: {
+					name: '组 引用',
+				},
+				group: {
+					name: '组',
+				},
+				isDeprecated: {
+					name: '已移除',
+				},
+				version: {
+					name: '版本',
+				},
+				realmId: {
+					name: '域',
+				},
+				createUserId: {
+					name: '创建者',
+				},
+				createTime: {
+					name: '创建时间',
+				},
+				updateUserId: {
+					name: '更新者',
+				},
+				updateTime: {
+					name: '更新时间',
+				},
+				createGroupId: {
+					name: '创建组',
+				},
+				idCount: {
+					name: '用户 组 关系 数量',
+				},
+				idMax: {
+					name: 'ID 最大值',
+				},
+				idMin: {
+					name: 'ID 最小值',
+				},
+				userRefCount: {
+					name: '用户 引用 数量',
+				},
+				userRefMax: {
+					name: '用户 引用 最大值',
+				},
+				userRefMin: {
+					name: '用户 引用 最小值',
+				},
+				groupRefCount: {
+					name: '组 引用 数量',
+				},
+				groupRefMax: {
+					name: '组 引用 最大值',
+				},
+				groupRefMin: {
+					name: '组 引用 最小值',
+				}
+			}
+		},
 		Permission: {
 			name: '权限',
 			fields: {
@@ -273,6 +415,77 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				syncPermissionPolicy: {
 					name: 'syncPermissionPolicy',
+				}
+			}
+		},
+		PermissionRoleRelation: {
+			name: '角色 权限 关系',
+			fields: {
+				id: {
+					name: 'ID',
+				},
+				roleRef: {
+					name: '角色 引用',
+				},
+				role: {
+					name: '角色',
+				},
+				permissionRef: {
+					name: '权限 引用',
+				},
+				permission: {
+					name: '权限',
+				},
+				isDeprecated: {
+					name: '已移除',
+				},
+				version: {
+					name: '版本',
+				},
+				realmId: {
+					name: '域',
+				},
+				createUserId: {
+					name: '创建者',
+				},
+				createTime: {
+					name: '创建时间',
+				},
+				updateUserId: {
+					name: '更新者',
+				},
+				updateTime: {
+					name: '更新时间',
+				},
+				createGroupId: {
+					name: '创建组',
+				},
+				idCount: {
+					name: '角色 权限 关系 数量',
+				},
+				idMax: {
+					name: 'ID 最大值',
+				},
+				idMin: {
+					name: 'ID 最小值',
+				},
+				roleRefCount: {
+					name: '角色 引用 数量',
+				},
+				roleRefMax: {
+					name: '角色 引用 最大值',
+				},
+				roleRefMin: {
+					name: '角色 引用 最小值',
+				},
+				permissionRefCount: {
+					name: '权限 引用 数量',
+				},
+				permissionRefMax: {
+					name: '权限 引用 最大值',
+				},
+				permissionRefMin: {
+					name: '权限 引用 最小值',
 				}
 			}
 		},
@@ -484,6 +697,148 @@ const zh: NamespaceGraphqlTranslation = {
 				}
 			}
 		},
+		RoleCompositeRelation: {
+			name: '角色 角色 关系',
+			fields: {
+				id: {
+					name: 'ID',
+				},
+				roleRef: {
+					name: '角色 引用',
+				},
+				role: {
+					name: '角色',
+				},
+				compositeRef: {
+					name: '角色 引用',
+				},
+				composite: {
+					name: '角色',
+				},
+				isDeprecated: {
+					name: '已移除',
+				},
+				version: {
+					name: '版本',
+				},
+				realmId: {
+					name: '域',
+				},
+				createUserId: {
+					name: '创建者',
+				},
+				createTime: {
+					name: '创建时间',
+				},
+				updateUserId: {
+					name: '更新者',
+				},
+				updateTime: {
+					name: '更新时间',
+				},
+				createGroupId: {
+					name: '创建组',
+				},
+				idCount: {
+					name: '角色 角色 关系 数量',
+				},
+				idMax: {
+					name: 'ID 最大值',
+				},
+				idMin: {
+					name: 'ID 最小值',
+				},
+				roleRefCount: {
+					name: '角色 引用 数量',
+				},
+				roleRefMax: {
+					name: '角色 引用 最大值',
+				},
+				roleRefMin: {
+					name: '角色 引用 最小值',
+				},
+				compositeRefCount: {
+					name: '角色 引用 数量',
+				},
+				compositeRefMax: {
+					name: '角色 引用 最大值',
+				},
+				compositeRefMin: {
+					name: '角色 引用 最小值',
+				}
+			}
+		},
+		RoleUserRelation: {
+			name: '用户 角色 关系',
+			fields: {
+				id: {
+					name: 'ID',
+				},
+				userRef: {
+					name: '用户 引用',
+				},
+				user: {
+					name: '用户',
+				},
+				roleRef: {
+					name: '角色 引用',
+				},
+				role: {
+					name: '角色',
+				},
+				isDeprecated: {
+					name: '已移除',
+				},
+				version: {
+					name: '版本',
+				},
+				realmId: {
+					name: '域',
+				},
+				createUserId: {
+					name: '创建者',
+				},
+				createTime: {
+					name: '创建时间',
+				},
+				updateUserId: {
+					name: '更新者',
+				},
+				updateTime: {
+					name: '更新时间',
+				},
+				createGroupId: {
+					name: '创建组',
+				},
+				idCount: {
+					name: '用户 角色 关系 数量',
+				},
+				idMax: {
+					name: 'ID 最大值',
+				},
+				idMin: {
+					name: 'ID 最小值',
+				},
+				userRefCount: {
+					name: '用户 引用 数量',
+				},
+				userRefMax: {
+					name: '用户 引用 最大值',
+				},
+				userRefMin: {
+					name: '用户 引用 最小值',
+				},
+				roleRefCount: {
+					name: '角色 引用 数量',
+				},
+				roleRefMax: {
+					name: '角色 引用 最大值',
+				},
+				roleRefMin: {
+					name: '角色 引用 最小值',
+				}
+			}
+		},
 		User: {
 			name: '用户',
 			fields: {
@@ -665,6 +1020,74 @@ const zh: NamespaceGraphqlTranslation = {
 					name: 'syncUserPolicy',
 				}
 			}
+		},
+		UserPhonesRelation: {
+			name: '用户 手机号 关系',
+			fields: {
+				id: {
+					name: 'ID',
+				},
+				userRef: {
+					name: '用户 引用',
+				},
+				user: {
+					name: '用户',
+				},
+				phonesRef: {
+					name: '手机号 引用',
+				},
+				isDeprecated: {
+					name: '已移除',
+				},
+				version: {
+					name: '版本',
+				},
+				realmId: {
+					name: '域',
+				},
+				createUserId: {
+					name: '创建者',
+				},
+				createTime: {
+					name: '创建时间',
+				},
+				updateUserId: {
+					name: '更新者',
+				},
+				updateTime: {
+					name: '更新时间',
+				},
+				createGroupId: {
+					name: '创建组',
+				},
+				idCount: {
+					name: '用户 手机号 关系 数量',
+				},
+				idMax: {
+					name: 'ID 最大值',
+				},
+				idMin: {
+					name: 'ID 最小值',
+				},
+				userRefCount: {
+					name: '用户 引用 数量',
+				},
+				userRefMax: {
+					name: '用户 引用 最大值',
+				},
+				userRefMin: {
+					name: '用户 引用 最小值',
+				},
+				phonesRefCount: {
+					name: '手机号 引用 数量',
+				},
+				phonesRefMax: {
+					name: '手机号 引用 最大值',
+				},
+				phonesRefMin: {
+					name: '手机号 引用 最小值',
+				}
+			}
 		}
 	},
 	enums: {
@@ -676,6 +1099,9 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				WRITE: {
 					name: '写入',
+				},
+				ANY: {
+					name: '全部',
 				}
 			}
 		}

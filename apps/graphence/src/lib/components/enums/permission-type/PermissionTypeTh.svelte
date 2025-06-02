@@ -14,7 +14,8 @@
 
 	$: enums = [
 		{ name: $LL.graphql.enums.PermissionType.values.READ.name(), value: 'READ', description: '读取' },
-		{ name: $LL.graphql.enums.PermissionType.values.WRITE.name(), value: 'WRITE', description: '写入' }
+		{ name: $LL.graphql.enums.PermissionType.values.WRITE.name(), value: 'WRITE', description: '写入' },
+		{ name: $LL.graphql.enums.PermissionType.values.ANY.name(), value: 'ANY', description: '全部' }
 	];
 </script>
 

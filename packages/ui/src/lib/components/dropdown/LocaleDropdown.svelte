@@ -1,17 +1,9 @@
-<script lang="ts" context="module">
-	export type LocaleItem = {
-		name: string;
-		flag: string | undefined;
-	};
-</script>
-
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Language, ChevronDown } from '@steeze-ui/heroicons';
-	import Iconify from '@iconify/svelte';
 	import { replaceLocaleInUrl } from '@graphace/commons';
 	import { Dropdown, DropdownContent } from '.';
 	import { setLocale, locale } from '~/i18n/i18n-svelte';
@@ -19,7 +11,6 @@
 	import { baseLocale } from '~/i18n/i18n-util';
 	import { loadLocaleAsync } from '~/i18n/i18n-util.async';
 
-	export let locales: Record<string, LocaleItem>;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'mt-2 max-h-96 w-56 overflow-y-auto';
 	export { className as class };
@@ -74,17 +65,7 @@
 	<DropdownContent {zIndex} class={className}>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<ul class="menu menu-sm gap-1" tabindex="0">
-			{#each Object.entries(locales) as locale}
-				<li>
-					<button
-						class:active={currentLocale === locale[0]}
-						on:click={(e) => switchLocale(locale[0])}
-					>
-						<Iconify class="drop-shadow" icon={locale[1].flag} />
-						{locale[1].name}
-					</button>
-				</li>
-			{/each}
+			<slot {currentLocale} {switchLocale} />
 		</ul>
 	</DropdownContent>
 </Dropdown>

@@ -45,6 +45,7 @@
 				});
 			})
 			.catch((validErrors) => {
+				console.error(validErrors);
 				errors = validErrors.permissions?.iterms[0]?.iterms;
 			});
 	};
@@ -53,7 +54,7 @@
 <Card>
 	<CardBody>
 		<PermissionForm
-			showSaveButton={true}
+			showSaveButton
 			showBackButton={$canBack}
 			bind:value
 			{errors}

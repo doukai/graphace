@@ -9,7 +9,6 @@
 	export let name: string | undefined = undefined;
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
 	export let selected: Option | Option[] | undefined = undefined;
-	export let where = false;
 	export let val: string | null | undefined = undefined;
 	export let arr: (string | null | undefined)[] | null | undefined = [];
 	export let errors: Errors | undefined = undefined;
@@ -39,26 +38,48 @@
 
 	$: loading = $namedQueryStore.isFetching;
 
-	if (Array.isArray(value)) {
-		namedQueryStore
-			.fetch(query, {
-				id: { opr: 'IN', arr: value?.map((item) => item?.id || item?.where?.id?.val) }
-			})
-			.then(
-				(response) =>
-					(selected = response.data?.groupList?.map((item) => ({
+	$: if (Array.isArray(value)) {
+		if (value.some((item) => item?.id && !item?.where)) {
+			value = value.map((item) => ({ where: { id: { val: item?.id } }, name: item?.name }));
+		}
+		if(value.some((item) => !item?.name)){
+			namedQueryStore
+				.fetch(query, {
+					id: { opr: 'IN', arr: value?.map((item) => item?.where?.id?.val) }
+				})
+				.then((response) => {
+					value = response.data?.groupList?.map((item) => ({
+						name: item?.name,
+						where: { id: { val: item?.id } }
+					}));
+					selected = value?.map((item) => ({
 						label: item?.name,
-						value: item?.id
-					})))
-			);
+						value: item?.where?.id?.val
+					}));
+				});
+		} else {
+			selected = value?.map((item) => ({
+				label: item?.name,
+				value: item?.where?.id?.val
+			}))
+		}
 	} else if (value) {
-		namedQueryStore.fetch(query, { id: { opr: 'EQ', val: value.id || value.where?.id?.val } }).then(
-			(response) =>
-				(selected = response.data?.groupList?.map((item) => ({
-					label: item?.name,
-					value: item?.id
-				}))?.[0])
-		);
+		if (value?.id && !value.where) {
+			value = { where: { id: { val: value.id } }, name: value.name };
+		}
+		if (!value.name) {
+			namedQueryStore
+				.fetch(query, { id: { opr: 'EQ', val: value.where?.id?.val } })
+				.then((response) => {
+					value = response.data?.groupList?.map((item) => ({
+						name: item?.name,
+						where: { id: { val: item?.id } }
+					}))?.[0];
+					selected = { label: value?.name, value: value?.where?.id?.val };
+				});
+		} else {
+			selected = { label: value?.name, value: value.where?.id?.val };
+		}
 	} else if (val) {
 		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
 			(response) =>
@@ -76,14 +97,6 @@
 				})))
 		);
 	}
-
-	if (where) {
-		if (Array.isArray(value) && value.some((item) => !item?.where)) {
-			value = value.map((item) => ({ where: { id: { val: item?.id } } }));
-		} else if (value && !Array.isArray(value) && !value.where) {
-			value = { where: { id: { val: value.id } } };
-		}
-	}
 </script>
 
 <ObjectSelect
@@ -100,23 +113,20 @@
 	bind:value={selected}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
-			if (where) {
-				value = e.detail.value.map((item) => ({ where: { id: { val: item.value } } }));
-			} else {
-				value = e.detail.value.map((item) => ({ id: item.value, name: item.label }));
-			}
+			value = e.detail.value.map((item) => ({
+				where: { id: { val: item.value } },
+				name: item.label
+			}));
 			arr = e.detail.value.map((item) => item.value);
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			if (where) {
-				value = { where: { id: { val: e.detail.value.value } } };
-			} else {
-				value = { id: e.detail.value.value, name: e.detail.value.label };
-			}
+			value = { where: { id: { val: e.detail.value.value } }, name: e.detail.value.label };
 			val = e.detail.value.value;
 			arr = [];
 		} else {
 			value = undefined;
+			val = undefined;
+			arr = [];
 		}
 		dispatch('change', { value, val, arr });
 	}}

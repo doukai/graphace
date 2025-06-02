@@ -2,10 +2,10 @@
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { page } from '$app/stores';
-	import Iconify from '@iconify/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { EllipsisVertical } from '@steeze-ui/heroicons';
 	import { init, zIndex } from '@graphace/ui';
+	import MaterialSymbols from '../icons/MaterialSymbols.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	const zIndex6 = zIndex.top(6);
@@ -32,7 +32,7 @@
 			<li>
 				<h2 class="menu-title flex flex-row gap-2">
 					<span class="text-base-content">
-						<Iconify class="w-5 h-5" icon="material-symbols:bar-chart" />
+						<MaterialSymbols icon="bar-chart" />
 					</span>
 					<span>{$LL.graphence.components.sideBarMenu.statistics()}</span>
 				</h2>
@@ -53,7 +53,7 @@
 							}}
 							class={$page.url.pathname.endsWith('/chart/bar') ? 'active' : ''}
 						>
-							<Iconify class="w-5 h-5" icon="material-symbols:bar-chart" />
+							<MaterialSymbols icon="bar-chart" />
 							<span>{$LL.graphence.components.sideBarMenu.bar()}</span>
 						</a>
 					</li>
@@ -73,7 +73,7 @@
 							}}
 							class={$page.url.pathname.endsWith('/chart/line') ? 'active' : ''}
 						>
-							<Iconify class="w-5 h-5" icon="material-symbols:show-chart" />
+							<MaterialSymbols icon="bar-chart" />
 							<span>{$LL.graphence.components.sideBarMenu.line()}</span>
 						</a>
 					</li>
@@ -93,58 +93,8 @@
 							}}
 							class={$page.url.pathname.endsWith('/chart/pie') ? 'active' : ''}
 						>
-							<Iconify class="w-5 h-5" icon="material-symbols:pie-chart-outline" />
+							<MaterialSymbols icon="show-chart" />
 							<span>{$LL.graphence.components.sideBarMenu.pie()}</span>
-						</a>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<h2 class="menu-title flex flex-row gap-2">
-					<span class="text-base-content">
-						<Iconify class="w-5 h-5" icon="material-symbols:grid-on-sharp" />
-					</span>
-					<span>{$LL.graphence.components.sideBarMenu.grid()}</span>
-				</h2>
-				<ul>
-					<li>
-						<a
-							href={null}
-							on:click|preventDefault={(e) => {
-								zIndex.reset();
-								if (pathSize === 3) {
-									init(
-										new URL('./grid/agg', window.location.href + '/'),
-										$LL.graphence.components.sideBarMenu.statistics()
-									);
-								} else {
-									init('../grid/agg', $LL.graphence.components.sideBarMenu.statistics());
-								}
-							}}
-							class={$page.url.pathname.endsWith('/grid/agg') ? 'active' : ''}
-						>
-							<Iconify class="w-5 h-5" icon="material-symbols:table-eye-sharp" />
-							<span>{$LL.graphence.components.sideBarMenu.statistics()}</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href={null}
-							on:click|preventDefault={(e) => {
-								zIndex.reset();
-								if (pathSize === 3) {
-									init(
-										new URL('./grid/mutation', window.location.href + '/'),
-										$LL.graphence.components.sideBarMenu.mutation()
-									);
-								} else {
-									init('../grid/mutation', $LL.graphence.components.sideBarMenu.mutation());
-								}
-							}}
-							class={$page.url.pathname.endsWith('/grid/mutation') ? 'active' : ''}
-						>
-							<Iconify class="w-5 h-5" icon="material-symbols:table-edit-sharp" />
-							<span>{$LL.graphence.components.sideBarMenu.mutation()}</span>
 						</a>
 					</li>
 				</ul>

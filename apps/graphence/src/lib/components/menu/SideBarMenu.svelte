@@ -13,9 +13,9 @@
 	import { getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { page } from '$app/stores';
-	import Iconify from '@iconify/svelte';
 	import type { PermissionsStore } from '@graphace/commons';
 	import { init, zIndex, Menu, MenuTitle } from '@graphace/ui';
+	import MaterialSymbols from '../icons/MaterialSymbols.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
@@ -33,7 +33,7 @@
 					<MenuTitle class="flex flex-row gap-2">
 						{#if menu.icon}
 							<span class="text-base-content">
-								<Iconify class="w-5 h-5" icon={menu.icon} />
+								<MaterialSymbols icon={menu.icon} />
 							</span>
 						{/if}
 						<span>{$LL.graphence.components.sideBarMenu[menu.name]()}</span>
@@ -54,7 +54,7 @@
 											: ''}
 									>
 										{#if subMenu.icon}
-											<Iconify class="w-5 h-5" icon={subMenu.icon} />
+											<MaterialSymbols icon={subMenu.icon} />
 										{/if}
 										<span>{$LL.graphql.objects[subMenu.name].name()}</span>
 									</a>
@@ -77,7 +77,7 @@
 							: ''}
 					>
 						{#if menu.icon}
-							<Iconify class="w-5 h-5" icon={menu.icon} />
+							<MaterialSymbols icon={menu.icon} />
 						{/if}
 						<span>{$LL.graphql.objects[menu.name].name()}</span>
 					</a>

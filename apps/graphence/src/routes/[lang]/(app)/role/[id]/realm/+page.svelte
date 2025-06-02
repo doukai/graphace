@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
+	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { Query_role_realm_Store } from '~/lib/stores/query/query_role_realm_store';
 	import type { Mutation_role_realm_Store } from '~/lib/stores/mutation/mutation_role_realm_store';
 	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
@@ -25,6 +28,7 @@
 	let value = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
+	let validating = false;
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;
@@ -32,8 +36,10 @@
 	}
 
 	const mutation = (args: MutationRealmArgs) => {
+		validating = true;
 		validate('Mutation_realm_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_realm_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -53,13 +59,17 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: RealmInput | null) => {
+		validating = true;
 		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, realm: args }, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_role_realm_Store.fetch({
 					role_id: role?.id,
@@ -82,6 +92,8 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors.realm.iterms;
 			});
 	};
@@ -90,13 +102,13 @@
 <Card>
 	<CardBody>
 		<RealmForm
-			showSaveButton={true}
+			showSaveButton
 			{showUnbindButton}
 			showBackButton={$canBack}
 			bind:value
 			{errors}
 			isFetching={$query_role_realm_Store.isFetching}
-			isMutating={$mutation_role_realm_Store.isFetching || $mutation_realm_Store.isFetching}
+			isMutating={validating || $mutation_role_realm_Store.isFetching || $mutation_realm_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Realm::name::WRITE'),
@@ -139,6 +151,18 @@
 			}}
 			on:goto={(e) => to(`../../${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
-		/>
+		>
+			<RealmTableDialog
+				singleChoice
+				class="btn-accent"
+				on:select={(e) => {
+					if (!Array.isArray(e.detail.value)) {
+						merge(e.detail.value);
+					}
+				}}
+			>
+				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+			</RealmTableDialog>
+		</RealmForm>
 	</CardBody>
 </Card>

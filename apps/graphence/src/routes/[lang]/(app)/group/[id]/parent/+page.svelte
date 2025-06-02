@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
+	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
 	import type { Query_group_parent_Store } from '~/lib/stores/query/query_group_parent_store';
 	import type { Mutation_group_parent_Store } from '~/lib/stores/mutation/mutation_group_parent_store';
 	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
@@ -25,6 +28,7 @@
 	let value = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
+	let validating = false;
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;
@@ -32,8 +36,10 @@
 	}
 
 	const mutation = (args: MutationGroupArgs) => {
+		validating = true;
 		validate('Mutation_group_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_group_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -53,13 +59,17 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: GroupInput | null) => {
+		validating = true;
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: args }, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_group_parent_Store.fetch({
 					group_id: group?.id,
@@ -82,6 +92,8 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors.parent.iterms;
 			});
 	};
@@ -90,13 +102,13 @@
 <Card>
 	<CardBody>
 		<GroupForm
-			showSaveButton={true}
+			showSaveButton
 			{showUnbindButton}
 			showBackButton={$canBack}
 			bind:value
 			{errors}
 			isFetching={$query_group_parent_Store.isFetching}
-			isMutating={$mutation_group_parent_Store.isFetching || $mutation_group_Store.isFetching}
+			isMutating={validating || $mutation_group_parent_Store.isFetching || $mutation_group_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Group::name::WRITE'),
@@ -179,6 +191,19 @@
 			}}
 			on:goto={(e) => to(`../../${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
-		/>
+		>
+			<GroupTableDialog
+				args={{ not: true, parent: { id: { val: group?.id } } }}
+				singleChoice
+				class="btn-accent"
+				on:select={(e) => {
+					if (!Array.isArray(e.detail.value)) {
+						merge(e.detail.value);
+					}
+				}}
+			>
+				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+			</GroupTableDialog>
+		</GroupForm>
 	</CardBody>
 </Card>

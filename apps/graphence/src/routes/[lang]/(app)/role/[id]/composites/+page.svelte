@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
+	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
 	import type { Query_role_compositesConnection_Store } from '~/lib/stores/query/query_role_compositesConnection_store';
 	import type { Mutation_role_composites_Store } from '~/lib/stores/mutation/mutation_role_composites_store';
 	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
@@ -28,6 +31,7 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
+	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -44,8 +48,10 @@
 	};
 
 	const mutation = (args: MutationRoleArgs) => {
+		validating = true;
 		validate('Mutation_role_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_role_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -65,13 +71,17 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: RoleInput[]) => {
+		validating = true;
 		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, composites: args }, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_role_composites_Store.fetch({
 					role_id: role?.id,
@@ -94,6 +104,8 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors.composites.iterms;
 			});
 	};
@@ -102,16 +114,17 @@
 <Card>
 	<CardBody>
 		<RoleTable
-			showUnbindButton={true}
-			showEditButton={true}
-			showCreateButton={true}
+			showUnbindButton
+			showEditButton
+			showCreateButton
 			showBackButton={$canBack}
+			showSearchInput
 			value={nodes}
 			bind:args
 			bind:orderBy
 			{errors}
 			isFetching={$query_role_compositesConnection_Store.isFetching}
-			isMutating={$mutation_role_composites_Store.isFetching || $mutation_role_Store.isFetching}
+			isMutating={validating || $mutation_role_composites_Store.isFetching || $mutation_role_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Role::name::WRITE'),
@@ -221,7 +234,21 @@
 			on:create={(e) => to('../../role/_', '_')}
 			on:goto={(e) => to(`../../role/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
-		/>
+		>
+			<RoleTableDialog
+				args={{ not: true, composites: { id: { val: role?.id } } }}
+				class="btn-accent"
+				on:select={(e) => {
+					if (Array.isArray(e.detail.value)) {
+						merge(e.detail.value);
+					} else {
+						merge([e.detail.value]);
+					}
+				}}
+			>
+				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+			</RoleTableDialog>
+		</RoleTable>
 		<div class="divider" />
 		<Pagination
 			bind:pageSize

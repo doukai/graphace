@@ -2,7 +2,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Form, FormControl, Label, Loading } from '@graphace/ui';
+	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
 	import { type Option, StringInput, ObjectLink } from '@graphace/ui-graphql';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmInput } from '~/lib/types/schema';
@@ -16,12 +16,13 @@
 	export let showSaveButton: boolean = false;
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
+	export let title: string | undefined = undefined;
 	let className: string | undefined =
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
 	export { className as class };
 	export let fields: {
-		name: Option;
-		description: Option;
+		name?: Option | undefined;
+		description?: Option | undefined;
 	} = {
 		name: { readonly: false, disabled: false, hidden: false },
 		description: { readonly: false, disabled: false, hidden: false }
@@ -35,11 +36,19 @@
 		save: { value: RealmInput | null | undefined };
 		back: {};
 	}>();
+
+	if (value?.id && !value.where) {
+		value.where = { id: { val: value.id } };
+	}
 </script>
 
 <div class="flex justify-end sm:justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
-		{$LL.graphql.objects.Realm.name()}
+		{#if title}
+			{title}
+		{:else}
+			{$LL.graphql.objects.Realm.name()}
+		{/if}
 	</span>
 	<Buttons
 		{showRemoveButton}
@@ -52,7 +61,9 @@
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back
-	/>
+	>
+		<slot />
+	</Buttons>
 </div>
 <div class="divider" />
 <Form class={className}>
@@ -60,31 +71,31 @@
 		<Loading />
 	{:else if value}
 		<slot name="name">
-			{#if !fields.name.hidden}
+			{#if !fields.name?.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Realm.fields.name.name()} />
 					<StringInput
-					 	{id}
+						{id}
 						name="name"
 						bind:value={value.name}
 						errors={errors.name}
-						readonly={fields.name.readonly}
-						disabled={fields.name.disabled}
+						readonly={fields.name?.readonly}
+						disabled={fields.name?.disabled}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="description">
-			{#if !fields.description.hidden}
+			{#if !fields.description?.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Realm.fields.description.name()} />
 					<StringInput
-					 	{id}
+						{id}
 						name="description"
 						bind:value={value.description}
 						errors={errors.description}
-						readonly={fields.description.readonly}
-						disabled={fields.description.disabled}
+						readonly={fields.description?.readonly}
+						disabled={fields.description?.disabled}
 					/>
 				</FormControl>
 			{/if}

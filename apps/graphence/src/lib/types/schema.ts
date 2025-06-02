@@ -5072,7 +5072,9 @@ export type PermissionType =
   /** 读取 */
   | 'READ'
   /** 写入 */
-  | 'WRITE';
+  | 'WRITE'
+  /** 全部 */
+  | 'ANY';
 
 /** 权限类型 查询表达式 */
 export type PermissionTypeExpression = {

@@ -6,7 +6,8 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { type Option, Td } from '@graphace/ui';
+	import { type Option, FormControl, Td } from '@graphace/ui';
+	import type { StructQueryStores } from '@graphace/ui-graphql';
 	import RoleSelect from './RoleSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleInput } from '~/lib/types/schema';
@@ -29,15 +30,53 @@
 		save: {};
 	}>();
 
+	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
+	const query = { fieldName: 'roleList', idName: 'id' };
+
 	let selected: Option | Option[] | undefined;
 
-	if (Array.isArray(value)) {
-		selected = value?.map((item) => ({
-			label: item?.name,
-			value: item?.id
-		}));
+	$: if (Array.isArray(value)) {
+		if (value.some((item) => item?.id && !item?.where)) {
+			value = value.map((item) => ({ where: { id: { val: item?.id } }, name: item?.name }));
+		}
+		if(value.some((item) => !item?.name)){
+			namedQueryStore
+				.fetch(query, {
+					id: { opr: 'IN', arr: value?.map((item) => item?.where?.id?.val) }
+				})
+				.then((response) => {
+					value = response.data?.roleList?.map((item) => ({
+						name: item?.name,
+						where: { id: { val: item?.id } }
+					}));
+					selected = value?.map((item) => ({
+						label: item?.name,
+						value: item?.where?.id?.val
+					}));
+				});
+		} else {
+			selected = value?.map((item) => ({
+				label: item?.name,
+				value: item?.where?.id?.val
+			}))
+		}
 	} else if (value) {
-		selected = { label: value.name, value: value.id };
+		if (value?.id && !value.where) {
+			value = { where: { id: { val: value.id } }, name: value.name };
+		}
+		if (!value.name) {
+			namedQueryStore
+				.fetch(query, { id: { opr: 'EQ', val: value.where?.id?.val } })
+				.then((response) => {
+					value = response.data?.roleList?.map((item) => ({
+						name: item?.name,
+						where: { id: { val: item?.id } }
+					}))?.[0];
+					selected = { label: value?.name, value: value?.where?.id?.val };
+				});
+		} else {
+			selected = { label: value?.name, value: value.where?.id?.val };
+		}
 	}
 
 	let mutation = (): void => {
@@ -95,34 +134,37 @@
 	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-start space-x-1" transition:fade={{ duration: 100 }}>
-			<RoleSelect
-				{name}
-				{list}
-				{disabled}
-				{readonly}
-				{placeholder}
-				bind:value
-				bind:selected
-				where={true}
-			/>
-			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
-				<button
+			<FormControl>
+				<RoleSelect
+					{name}
+					{list}
 					{disabled}
-					class="btn btn-square btn-primary"
-					on:click|preventDefault={(e) => mutation()}
-				>
-					<Icon src={Check} class="h-5 w-5" />
-				</button>
-			</div>
-			<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.clear()}>
-				<button
-					{disabled}
-					class="btn btn-square btn-outline btn-error"
-					on:click|preventDefault={(e) => clean()}
-				>
-					<Icon src={XMark} class="h-5 w-5" />
-				</button>
-			</div>
+					{readonly}
+					{placeholder}
+					bind:value
+					bind:selected
+				/>
+			</FormControl>
+			{#if !readonly}
+				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.save()}>
+					<button
+						{disabled}
+						class="btn btn-square btn-primary"
+						on:click|preventDefault={(e) => mutation()}
+					>
+						<Icon src={Check} class="h-5 w-5" />
+					</button>
+				</div>
+				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.td.clear()}>
+					<button
+						{disabled}
+						class="btn btn-square btn-outline btn-error"
+						on:click|preventDefault={(e) => clean()}
+					>
+						<Icon src={XMark} class="h-5 w-5" />
+					</button>
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}

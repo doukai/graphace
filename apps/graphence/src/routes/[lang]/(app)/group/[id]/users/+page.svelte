@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
+	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
 	import type { Query_group_usersConnection_Store } from '~/lib/stores/query/query_group_usersConnection_store';
 	import type { Mutation_group_users_Store } from '~/lib/stores/mutation/mutation_group_users_store';
 	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
@@ -28,6 +31,7 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
+	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -44,8 +48,10 @@
 	};
 
 	const mutation = (args: MutationUserArgs) => {
+		validating = true;
 		validate('Mutation_user_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_user_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -65,13 +71,17 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: UserInput[]) => {
+		validating = true;
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, users: args }, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_group_users_Store.fetch({
 					group_id: group?.id,
@@ -94,6 +104,8 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors.users.iterms;
 			});
 	};
@@ -102,16 +114,17 @@
 <Card>
 	<CardBody>
 		<UserTable
-			showUnbindButton={true}
-			showEditButton={true}
-			showCreateButton={true}
+			showUnbindButton
+			showEditButton
+			showCreateButton
 			showBackButton={$canBack}
+			showSearchInput
 			value={nodes}
 			bind:args
 			bind:orderBy
 			{errors}
 			isFetching={$query_group_usersConnection_Store.isFetching}
-			isMutating={$mutation_group_users_Store.isFetching || $mutation_user_Store.isFetching}
+			isMutating={validating || $mutation_group_users_Store.isFetching || $mutation_user_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('User::name::WRITE'),
@@ -240,7 +253,21 @@
 			on:create={(e) => to('../../user/_', '_')}
 			on:goto={(e) => to(`../../user/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
-		/>
+		>
+			<UserTableDialog
+				args={{ not: true, groups: { id: { val: group?.id } } }}
+				class="btn-accent"
+				on:select={(e) => {
+					if (Array.isArray(e.detail.value)) {
+						merge(e.detail.value);
+					} else {
+						merge([e.detail.value]);
+					}
+				}}
+			>
+				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+			</UserTableDialog>
+		</UserTable>
 		<div class="divider" />
 		<Pagination
 			bind:pageSize

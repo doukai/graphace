@@ -822,7 +822,7 @@
 	<div class="flex space-x-1">
 		<div class="w-full">
 			<Combobox
-				multiple={true}
+				multiple
 				options={filteredSelectOptions}
 				bind:value={selectColumns}
 				on:search={(e) => {
@@ -868,7 +868,7 @@
 						<FormControl let:id>
 							<Label {id} text={$LL.graphence.components.agg.groupBy()} />
 							<Combobox
-								multiple={true}
+								multiple
 								options={filteredGroupByOptions}
 								bind:value={groupByColumns}
 								on:search={(e) => {
@@ -894,7 +894,7 @@
 						<FormControl let:id>
 							<Label {id} text={$LL.graphence.components.agg.orderBy()} />
 							<Combobox
-								multiple={true}
+								multiple
 								options={filteredOrderByOptions}
 								bind:value={orderByColumns}
 								on:search={(e) => {

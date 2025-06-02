@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
+	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
 	import type { Query_group_subGroupsConnection_Store } from '~/lib/stores/query/query_group_subGroupsConnection_store';
 	import type { Mutation_group_subGroups_Store } from '~/lib/stores/mutation/mutation_group_subGroups_store';
 	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
@@ -28,6 +31,7 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
+	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -44,8 +48,10 @@
 	};
 
 	const mutation = (args: MutationGroupArgs) => {
+		validating = true;
 		validate('Mutation_group_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_group_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -65,13 +71,17 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: GroupInput[]) => {
+		validating = true;
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, subGroups: args }, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_group_subGroups_Store.fetch({
 					group_id: group?.id,
@@ -94,6 +104,8 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors.subGroups.iterms;
 			});
 	};
@@ -102,16 +114,17 @@
 <Card>
 	<CardBody>
 		<GroupTable
-			showUnbindButton={true}
-			showEditButton={true}
-			showCreateButton={true}
+			showUnbindButton
+			showEditButton
+			showCreateButton
 			showBackButton={$canBack}
+			showSearchInput
 			value={nodes}
 			bind:args
 			bind:orderBy
 			{errors}
 			isFetching={$query_group_subGroupsConnection_Store.isFetching}
-			isMutating={$mutation_group_subGroups_Store.isFetching || $mutation_group_Store.isFetching}
+			isMutating={validating || $mutation_group_subGroups_Store.isFetching || $mutation_group_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Group::name::WRITE'),
@@ -238,7 +251,21 @@
 			on:create={(e) => to('../../group/_', '_')}
 			on:goto={(e) => to(`../../group/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
-		/>
+		>
+			<GroupTableDialog
+				args={{ not: true, parent: { id: { val: group?.id } } }}
+				class="btn-accent"
+				on:select={(e) => {
+					if (Array.isArray(e.detail.value)) {
+						merge(e.detail.value);
+					} else {
+						merge([e.detail.value]);
+					}
+				}}
+			>
+				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+			</GroupTableDialog>
+		</GroupTable>
 		<div class="divider" />
 		<Pagination
 			bind:pageSize

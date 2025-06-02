@@ -21,14 +21,17 @@
 
 	let value = {};
 	let errors: Record<string, Errors> = {};
+	let validating = false;
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;
 	}
 
 	const mutation = (args: MutationRoleArgs) => {
+		validating = true;
 		validate('Mutation_role_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_role_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -48,6 +51,8 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
@@ -56,13 +61,13 @@
 <Card>
 	<CardBody>
 		<RoleForm
-			showSaveButton={true}
-			showRemoveButton={true}
+			showSaveButton
+			showRemoveButton
 			showBackButton={$canBack}
 			bind:value
 			{errors}
 			isFetching={$query_role_Store.isFetching}
-			isMutating={$mutation_role_Store.isFetching}
+			isMutating={validating || $mutation_role_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Role::name::WRITE'),

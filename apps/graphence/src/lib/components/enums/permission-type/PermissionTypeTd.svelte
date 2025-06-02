@@ -13,14 +13,16 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	$: enums = [
 		{ name: $LL.graphql.enums.PermissionType.values.READ.name(), value: 'READ', description: '读取' },
-		{ name: $LL.graphql.enums.PermissionType.values.WRITE.name(), value: 'WRITE', description: '写入' }
+		{ name: $LL.graphql.enums.PermissionType.values.WRITE.name(), value: 'WRITE', description: '写入' },
+		{ name: $LL.graphql.enums.PermissionType.values.ANY.name(), value: 'ANY', description: '全部' }
 	];
 </script>
 
-<EnumTd {id} {name} bind:value {list} {enums} {errors} {readonly} {disabled} {placeholder} class={className} on:save />
+<EnumTd {id} {name} bind:value {list} {enums} {errors} {readonly} {disabled} {placeholder} {zIndex} class={className} on:save />

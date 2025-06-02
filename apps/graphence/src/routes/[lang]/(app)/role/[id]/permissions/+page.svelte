@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
+	import PermissionTableDialog from '~/lib/components/objects/permission/PermissionTableDialog.svelte';
 	import type { Query_role_permissionsConnection_Store } from '~/lib/stores/query/query_role_permissionsConnection_store';
 	import type { Mutation_role_permissions_Store } from '~/lib/stores/mutation/mutation_role_permissions_store';
 	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
@@ -28,6 +31,7 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
+	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -44,8 +48,10 @@
 	};
 
 	const mutation = (args: MutationPermissionArgs) => {
+		validating = true;
 		validate('Mutation_permission_Arguments', args, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_permission_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -65,13 +71,17 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: PermissionInput[]) => {
+		validating = true;
 		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, permissions: args }, $locale)
 			.then((data) => {
+				validating = false;
 				errors = {};
 				mutation_role_permissions_Store.fetch({
 					role_id: role?.id,
@@ -94,6 +104,8 @@
 				});
 			})
 			.catch((validErrors) => {
+				validating = false;
+				console.error(validErrors);
 				errors = validErrors.permissions.iterms;
 			});
 	};
@@ -102,16 +114,17 @@
 <Card>
 	<CardBody>
 		<PermissionTable
-			showUnbindButton={true}
-			showEditButton={true}
-			showCreateButton={true}
+			showUnbindButton
+			showEditButton
+			showCreateButton
 			showBackButton={$canBack}
+			showSearchInput
 			value={nodes}
 			bind:args
 			bind:orderBy
 			{errors}
 			isFetching={$query_role_permissionsConnection_Store.isFetching}
-			isMutating={$mutation_role_permissions_Store.isFetching || $mutation_permission_Store.isFetching}
+			isMutating={validating || $mutation_role_permissions_Store.isFetching || $mutation_permission_Store.isFetching}
 			fields={{
 				name: {
 					readonly: !permissions.auth('Permission::name::WRITE'),
@@ -182,12 +195,12 @@
 						confirm: () => {
 							if (Array.isArray(e.detail.value)) {
 								mutation({
-									where: { id: { opr: 'IN', arr: e.detail.value.map((node) => node?.id) } },
+									where: { name: { opr: 'IN', arr: e.detail.value.map((node) => node?.name) } },
 									isDeprecated: true
 								});
 							} else {
 								mutation({
-									where: { id: { val: e.detail.value?.id } },
+									where: { name: { val: e.detail.value?.name } },
 									isDeprecated: true
 								});
 							}
@@ -203,14 +216,14 @@
 						if (Array.isArray(e.detail.value)) {
 							merge(
 								e.detail.value.map((node) => ({
-									where: { id: { val: node?.id } },
+									where: { name: { val: node?.name } },
 									isDeprecated: true
 								}))
 							);
 						} else {
 							merge([
 								{
-									where: { id: { val: e.detail.value?.id } },
+									where: { name: { val: e.detail.value?.name } },
 									isDeprecated: true
 								}
 							]);
@@ -222,7 +235,21 @@
 			on:create={(e) => to('../../permission/_', '_')}
 			on:goto={(e) => to(`../../permission/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
-		/>
+		>
+			<PermissionTableDialog
+				args={{ not: true, roles: { id: { val: role?.id } } }}
+				class="btn-accent"
+				on:select={(e) => {
+					if (Array.isArray(e.detail.value)) {
+						merge(e.detail.value);
+					} else {
+						merge([e.detail.value]);
+					}
+				}}
+			>
+				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+			</PermissionTableDialog>
+		</PermissionTable>
 		<div class="divider" />
 		<Pagination
 			bind:pageSize
