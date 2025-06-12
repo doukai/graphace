@@ -30,28 +30,29 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
-		filter: {};
+		filter: { value?: {{ name }}Expression | null | undefined };
 	}>();
 
-	if (value === null || value === undefined || Object.keys(value).length === 0) {
-		value = {
-			{%- for field in fields %}
-			{%- if field.isScalarType or field.isEnumType %}
-			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
-			{%- elsif field.isSelect %}
-			{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
-			{%- endif %}
-			{%- endfor %}
-		}
+	let _value = {
+		{{ idName }}: undefined,
+		{%- for field in fields %}
+		{%- if field.isScalarType or field.isEnumType %}
+		{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
+		{%- elsif field.isSelect %}
+		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
+		{%- endif %}
+		{%- endfor %}
 	}
 
 	const filter = (): void => {
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
 	const clear = (): void => {
-		value = {
+		_value = {
+			{{ idName }}: undefined,
 			{%- for field in fields %}
 			{%- if field.isScalarType or field.isEnumType %}
 			{{ field.fieldName }}: undefined{% if forloop.last == false %},{% endif %}
@@ -60,7 +61,8 @@
 			{%- endif %}
 			{%- endfor %}
 		};
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
@@ -84,19 +86,19 @@
 				{%- if isNamed %}
 				<Label {id} text={$LL.graphql.objects.{{ name }}.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<{{ name }}SelectFilter {id} name="{{ idName }}" bind:value={value.{{ idName }}} />
+					<{{ name }}SelectFilter {id} name="{{ idName }}" bind:value={_value.{{ idName }}} />
 				</div>
 				{%- endif %}
 				{%- for field in fields %}
 				{%- if field.isScalarType or field.isEnumType %}
 				<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<{{ field.fieldTypeName }}Filter {id} name="{{ field.fieldName }}" bind:value={value.{{ field.fieldName }}} />
+					<{{ field.fieldTypeName }}Filter {id} name="{{ field.fieldName }}" bind:value={_value.{{ field.fieldName }}} />
 				</div>
 				{%- elsif field.isSelect %}
 				<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<{{ field.fieldTypeName }}SelectFilter {id} name="{{ field.fieldName }}" bind:value={value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}} />
+					<{{ field.fieldTypeName }}SelectFilter {id} name="{{ field.fieldName }}" bind:value={_value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}} />
 				</div>
 				{%- endif %}
 				{%- endfor %}
