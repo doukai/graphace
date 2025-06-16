@@ -108,7 +108,7 @@
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
 		{showCreateButton}
-		showSelectButton={showSelectButton}
+		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
 		on:save={(e) => dispatch('save', { value })}
