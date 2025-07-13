@@ -55,7 +55,7 @@
 </script>
 
 <Td {errors} {zIndex}>
-	<a class="link inline-flex" href={null} use:melt={$trigger}>
+	<a class="link inline-flex truncate" href={null} use:melt={$trigger}>
 		{#if list}
 			{#if Array.isArray(value)}
 				{#if value.length > 3}

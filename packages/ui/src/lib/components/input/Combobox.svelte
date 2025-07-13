@@ -221,7 +221,7 @@
 								})}
 							>
 								<!-- svelte-ignore a11y-missing-attribute -->
-								<a class="flex">
+								<a class="flex truncate">
 									{#if $isSelected({ ...children, parent: op })}
 										<Icon src={Check} class="size-4" />
 									{:else}

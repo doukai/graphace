@@ -86,7 +86,7 @@
 		<button
 			class="btn btn-xs btn-square btn-outline w-full"
 			on:click|preventDefault={(e) => {
-				addItem(value.length);
+				addItem(value?.length || 0);
 			}}
 		>
 			<Icon src={Plus} class="h-5 w-5" />

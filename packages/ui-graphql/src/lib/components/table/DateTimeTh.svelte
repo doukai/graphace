@@ -72,7 +72,7 @@
 </script>
 
 <td>
-	<a class="link group inline-flex" href={null} use:melt={$trigger}>
+	<a class="link group inline-flex truncate" href={null} use:melt={$trigger}>
 		{name}
 		{#if value?.val || (value?.arr && value.arr.length > 0)}
 			<span class="ml-1 flex-none">

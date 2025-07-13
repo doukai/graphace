@@ -14,7 +14,7 @@
 
 <{{ name }}Filter bind:value let:trigger on:filter>
 	<td>
-		<a class="link group inline-flex" href={null} use:melt={trigger}>
+		<a class="link group inline-flex truncate" href={null} use:melt={trigger}>
 			{name}
 			{#if filtered}
 				<span class="flex-none">
