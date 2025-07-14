@@ -54,9 +54,6 @@
 	export let close: (() => void) | undefined = undefined;
 
  	$: if (value) {
-		if (value?.{{ idName }} && !value.where) {
-			value = { ...value, where: { {{ idName }}: { val: value.{{ idName }} } } };
-		}
 		if (textFieldName) {
 			if (!value?.[textFieldName]) {
 				query_{{ name | camelCase }}_Store
@@ -65,7 +62,7 @@
 					})
 					.then((response) => {
 						value = {
-							...response.data?.{{ name | camelCase }},
+							[textFieldName]: response.data?.{{ name | camelCase }}?.[textFieldName],
 							where: { {{ idName }}: { val: response.data?.{{ name | camelCase }}?.{{ idName }} } }
 						};
 						text = value?.[textFieldName] + '';

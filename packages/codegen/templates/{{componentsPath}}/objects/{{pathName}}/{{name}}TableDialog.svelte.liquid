@@ -58,12 +58,6 @@
 	export let close: (() => void) | undefined = undefined;
 	
 	$: if (Array.isArray(value)) {
-		if (value.some((item) => item?.{{ idName }} && !item?.where)) {
-			value = value.map((item) => ({
-				...item,
-				where: { {{ idName }}: { val: item?.{{ idName }} } }
-			}));
-		}
 		if (textFieldName) {
 			if (value.some((item) => !item?.[textFieldName])) {
 				query_{{ name | camelCase }}Connection_Store
@@ -72,12 +66,12 @@
 					})
 					.then((response) => {
 						value = response.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => ({
-							...edge?.node,
+							[textFieldName]: edge?.node?.[textFieldName],
 							where: { {{ idName }}: { val: edge?.node?.{{ idName }} } }
 						}));
 						if (value) {
 							if (value.length > 0 && selectedIdList?.length === 0) {
-								selectedIdList = value?.map((node) => node?.where?.id?.val);
+								selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
 							}
 							if (value.length > 3) {
 								text = value
@@ -96,7 +90,7 @@
 					});
 			} else {
 				if (value.length > 0 && selectedIdList?.length === 0) {
-					selectedIdList = value?.map((node) => node?.where?.id?.val);
+					selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
 				}
 				if (value.length > 3) {
 					text = value
@@ -114,13 +108,10 @@
 			}
 		} else {
 			if (value.length > 0 && selectedIdList?.length === 0) {
-				selectedIdList = value?.map((node) => node?.where?.id?.val);
+				selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
 			}
 		}
 	} else if (value) {
-		if (value?.{{ idName }} && !value.where) {
-			value = { ...value, where: { {{ idName }}: { val: value.{{ idName }} } } };
-		}
 		if (textFieldName) {
 			if (!value?.[textFieldName]) {
 				query_{{ name | camelCase }}Connection_Store
@@ -129,7 +120,7 @@
 					})
 					.then((response) => {
 						value = response.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => ({
-							...edge?.node,
+							[textFieldName]: edge?.node?.[textFieldName],
 							where: { {{ idName }}: { val: edge?.node?.{{ idName }} } }
 						}))?.[0];
 						if (value) {
