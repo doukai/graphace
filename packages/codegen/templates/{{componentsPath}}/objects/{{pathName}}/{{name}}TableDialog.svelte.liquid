@@ -39,10 +39,7 @@
 	{%- endif %}
 
 	const dispatch = createEventDispatcher<{
-		select: {
-			value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
-			original: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined;
-		};
+		select: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
 	}>();
 
 	const query_{{ name | camelCase }}Connection_Store = createQuery_{{ name | camelCase }}Connection_Store(getLoadEvent());
@@ -62,16 +59,16 @@
 			if (value.some((item) => !item?.[textFieldName])) {
 				query_{{ name | camelCase }}Connection_Store
 					.fetch({
-						{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.where?.{{ idName }}?.val) }
+						{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }}) }
 					})
 					.then((response) => {
 						value = response.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => ({
 							[textFieldName]: edge?.node?.[textFieldName],
-							where: { {{ idName }}: { val: edge?.node?.{{ idName }} } }
+							{{ idName }}: edge?.node?.{{ idName }}
 						}));
 						if (value) {
 							if (value.length > 0 && selectedIdList?.length === 0) {
-								selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
+								selectedIdList = value?.map((node) => node?.{{ idName }});
 							}
 							if (value.length > 3) {
 								text = value
@@ -90,7 +87,7 @@
 					});
 			} else {
 				if (value.length > 0 && selectedIdList?.length === 0) {
-					selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
+					selectedIdList = value?.map((node) => node?.{{ idName }});
 				}
 				if (value.length > 3) {
 					text = value
@@ -108,7 +105,7 @@
 			}
 		} else {
 			if (value.length > 0 && selectedIdList?.length === 0) {
-				selectedIdList = value?.map((node) => node?.where?.{{ idName }}?.val);
+				selectedIdList = value?.map((node) => node?.{{ idName }});
 			}
 		}
 	} else if (value) {
@@ -116,29 +113,29 @@
 			if (!value?.[textFieldName]) {
 				query_{{ name | camelCase }}Connection_Store
 					.fetch({
-						{{ idName }}: { opr: 'EQ', val: value.where?.{{ idName }}?.val }
+						{{ idName }}: { opr: 'EQ', val: value.{{ idName }} }
 					})
 					.then((response) => {
 						value = response.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => ({
 							[textFieldName]: edge?.node?.[textFieldName],
-							where: { {{ idName }}: { val: edge?.node?.{{ idName }} } }
+							{{ idName }}: edge?.node?.{{ idName }}
 						}))?.[0];
 						if (value) {
 							if (selectedIdList?.length === 0) {
-								selectedIdList = [value?.where?.{{ idName }}?.val];
+								selectedIdList = [value?.{{ idName }}];
 							}
 							text = value?.[textFieldName] + '';
 						}
 					});
 			} else {
 				if (selectedIdList?.length === 0) {
-					selectedIdList = [value?.where?.{{ idName }}?.val];
+					selectedIdList = [value?.{{ idName }}];
 				}
 				text = value?.[textFieldName] + '';
 			}
 		} else {
 			if (selectedIdList?.length === 0) {
-				selectedIdList = [value?.where?.{{ idName }}?.val];
+				selectedIdList = [value?.{{ idName }}];
 			}
 		}
 	}
@@ -204,50 +201,18 @@
 			{fields}
 			{%- endif %}
 			on:select={(e) => {
-				let original;
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {
-						original = e.detail.value?.[0] || null;
+						value = e.detail.value?.[0] || null;
 					} else {
-						original = e.detail.value;
+						value = e.detail.value;
 					}
 				} else if (e.detail.value) {
-					original = e.detail.value;
+					value = e.detail.value;
 				} else {
-					original = null;
-				}
-
-				if (Array.isArray(original)) {
-					if (textFieldName) {
-						if (original.length > 3) {
-							text = original
-								.slice(0, 3)
-								.map((node) => node?.[textFieldName])
-								.filter((name) => name !== null)
-								.join(',')
-								.concat('...');
-						} else {
-							text = original
-								.map((node) => node?.[textFieldName])
-								.filter((name) => name !== null)
-								.join(',');
-						}
-					}
-					value = original.map((item) => ({
-						...item,
-						where: { {{ idName }}: { val: item?.{{ idName }} } }
-					}));
-				} else if (original) {
-					if (textFieldName) {
-						text = original?.[textFieldName] + '';
-					} 
-					value = { ...original, where: { {{ idName }}: { val: original.{{ idName }} } } };
-				} else {
-					text = undefined;
 					value = null;
 				}
-
-				dispatch('select', { value, original });
+				dispatch('select', { value });
 				if (close) {
 					close();
 				}

@@ -43,38 +43,33 @@
 	{%- endif %}
 
 	const dispatch = createEventDispatcher<{
-		select: {
-			value: {{ name }}Input | null | undefined;
-			original: {{ name }}Input | null | undefined;
-		};
+		select: { value: {{ name }}Input | null | undefined };
 	}>();
 
 	const query_{{ name | camelCase }}_Store = createQuery_{{ name | camelCase }}_Store(getLoadEvent());
 	const mutation_{{ name | camelCase }}_Store = createMutation_{{ name | camelCase }}_Store(getLoadEvent());
 	export let close: (() => void) | undefined = undefined;
 
- 	$: if (value) {
-		if (textFieldName) {
-			if (!value?.[textFieldName]) {
-				query_{{ name | camelCase }}_Store
-					.fetch({
-						{{ idName }}: { opr: 'EQ', val: value.where?.{{ idName }}?.val }
-					})
-					.then((response) => {
-						value = {
-							[textFieldName]: response.data?.{{ name | camelCase }}?.[textFieldName],
-							where: { {{ idName }}: { val: response.data?.{{ name | camelCase }}?.{{ idName }} } }
-						};
-						text = value?.[textFieldName] + '';
-					});
-			} else {
-				text = value?.[textFieldName] + '';
-			}
+ 	$: if (value && textFieldName) {
+		if (!value?.[textFieldName]) {
+			query_{{ name | camelCase }}_Store
+				.fetch({
+					{{ idName }}: { opr: 'EQ', val: value.{{ idName }} }
+				})
+				.then((response) => {
+					value = {
+						[textFieldName]: response.data?.{{ name | camelCase }}?.[textFieldName],
+						{{ idName }}: response.data?.{{ name | camelCase }}?.{{ idName }}
+					};
+					text = value?.[textFieldName] + '';
+				});
+		} else {
+			text = value?.[textFieldName] + '';
 		}
 	}
 
 	const query = () => {
-		query_{{ name | camelCase }}_Store.fetch({ {{ idName }}: { val: value?.where?.{{ idName }}?.val } }).then((result) => {
+		query_{{ name | camelCase }}_Store.fetch({ {{ idName }}: { val: value?.{{ idName }} } }).then((result) => {
 			value = result.data?.{{ name | camelCase }};
 			if (result.errors) {
 				console.error(result.errors);
@@ -100,7 +95,7 @@
 						}
 					} else {
 						toast.success($LL.{{ appName }}.message.requestSuccess());
-						dispatch('select', { value: result.data?.{{ name | camelCase }}, original: args });
+						dispatch('select', { value: result.data?.{{ name | camelCase }} });
 						if (clearAfterSelect) {
 							value = {};
 						}
@@ -170,51 +165,41 @@
 			{fields}
 			{%- endif %}
 			on:save={(e) => {
-				if (e.detail.value) {
-					const original = e.detail.value;
-					if (textFieldName) {
-						text = original?.[textFieldName] + '';
+				if (select) {
+					dispatch('select', { value });
+					if (clearAfterSelect) {
+						value = {};
 					}
-					value = { ...original, where: { {{ idName }}: { val: original.{{ idName }} } } };
-					if (select) {
-						dispatch('select', { value, original });
-						if (clearAfterSelect) {
-							value = {};
-						}
-						if (close) {
-							close();
-						}
-					} else {
-						mutation(e.detail.value);
+					if (close) {
+						close();
 					}
+				} else if (e.detail.value) {
+					mutation(e.detail.value);
 				}
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
-				if (e.detail.value) {
-					const original = e.detail.value;
-					text = undefined;
-					value = null;
-					if (select) {
-						dispatch('select', { value, original });
-						if (clearAfterSelect) {
-							value = {};
-						}
-						if (close) {
-							close();
-						}
-					} else {
-						modal.open({
-							title: $LL.{{ appName }}.components.modal.removeModalTitle(),
-							confirm: () => {
-								mutation({
-									where: { {{ idName }}: { val: e.detail.value?.{{ idName }} } },
-									isDeprecated: true
-								});
-								return true;
+				modal.open({
+					title: $LL.{{ appName }}.components.modal.removeModalTitle(),
+					confirm: () => {
+						text = undefined;
+						value = null;
+						if (select) {
+							dispatch('select', { value });
+							if (clearAfterSelect) {
+								value = {};
 							}
-						});
+							if (close) {
+								close();
+							}
+						} else if (e.detail.value) {
+							mutation({
+								where: { id: { val: e.detail.value.id } },
+								isDeprecated: true
+							});
+						}
+						return true;
 					}
-				}
+				});
 			{% raw %}}}{% endraw %}
 			on:goto={(e) => to(e.detail.path, e.detail.name)}
 		/>

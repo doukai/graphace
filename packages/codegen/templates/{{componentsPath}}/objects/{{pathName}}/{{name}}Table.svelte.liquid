@@ -84,14 +84,6 @@
 	}>();
 
 	let selectAll: boolean;
-
-	if (Array.isArray(value)) {
-		value.forEach((item) => {
-			if (item?.{{idName}} && !item.where) {
-				item.where = { {{idName}}: { val: item.{{idName}} } };
-			}
-		});
-	}
 </script>
 
 <div class="flex sm:justify-between">
@@ -153,7 +145,7 @@
 				clearAfterSelect
 				class="btn-accent"
 				on:select={(e) => {
-					value = [...(value || []), e.detail.original];
+					value = [...(value || []), e.detail.value];
 				{% raw %}}}{% endraw %}
 			>
 				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />

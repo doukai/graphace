@@ -50,10 +50,6 @@
 		save: { value: {{ name }}Input | null | undefined };
 		back: {};
 	}>();
-
-	if (value?.{{idName}} && !value.where) {
-		value.where = { {{idName}}: { val: value.{{idName}} } };
-	}
 </script>
 
 <div class="flex justify-end sm:justify-between">
