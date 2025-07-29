@@ -38,6 +38,22 @@ const en_ui_graphql = {
 			clear: 'clear',
 		},
 	},
+	grid: {
+		buttons: {
+			refresh: 'Refresh',
+			save: 'Save',
+			'new': 'New',
+			append: 'Append',
+			remove: 'Remove',
+			ok: 'ok',
+			canel: 'Canel',
+			'export': 'Export',
+			'import': 'Import',
+		},
+		message: {
+			requiredField: 'Missing required fields',
+		},
+	},
 } satisfies BaseTranslation
 
 export default en_ui_graphql

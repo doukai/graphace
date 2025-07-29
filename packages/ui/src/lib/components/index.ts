@@ -16,3 +16,4 @@ export * from "./pagination";
 export * from "./stores";
 export * from "./table";
 export * from "./toast";
+export * from "./tabs";

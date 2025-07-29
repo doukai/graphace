@@ -2939,6 +2939,52 @@ export type NamespaceUiGraphqlTranslation = {
 			clear: string
 		}
 	}
+	grid: {
+		buttons: {
+			/**
+			 * R​e​f​r​e​s​h
+			 */
+			refresh: string
+			/**
+			 * S​a​v​e
+			 */
+			save: string
+			/**
+			 * N​e​w
+			 */
+			'new': string
+			/**
+			 * A​p​p​e​n​d
+			 */
+			append: string
+			/**
+			 * R​e​m​o​v​e
+			 */
+			remove: string
+			/**
+			 * o​k
+			 */
+			ok: string
+			/**
+			 * C​a​n​e​l
+			 */
+			canel: string
+			/**
+			 * E​x​p​o​r​t
+			 */
+			'export': string
+			/**
+			 * I​m​p​o​r​t
+			 */
+			'import': string
+		}
+		message: {
+			/**
+			 * M​i​s​s​i​n​g​ ​r​e​q​u​i​r​e​d​ ​f​i​e​l​d​s
+			 */
+			requiredField: string
+		}
+	}
 }
 
 export type Namespaces =
@@ -5888,6 +5934,52 @@ export type TranslationFunctions = {
 				 * clear
 				 */
 				clear: () => LocalizedString
+			}
+		}
+		grid: {
+			buttons: {
+				/**
+				 * Refresh
+				 */
+				refresh: () => LocalizedString
+				/**
+				 * Save
+				 */
+				save: () => LocalizedString
+				/**
+				 * New
+				 */
+				'new': () => LocalizedString
+				/**
+				 * Append
+				 */
+				append: () => LocalizedString
+				/**
+				 * Remove
+				 */
+				remove: () => LocalizedString
+				/**
+				 * ok
+				 */
+				ok: () => LocalizedString
+				/**
+				 * Canel
+				 */
+				canel: () => LocalizedString
+				/**
+				 * Export
+				 */
+				'export': () => LocalizedString
+				/**
+				 * Import
+				 */
+				'import': () => LocalizedString
+			}
+			message: {
+				/**
+				 * Missing required fields
+				 */
+				requiredField: () => LocalizedString
 			}
 		}
 	}
