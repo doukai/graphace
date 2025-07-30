@@ -234,7 +234,11 @@
 				}
 				query();
 			{% raw %}}}{% endraw %}
-			on:query={(e) => query()}
+			on:query={(e) => {
+				args = e.detail.args;
+				orderBy = e.detail.orderBy;
+				query();
+			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					to(`./{{ name | paramCase }}/${e.detail.value.{{ idName }}}`);

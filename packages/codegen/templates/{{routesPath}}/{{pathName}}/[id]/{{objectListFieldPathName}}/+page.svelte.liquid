@@ -159,7 +159,11 @@
 				}
 				query();
 			{% raw %}}}{% endraw %}
-			on:query={(e) => query()}
+			on:query={(e) => {
+				args = e.detail.args;
+				orderBy = e.detail.orderBy;
+				query();
+			{% raw %}}}{% endraw %}
 			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					mutation(e.detail.value);
