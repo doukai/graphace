@@ -194,7 +194,7 @@
 			bind:orderBy
 			showEditButton={!readonly}
 			showCreateButton={!readonly}
-			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) <= 1)}
+			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 			{zIndex}
 			{%- if useAuth %}
