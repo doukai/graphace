@@ -127,13 +127,13 @@
 							text = value?.[textFieldName] + '';
 						}
 					});
-			} else {
+			} else if (value) {
 				if (selectedIdList?.length === 0) {
 					selectedIdList = [value?.{{ idName }}];
 				}
 				text = value?.[textFieldName] + '';
 			}
-		} else {
+		} else if (value) {
 			if (selectedIdList?.length === 0) {
 				selectedIdList = [value?.{{ idName }}];
 			}
