@@ -9,6 +9,9 @@
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
+	export let min: number | undefined = undefined;
+	export let max: number | undefined = undefined;
+	export let step: number | undefined = undefined;
 	export let placeholder: string = '';
 	let className: string | undefined = undefined;
 	export { className as class };
@@ -19,6 +22,9 @@
 		{id}
 		{name}
 		bind:value
+		{min}
+		{max}
+		{step}
 		{placeholder}
 		{errors}
 		{readonly}
@@ -31,6 +37,9 @@
 		{id}
 		{name}
 		bind:value
+		{min}
+		{max}
+		{step}
 		{placeholder}
 		{errors}
 		{readonly}

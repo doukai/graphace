@@ -8,6 +8,9 @@
 
 	export let name: string | undefined = undefined;
 	export let value: (number | null | undefined)[] | null | undefined = undefined;
+	export let min: number | undefined = undefined;
+	export let max: number | undefined = undefined;
+	export let step: number | undefined = undefined;
 	export let placeholder: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
@@ -83,6 +86,9 @@
 		{id}
 		{name}
 		type="number"
+		{min}
+		{max}
+		{step}
 		{placeholder}
 		class="input px-1 h-5 w-full min-w-20 shrink grow basis-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 	/>

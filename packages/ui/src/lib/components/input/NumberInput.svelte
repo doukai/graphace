@@ -5,6 +5,9 @@
 
 	export let name: string | undefined = undefined;
 	export let value: number | null | undefined = undefined;
+	export let min: number | undefined = undefined;
+	export let max: number | undefined = undefined;
+	export let step: number | undefined = undefined;
 	export let placeholder: string = '';
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
@@ -26,6 +29,9 @@
 	type="number"
 	{id}
 	{name}
+	{min}
+	{max}
+	{step}
 	{placeholder}
 	class="input {errors?.errors ? 'input-error' : ''} {className} {contextClass}"
 	bind:value
