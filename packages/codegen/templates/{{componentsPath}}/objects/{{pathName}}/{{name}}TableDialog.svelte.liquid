@@ -16,6 +16,7 @@
 	export let textFieldName: (keyof {{ name }} & keyof {{ name }}Input) | undefined = undefined;
 	export let text: string | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
+	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
@@ -54,8 +55,8 @@
 	export let selectedIdList: (string | null | undefined)[] | undefined = [];
 	export let close: (() => void) | undefined = undefined;
 	
-	$: if (Array.isArray(value)) {
-		if (textFieldName) {
+	$: if (textFieldName) {
+		if (Array.isArray(value)) {
 			if (value.some((item) => !item?.[textFieldName])) {
 				query_{{ name | camelCase }}Connection_Store
 					.fetch({
@@ -66,29 +67,8 @@
 							[textFieldName]: edge?.node?.[textFieldName],
 							{{ idName }}: edge?.node?.{{ idName }}
 						}));
-						if (value) {
-							if (value.length > 0 && selectedIdList?.length === 0) {
-								selectedIdList = value?.map((node) => node?.{{ idName }});
-							}
-							if (value.length > 3) {
-								text = value
-									.slice(0, 3)
-									.map((node) => node?.[textFieldName])
-									.filter((name) => name !== null)
-									.join(',')
-									.concat('...');
-							} else {
-								text = value
-									.map((node) => node?.[textFieldName])
-									.filter((name) => name !== null)
-									.join(',');
-							}
-						}
 					});
 			} else {
-				if (value.length > 0 && selectedIdList?.length === 0) {
-					selectedIdList = value?.map((node) => node?.{{ idName }});
-				}
 				if (value.length > 3) {
 					text = value
 						.slice(0, 3)
@@ -103,13 +83,7 @@
 						.join(',');
 				}
 			}
-		} else {
-			if (value.length > 0 && selectedIdList?.length === 0) {
-				selectedIdList = value?.map((node) => node?.{{ idName }});
-			}
-		}
-	} else if (value) {
-		if (textFieldName) {
+		} else if (value) {
 			if (!value?.[textFieldName]) {
 				query_{{ name | camelCase }}Connection_Store
 					.fetch({
@@ -120,22 +94,9 @@
 							[textFieldName]: edge?.node?.[textFieldName],
 							{{ idName }}: edge?.node?.{{ idName }}
 						}))?.[0];
-						if (value) {
-							if (selectedIdList?.length === 0) {
-								selectedIdList = [value?.{{ idName }}];
-							}
-							text = value?.[textFieldName] + '';
-						}
 					});
-			} else if (value) {
-				if (selectedIdList?.length === 0) {
-					selectedIdList = [value?.{{ idName }}];
-				}
-				text = value?.[textFieldName] + '';
-			}
-		} else if (value) {
-			if (selectedIdList?.length === 0) {
-				selectedIdList = [value?.{{ idName }}];
+			} else {
+				text = value[textFieldName] + '';
 			}
 		}
 	}
@@ -160,7 +121,16 @@
 				use:melt={trigger}
 				class="btn {className} max-sm:btn-square"
 				{disabled}
-				on:click={(e) => query(1)}
+				on:click={(e) => {
+					query(1);
+					if (selectedIdList?.length === 0) {
+						if (Array.isArray(value)) {
+							selectedIdList = value?.map((node) => node?.{{ idName }});
+						} else if (value) {
+							selectedIdList = [value?.{{ idName }}];
+						}
+					}
+				}}
 			>
 				<slot name="sm">
 					{#if text}
@@ -175,7 +145,16 @@
 			use:melt={trigger}
 			class="btn {className} max-md:hidden"
 			{disabled}
-			on:click={(e) => query(1)}
+			on:click={(e) => {
+				query(1);
+				if (selectedIdList?.length === 0) {
+					if (Array.isArray(value)) {
+						selectedIdList = value?.map((node) => node?.{{ idName }});
+					} else if (value) {
+						selectedIdList = [value?.{{ idName }}];
+					}
+				}
+			}}
 		>
 			<slot>
 				{#if text}
@@ -213,6 +192,14 @@
 					value = null;
 				}
 				dispatch('select', { value });
+				if (clearAfterSelect) {
+					if (Array.isArray(e.detail.value)) {
+						value = [];
+					} else {
+						value = undefined;
+					}
+					selectedIdList = [];
+				}
 				if (close) {
 					close();
 				}
