@@ -4,7 +4,7 @@ import type { JsonWebToken } from '~/types';
 
 export const jwt: Writable<JsonWebToken | undefined> = writable(undefined);
 
-export const permission_types: Readable<string[] | undefined> = derived(
+export const permissionTypes: Readable<string[] | undefined> = derived(
     jwt,
     ($jwt) => $jwt?.permission_types
 );
@@ -27,12 +27,12 @@ export type PermissionsStore = {
     auth: (...authPermissions: string[]) => boolean;
 }
 
-export function createPermissions(
-    getTypePermissionList: (types: string[]) => Promise<(string | null)[]>,
-    queryTypeName: string | undefined,
-    mutationTypeName: string | undefined,
-    subscriptionTypeName: string | undefined
-): PermissionsStore {
+export function createPermissions(options: {
+    getTypePermissionList: (types: string[]) => Promise<(string | null)[]>;
+    queryTypeName?: string | undefined;
+    mutationTypeName?: string | undefined;
+    subscriptionTypeName?: string | undefined;
+}): PermissionsStore {
     const typePermissionRecord: Writable<Record<string, string[]>> = writable({});
     const { subscribe, set, update } = typePermissionRecord;
 
@@ -60,13 +60,13 @@ export function createPermissions(
             if ($jwt && !$jwt?.is_root) {
                 const $typePermissionRecord = get(typePermissionRecord);
                 const types = [
-                    queryTypeName || 'Query',
-                    mutationTypeName || 'Mutation',
-                    subscriptionTypeName || 'Subscription',
+                    options.queryTypeName || 'Query',
+                    options.mutationTypeName || 'Mutation',
+                    options.subscriptionTypeName || 'Subscription',
                     ...authTypes
                 ].filter(type => !Object.keys($typePermissionRecord).includes(type));
                 if (types.length > 0) {
-                    const typePermissionList = await getTypePermissionList(types);
+                    const typePermissionList = await options.getTypePermissionList(types);
                     set(
                         typePermissionList.reduce((pre, cur) => {
                             if (cur) {
