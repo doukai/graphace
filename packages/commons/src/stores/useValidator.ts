@@ -50,7 +50,7 @@ const buildErrors = (errors: ErrorObject[]): Record<string, Errors> => {
 
 export function createValidator(options: {
     loadSchema(keyRef: string): Promise<AnySchemaObject>;
-    buildErrorMessages: (errors: null | ErrorObject[] | undefined) => void;
+    buildErrorMessages: (errors:  ErrorObject[] ) => void;
 }): ValidatorStore {
     const validator: Writable<{ isValidating: boolean, response: { data?: unknown, errors?: Record<string, Errors> | undefined } }> = writable({
         isValidating: false,
