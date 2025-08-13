@@ -7,7 +7,7 @@
 	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
-	import { getLoadEvent } from '~/utils';
+	import { loadEvent } from '~/utils';
 	import type { {{ name }}, {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import LL from '$i18n/i18n-svelte';
 
@@ -43,7 +43,7 @@
 		select: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
 	}>();
 
-	const query_{{ name | camelCase }}Connection_Store = createQuery_{{ name | camelCase }}Connection_Store(getLoadEvent());
+	const query_{{ name | camelCase }}Connection_Store = createQuery_{{ name | camelCase }}Connection_Store($loadEvent);
 	$: nodes = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.edges?.map(
 		(edge) => edge?.node
 	);

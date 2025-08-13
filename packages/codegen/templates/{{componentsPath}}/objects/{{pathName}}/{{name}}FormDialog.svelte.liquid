@@ -7,7 +7,7 @@
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Form.svelte';
-	import { getLoadEvent } from '~/utils';
+	import { loadEvent } from '~/utils';
 	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import type { {{ name }}, Mutation{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -46,8 +46,8 @@
 		select: { value: {{ name }}Input | null | undefined };
 	}>();
 
-	const query_{{ name | camelCase }}_Store = createQuery_{{ name | camelCase }}_Store(getLoadEvent());
-	const mutation_{{ name | camelCase }}_Store = createMutation_{{ name | camelCase }}_Store(getLoadEvent());
+	const query_{{ name | camelCase }}_Store = createQuery_{{ name | camelCase }}_Store($loadEvent);
+	const mutation_{{ name | camelCase }}_Store = createMutation_{{ name | camelCase }}_Store($loadEvent);
 	export let close: (() => void) | undefined = undefined;
 
  	$: if (textFieldName) {

@@ -1,5 +1,5 @@
-import { writable, derived, get } from 'svelte/store';
-import type { Writable, Readable, Subscriber, Unsubscriber } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
+import type { Writable, Readable, Subscriber, Unsubscriber, Updater } from 'svelte/store';
 import type { JsonWebToken } from '~/types';
 
 export const jwt: Writable<JsonWebToken | undefined> = writable(undefined);
@@ -22,7 +22,8 @@ export const isRoot: Readable<boolean | undefined> = derived(
 export type PermissionsStore = {
     subscribe: (this: void, run: Subscriber<Record<string, string[]>>, invalidate?: ((value?: Record<string, string[]> | undefined) => void) | undefined) => Unsubscriber;
     set: (this: void, value: Record<string, string[]>) => void;
-    update: (...permissions: string[]) => void;
+    update: (this: void, updater: Updater<Record<string, string[]>>) => void;
+    updatePermissions: (...permissions: string[]) => void;
     fetchPermissions: (...authTypes: string[]) => Promise<void>;
     auth: (...authPermissions: string[]) => boolean;
 }
@@ -33,13 +34,18 @@ export function createPermissions(options: {
     mutationTypeName?: string | undefined;
     subscriptionTypeName?: string | undefined;
 }): PermissionsStore {
+    let $jwt: JsonWebToken | undefined = undefined;
+    jwt.subscribe((value) => $jwt = value);
     const permissions: Writable<Record<string, string[]>> = writable({});
+    let $permissions: Record<string, string[]> = {};
+    permissions.subscribe(value => $permissions = value)
     const { subscribe, set, update } = permissions;
 
     return {
         subscribe,
         set,
-        update: (...permissions: string[]) =>
+        update,
+        updatePermissions: (...permissions: string[]) =>
             update(($permissions) => permissions.reduce((permissions, permission) => {
                 if (permission) {
                     const type = permission.split("::")[0];
@@ -52,9 +58,7 @@ export function createPermissions(options: {
                 return permissions;
             }, $permissions)),
         fetchPermissions: async (...authTypes: string[]) => {
-            const $jwt = get(jwt);
             if ($jwt && !$jwt?.is_root) {
-                const $permissions = get(permissions);
                 const types = [
                     options.queryTypeName || 'Query',
                     options.mutationTypeName || 'Mutation',
@@ -63,7 +67,7 @@ export function createPermissions(options: {
                 ].filter(type => !Object.keys($permissions).includes(type));
                 if (types.length > 0) {
                     const typePermissionList = await options.getTypePermissionList(types);
-                    set(
+                    permissions.update(($permissions) =>
                         typePermissionList.reduce((permissions, permission) => {
                             if (permission) {
                                 const type = permission.split("::")[0];
@@ -79,9 +83,8 @@ export function createPermissions(options: {
                 }
             }
         },
-        auth: (...authPermissions: string[]) => {
-            const $jwt = get(jwt);
-            return $jwt?.is_root || authPermissions.map(authPermission => authPermission.split("::"))
+        auth: (...authPermissions: string[]) =>
+            $jwt?.is_root || authPermissions.map(authPermission => authPermission.split("::"))
                 .map(authParts => {
                     const authType = authParts[0];
                     const authField = authParts[1];
@@ -90,12 +93,10 @@ export function createPermissions(options: {
                         return $jwt?.permission_types?.includes('ANY') ||
                             $jwt?.permission_types?.includes(authType);
                     } else if (authPermissionType === '*') {
-                        const $permissions = get(permissions);
                         return $jwt?.permission_types?.includes('ANY') ||
                             ($permissions[authType] || []).map(permissions => permissions.split("::"))
                                 .some(parts => parts[1] === 'ANY' || authField === parts[1])
                     } else {
-                        const $permissions = get(permissions);
                         return ($permissions['ANY'] || []).map(permissions => permissions.split("::"))
                             .some(parts => parts[2] === 'ANY' || authPermissionType === parts[2]) ||
                             ($permissions[authType] || []).map(permissions => permissions.split("::"))
@@ -105,7 +106,6 @@ export function createPermissions(options: {
                                 )
                     }
                 })
-                .reduce((pre, cur) => pre && cur, true) || false;
-        }
+                .reduce((pre, cur) => pre && cur, true) || false
     };
 }
