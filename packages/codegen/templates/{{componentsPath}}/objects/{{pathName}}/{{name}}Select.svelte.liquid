@@ -2,7 +2,8 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { Option } from '@graphace/ui';
-	import { type StructQueryStores, ObjectSelect } from '@graphace/ui-graphql';
+	import { ObjectSelect } from '@graphace/ui-graphql';
+	import { namedQueryStore } from '~/utils';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 
 	export let id: string | undefined = undefined;
@@ -27,7 +28,6 @@
 		};
 	}>();
 
-	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
 	const query = { fieldName: '{{ name | camelCase }}List', idName: '{{ idName }}' };
 
 	$: options =

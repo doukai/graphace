@@ -1,22 +1,28 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Form from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Form.svelte';
 	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 	{%- if hasFileField %}
 	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 	{%- endif %}
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		validator,
+		{%- if useAuth %}
+		permissions,
+		{%- endif %}
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { {{ fieldObjectInfo.name }}Input } from '~/{{ schemaTypesPath }}';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
+	const { validate } = validator;
 	{%- if useAuth %}
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { auth } = permissions;
 	{%- endif %}
 
 	$: {{ idName }} = data.{{ idName }} as string;
@@ -29,7 +35,7 @@
 	let errors: Record<string, Errors> = {};
 
 	const merge = (args: {{ fieldObjectInfo.name }}Input) => {
-		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ idName }} } }, {{ fieldInfo.fieldName }}: [args] }, $locale)
+		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ idName }} } }, {{ fieldInfo.fieldName }}: [args] })
 			.then((data) => {
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({
@@ -66,12 +72,13 @@
 			showBackButton={$canBack}
 			bind:value
 			{errors}
+			isMutating={$validator.isValidating || $mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
 			fields={% raw %}{{{% endraw %}
 				{%- for field in fieldObjectInfo.fields %}
 				{{ field.fieldName }}: {
-					readonly: !permissions.auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::WRITE'),
-					disabled: !permissions.auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::WRITE'),
-					hidden: !permissions.auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::READ')
+					readonly: !auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::WRITE'),
+					disabled: !auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::WRITE'),
+					hidden: !auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::READ')
 				}{% if forloop.last == false %},{% endif %}
 				{%- endfor %}
 			{% raw %}}}{% endraw %}

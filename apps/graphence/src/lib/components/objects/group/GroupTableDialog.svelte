@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { getContext, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
-	import type { Errors, PermissionsStore } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast } from '@graphace/ui';
 	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_groupConnection_Store } from '~/lib/stores/query/query_groupConnection_store';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
-	import { getLoadEvent } from '~/utils';
+	import { loadEvent, permissions } from '~/utils';
 	import type { Group, QueryGroupConnectionArgs, GroupOrderBy, GroupInput } from '~/lib/types/schema';
 	import LL from '$i18n/i18n-svelte';
 
@@ -16,11 +15,12 @@
 	export let textFieldName: (keyof Group & keyof GroupInput) | undefined = undefined;
 	export let text: string | undefined = undefined;
 	export let singleChoice: boolean | undefined = false;
+	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0';
+	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { auth } = permissions;
 	export let fields: {
 		name?: Option | undefined;
 		description?: Option | undefined;
@@ -34,65 +34,62 @@
 		realm?: Option | undefined;
 	} = {
 		name: {
-			readonly: !permissions.auth('Group::name::WRITE'),
-			disabled: !permissions.auth('Group::name::WRITE'),
-			hidden: !permissions.auth('Group::name::READ')
+			readonly: !auth('Group::name::WRITE'),
+			disabled: !auth('Group::name::WRITE'),
+			hidden: !auth('Group::name::READ')
 		},
 		description: {
-			readonly: !permissions.auth('Group::description::WRITE'),
-			disabled: !permissions.auth('Group::description::WRITE'),
-			hidden: !permissions.auth('Group::description::READ')
+			readonly: !auth('Group::description::WRITE'),
+			disabled: !auth('Group::description::WRITE'),
+			hidden: !auth('Group::description::READ')
 		},
 		path: {
-			readonly: !permissions.auth('Group::path::WRITE'),
-			disabled: !permissions.auth('Group::path::WRITE'),
-			hidden: !permissions.auth('Group::path::READ')
+			readonly: !auth('Group::path::WRITE'),
+			disabled: !auth('Group::path::WRITE'),
+			hidden: !auth('Group::path::READ')
 		},
 		deep: {
-			readonly: !permissions.auth('Group::deep::WRITE'),
-			disabled: !permissions.auth('Group::deep::WRITE'),
-			hidden: !permissions.auth('Group::deep::READ')
+			readonly: !auth('Group::deep::WRITE'),
+			disabled: !auth('Group::deep::WRITE'),
+			hidden: !auth('Group::deep::READ')
 		},
 		parentId: {
-			readonly: !permissions.auth('Group::parentId::WRITE'),
-			disabled: !permissions.auth('Group::parentId::WRITE'),
-			hidden: !permissions.auth('Group::parentId::READ')
+			readonly: !auth('Group::parentId::WRITE'),
+			disabled: !auth('Group::parentId::WRITE'),
+			hidden: !auth('Group::parentId::READ')
 		},
 		parent: {
-			readonly: !permissions.auth('Group::parent::WRITE'),
-			disabled: !permissions.auth('Group::parent::WRITE'),
-			hidden: !permissions.auth('Group::parent::READ')
+			readonly: !auth('Group::parent::WRITE'),
+			disabled: !auth('Group::parent::WRITE'),
+			hidden: !auth('Group::parent::READ')
 		},
 		subGroups: {
-			readonly: !permissions.auth('Group::subGroups::WRITE'),
-			disabled: !permissions.auth('Group::subGroups::WRITE'),
-			hidden: !permissions.auth('Group::subGroups::READ')
+			readonly: !auth('Group::subGroups::WRITE'),
+			disabled: !auth('Group::subGroups::WRITE'),
+			hidden: !auth('Group::subGroups::READ')
 		},
 		users: {
-			readonly: !permissions.auth('Group::users::WRITE'),
-			disabled: !permissions.auth('Group::users::WRITE'),
-			hidden: !permissions.auth('Group::users::READ')
+			readonly: !auth('Group::users::WRITE'),
+			disabled: !auth('Group::users::WRITE'),
+			hidden: !auth('Group::users::READ')
 		},
 		roles: {
-			readonly: !permissions.auth('Group::roles::WRITE'),
-			disabled: !permissions.auth('Group::roles::WRITE'),
-			hidden: !permissions.auth('Group::roles::READ')
+			readonly: !auth('Group::roles::WRITE'),
+			disabled: !auth('Group::roles::WRITE'),
+			hidden: !auth('Group::roles::READ')
 		},
 		realm: {
-			readonly: !permissions.auth('Group::realm::WRITE'),
-			disabled: !permissions.auth('Group::realm::WRITE'),
-			hidden: !permissions.auth('Group::realm::READ')
+			readonly: !auth('Group::realm::WRITE'),
+			disabled: !auth('Group::realm::WRITE'),
+			hidden: !auth('Group::realm::READ')
 		}
 	};
 
 	const dispatch = createEventDispatcher<{
-		select: {
-			value: GroupInput | (GroupInput | null | undefined)[] | null | undefined;
-			original: GroupInput | (GroupInput | null | undefined)[] | null | undefined;
-		};
+		select: { value: GroupInput | (GroupInput | null | undefined)[] | null | undefined };
 	}>();
 
-	const query_groupConnection_Store = createQuery_groupConnection_Store(getLoadEvent());
+	const query_groupConnection_Store = createQuery_groupConnection_Store($loadEvent);
 	$: nodes = $query_groupConnection_Store.response.data?.groupConnection?.edges?.map(
 		(edge) => edge?.node
 	);
@@ -104,47 +101,20 @@
 	export let selectedIdList: (string | null | undefined)[] | undefined = [];
 	export let close: (() => void) | undefined = undefined;
 	
-	$: if (Array.isArray(value)) {
-		if (value.some((item) => item?.id && !item?.where)) {
-			value = value.map((item) => ({
-				...item,
-				where: { id: { val: item?.id } }
-			}));
-		}
-		if (textFieldName) {
+	$: if (textFieldName) {
+		if (Array.isArray(value)) {
 			if (value.some((item) => !item?.[textFieldName])) {
 				query_groupConnection_Store
 					.fetch({
-						id: { opr: 'IN', arr: value?.map((item) => item?.where?.id?.val) }
+						id: { opr: 'IN', arr: value?.map((item) => item?.id) }
 					})
 					.then((response) => {
 						value = response.data?.groupConnection?.edges?.map((edge) => ({
-							...edge?.node,
-							where: { id: { val: edge?.node?.id } }
+							[textFieldName]: edge?.node?.[textFieldName],
+							id: edge?.node?.id
 						}));
-						if (value) {
-							if (value.length > 0 && selectedIdList?.length === 0) {
-								selectedIdList = value?.map((node) => node?.where?.id?.val);
-							}
-							if (value.length > 3) {
-								text = value
-									.slice(0, 3)
-									.map((node) => node?.[textFieldName])
-									.filter((name) => name !== null)
-									.join(',')
-									.concat('...');
-							} else {
-								text = value
-									.map((node) => node?.[textFieldName])
-									.filter((name) => name !== null)
-									.join(',');
-							}
-						}
 					});
 			} else {
-				if (value.length > 0 && selectedIdList?.length === 0) {
-					selectedIdList = value?.map((node) => node?.where?.id?.val);
-				}
 				if (value.length > 3) {
 					text = value
 						.slice(0, 3)
@@ -159,42 +129,20 @@
 						.join(',');
 				}
 			}
-		} else {
-			if (value.length > 0 && selectedIdList?.length === 0) {
-				selectedIdList = value?.map((node) => node?.where?.id?.val);
-			}
-		}
-	} else if (value) {
-		if (value?.id && !value.where) {
-			value = { ...value, where: { id: { val: value.id } } };
-		}
-		if (textFieldName) {
+		} else if (value) {
 			if (!value?.[textFieldName]) {
 				query_groupConnection_Store
 					.fetch({
-						id: { opr: 'EQ', val: value.where?.id?.val }
+						id: { opr: 'EQ', val: value.id }
 					})
 					.then((response) => {
 						value = response.data?.groupConnection?.edges?.map((edge) => ({
-							...edge?.node,
-							where: { id: { val: edge?.node?.id } }
+							[textFieldName]: edge?.node?.[textFieldName],
+							id: edge?.node?.id
 						}))?.[0];
-						if (value) {
-							if (selectedIdList?.length === 0) {
-								selectedIdList = [value?.where?.id?.val];
-							}
-							text = value?.[textFieldName] + '';
-						}
 					});
 			} else {
-				if (selectedIdList?.length === 0) {
-					selectedIdList = [value?.where?.id?.val];
-				}
-				text = value?.[textFieldName] + '';
-			}
-		} else {
-			if (selectedIdList?.length === 0) {
-				selectedIdList = [value?.where?.id?.val];
+				text = value[textFieldName] + '';
 			}
 		}
 	}
@@ -219,7 +167,16 @@
 				use:melt={trigger}
 				class="btn {className} max-sm:btn-square"
 				{disabled}
-				on:click={(e) => query(1)}
+				on:click={(e) => {
+					query(1);
+					if (selectedIdList?.length === 0) {
+						if (Array.isArray(value)) {
+							selectedIdList = value?.map((node) => node?.id);
+						} else if (value) {
+							selectedIdList = [value?.id];
+						}
+					}
+				}}
 			>
 				<slot name="sm">
 					{#if text}
@@ -234,7 +191,16 @@
 			use:melt={trigger}
 			class="btn {className} max-md:hidden"
 			{disabled}
-			on:click={(e) => query(1)}
+			on:click={(e) => {
+				query(1);
+				if (selectedIdList?.length === 0) {
+					if (Array.isArray(value)) {
+						selectedIdList = value?.map((node) => node?.id);
+					} else if (value) {
+						selectedIdList = [value?.id];
+					}
+				}
+			}}
 		>
 			<slot>
 				{#if text}
@@ -253,55 +219,31 @@
 			bind:orderBy
 			showEditButton={!readonly}
 			showCreateButton={!readonly}
-			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) <= 1)}
+			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_groupConnection_Store.isFetching}
 			{zIndex}
 			{fields}
 			on:select={(e) => {
-				let original;
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {
-						original = e.detail.value?.[0] || null;
+						value = e.detail.value?.[0] || null;
 					} else {
-						original = e.detail.value;
+						value = e.detail.value;
 					}
 				} else if (e.detail.value) {
-					original = e.detail.value;
+					value = e.detail.value;
 				} else {
-					original = null;
-				}
-
-				if (Array.isArray(original)) {
-					if (textFieldName) {
-						if (original.length > 3) {
-							text = original
-								.slice(0, 3)
-								.map((node) => node?.[textFieldName])
-								.filter((name) => name !== null)
-								.join(',')
-								.concat('...');
-						} else {
-							text = original
-								.map((node) => node?.[textFieldName])
-								.filter((name) => name !== null)
-								.join(',');
-						}
-					}
-					value = original.map((item) => ({
-						...item,
-						where: { id: { val: item?.id } }
-					}));
-				} else if (original) {
-					if (textFieldName) {
-						text = original?.[textFieldName] + '';
-					} 
-					value = { ...original, where: { id: { val: original.id } } };
-				} else {
-					text = undefined;
 					value = null;
 				}
-
-				dispatch('select', { value, original });
+				dispatch('select', { value });
+				if (clearAfterSelect) {
+					if (Array.isArray(e.detail.value)) {
+						value = [];
+					} else {
+						value = undefined;
+					}
+					selectedIdList = [];
+				}
 				if (close) {
 					close();
 				}
@@ -322,7 +264,11 @@
 				}
 				query();
 			}}
-			on:query={(e) => query()}
+			on:query={(e) => {
+				args = e.detail.args;
+				orderBy = e.detail.orderBy;
+				query();
+			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					to(`./group/${e.detail.value.id}`);

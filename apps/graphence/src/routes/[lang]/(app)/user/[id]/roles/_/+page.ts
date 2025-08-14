@@ -1,10 +1,10 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createMutation_user_roles_Store } from '~/lib/stores/mutation/mutation_user_roles_store';
-import { getPermissionsStore } from '~/utils';
+import { permissions } from '~/utils';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore(event).getTypes('Role');
+    await permissions.fetchPermissions('Role');
     return {
         id: event.params.id,
         mutation_user_roles_Store: createMutation_user_roles_Store(event)

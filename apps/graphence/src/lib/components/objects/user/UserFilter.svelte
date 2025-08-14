@@ -22,30 +22,31 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
-		filter: {};
+		filter: { value?: UserExpression | null | undefined };
 	}>();
 
-	if (value === null || value === undefined || Object.keys(value).length === 0) {
-		value = {
-			name: undefined,
-			description: undefined,
-			lastName: undefined,
-			login: undefined,
-			email: undefined,
-			phones: undefined,
-			disable: undefined,
-			groups: { id: undefined },
-			roles: { id: undefined },
-		}
+	let _value = {
+		id: undefined,
+		name: undefined,
+		description: undefined,
+		lastName: undefined,
+		login: undefined,
+		email: undefined,
+		phones: undefined,
+		disable: undefined,
+		groups: { id: undefined },
+		roles: { id: undefined },
 	}
 
 	const filter = (): void => {
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
 	const clear = (): void => {
-		value = {
+		_value = {
+			id: undefined,
 			name: undefined,
 			description: undefined,
 			lastName: undefined,
@@ -56,7 +57,8 @@
 			groups: { id: undefined },
 			roles: { id: undefined },
 		};
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
@@ -79,43 +81,43 @@
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.User.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<UserSelectFilter {id} name="id" bind:value={value.id} />
+					<UserSelectFilter {id} name="id" bind:value={_value.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.name.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="name" bind:value={value.name} />
+					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.description.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="description" bind:value={value.description} />
+					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.lastName.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="lastName" bind:value={value.lastName} />
+					<StringFilter {id} name="lastName" bind:value={_value.lastName} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.login.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="login" bind:value={value.login} />
+					<StringFilter {id} name="login" bind:value={_value.login} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.email.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="email" bind:value={value.email} />
+					<StringFilter {id} name="email" bind:value={_value.email} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.phones.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="phones" bind:value={value.phones} />
+					<StringFilter {id} name="phones" bind:value={_value.phones} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.disable.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<BooleanFilter {id} name="disable" bind:value={value.disable} />
+					<BooleanFilter {id} name="disable" bind:value={_value.disable} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.groups.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="groups" bind:value={value.groups.id} />
+					<GroupSelectFilter {id} name="groups" bind:value={_value.groups.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.roles.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
+					<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
 				</div>
 			</FormControl>
 		</Form>

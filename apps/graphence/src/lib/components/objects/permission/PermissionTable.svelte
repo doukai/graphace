@@ -6,7 +6,7 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel, Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, IDTh, IDTd, StringTh, StringTd, ObjectLink } from '@graphace/ui-graphql';
+	import { type Option, StringTh, StringTd, ObjectLink } from '@graphace/ui-graphql';
 	import PermissionFilter from '~/lib/components/objects/permission/PermissionFilter.svelte';
 	import PermissionFormDialog from '~/lib/components/objects/permission/PermissionFormDialog.svelte';
 	import PermissionTypeTh from '~/lib/components/enums/permission-type/PermissionTypeTh.svelte';
@@ -85,14 +85,6 @@
 	}>();
 
 	let selectAll: boolean;
-
-	if (Array.isArray(value)) {
-		value.forEach((item) => {
-			if (item?.name && !item.where) {
-				item.where = { name: { val: item.name } };
-			}
-		});
-	}
 </script>
 
 <div class="flex sm:justify-between">
@@ -109,21 +101,21 @@
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
 		{showCreateButton}
-		showSelectButton={showSelectButton}
+		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) =>
 			dispatch('remove', {
-				value: value?.filter((node) => selectedIdList.includes(node?.name))
+				value: value?.filter((node) => selectedIdList.includes(node?.id))
 			})}
 		on:unbind={(e) =>
 			dispatch('unbind', {
-				value: value?.filter((node) => selectedIdList.includes(node?.name))
+				value: value?.filter((node) => selectedIdList.includes(node?.id))
 			})}
 		on:select={(e) =>
 			dispatch('select', {
-				value: value?.filter((node) => selectedIdList.includes(node?.name))
+				value: value?.filter((node) => selectedIdList.includes(node?.id))
 			})}
 		on:create
 		on:back
@@ -154,7 +146,7 @@
 				clearAfterSelect
 				class="btn-accent"
 				on:select={(e) => {
-					value = [...(value || []), e.detail.original];
+					value = [...(value || []), e.detail.value];
 				}}
 			>
 				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
@@ -177,12 +169,12 @@
 							if (value && value.length > 0) {
 								if (selectAll) {
 									selectedIdList = [
-										...new Set([...selectedIdList, ...value.map((node) => node?.name)])
+										...new Set([...selectedIdList, ...value.map((node) => node?.id)])
 									];
 								} else {
 									selectedIdList = [
 										...selectedIdList.filter(
-											(selectedId) => !value?.some((node) => node?.name === selectedId)
+											(selectedId) => !value?.some((node) => node?.id === selectedId)
 										)
 									];
 								}
@@ -192,7 +184,7 @@
 				</label>
 			</th>
 			{#if !fields.name?.hidden}
-				<IDTh
+				<StringTh
 					name={$LL.graphql.objects.Permission.fields.name.name()}
 					bind:value={args.name}
 					bind:sort={orderBy.name}
@@ -265,16 +257,21 @@
 									type="checkbox"
 									class="checkbox"
 									bind:group={selectedIdList}
-									value={node.name}
+									value={node.id}
 								/>
 							</label>
 						</th>
 						<slot name="name">
 							{#if !fields.name?.hidden}
-								<IDTd
+								<StringTd
 									name="name"
 									bind:value={node.name}
-									readonly
+									on:save={(e) =>
+										dispatch('save', {
+											value: { name: node?.name, where: { id: { val: node?.id } } }
+										})}
+									readonly={fields.name?.readonly}
+									disabled={fields.name?.disabled}
 									errors={errors?.[row]?.iterms?.name}
 									{zIndex}
 								/>
@@ -287,7 +284,7 @@
 									bind:value={node.description}
 									on:save={(e) =>
 										dispatch('save', {
-											value: { description: node?.description, where: { name: { val: node?.name } } }
+											value: { description: node?.description, where: { id: { val: node?.id } } }
 										})}
 									readonly={fields.description?.readonly}
 									disabled={fields.description?.disabled}
@@ -303,7 +300,7 @@
 									bind:value={node.field}
 									on:save={(e) =>
 										dispatch('save', {
-											value: { field: node?.field, where: { name: { val: node?.name } } }
+											value: { field: node?.field, where: { id: { val: node?.id } } }
 										})}
 									readonly={fields.field?.readonly}
 									disabled={fields.field?.disabled}
@@ -319,7 +316,7 @@
 									bind:value={node.type}
 									on:save={(e) =>
 										dispatch('save', {
-											value: { type: node?.type, where: { name: { val: node?.name } } }
+											value: { type: node?.type, where: { id: { val: node?.id } } }
 										})}
 									readonly={fields.type?.readonly}
 									disabled={fields.type?.disabled}
@@ -335,7 +332,7 @@
 									bind:value={node.permissionType}
 									on:save={(e) =>
 										dispatch('save', {
-											value: { permissionType: node?.permissionType, where: { name: { val: node?.name } } }
+											value: { permissionType: node?.permissionType, where: { id: { val: node?.id } } }
 										})}
 									readonly={fields.permissionType?.readonly}
 									disabled={fields.permissionType?.disabled}
@@ -355,7 +352,7 @@
 									disabled={fields.roles?.disabled}
 									on:save={(e) =>
 										dispatch('save', {
-											value: { roles: node?.roles, where: { name: { val: node?.name } } }
+											value: { roles: node?.roles, where: { id: { val: node?.id } } }
 										})}
 									{zIndex}
 								/>
@@ -364,11 +361,11 @@
 						<slot name="realm">
 							{#if !fields.realm?.hidden}
 								<Td errors={errors?.[row]?.iterms?.realm} {zIndex}>
-									{#if node.name}
+									{#if node.id}
 										<ObjectLink
 											bind:value={node.realm}
 											textFieldName="name"
-											path={`${node.name}/realm`}
+											path={`${node.id}/realm`}
 											name={$LL.graphql.objects.Permission.fields.realm.name()}
 											disabled={fields.realm?.disabled}
 											on:goto
@@ -459,7 +456,7 @@
 										type="checkbox"
 										class="checkbox"
 										bind:group={selectedIdList}
-										value={node.name}
+										value={node.id}
 									/>
 								</label>
 							</th>
@@ -516,10 +513,15 @@
 							{#if !fields.name?.hidden}
 								<tr class="hover">
 									<td>{$LL.graphql.objects.Permission.fields.name.name()}</td>
-									<IDTd
+									<StringTd
 										name="name"
 										bind:value={node.name}
-										readonly
+										on:save={(e) =>
+											dispatch('save', {
+												value: { name: node?.name, where: { id: { val: node?.id } } }
+											})}
+										readonly={fields.name?.readonly}
+										disabled={fields.name?.disabled}
 										errors={errors?.[row]?.iterms?.name}
 										{zIndex}
 									/>
@@ -534,7 +536,7 @@
 										bind:value={node.description}
 										on:save={(e) =>
 											dispatch('save', {
-												value: { description: node?.description, where: { name: { val: node?.name } } }
+												value: { description: node?.description, where: { id: { val: node?.id } } }
 											})}
 										readonly={fields.description?.readonly}
 										disabled={fields.description?.disabled}
@@ -552,7 +554,7 @@
 										bind:value={node.field}
 										on:save={(e) =>
 											dispatch('save', {
-												value: { field: node?.field, where: { name: { val: node?.name } } }
+												value: { field: node?.field, where: { id: { val: node?.id } } }
 											})}
 										readonly={fields.field?.readonly}
 										disabled={fields.field?.disabled}
@@ -570,7 +572,7 @@
 										bind:value={node.type}
 										on:save={(e) =>
 											dispatch('save', {
-												value: { type: node?.type, where: { name: { val: node?.name } } }
+												value: { type: node?.type, where: { id: { val: node?.id } } }
 											})}
 										readonly={fields.type?.readonly}
 										disabled={fields.type?.disabled}
@@ -588,7 +590,7 @@
 										bind:value={node.permissionType}
 										on:save={(e) =>
 											dispatch('save', {
-												value: { permissionType: node?.permissionType, where: { name: { val: node?.name } } }
+												value: { permissionType: node?.permissionType, where: { id: { val: node?.id } } }
 											})}
 										readonly={fields.permissionType?.readonly}
 										disabled={fields.permissionType?.disabled}
@@ -610,7 +612,7 @@
 										disabled={fields.roles?.disabled}
 										on:save={(e) =>
 											dispatch('save', {
-												value: { roles: node?.roles, where: { name: { val: node?.name } } }
+												value: { roles: node?.roles, where: { id: { val: node?.id } } }
 											})}
 										{zIndex}
 									/>
@@ -621,12 +623,12 @@
 								<tr class="hover">
 									<td>{$LL.graphql.objects.Permission.fields.realm.name()}</td>
 									<Td errors={errors?.[row]?.iterms?.realm} {zIndex}>
-										{#if node.name}
+										{#if node.id}
 											<ObjectLink
 												bind:value={node.realm}
 												textFieldName="name"
 												disabled={fields.realm?.disabled}
-												path={`${node.name}/realm`}
+												path={`${node.id}/realm`}
 												name={$LL.graphql.objects.Permission.fields.realm.name()}
 												on:goto
 											/>

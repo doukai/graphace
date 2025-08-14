@@ -5,7 +5,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark } from '@steeze-ui/heroicons';
 	import { Form, FormControl, Label } from '@graphace/ui';
-	import { IDFilter, StringFilter } from '@graphace/ui-graphql';
+	import { StringFilter } from '@graphace/ui-graphql';
 	import PermissionTypeFilter from '~/lib/components/enums/permission-type/PermissionTypeFilter.svelte';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
@@ -21,27 +21,28 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
-		filter: {};
+		filter: { value?: PermissionExpression | null | undefined };
 	}>();
 
-	if (value === null || value === undefined || Object.keys(value).length === 0) {
-		value = {
-			name: undefined,
-			description: undefined,
-			field: undefined,
-			type: undefined,
-			permissionType: undefined,
-			roles: { id: undefined },
-		}
+	let _value = {
+		id: undefined,
+		name: undefined,
+		description: undefined,
+		field: undefined,
+		type: undefined,
+		permissionType: undefined,
+		roles: { id: undefined },
 	}
 
 	const filter = (): void => {
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
 	const clear = (): void => {
-		value = {
+		_value = {
+			id: undefined,
 			name: undefined,
 			description: undefined,
 			field: undefined,
@@ -49,7 +50,8 @@
 			permissionType: undefined,
 			roles: { id: undefined },
 		};
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
@@ -72,27 +74,27 @@
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.name.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<IDFilter {id} name="name" bind:value={value.name} />
+					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.description.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="description" bind:value={value.description} />
+					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.field.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="field" bind:value={value.field} />
+					<StringFilter {id} name="field" bind:value={_value.field} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.type.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="type" bind:value={value.type} />
+					<StringFilter {id} name="type" bind:value={_value.type} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.permissionType.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<PermissionTypeFilter {id} name="permissionType" bind:value={value.permissionType} />
+					<PermissionTypeFilter {id} name="permissionType" bind:value={_value.permissionType} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.roles.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
+					<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
 				</div>
 			</FormControl>
 		</Form>

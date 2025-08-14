@@ -1,16 +1,21 @@
 <script lang="ts">
-	import { getContext, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
 	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_role_Store } from '~/lib/stores/query/query_role_store';
 	import { createMutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
-	import { getLoadEvent } from '~/utils';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		loadEvent,
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { Role, MutationRoleArgs, RoleInput } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 
 	export let value: RoleInput | null | undefined = {};
 	export let textFieldName: (keyof Role & keyof RoleInput) | undefined = undefined;
@@ -21,11 +26,11 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0';
+	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { validate } = validator;
+	const { auth } = permissions;
 	export let fields: {
 		name?: Option | undefined;
 		description?: Option | undefined;
@@ -36,78 +41,69 @@
 		realm?: Option | undefined;
 	} = {
 		name: {
-			readonly: !permissions.auth('Role::name::WRITE'),
-			disabled: !permissions.auth('Role::name::WRITE'),
-			hidden: !permissions.auth('Role::name::READ')
+			readonly: !auth('Role::name::WRITE'),
+			disabled: !auth('Role::name::WRITE'),
+			hidden: !auth('Role::name::READ')
 		},
 		description: {
-			readonly: !permissions.auth('Role::description::WRITE'),
-			disabled: !permissions.auth('Role::description::WRITE'),
-			hidden: !permissions.auth('Role::description::READ')
+			readonly: !auth('Role::description::WRITE'),
+			disabled: !auth('Role::description::WRITE'),
+			hidden: !auth('Role::description::READ')
 		},
 		users: {
-			readonly: !permissions.auth('Role::users::WRITE'),
-			disabled: !permissions.auth('Role::users::WRITE'),
-			hidden: !permissions.auth('Role::users::READ')
+			readonly: !auth('Role::users::WRITE'),
+			disabled: !auth('Role::users::WRITE'),
+			hidden: !auth('Role::users::READ')
 		},
 		groups: {
-			readonly: !permissions.auth('Role::groups::WRITE'),
-			disabled: !permissions.auth('Role::groups::WRITE'),
-			hidden: !permissions.auth('Role::groups::READ')
+			readonly: !auth('Role::groups::WRITE'),
+			disabled: !auth('Role::groups::WRITE'),
+			hidden: !auth('Role::groups::READ')
 		},
 		composites: {
-			readonly: !permissions.auth('Role::composites::WRITE'),
-			disabled: !permissions.auth('Role::composites::WRITE'),
-			hidden: !permissions.auth('Role::composites::READ')
+			readonly: !auth('Role::composites::WRITE'),
+			disabled: !auth('Role::composites::WRITE'),
+			hidden: !auth('Role::composites::READ')
 		},
 		permissions: {
-			readonly: !permissions.auth('Role::permissions::WRITE'),
-			disabled: !permissions.auth('Role::permissions::WRITE'),
-			hidden: !permissions.auth('Role::permissions::READ')
+			readonly: !auth('Role::permissions::WRITE'),
+			disabled: !auth('Role::permissions::WRITE'),
+			hidden: !auth('Role::permissions::READ')
 		},
 		realm: {
-			readonly: !permissions.auth('Role::realm::WRITE'),
-			disabled: !permissions.auth('Role::realm::WRITE'),
-			hidden: !permissions.auth('Role::realm::READ')
+			readonly: !auth('Role::realm::WRITE'),
+			disabled: !auth('Role::realm::WRITE'),
+			hidden: !auth('Role::realm::READ')
 		}
 	};
 
 	const dispatch = createEventDispatcher<{
-		select: {
-			value: RoleInput | null | undefined;
-			original: RoleInput | null | undefined;
-		};
+		select: { value: RoleInput | null | undefined };
 	}>();
 
-	const query_role_Store = createQuery_role_Store(getLoadEvent());
-	const mutation_role_Store = createMutation_role_Store(getLoadEvent());
+	const query_role_Store = createQuery_role_Store($loadEvent);
+	const mutation_role_Store = createMutation_role_Store($loadEvent);
 	export let close: (() => void) | undefined = undefined;
 
- 	$: if (value) {
-		if (value?.id && !value.where) {
-			value = { ...value, where: { id: { val: value.id } } };
-		}
-		if (textFieldName) {
-			if (!value?.[textFieldName]) {
-				query_role_Store
-					.fetch({
-						id: { opr: 'EQ', val: value.where?.id?.val }
-					})
-					.then((response) => {
-						value = {
-							...response.data?.role,
-							where: { id: { val: response.data?.role?.id } }
-						};
-						text = value?.[textFieldName] + '';
-					});
-			} else {
-				text = value?.[textFieldName] + '';
-			}
+ 	$: if (textFieldName) {
+		if (value && !value?.[textFieldName]) {
+			query_role_Store
+				.fetch({
+					id: { opr: 'EQ', val: value.id }
+				})
+				.then((response) => {
+					value = {
+						[textFieldName]: response.data?.role?.[textFieldName],
+						id: response.data?.role?.id
+					};
+				});
+		} else if (value) {
+			text = value[textFieldName] + '';
 		}
 	}
 
 	const query = () => {
-		query_role_Store.fetch({ id: { val: value?.where?.id?.val } }).then((result) => {
+		query_role_Store.fetch({ id: { val: value?.id } }).then((result) => {
 			value = result.data?.role;
 			if (result.errors) {
 				console.error(result.errors);
@@ -117,7 +113,7 @@
 	};
 
 	const mutation = (args: MutationRoleArgs) => {
-		validate('Mutation_role_Arguments', args, $locale)
+		validate('Mutation_role_Arguments', args)
 			.then((data) => {
 				errors = {};
 				mutation_role_Store.fetch(args).then((result) => {
@@ -133,7 +129,7 @@
 						}
 					} else {
 						toast.success($LL.graphence.message.requestSuccess());
-						dispatch('select', { value: result.data?.role, original: args });
+						dispatch('select', { value: result.data?.role });
 						if (clearAfterSelect) {
 							value = {};
 						}
@@ -201,51 +197,41 @@
 			isMutating={$mutation_role_Store.isFetching}
 			{fields}
 			on:save={(e) => {
-				if (e.detail.value) {
-					const original = e.detail.value;
-					if (textFieldName) {
-						text = original?.[textFieldName] + '';
+				if (select) {
+					dispatch('select', { value });
+					if (clearAfterSelect) {
+						value = {};
 					}
-					value = { ...original, where: { id: { val: original.id } } };
-					if (select) {
-						dispatch('select', { value, original });
-						if (clearAfterSelect) {
-							value = {};
-						}
-						if (close) {
-							close();
-						}
-					} else {
-						mutation(e.detail.value);
+					if (close) {
+						close();
 					}
+				} else if (e.detail.value) {
+					mutation(e.detail.value);
 				}
 			}}
 			on:remove={(e) => {
-				if (e.detail.value) {
-					const original = e.detail.value;
-					text = undefined;
-					value = null;
-					if (select) {
-						dispatch('select', { value, original });
-						if (clearAfterSelect) {
-							value = {};
-						}
-						if (close) {
-							close();
-						}
-					} else {
-						modal.open({
-							title: $LL.graphence.components.modal.removeModalTitle(),
-							confirm: () => {
-								mutation({
-									where: { id: { val: e.detail.value?.id } },
-									isDeprecated: true
-								});
-								return true;
+				modal.open({
+					title: $LL.graphence.components.modal.removeModalTitle(),
+					confirm: () => {
+						text = undefined;
+						value = null;
+						if (select) {
+							dispatch('select', { value });
+							if (clearAfterSelect) {
+								value = {};
 							}
-						});
+							if (close) {
+								close();
+							}
+						} else if (e.detail.value) {
+							mutation({
+								where: { id: { val: e.detail.value.id } },
+								isDeprecated: true
+							});
+						}
+						return true;
 					}
-				}
+				});
 			}}
 			on:goto={(e) => to(e.detail.path, e.detail.name)}
 		/>

@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { getContext, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
-	import type { Errors{% if useAuth %}, PermissionsStore{% endif %} } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast } from '@graphace/ui';
 	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
-	import { loadEvent } from '~/utils';
+	import { loadEvent{% if useAuth %}, permissions{% endif %} } from '~/utils';
 	import type { {{ name }}, {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import LL from '$i18n/i18n-svelte';
 
@@ -23,7 +22,7 @@
 	export { className as class };
 
 	{%- if useAuth %}
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { auth } = permissions;
 	export let fields: {
 		{%- for field in fields %}
 		{{ field.fieldName }}?: Option | undefined;
@@ -31,9 +30,9 @@
 	} = {
 		{%- for field in fields %}
 		{{ field.fieldName }}: {
-			readonly: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
-			disabled: !permissions.auth('{{ name }}::{{ field.fieldName }}::WRITE'),
-			hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+			readonly: !auth('{{ name }}::{{ field.fieldName }}::WRITE'),
+			disabled: !auth('{{ name }}::{{ field.fieldName }}::WRITE'),
+			hidden: !auth('{{ name }}::{{ field.fieldName }}::READ')
 		}{% if forloop.last == false %},{% endif %}
 		{%- endfor %}
 	};

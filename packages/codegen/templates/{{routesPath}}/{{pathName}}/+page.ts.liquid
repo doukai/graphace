@@ -5,13 +5,13 @@ import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/
 import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
 {%- endif %}
 {%- if useAuth %}
-import { getPermissionsStore } from '~/utils';
+import { permissions } from '~/utils';
 {%- endif %}
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
     {%- if useAuth %}
-    await getPermissionsStore(event).getTypes('{{ name }}');
+    await permissions.fetchPermissions('{{ name }}');
     {%- endif %}
     return {
         {%- if hasFileField %}

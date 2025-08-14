@@ -1,20 +1,24 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import type { Query_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
 	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { QueryPermissionConnectionArgs, PermissionOrderBy, MutationPermissionArgs } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { validate } = validator;
+	const { auth } = permissions;
 
 	$: query_permissionConnection_Store = data.query_permissionConnection_Store as Query_permissionConnection_Store;
 	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map((edge) => edge?.node);
@@ -25,7 +29,6 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
-	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -43,12 +46,11 @@
 
 	const mutation = (args: MutationPermissionArgs) => {
 		const row = nodes
-			?.map((node) => node?.name)
-			?.indexOf(args.name || args.where?.name?.val || undefined);
-		validating = true;
-		validate('Mutation_permission_Arguments', args, $locale)
+			?.map((node) => node?.id)
+			?.indexOf(args.id || args.where?.id?.val || undefined);
+			
+		validate('Mutation_permission_Arguments', args)
 			.then((data) => {
-				validating = false;
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
@@ -74,7 +76,6 @@
 				});
 			})
 			.catch((validErrors) => {
-				validating = false;
 				console.error(validErrors);
 				if (row !== -1 && row !== undefined) {
 					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
@@ -96,48 +97,49 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_permissionConnection_Store.isFetching}
-			isMutating={validating || $mutation_permission_Store.isFetching}
+			isMutating={$validator.isValidating || $mutation_permission_Store.isFetching}
 			fields={{
 				name: {
-					readonly: !permissions.auth('Permission::name::WRITE'),
-					disabled: !permissions.auth('Permission::name::WRITE'),
-					hidden: !permissions.auth('Permission::name::READ')
+					readonly: !auth('Permission::name::WRITE'),
+					disabled: !auth('Permission::name::WRITE'),
+					hidden: !auth('Permission::name::READ')
 				},
 				description: {
-					readonly: !permissions.auth('Permission::description::WRITE'),
-					disabled: !permissions.auth('Permission::description::WRITE'),
-					hidden: !permissions.auth('Permission::description::READ')
+					readonly: !auth('Permission::description::WRITE'),
+					disabled: !auth('Permission::description::WRITE'),
+					hidden: !auth('Permission::description::READ')
 				},
 				field: {
-					readonly: !permissions.auth('Permission::field::WRITE'),
-					disabled: !permissions.auth('Permission::field::WRITE'),
-					hidden: !permissions.auth('Permission::field::READ')
+					readonly: !auth('Permission::field::WRITE'),
+					disabled: !auth('Permission::field::WRITE'),
+					hidden: !auth('Permission::field::READ')
 				},
 				type: {
-					readonly: !permissions.auth('Permission::type::WRITE'),
-					disabled: !permissions.auth('Permission::type::WRITE'),
-					hidden: !permissions.auth('Permission::type::READ')
+					readonly: !auth('Permission::type::WRITE'),
+					disabled: !auth('Permission::type::WRITE'),
+					hidden: !auth('Permission::type::READ')
 				},
 				permissionType: {
-					readonly: !permissions.auth('Permission::permissionType::WRITE'),
-					disabled: !permissions.auth('Permission::permissionType::WRITE'),
-					hidden: !permissions.auth('Permission::permissionType::READ')
+					readonly: !auth('Permission::permissionType::WRITE'),
+					disabled: !auth('Permission::permissionType::WRITE'),
+					hidden: !auth('Permission::permissionType::READ')
 				},
 				roles: {
-					readonly: !permissions.auth('Permission::roles::WRITE'),
-					disabled: !permissions.auth('Permission::roles::WRITE'),
-					hidden: !permissions.auth('Permission::roles::READ')
+					readonly: !auth('Permission::roles::WRITE'),
+					disabled: !auth('Permission::roles::WRITE'),
+					hidden: !auth('Permission::roles::READ')
 				},
 				realm: {
-					readonly: !permissions.auth('Permission::realm::WRITE'),
-					disabled: !permissions.auth('Permission::realm::WRITE'),
-					hidden: !permissions.auth('Permission::realm::READ')
+					readonly: !auth('Permission::realm::WRITE'),
+					disabled: !auth('Permission::realm::WRITE'),
+					hidden: !auth('Permission::realm::READ')
 				}
 			}}
 			on:search={(e) => {
 				if (e.detail.value) {
 					args = {
 						cond: 'OR',
+						name: { opr: 'LK', val: e.detail.value },
 						description: { opr: 'LK', val: e.detail.value },
 						field: { opr: 'LK', val: e.detail.value },
 						type: { opr: 'LK', val: e.detail.value },
@@ -149,7 +151,11 @@
 				}
 				query();
 			}}
-			on:query={(e) => query()}
+			on:query={(e) => {
+				args = e.detail.args;
+				orderBy = e.detail.orderBy;
+				query();
+			}}
 			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					mutation(e.detail.value);
@@ -157,7 +163,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`permission/${e.detail.value.name}`, e.detail.value.name);
+					to(`permission/${e.detail.value.id}`, e.detail.value.id);
 				}
 			}}
 			on:remove={(e) => {
@@ -167,12 +173,12 @@
 						confirm: () => {
 							if (Array.isArray(e.detail.value)) {
 								mutation({
-									where: { name: { opr: 'IN', arr: e.detail.value.map((node) => node?.name) } },
+									where: { id: { opr: 'IN', arr: e.detail.value.map((node) => node?.id) } },
 									isDeprecated: true
 								});
 							} else {
 								mutation({
-									where: { name: { val: e.detail.value?.name } },
+									where: { id: { val: e.detail.value?.id } },
 									isDeprecated: true
 								});
 							}

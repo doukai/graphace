@@ -2,11 +2,11 @@ import type { LoadEvent } from '@sveltejs/kit';
 import { fetchQuery_role_usersConnection_Store } from '~/lib/stores/query/query_role_usersConnection_store';
 import { createMutation_role_users_Store } from '~/lib/stores/mutation/mutation_role_users_store';
 import { createMutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
-import { getPermissionsStore } from '~/utils';
+import { permissions } from '~/utils';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore(event).getTypes('User');
+    await permissions.fetchPermissions('User');
     return {
         query_role_usersConnection_Store: await fetchQuery_role_usersConnection_Store(event, { role_id: event.params.id, first: 10 }),
         mutation_role_users_Store: createMutation_role_users_Store(event),

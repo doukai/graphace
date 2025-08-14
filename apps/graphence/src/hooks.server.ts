@@ -2,8 +2,6 @@ import { json, redirect } from '@sveltejs/kit';
 import type { Handle, RequestEvent, HandleServerError } from '@sveltejs/kit';
 import { initAcceptLanguageHeaderDetector } from 'typesafe-i18n/detectors';
 import jwt_decode from "jwt-decode";
-import { browser } from '$app/environment';
-import { goto } from '$app/navigation';
 import { detectLocale, i18n, isLocale } from '$i18n/i18n-util';
 import { loadAllLocales } from '$i18n/i18n-util.sync';
 
@@ -57,11 +55,7 @@ export const handleError: HandleServerError = async ({ error, event, status }) =
 	const [, lang] = event.url.pathname.split('/');
 	const locale = isLocale(lang) ? (lang as Locales) : getPreferredLocale(event);
 	let errorPathName = `/${locale}/error/${status}`;
-	if (browser) {
-		goto(errorPathName);
-	} else {
-		throw redirect(307, errorPathName);
-	}
+	redirect(307, errorPathName);
 };
 
 const toLoginPage = (loginPathName: string, event: RequestEvent) => {
@@ -72,11 +66,7 @@ const toLoginPage = (loginPathName: string, event: RequestEvent) => {
 	} else if (event.url.pathname !== loginPathName) {
 		loginPathName += '?from=' + event.url.pathname;
 	}
-	if (browser) {
-		goto(loginPathName);
-	} else {
-		throw redirect(307, loginPathName);
-	}
+	redirect(307, loginPathName);
 }
 
 const getPreferredLocale = ({ request }: RequestEvent): Locales => {

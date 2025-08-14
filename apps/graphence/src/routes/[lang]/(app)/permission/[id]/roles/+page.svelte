@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
@@ -10,15 +9,20 @@
 	import type { Query_permission_rolesConnection_Store } from '~/lib/stores/query/query_permission_rolesConnection_store';
 	import type { Mutation_permission_roles_Store } from '~/lib/stores/mutation/mutation_permission_roles_store';
 	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { RoleInput, MutationRoleArgs, QueryRoleConnectionArgs, RoleOrderBy } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { validate } = validator;
+	const { auth } = permissions;
 
 	$: query_permission_rolesConnection_Store = data.query_permission_rolesConnection_Store as Query_permission_rolesConnection_Store;
 	$: permission = $query_permission_rolesConnection_Store.response.data?.permission;
@@ -31,13 +35,12 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
-	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;
 		args.offset = ((to || pageNumber) - 1) * pageSize;
-		query_permission_rolesConnection_Store.fetch({ permission_name: permission?.name, ...buildArguments(args) }).then((result) => {
+		query_permission_rolesConnection_Store.fetch({ permission_id: permission?.id, ...buildArguments(args) }).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -48,10 +51,8 @@
 	};
 
 	const mutation = (args: MutationRoleArgs) => {
-		validating = true;
-		validate('Mutation_role_Arguments', args, $locale)
+		validate('Mutation_role_Arguments', args)
 			.then((data) => {
-				validating = false;
 				errors = {};
 				mutation_role_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -71,20 +72,17 @@
 				});
 			})
 			.catch((validErrors) => {
-				validating = false;
 				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: RoleInput[]) => {
-		validating = true;
-		validate('Mutation_permission_Arguments', { where: { name: { val: permission?.name } }, roles: args }, $locale)
+		validate('Mutation_permission_Arguments', { where: { id: { val: permission?.id } }, roles: args })
 			.then((data) => {
-				validating = false;
 				errors = {};
 				mutation_permission_roles_Store.fetch({
-					permission_name: permission?.name,
+					permission_id: permission?.id,
 					permission_roles: args
 				}).then((result) => {
 					if (result.errors) {
@@ -104,7 +102,6 @@
 				});
 			})
 			.catch((validErrors) => {
-				validating = false;
 				console.error(validErrors);
 				errors = validErrors.roles.iterms;
 			});
@@ -124,42 +121,42 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_permission_rolesConnection_Store.isFetching}
-			isMutating={validating || $mutation_permission_roles_Store.isFetching || $mutation_role_Store.isFetching}
+			isMutating={$validator.isValidating || $mutation_permission_roles_Store.isFetching || $mutation_role_Store.isFetching}
 			fields={{
 				name: {
-					readonly: !permissions.auth('Role::name::WRITE'),
-					disabled: !permissions.auth('Role::name::WRITE'),
-					hidden: !permissions.auth('Role::name::READ')
+					readonly: !auth('Role::name::WRITE'),
+					disabled: !auth('Role::name::WRITE'),
+					hidden: !auth('Role::name::READ')
 				},
 				description: {
-					readonly: !permissions.auth('Role::description::WRITE'),
-					disabled: !permissions.auth('Role::description::WRITE'),
-					hidden: !permissions.auth('Role::description::READ')
+					readonly: !auth('Role::description::WRITE'),
+					disabled: !auth('Role::description::WRITE'),
+					hidden: !auth('Role::description::READ')
 				},
 				users: {
-					readonly: !permissions.auth('Role::users::WRITE'),
-					disabled: !permissions.auth('Role::users::WRITE'),
-					hidden: !permissions.auth('Role::users::READ')
+					readonly: !auth('Role::users::WRITE'),
+					disabled: !auth('Role::users::WRITE'),
+					hidden: !auth('Role::users::READ')
 				},
 				groups: {
-					readonly: !permissions.auth('Role::groups::WRITE'),
-					disabled: !permissions.auth('Role::groups::WRITE'),
-					hidden: !permissions.auth('Role::groups::READ')
+					readonly: !auth('Role::groups::WRITE'),
+					disabled: !auth('Role::groups::WRITE'),
+					hidden: !auth('Role::groups::READ')
 				},
 				composites: {
-					readonly: !permissions.auth('Role::composites::WRITE'),
-					disabled: !permissions.auth('Role::composites::WRITE'),
-					hidden: !permissions.auth('Role::composites::READ')
+					readonly: !auth('Role::composites::WRITE'),
+					disabled: !auth('Role::composites::WRITE'),
+					hidden: !auth('Role::composites::READ')
 				},
 				permissions: {
-					readonly: !permissions.auth('Role::permissions::WRITE'),
-					disabled: !permissions.auth('Role::permissions::WRITE'),
-					hidden: !permissions.auth('Role::permissions::READ')
+					readonly: !auth('Role::permissions::WRITE'),
+					disabled: !auth('Role::permissions::WRITE'),
+					hidden: !auth('Role::permissions::READ')
 				},
 				realm: {
-					readonly: !permissions.auth('Role::realm::WRITE'),
-					disabled: !permissions.auth('Role::realm::WRITE'),
-					hidden: !permissions.auth('Role::realm::READ')
+					readonly: !auth('Role::realm::WRITE'),
+					disabled: !auth('Role::realm::WRITE'),
+					hidden: !auth('Role::realm::READ')
 				}
 			}}
 			on:search={(e) => {
@@ -176,7 +173,11 @@
 				}
 				query();
 			}}
-			on:query={(e) => query()}
+			on:query={(e) => {
+				args = e.detail.args;
+				orderBy = e.detail.orderBy;
+				query();
+			}}
 			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					mutation(e.detail.value);
@@ -236,7 +237,7 @@
 			on:back={(e) => ot()}
 		>
 			<RoleTableDialog
-				args={{ not: true, permissions: { name: { val: permission?.name } } }}
+				args={{ not: true, permissions: { id: { val: permission?.id } } }}
 				class="btn-accent"
 				on:select={(e) => {
 					if (Array.isArray(e.detail.value)) {

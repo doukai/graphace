@@ -50,11 +50,10 @@ const buildErrors = (errors: ErrorObject[]): Record<string, Errors> => {
 
 export function createValidator(options: {
     loadSchema(keyRef: string): Promise<AnySchemaObject>;
-    buildErrorMessages: (errors:  ErrorObject[] ) => void;
+    buildErrorMessages: (errors: ErrorObject[]) => void;
 }): ValidatorStore {
-    const validator: Writable<{ isValidating: boolean, response: { data?: unknown, errors?: Record<string, Errors> | undefined } }> = writable({
-        isValidating: false,
-        response: {}
+    const validator: Writable<{ isValidating: boolean }> = writable({
+        isValidating: false
     });
     const { subscribe, set, update } = validator;
     const ajv: Ajv = addFormats(new Ajv({ loadSchema: options.loadSchema, allErrors: true, messages: false }));
@@ -69,39 +68,19 @@ export function createValidator(options: {
     }
 
     const validate = async <T>(keyRef: string, data: T): Promise<T> => {
-        update((data) => ({ ...data, isFetching: true }));
+        update(() => ({ isValidating: true }));
         const validate = await getValidate(keyRef);
-        return <T>execute(validate, data, options.buildErrorMessages)
-            .then(data =>
-                set({
-                    isValidating: false,
-                    response: { data }
-                })
-            )
-            .catch(errors =>
-                set({
-                    isValidating: false,
-                    response: { errors }
-                })
-            );
+        return <T>execute(validate, data, options.buildErrorMessages).finally(() => {
+            update(() => ({ isValidating: false }));
+        });
     };
 
     const validateSchema = async <T>(schemaObject: AnySchemaObject, data: T): Promise<T> => {
-        update((data) => ({ ...data, isValidating: true }));
+        update(() => ({ isValidating: true }));
         const validate = await ajv.compileAsync(schemaObject);
-        return <T>execute(validate, data, options.buildErrorMessages)
-            .then(data =>
-                set({
-                    isValidating: false,
-                    response: { data }
-                })
-            )
-            .catch(errors =>
-                set({
-                    isValidating: false,
-                    response: { errors }
-                })
-            );
+        return <T>execute(validate, data, options.buildErrorMessages).finally(() => {
+            update(() => ({ isValidating: false }));
+        });
     }
 
     return {
@@ -115,23 +94,11 @@ export function createValidator(options: {
 export type ValidatorStore = {
     subscribe: (this: void, run: Subscriber<{
         isValidating: boolean;
-        response: {
-            data?: unknown;
-            errors?: Record<string, Errors> | undefined;
-        };
     }>, invalidate?: Invalidator<{
         isValidating: boolean;
-        response: {
-            data?: unknown;
-            errors?: Record<string, Errors> | undefined;
-        };
     }> | undefined) => Unsubscriber;
     update: (this: void, updater: Updater<{
         isValidating: boolean;
-        response: {
-            data?: unknown;
-            errors?: Record<string, Errors> | undefined;
-        };
     }>) => void;
     validate: <T>(keyRef: string, data: T) => Promise<T>;
     validateSchema: <T>(schemaObject: AnySchemaObject, data: T) => Promise<T>;

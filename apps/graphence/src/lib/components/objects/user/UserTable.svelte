@@ -91,14 +91,6 @@
 	}>();
 
 	let selectAll: boolean;
-
-	if (Array.isArray(value)) {
-		value.forEach((item) => {
-			if (item?.id && !item.where) {
-				item.where = { id: { val: item.id } };
-			}
-		});
-	}
 </script>
 
 <div class="flex sm:justify-between">
@@ -115,7 +107,7 @@
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
 		{showCreateButton}
-		showSelectButton={showSelectButton}
+		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
 		on:save={(e) => dispatch('save', { value })}
@@ -160,7 +152,7 @@
 				clearAfterSelect
 				class="btn-accent"
 				on:select={(e) => {
-					value = [...(value || []), e.detail.original];
+					value = [...(value || []), e.detail.value];
 				}}
 			>
 				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />

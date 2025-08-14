@@ -1,26 +1,10 @@
 [
 	{
-        "name": "Group",
-        "tags": "Group",
-        "href": "/group",
+        "name": "User",
+        "tags": "User",
+        "href": "/user",
         "authPermissions": [
-            "Group::*::*"
-        ]
-	},
-	{
-        "name": "Permission",
-        "tags": "Permission",
-        "href": "/permission",
-        "authPermissions": [
-            "Permission::*::*"
-        ]
-	},
-	{
-        "name": "Realm",
-        "tags": "Realm",
-        "href": "/realm",
-        "authPermissions": [
-            "Realm::*::*"
+            "User::*::*"
         ]
 	},
 	{
@@ -32,11 +16,27 @@
         ]
 	},
 	{
-        "name": "User",
-        "tags": "User",
-        "href": "/user",
+        "name": "Group",
+        "tags": "Group",
+        "href": "/group",
         "authPermissions": [
-            "User::*::*"
+            "Group::*::*"
+        ]
+	},
+	{
+        "name": "Realm",
+        "tags": "Realm",
+        "href": "/realm",
+        "authPermissions": [
+            "Realm::*::*"
+        ]
+	},
+	{
+        "name": "Permission",
+        "tags": "Permission",
+        "href": "/permission",
+        "authPermissions": [
+            "Permission::*::*"
         ]
 	}
 ]

@@ -56,10 +56,6 @@
 		save: { value: GroupInput | null | undefined };
 		back: {};
 	}>();
-
-	if (value?.id && !value.where) {
-		value.where = { id: { val: value.id } };
-	}
 </script>
 
 <div class="flex justify-end sm:justify-between">

@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { type Writable, writable, derived, get } from 'svelte/store';
 import { page } from '$app/stores';
+import type { Page } from '@sveltejs/kit';
 
 export const history: Writable<{ url: URL, name?: string | undefined }[]> = writable([]);
 
@@ -10,9 +11,13 @@ export const canBack = derived(
 );
 
 export function add(url: string | URL, name?: string, params?: Record<string, string | undefined>): URL {
+    let $page: Page;
+    page.subscribe((value) => {
+        $page = value;
+    });
     let toUrl: URL;
     if (typeof url === "string") {
-        toUrl = new URL(url, get(page).url.href);
+        toUrl = new URL(url, $page.url.href);
     } else {
         toUrl = url;
     }
@@ -51,8 +56,10 @@ export function init(url: string | URL, name?: string, params?: Record<string, s
     to(url, name, params);
 }
 
+let $history: { url: URL, name?: string | undefined }[] = [];
+history.subscribe((value) => $history = value);
+
 export function ot(params?: Record<string, string | undefined>) {
-    const $history = get(history);
     const backPage = $history[$history.length - 2];
     if (backPage) {
         if (params) {

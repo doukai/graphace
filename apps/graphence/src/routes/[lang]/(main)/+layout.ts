@@ -1,21 +1,19 @@
 import type { LoadEvent } from '@sveltejs/kit';
-import { jwt as jwtStore } from '@graphace/commons';
-import { createJsonSchema, createPermissions, createStructQueryStores, setJsonSchema, setLoadEvent, setPermissionsStore } from '~/utils';
+import { jwt } from '@graphace/commons';
 import type { Locales } from '$i18n/i18n-types';
 import { namespaces } from '$i18n/i18n-util';
 import { loadLocaleAsync, loadNamespaceAsync } from '$i18n/i18n-util.async';
 import { setLocale } from '$i18n/i18n-svelte';
+import { loadEvent, createValidator, createPermissions, createStructQueryStores } from '~/utils';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-	setLoadEvent(event);
+	loadEvent.set(event);
+	createValidator(event)
+	createPermissions(event)
+	createStructQueryStores(event)
+	jwt.set(event.data?.jwt);
 	const locale: Locales = event.data?.locale;
-	const jwt: JsonWebToken = event.data?.jwt;
-	const permissions = createPermissions(event);
-	setPermissionsStore(permissions);
-	const jsonSchema = createJsonSchema(event);
-	setJsonSchema(jsonSchema);
-	const structQueryStores = createStructQueryStores(event);
 
 	// load dictionary into memory
 	await loadLocaleAsync(locale);
@@ -28,13 +26,6 @@ export const load: LayoutLoad = async (event: LoadEvent) => {
 
 	setLocale(locale);
 
-	jwtStore.set(jwt);
-
 	// pass locale to the "rendering context"
-	return {
-		locale,
-		permissions,
-		jsonSchema,
-		structQueryStores
-	};
+	return {};
 }

@@ -1,11 +1,11 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createQuery_group_Store, fetchQuery_group_Store } from '~/lib/stores/query/query_group_store';
 import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
-import { getPermissionsStore } from '~/utils';
+import { permissions } from '~/utils';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore(event).getTypes('Group');
+    await permissions.fetchPermissions('Group');
     return {
         query_group_Store: event.params.id === '_' ?
             createQuery_group_Store(event) :

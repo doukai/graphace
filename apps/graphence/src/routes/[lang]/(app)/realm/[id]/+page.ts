@@ -1,11 +1,11 @@
 import type { LoadEvent } from '@sveltejs/kit';
 import { createQuery_realm_Store, fetchQuery_realm_Store } from '~/lib/stores/query/query_realm_store';
 import { createMutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
-import { getPermissionsStore } from '~/utils';
+import { permissions } from '~/utils';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
-    await getPermissionsStore(event).getTypes('Realm');
+    await permissions.fetchPermissions('Realm');
     return {
         query_realm_Store: event.params.id === '_' ?
             createQuery_realm_Store(event) :

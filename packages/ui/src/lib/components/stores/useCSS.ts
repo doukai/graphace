@@ -604,14 +604,16 @@ md:hover:z-[99]
 */
 function createZIndex() {
     const zIndex: Writable<number> = writable(0);
+    let $zIndex: number = 0;
+    zIndex.subscribe((value) => $zIndex = value);
     const { subscribe, set, update } = zIndex;
     return {
         subscribe,
         next: (n?: number | undefined) => {
             update(($zIndex) => $zIndex + (n || 100));
-            return get(zIndex);
+            return zIndex;
         },
-        top: (n?: number | undefined) => get(zIndex) + (n || 0),
+        top: (n?: number | undefined) => $zIndex + (n || 0),
         reset: () => set(0)
     };
 }

@@ -1,18 +1,22 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
 	import type { Mutation_role_permissions_Store } from '~/lib/stores/mutation/mutation_role_permissions_store';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { PermissionInput } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { validate } = validator;
+	const { auth } = permissions;
 
 	$: id = data.id as string;
 	$: mutation_role_permissions_Store = data.mutation_role_permissions_Store as Mutation_role_permissions_Store;
@@ -21,7 +25,7 @@
 	let errors: Record<string, Errors> = {};
 
 	const merge = (args: PermissionInput) => {
-		validate('Mutation_role_Arguments', { where: { id: { val: id } }, permissions: [args] }, $locale)
+		validate('Mutation_role_Arguments', { where: { id: { val: id } }, permissions: [args] })
 			.then((data) => {
 				errors = {};
 				mutation_role_permissions_Store.fetch({
@@ -58,41 +62,42 @@
 			showBackButton={$canBack}
 			bind:value
 			{errors}
+			isMutating={$validator.isValidating || $mutation_role_permissions_Store.isFetching}
 			fields={{
 				name: {
-					readonly: !permissions.auth('Permission::name::WRITE'),
-					disabled: !permissions.auth('Permission::name::WRITE'),
-					hidden: !permissions.auth('Permission::name::READ')
+					readonly: !auth('Permission::name::WRITE'),
+					disabled: !auth('Permission::name::WRITE'),
+					hidden: !auth('Permission::name::READ')
 				},
 				description: {
-					readonly: !permissions.auth('Permission::description::WRITE'),
-					disabled: !permissions.auth('Permission::description::WRITE'),
-					hidden: !permissions.auth('Permission::description::READ')
+					readonly: !auth('Permission::description::WRITE'),
+					disabled: !auth('Permission::description::WRITE'),
+					hidden: !auth('Permission::description::READ')
 				},
 				field: {
-					readonly: !permissions.auth('Permission::field::WRITE'),
-					disabled: !permissions.auth('Permission::field::WRITE'),
-					hidden: !permissions.auth('Permission::field::READ')
+					readonly: !auth('Permission::field::WRITE'),
+					disabled: !auth('Permission::field::WRITE'),
+					hidden: !auth('Permission::field::READ')
 				},
 				type: {
-					readonly: !permissions.auth('Permission::type::WRITE'),
-					disabled: !permissions.auth('Permission::type::WRITE'),
-					hidden: !permissions.auth('Permission::type::READ')
+					readonly: !auth('Permission::type::WRITE'),
+					disabled: !auth('Permission::type::WRITE'),
+					hidden: !auth('Permission::type::READ')
 				},
 				permissionType: {
-					readonly: !permissions.auth('Permission::permissionType::WRITE'),
-					disabled: !permissions.auth('Permission::permissionType::WRITE'),
-					hidden: !permissions.auth('Permission::permissionType::READ')
+					readonly: !auth('Permission::permissionType::WRITE'),
+					disabled: !auth('Permission::permissionType::WRITE'),
+					hidden: !auth('Permission::permissionType::READ')
 				},
 				roles: {
-					readonly: !permissions.auth('Permission::roles::WRITE'),
-					disabled: !permissions.auth('Permission::roles::WRITE'),
-					hidden: !permissions.auth('Permission::roles::READ')
+					readonly: !auth('Permission::roles::WRITE'),
+					disabled: !auth('Permission::roles::WRITE'),
+					hidden: !auth('Permission::roles::READ')
 				},
 				realm: {
-					readonly: !permissions.auth('Permission::realm::WRITE'),
-					disabled: !permissions.auth('Permission::realm::WRITE'),
-					hidden: !permissions.auth('Permission::realm::READ')
+					readonly: !auth('Permission::realm::WRITE'),
+					disabled: !auth('Permission::realm::WRITE'),
+					hidden: !auth('Permission::realm::READ')
 				}
 			}}
 			on:save={(e) => {

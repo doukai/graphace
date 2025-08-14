@@ -19,16 +19,17 @@
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import { locale } from '$i18n/i18n-svelte';
 	import pages from '~/lib/data/pages.json';
+	import { permissions } from '~/utils';
 
+	const { auth } = permissions;
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	const permissions = getContext<PermissionsStore>('permissions');
 	const menus = pages as MenuInfo[];
 </script>
 
 <aside class="bg-base-100 w-80">
 	<Menu class="menu-sm md:menu-md">
 		{#each menus as menu}
-			{#if menu.menus && menu.menus.some( (menu) => permissions.auth(...(menu.authPermissions || [])) )}
+			{#if menu.menus && menu.menus.some((menu) => auth(...(menu.authPermissions || [])))}
 				<li>
 					<MenuTitle class="flex flex-row gap-2">
 						{#if menu.icon}
@@ -40,7 +41,7 @@
 					</MenuTitle>
 					<ul>
 						{#each menu.menus as subMenu}
-							{#if permissions.auth(...(subMenu.authPermissions || []))}
+							{#if auth(...(subMenu.authPermissions || []))}
 								<li>
 									<a
 										href={null}
@@ -63,7 +64,7 @@
 						{/each}
 					</ul>
 				</li>
-			{:else if !menu.menus && permissions.auth(...(menu.authPermissions || []))}
+			{:else if !menu.menus && auth(...(menu.authPermissions || []))}
 				<li>
 					<a
 						href={null}

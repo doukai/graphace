@@ -3,7 +3,7 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
-	import { type Option, IDInput, StringInput, ObjectLink } from '@graphace/ui-graphql';
+	import { type Option, StringInput, ObjectLink } from '@graphace/ui-graphql';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
@@ -49,10 +49,6 @@
 		save: { value: PermissionInput | null | undefined };
 		back: {};
 	}>();
-
-	if (value?.name && !value.where) {
-		value.where = { name: { val: value.name } };
-	}
 </script>
 
 <div class="flex justify-end sm:justify-between">
@@ -87,7 +83,7 @@
 			{#if !fields.name?.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Permission.fields.name.name()} />
-					<IDInput
+					<StringInput
 						{id}
 						name="name"
 						bind:value={value.name}
@@ -178,11 +174,11 @@
 			{#if !fields.realm?.hidden}
 				<FormControl let:id>
 					<Label {id} text={$LL.graphql.objects.Permission.fields.realm.name()} />
-					{#if value.name}
+					{#if value.id}
 						<ObjectLink
 							bind:value={value.realm}
 							textFieldName="name"
-							path={`${value.name}/realm`}
+							path={`${value.id}/realm`}
 							name={$LL.graphql.objects.Permission.fields.realm.name()}
 							disabled={fields.realm?.disabled}
 							on:goto

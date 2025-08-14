@@ -21,31 +21,33 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
-		filter: {};
+		filter: { value?: RoleExpression | null | undefined };
 	}>();
 
-	if (value === null || value === undefined || Object.keys(value).length === 0) {
-		value = {
-			name: undefined,
-			description: undefined,
-			groups: { id: undefined },
-			composites: { id: undefined },
-		}
+	let _value = {
+		id: undefined,
+		name: undefined,
+		description: undefined,
+		groups: { id: undefined },
+		composites: { id: undefined },
 	}
 
 	const filter = (): void => {
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
 	const clear = (): void => {
-		value = {
+		_value = {
+			id: undefined,
 			name: undefined,
 			description: undefined,
 			groups: { id: undefined },
 			composites: { id: undefined },
 		};
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
@@ -68,23 +70,23 @@
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.Role.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="id" bind:value={value.id} />
+					<RoleSelectFilter {id} name="id" bind:value={_value.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Role.fields.name.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="name" bind:value={value.name} />
+					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Role.fields.description.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="description" bind:value={value.description} />
+					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Role.fields.groups.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="groups" bind:value={value.groups.id} />
+					<GroupSelectFilter {id} name="groups" bind:value={_value.groups.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Role.fields.composites.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="composites" bind:value={value.composites.id} />
+					<RoleSelectFilter {id} name="composites" bind:value={_value.composites.id} />
 				</div>
 			</FormControl>
 		</Form>

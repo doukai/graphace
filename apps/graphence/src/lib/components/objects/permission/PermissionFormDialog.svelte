@@ -1,16 +1,21 @@
 <script lang="ts">
-	import { getContext, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
 	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_permission_Store } from '~/lib/stores/query/query_permission_store';
 	import { createMutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
-	import { getLoadEvent } from '~/utils';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		loadEvent,
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { Permission, MutationPermissionArgs, PermissionInput } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 
 	export let value: PermissionInput | null | undefined = {};
 	export let textFieldName: (keyof Permission & keyof PermissionInput) | undefined = undefined;
@@ -21,11 +26,11 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0';
+	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { validate } = validator;
+	const { auth } = permissions;
 	export let fields: {
 		name?: Option | undefined;
 		description?: Option | undefined;
@@ -36,78 +41,69 @@
 		realm?: Option | undefined;
 	} = {
 		name: {
-			readonly: !permissions.auth('Permission::name::WRITE'),
-			disabled: !permissions.auth('Permission::name::WRITE'),
-			hidden: !permissions.auth('Permission::name::READ')
+			readonly: !auth('Permission::name::WRITE'),
+			disabled: !auth('Permission::name::WRITE'),
+			hidden: !auth('Permission::name::READ')
 		},
 		description: {
-			readonly: !permissions.auth('Permission::description::WRITE'),
-			disabled: !permissions.auth('Permission::description::WRITE'),
-			hidden: !permissions.auth('Permission::description::READ')
+			readonly: !auth('Permission::description::WRITE'),
+			disabled: !auth('Permission::description::WRITE'),
+			hidden: !auth('Permission::description::READ')
 		},
 		field: {
-			readonly: !permissions.auth('Permission::field::WRITE'),
-			disabled: !permissions.auth('Permission::field::WRITE'),
-			hidden: !permissions.auth('Permission::field::READ')
+			readonly: !auth('Permission::field::WRITE'),
+			disabled: !auth('Permission::field::WRITE'),
+			hidden: !auth('Permission::field::READ')
 		},
 		type: {
-			readonly: !permissions.auth('Permission::type::WRITE'),
-			disabled: !permissions.auth('Permission::type::WRITE'),
-			hidden: !permissions.auth('Permission::type::READ')
+			readonly: !auth('Permission::type::WRITE'),
+			disabled: !auth('Permission::type::WRITE'),
+			hidden: !auth('Permission::type::READ')
 		},
 		permissionType: {
-			readonly: !permissions.auth('Permission::permissionType::WRITE'),
-			disabled: !permissions.auth('Permission::permissionType::WRITE'),
-			hidden: !permissions.auth('Permission::permissionType::READ')
+			readonly: !auth('Permission::permissionType::WRITE'),
+			disabled: !auth('Permission::permissionType::WRITE'),
+			hidden: !auth('Permission::permissionType::READ')
 		},
 		roles: {
-			readonly: !permissions.auth('Permission::roles::WRITE'),
-			disabled: !permissions.auth('Permission::roles::WRITE'),
-			hidden: !permissions.auth('Permission::roles::READ')
+			readonly: !auth('Permission::roles::WRITE'),
+			disabled: !auth('Permission::roles::WRITE'),
+			hidden: !auth('Permission::roles::READ')
 		},
 		realm: {
-			readonly: !permissions.auth('Permission::realm::WRITE'),
-			disabled: !permissions.auth('Permission::realm::WRITE'),
-			hidden: !permissions.auth('Permission::realm::READ')
+			readonly: !auth('Permission::realm::WRITE'),
+			disabled: !auth('Permission::realm::WRITE'),
+			hidden: !auth('Permission::realm::READ')
 		}
 	};
 
 	const dispatch = createEventDispatcher<{
-		select: {
-			value: PermissionInput | null | undefined;
-			original: PermissionInput | null | undefined;
-		};
+		select: { value: PermissionInput | null | undefined };
 	}>();
 
-	const query_permission_Store = createQuery_permission_Store(getLoadEvent());
-	const mutation_permission_Store = createMutation_permission_Store(getLoadEvent());
+	const query_permission_Store = createQuery_permission_Store($loadEvent);
+	const mutation_permission_Store = createMutation_permission_Store($loadEvent);
 	export let close: (() => void) | undefined = undefined;
 
- 	$: if (value) {
-		if (value?.name && !value.where) {
-			value = { ...value, where: { name: { val: value.name } } };
-		}
-		if (textFieldName) {
-			if (!value?.[textFieldName]) {
-				query_permission_Store
-					.fetch({
-						name: { opr: 'EQ', val: value.where?.name?.val }
-					})
-					.then((response) => {
-						value = {
-							...response.data?.permission,
-							where: { name: { val: response.data?.permission?.name } }
-						};
-						text = value?.[textFieldName] + '';
-					});
-			} else {
-				text = value?.[textFieldName] + '';
-			}
+ 	$: if (textFieldName) {
+		if (value && !value?.[textFieldName]) {
+			query_permission_Store
+				.fetch({
+					id: { opr: 'EQ', val: value.id }
+				})
+				.then((response) => {
+					value = {
+						[textFieldName]: response.data?.permission?.[textFieldName],
+						id: response.data?.permission?.id
+					};
+				});
+		} else if (value) {
+			text = value[textFieldName] + '';
 		}
 	}
 
 	const query = () => {
-		query_permission_Store.fetch({ name: { val: value?.where?.name?.val } }).then((result) => {
+		query_permission_Store.fetch({ id: { val: value?.id } }).then((result) => {
 			value = result.data?.permission;
 			if (result.errors) {
 				console.error(result.errors);
@@ -117,7 +113,7 @@
 	};
 
 	const mutation = (args: MutationPermissionArgs) => {
-		validate('Mutation_permission_Arguments', args, $locale)
+		validate('Mutation_permission_Arguments', args)
 			.then((data) => {
 				errors = {};
 				mutation_permission_Store.fetch(args).then((result) => {
@@ -133,7 +129,7 @@
 						}
 					} else {
 						toast.success($LL.graphence.message.requestSuccess());
-						dispatch('select', { value: result.data?.permission, original: args });
+						dispatch('select', { value: result.data?.permission });
 						if (clearAfterSelect) {
 							value = {};
 						}
@@ -158,7 +154,7 @@
 				class="btn {className} max-sm:btn-square"
 				{disabled}
 				on:click={(e) => {
-					if (queryById && value?.name) {
+					if (queryById && value?.id) {
 						query();
 					}
 				}}
@@ -177,7 +173,7 @@
 			class="btn {className} max-md:hidden"
 			{disabled}
 			on:click={(e) => {
-				if (queryById && value?.name) {
+				if (queryById && value?.id) {
 					query();
 				}
 			}}
@@ -201,51 +197,41 @@
 			isMutating={$mutation_permission_Store.isFetching}
 			{fields}
 			on:save={(e) => {
-				if (e.detail.value) {
-					const original = e.detail.value;
-					if (textFieldName) {
-						text = original?.[textFieldName] + '';
+				if (select) {
+					dispatch('select', { value });
+					if (clearAfterSelect) {
+						value = {};
 					}
-					value = { ...original, where: { name: { val: original.name } } };
-					if (select) {
-						dispatch('select', { value, original });
-						if (clearAfterSelect) {
-							value = {};
-						}
-						if (close) {
-							close();
-						}
-					} else {
-						mutation(e.detail.value);
+					if (close) {
+						close();
 					}
+				} else if (e.detail.value) {
+					mutation(e.detail.value);
 				}
 			}}
 			on:remove={(e) => {
-				if (e.detail.value) {
-					const original = e.detail.value;
-					text = undefined;
-					value = null;
-					if (select) {
-						dispatch('select', { value, original });
-						if (clearAfterSelect) {
-							value = {};
-						}
-						if (close) {
-							close();
-						}
-					} else {
-						modal.open({
-							title: $LL.graphence.components.modal.removeModalTitle(),
-							confirm: () => {
-								mutation({
-									where: { name: { val: e.detail.value?.name } },
-									isDeprecated: true
-								});
-								return true;
+				modal.open({
+					title: $LL.graphence.components.modal.removeModalTitle(),
+					confirm: () => {
+						text = undefined;
+						value = null;
+						if (select) {
+							dispatch('select', { value });
+							if (clearAfterSelect) {
+								value = {};
 							}
-						});
+							if (close) {
+								close();
+							}
+						} else if (e.detail.value) {
+							mutation({
+								where: { id: { val: e.detail.value.id } },
+								isDeprecated: true
+							});
+						}
+						return true;
 					}
-				}
+				});
 			}}
 			on:goto={(e) => to(e.detail.path, e.detail.name)}
 		/>

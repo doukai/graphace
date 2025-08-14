@@ -8,6 +8,7 @@
 	import { Field, Directive } from '@graphace/graphql';
 	import { type Option, Combobox, Form, FormControl, Label, Loading } from '@graphace/ui';
 	import {{ name }}Filter from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Filter.svelte';
+	import { permissions } from '~/utils';
 	import type { Query{{ name }}ListArgs } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
@@ -27,7 +28,7 @@
 	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	{%- if useAuth %}
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { auth } = permissions;
 	{%- endif %}
 
 	const dispatch = createEventDispatcher<{
@@ -60,7 +61,7 @@
 				}{% if forloop.last == false %},{% endif %}
 				{%- endfor %}
 			]{%- if useAuth %},
-			hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+			hidden: !auth('{{ name }}::{{ field.fieldName }}::READ')
 			{%- endif %}
 		}{% if forloop.last == false %},{% endif %}
 		{%- else %}
@@ -73,12 +74,12 @@
 					value: '{{ aggField.fieldName }}',
 					label: $LL.graphql.objects.{{ name }}.fields.{{ field.originalFieldName }}.name() + $LL.graphql.objects.{{ field.fieldTypeName }}.fields.{{ aggField.fieldName }}.name(),
 					{%- if useAuth %}
-					hidden: !permissions.auth('{{ field.fieldTypeName }}::{{ aggField.originalFieldName }}::READ')
+					hidden: !auth('{{ field.fieldTypeName }}::{{ aggField.originalFieldName }}::READ')
 					{%- endif %}
 				}{% if forloop.last == false %},{% endif %}
 				{%- endfor %}
 			]{%- if useAuth %},
-			hidden: !permissions.auth('{{ name }}::{{ field.originalFieldName }}::READ')
+			hidden: !auth('{{ name }}::{{ field.originalFieldName }}::READ')
 			{%- endif %}
 		}{% if forloop.last == false %},{% endif %}
 		{%- endif %}
@@ -93,7 +94,7 @@
 		{
 			value: '{{ field.fieldName }}',
 			label: $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name(){%- if useAuth %},
-			hidden: !permissions.auth('{{ name }}::{{ field.fieldName }}::READ')
+			hidden: !auth('{{ name }}::{{ field.fieldName }}::READ')
 			{%- endif %}
 		}{% if forloop.last == false %},{% endif %}
     	{%- endif %}

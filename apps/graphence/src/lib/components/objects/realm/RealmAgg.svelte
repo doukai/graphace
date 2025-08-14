@@ -8,6 +8,7 @@
 	import { Field, Directive } from '@graphace/graphql';
 	import { type Option, Combobox, Form, FormControl, Label, Loading } from '@graphace/ui';
 	import RealmFilter from '~/lib/components/objects/realm/RealmFilter.svelte';
+	import { permissions } from '~/utils';
 	import type { QueryRealmListArgs } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
@@ -26,7 +27,7 @@
 
 	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { auth } = permissions;
 
 	const dispatch = createEventDispatcher<{
 		query: {
@@ -62,7 +63,7 @@
 					label: $LL.graphql.objects.Realm.fields.nameMin.name()
 				}
 			],
-			hidden: !permissions.auth('Realm::name::READ')
+			hidden: !auth('Realm::name::READ')
 		},
 		{
 			value: '',
@@ -81,7 +82,7 @@
 					label: $LL.graphql.objects.Realm.fields.descriptionMin.name()
 				}
 			],
-			hidden: !permissions.auth('Realm::description::READ')
+			hidden: !auth('Realm::description::READ')
 		}
 	];
 
@@ -91,12 +92,12 @@
 		{
 			value: 'name',
 			label: $LL.graphql.objects.Realm.fields.name.name(),
-			hidden: !permissions.auth('Realm::name::READ')
+			hidden: !auth('Realm::name::READ')
 		},
 		{
 			value: 'description',
 			label: $LL.graphql.objects.Realm.fields.description.name(),
-			hidden: !permissions.auth('Realm::description::READ')
+			hidden: !auth('Realm::description::READ')
 		}
 	];
 

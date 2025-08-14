@@ -3,8 +3,9 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { RoleInput, Permission } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_permission_roles($permission_name: String, $permission_roles: [RoleInput]) {
-  permission(where: { name: { val: $permission_name } }, roles: $permission_roles) @merge {
+const query = /* GraphQL */ `mutation Mutation_permission_roles($permission_id: String, $permission_roles: [RoleInput]) {
+  permission(where: { id: { val: $permission_id } }, roles: $permission_roles) @merge {
+    id
     name
     description
     field
@@ -57,7 +58,7 @@ const query = /* GraphQL */ `mutation Mutation_permission_roles($permission_name
 }`;
 
 export function createMutation_permission_roles_Store(event: LoadEvent | RequestEvent): Mutation_permission_roles_Store {
-  return createGraphQLMutationStore<Permission, { permission_name: string, permission_roles: RoleInput[] | null }>(query, event);
+  return createGraphQLMutationStore<Permission, { permission_id: string, permission_roles: RoleInput[] | null }>(query, event);
 }
 
-export type Mutation_permission_roles_Store = GraphQLStore<Permission, { permission_name: string, permission_roles: RoleInput[] | null }>;
+export type Mutation_permission_roles_Store = GraphQLStore<Permission, { permission_id: string, permission_roles: RoleInput[] | null }>;

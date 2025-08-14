@@ -7,9 +7,9 @@
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { type Option, FormControl, Td } from '@graphace/ui';
-	import type { StructQueryStores } from '@graphace/ui-graphql';
 	import RealmSelect from './RealmSelect.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import { namedQueryStore } from '~/utils';
 	import type { RealmInput } from '~/lib/types/schema';
 
 	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined = undefined;
@@ -30,52 +30,39 @@
 		save: {};
 	}>();
 
-	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
 	const query = { fieldName: 'realmList', idName: 'id' };
 
 	let selected: Option | Option[] | undefined;
 
 	$: if (Array.isArray(value)) {
-		if (value.some((item) => item?.id && !item?.where)) {
-			value = value.map((item) => ({ where: { id: { val: item?.id } }, name: item?.name }));
-		}
 		if(value.some((item) => !item?.name)){
 			namedQueryStore
 				.fetch(query, {
-					id: { opr: 'IN', arr: value?.map((item) => item?.where?.id?.val) }
+					id: { opr: 'IN', arr: value?.map((item) => item?.id) }
 				})
 				.then((response) => {
-					value = response.data?.realmList?.map((item) => ({
-						name: item?.name,
-						where: { id: { val: item?.id } }
-					}));
+					value = response.data?.realmList;
 					selected = value?.map((item) => ({
 						label: item?.name,
-						value: item?.where?.id?.val
+						value: item?.id
 					}));
 				});
 		} else {
 			selected = value?.map((item) => ({
 				label: item?.name,
-				value: item?.where?.id?.val
+				value: item?.id
 			}))
 		}
 	} else if (value) {
-		if (value?.id && !value.where) {
-			value = { where: { id: { val: value.id } }, name: value.name };
-		}
 		if (!value.name) {
 			namedQueryStore
-				.fetch(query, { id: { opr: 'EQ', val: value.where?.id?.val } })
+				.fetch(query, { id: { opr: 'EQ', val: value.id } })
 				.then((response) => {
-					value = response.data?.realmList?.map((item) => ({
-						name: item?.name,
-						where: { id: { val: item?.id } }
-					}))?.[0];
-					selected = { label: value?.name, value: value?.where?.id?.val };
+					value = response.data?.realmList?.[0];
+					selected = { label: value?.name, value: value?.id };
 				});
 		} else {
-			selected = { label: value?.name, value: value.where?.id?.val };
+			selected = { label: value?.name, value: value.id };
 		}
 	}
 
@@ -104,7 +91,7 @@
 </script>
 
 <Td {errors} {zIndex}>
-	<a class="link inline-flex" href={null} use:melt={$trigger}>
+	<a class="link inline-flex truncate" href={null} use:melt={$trigger}>
 		{#if list}
 			{#if Array.isArray(selected)}
 				{#if selected.length > 3}

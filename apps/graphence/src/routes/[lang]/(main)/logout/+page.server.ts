@@ -7,5 +7,5 @@ export const load: PageServerLoad = async (event: ServerLoadEvent) => {
     cookies.delete('Authorization', { path: '/' });
 
     const loginPathName = `/${locals.locale}/login`;
-    throw redirect(307, loginPathName);
+    redirect(307, loginPathName);
 };

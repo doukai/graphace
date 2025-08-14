@@ -2,7 +2,8 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { Option } from '@graphace/ui';
-	import { type StructQueryStores, ObjectSelect } from '@graphace/ui-graphql';
+	import { ObjectSelect } from '@graphace/ui-graphql';
+	import { namedQueryStore } from '~/utils';
 	import type { UserInput } from '~/lib/types/schema';
 
 	export let id: string | undefined = undefined;
@@ -27,7 +28,6 @@
 		};
 	}>();
 
-	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
 	const query = { fieldName: 'userList', idName: 'id' };
 
 	$: options =
@@ -39,46 +39,34 @@
 	$: loading = $namedQueryStore.isFetching;
 
 	$: if (Array.isArray(value)) {
-		if (value.some((item) => item?.id && !item?.where)) {
-			value = value.map((item) => ({ where: { id: { val: item?.id } }, name: item?.name }));
-		}
 		if(value.some((item) => !item?.name)){
 			namedQueryStore
 				.fetch(query, {
-					id: { opr: 'IN', arr: value?.map((item) => item?.where?.id?.val) }
+					id: { opr: 'IN', arr: value?.map((item) => item?.id) }
 				})
 				.then((response) => {
-					value = response.data?.userList?.map((item) => ({
-						name: item?.name,
-						where: { id: { val: item?.id } }
-					}));
+					value = response.data?.userList;
 					selected = value?.map((item) => ({
 						label: item?.name,
-						value: item?.where?.id?.val
+						value: item?.id
 					}));
 				});
 		} else {
 			selected = value?.map((item) => ({
 				label: item?.name,
-				value: item?.where?.id?.val
+				value: item?.id
 			}))
 		}
 	} else if (value) {
-		if (value?.id && !value.where) {
-			value = { where: { id: { val: value.id } }, name: value.name };
-		}
 		if (!value.name) {
 			namedQueryStore
-				.fetch(query, { id: { opr: 'EQ', val: value.where?.id?.val } })
+				.fetch(query, { id: { opr: 'EQ', val: value.id } })
 				.then((response) => {
-					value = response.data?.userList?.map((item) => ({
-						name: item?.name,
-						where: { id: { val: item?.id } }
-					}))?.[0];
-					selected = { label: value?.name, value: value?.where?.id?.val };
+					value = response.data?.userList?.[0];
+					selected = { label: value?.name, value: value?.id };
 				});
 		} else {
-			selected = { label: value?.name, value: value.where?.id?.val };
+			selected = { label: value?.name, value: value.id };
 		}
 	} else if (val) {
 		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
@@ -114,13 +102,13 @@
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
 			value = e.detail.value.map((item) => ({
-				where: { id: { val: item.value } },
+				id: item.value,
 				name: item.label
 			}));
 			arr = e.detail.value.map((item) => item.value);
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			value = { where: { id: { val: e.detail.value.value } }, name: e.detail.value.label };
+			value = { id: e.detail.value.value, name: e.detail.value.label };
 			val = e.detail.value.value;
 			arr = [];
 		} else {

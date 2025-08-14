@@ -7,9 +7,9 @@
 	import { Check, XMark, Minus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { type Option, FormControl, Td } from '@graphace/ui';
-	import type { StructQueryStores } from '@graphace/ui-graphql';
 	import {{ name }}Select from './{{ name }}Select.svelte';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import { namedQueryStore } from '~/utils';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
@@ -30,7 +30,6 @@
 		save: {};
 	}>();
 
-	const { namedQueryStore } = getContext<StructQueryStores>('structQueryStores');
 	const query = { fieldName: '{{ name | camelCase }}List', idName: '{{ idName }}' };
 
 	let selected: Option | Option[] | undefined;

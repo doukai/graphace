@@ -1,16 +1,21 @@
 <script lang="ts">
-	import { getContext, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
 	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_realm_Store } from '~/lib/stores/query/query_realm_store';
 	import { createMutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
-	import { getLoadEvent } from '~/utils';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		loadEvent,
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { Realm, MutationRealmArgs, RealmInput } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 
 	export let value: RealmInput | null | undefined = {};
 	export let textFieldName: (keyof Realm & keyof RealmInput) | undefined = undefined;
@@ -21,63 +26,54 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0';
+	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { validate } = validator;
+	const { auth } = permissions;
 	export let fields: {
 		name?: Option | undefined;
 		description?: Option | undefined;
 	} = {
 		name: {
-			readonly: !permissions.auth('Realm::name::WRITE'),
-			disabled: !permissions.auth('Realm::name::WRITE'),
-			hidden: !permissions.auth('Realm::name::READ')
+			readonly: !auth('Realm::name::WRITE'),
+			disabled: !auth('Realm::name::WRITE'),
+			hidden: !auth('Realm::name::READ')
 		},
 		description: {
-			readonly: !permissions.auth('Realm::description::WRITE'),
-			disabled: !permissions.auth('Realm::description::WRITE'),
-			hidden: !permissions.auth('Realm::description::READ')
+			readonly: !auth('Realm::description::WRITE'),
+			disabled: !auth('Realm::description::WRITE'),
+			hidden: !auth('Realm::description::READ')
 		}
 	};
 
 	const dispatch = createEventDispatcher<{
-		select: {
-			value: RealmInput | null | undefined;
-			original: RealmInput | null | undefined;
-		};
+		select: { value: RealmInput | null | undefined };
 	}>();
 
-	const query_realm_Store = createQuery_realm_Store(getLoadEvent());
-	const mutation_realm_Store = createMutation_realm_Store(getLoadEvent());
+	const query_realm_Store = createQuery_realm_Store($loadEvent);
+	const mutation_realm_Store = createMutation_realm_Store($loadEvent);
 	export let close: (() => void) | undefined = undefined;
 
- 	$: if (value) {
-		if (value?.id && !value.where) {
-			value = { ...value, where: { id: { val: value.id } } };
-		}
-		if (textFieldName) {
-			if (!value?.[textFieldName]) {
-				query_realm_Store
-					.fetch({
-						id: { opr: 'EQ', val: value.where?.id?.val }
-					})
-					.then((response) => {
-						value = {
-							...response.data?.realm,
-							where: { id: { val: response.data?.realm?.id } }
-						};
-						text = value?.[textFieldName] + '';
-					});
-			} else {
-				text = value?.[textFieldName] + '';
-			}
+ 	$: if (textFieldName) {
+		if (value && !value?.[textFieldName]) {
+			query_realm_Store
+				.fetch({
+					id: { opr: 'EQ', val: value.id }
+				})
+				.then((response) => {
+					value = {
+						[textFieldName]: response.data?.realm?.[textFieldName],
+						id: response.data?.realm?.id
+					};
+				});
+		} else if (value) {
+			text = value[textFieldName] + '';
 		}
 	}
 
 	const query = () => {
-		query_realm_Store.fetch({ id: { val: value?.where?.id?.val } }).then((result) => {
+		query_realm_Store.fetch({ id: { val: value?.id } }).then((result) => {
 			value = result.data?.realm;
 			if (result.errors) {
 				console.error(result.errors);
@@ -87,7 +83,7 @@
 	};
 
 	const mutation = (args: MutationRealmArgs) => {
-		validate('Mutation_realm_Arguments', args, $locale)
+		validate('Mutation_realm_Arguments', args)
 			.then((data) => {
 				errors = {};
 				mutation_realm_Store.fetch(args).then((result) => {
@@ -103,7 +99,7 @@
 						}
 					} else {
 						toast.success($LL.graphence.message.requestSuccess());
-						dispatch('select', { value: result.data?.realm, original: args });
+						dispatch('select', { value: result.data?.realm });
 						if (clearAfterSelect) {
 							value = {};
 						}
@@ -171,51 +167,41 @@
 			isMutating={$mutation_realm_Store.isFetching}
 			{fields}
 			on:save={(e) => {
-				if (e.detail.value) {
-					const original = e.detail.value;
-					if (textFieldName) {
-						text = original?.[textFieldName] + '';
+				if (select) {
+					dispatch('select', { value });
+					if (clearAfterSelect) {
+						value = {};
 					}
-					value = { ...original, where: { id: { val: original.id } } };
-					if (select) {
-						dispatch('select', { value, original });
-						if (clearAfterSelect) {
-							value = {};
-						}
-						if (close) {
-							close();
-						}
-					} else {
-						mutation(e.detail.value);
+					if (close) {
+						close();
 					}
+				} else if (e.detail.value) {
+					mutation(e.detail.value);
 				}
 			}}
 			on:remove={(e) => {
-				if (e.detail.value) {
-					const original = e.detail.value;
-					text = undefined;
-					value = null;
-					if (select) {
-						dispatch('select', { value, original });
-						if (clearAfterSelect) {
-							value = {};
-						}
-						if (close) {
-							close();
-						}
-					} else {
-						modal.open({
-							title: $LL.graphence.components.modal.removeModalTitle(),
-							confirm: () => {
-								mutation({
-									where: { id: { val: e.detail.value?.id } },
-									isDeprecated: true
-								});
-								return true;
+				modal.open({
+					title: $LL.graphence.components.modal.removeModalTitle(),
+					confirm: () => {
+						text = undefined;
+						value = null;
+						if (select) {
+							dispatch('select', { value });
+							if (clearAfterSelect) {
+								value = {};
 							}
-						});
+							if (close) {
+								close();
+							}
+						} else if (e.detail.value) {
+							mutation({
+								where: { id: { val: e.detail.value.id } },
+								isDeprecated: true
+							});
+						}
+						return true;
 					}
-				}
+				});
 			}}
 			on:goto={(e) => to(e.detail.path, e.detail.name)}
 		/>

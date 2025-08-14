@@ -18,6 +18,7 @@ const query = /* GraphQL */ `mutation Mutation_role_permissions($role_id: String
     createGroupId
     syncRolePolicy
     permissions {
+      id
       name
       description
       field

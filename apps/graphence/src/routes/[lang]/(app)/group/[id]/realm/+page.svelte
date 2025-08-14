@@ -1,23 +1,27 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { Query_group_realm_Store } from '~/lib/stores/query/query_group_realm_store';
 	import type { Mutation_group_realm_Store } from '~/lib/stores/mutation/mutation_group_realm_store';
 	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { validate } = validator;
+	const { auth } = permissions;
 
 	$: query_group_realm_Store = data.query_group_realm_Store as Query_group_realm_Store;
 	$: group = $query_group_realm_Store.response.data?.group;
@@ -28,7 +32,6 @@
 	let value = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
-	let validating = false;
 
 	$: if (node && Object.keys(node).length > 0) {
 		value = node;
@@ -36,10 +39,8 @@
 	}
 
 	const mutation = (args: MutationRealmArgs) => {
-		validating = true;
-		validate('Mutation_realm_Arguments', args, $locale)
+		validate('Mutation_realm_Arguments', args)
 			.then((data) => {
-				validating = false;
 				errors = {};
 				mutation_realm_Store.fetch(args).then((result) => {
 					if (result.errors) {
@@ -59,17 +60,14 @@
 				});
 			})
 			.catch((validErrors) => {
-				validating = false;
 				console.error(validErrors);
 				errors = validErrors;
 			});
 	};
 
 	const merge = (args: RealmInput | null) => {
-		validating = true;
-		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, realm: args }, $locale)
+		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, realm: args })
 			.then((data) => {
-				validating = false;
 				errors = {};
 				mutation_group_realm_Store.fetch({
 					group_id: group?.id,
@@ -92,7 +90,6 @@
 				});
 			})
 			.catch((validErrors) => {
-				validating = false;
 				console.error(validErrors);
 				errors = validErrors.realm.iterms;
 			});
@@ -108,17 +105,17 @@
 			bind:value
 			{errors}
 			isFetching={$query_group_realm_Store.isFetching}
-			isMutating={validating || $mutation_group_realm_Store.isFetching || $mutation_realm_Store.isFetching}
+			isMutating={$validator.isValidating || $mutation_group_realm_Store.isFetching || $mutation_realm_Store.isFetching}
 			fields={{
 				name: {
-					readonly: !permissions.auth('Realm::name::WRITE'),
-					disabled: !permissions.auth('Realm::name::WRITE'),
-					hidden: !permissions.auth('Realm::name::READ')
+					readonly: !auth('Realm::name::WRITE'),
+					disabled: !auth('Realm::name::WRITE'),
+					hidden: !auth('Realm::name::READ')
 				},
 				description: {
-					readonly: !permissions.auth('Realm::description::WRITE'),
-					disabled: !permissions.auth('Realm::description::WRITE'),
-					hidden: !permissions.auth('Realm::description::READ')
+					readonly: !auth('Realm::description::WRITE'),
+					disabled: !auth('Realm::description::WRITE'),
+					hidden: !auth('Realm::description::READ')
 				}
 			}}
 			on:save={(e) => {

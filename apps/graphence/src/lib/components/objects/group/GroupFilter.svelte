@@ -22,30 +22,31 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
-		filter: {};
+		filter: { value?: GroupExpression | null | undefined };
 	}>();
 
-	if (value === null || value === undefined || Object.keys(value).length === 0) {
-		value = {
-			name: undefined,
-			description: undefined,
-			path: undefined,
-			deep: undefined,
-			parentId: undefined,
-			parent: { id: undefined },
-			subGroups: { id: undefined },
-			users: { id: undefined },
-			roles: { id: undefined },
-		}
+	let _value = {
+		id: undefined,
+		name: undefined,
+		description: undefined,
+		path: undefined,
+		deep: undefined,
+		parentId: undefined,
+		parent: { id: undefined },
+		subGroups: { id: undefined },
+		users: { id: undefined },
+		roles: { id: undefined },
 	}
 
 	const filter = (): void => {
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
 	const clear = (): void => {
-		value = {
+		_value = {
+			id: undefined,
 			name: undefined,
 			description: undefined,
 			path: undefined,
@@ -56,7 +57,8 @@
 			users: { id: undefined },
 			roles: { id: undefined },
 		};
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
@@ -79,43 +81,43 @@
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.Group.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="id" bind:value={value.id} />
+					<GroupSelectFilter {id} name="id" bind:value={_value.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.name.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="name" bind:value={value.name} />
+					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.description.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="description" bind:value={value.description} />
+					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.path.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="path" bind:value={value.path} />
+					<StringFilter {id} name="path" bind:value={_value.path} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.deep.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<IntFilter {id} name="deep" bind:value={value.deep} />
+					<IntFilter {id} name="deep" bind:value={_value.deep} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.parentId.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="parentId" bind:value={value.parentId} />
+					<StringFilter {id} name="parentId" bind:value={_value.parentId} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.parent.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="parent" bind:value={value.parent.id} />
+					<GroupSelectFilter {id} name="parent" bind:value={_value.parent.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.subGroups.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="subGroups" bind:value={value.subGroups.id} />
+					<GroupSelectFilter {id} name="subGroups" bind:value={_value.subGroups.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.users.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<UserSelectFilter {id} name="users" bind:value={value.users.id} />
+					<UserSelectFilter {id} name="users" bind:value={_value.users.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.roles.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="roles" bind:value={value.roles.id} />
+					<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
 				</div>
 			</FormControl>
 		</Form>

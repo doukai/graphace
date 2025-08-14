@@ -8,6 +8,7 @@
 	import { Field, Directive } from '@graphace/graphql';
 	import { type Option, Combobox, Form, FormControl, Label, Loading } from '@graphace/ui';
 	import RoleFilter from '~/lib/components/objects/role/RoleFilter.svelte';
+	import { permissions } from '~/utils';
 	import type { QueryRoleListArgs } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
@@ -26,7 +27,7 @@
 
 	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { auth } = permissions;
 
 	const dispatch = createEventDispatcher<{
 		query: {
@@ -62,7 +63,7 @@
 					label: $LL.graphql.objects.Role.fields.nameMin.name()
 				}
 			],
-			hidden: !permissions.auth('Role::name::READ')
+			hidden: !auth('Role::name::READ')
 		},
 		{
 			value: '',
@@ -81,7 +82,7 @@
 					label: $LL.graphql.objects.Role.fields.descriptionMin.name()
 				}
 			],
-			hidden: !permissions.auth('Role::description::READ')
+			hidden: !auth('Role::description::READ')
 		},
 		{
 			value: 'realm',
@@ -90,50 +91,50 @@
 				{
 					value: 'idCount',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.idCount.name(),
-					hidden: !permissions.auth('Realm::id::READ')
+					hidden: !auth('Realm::id::READ')
 				},
 				{
 					value: 'idMax',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.idMax.name(),
-					hidden: !permissions.auth('Realm::id::READ')
+					hidden: !auth('Realm::id::READ')
 				},
 				{
 					value: 'idMin',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.idMin.name(),
-					hidden: !permissions.auth('Realm::id::READ')
+					hidden: !auth('Realm::id::READ')
 				},
 				{
 					value: 'nameCount',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.nameCount.name(),
-					hidden: !permissions.auth('Realm::name::READ')
+					hidden: !auth('Realm::name::READ')
 				},
 				{
 					value: 'nameMax',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.nameMax.name(),
-					hidden: !permissions.auth('Realm::name::READ')
+					hidden: !auth('Realm::name::READ')
 				},
 				{
 					value: 'nameMin',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.nameMin.name(),
-					hidden: !permissions.auth('Realm::name::READ')
+					hidden: !auth('Realm::name::READ')
 				},
 				{
 					value: 'descriptionCount',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.descriptionCount.name(),
-					hidden: !permissions.auth('Realm::description::READ')
+					hidden: !auth('Realm::description::READ')
 				},
 				{
 					value: 'descriptionMax',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.descriptionMax.name(),
-					hidden: !permissions.auth('Realm::description::READ')
+					hidden: !auth('Realm::description::READ')
 				},
 				{
 					value: 'descriptionMin',
 					label: $LL.graphql.objects.Role.fields.realm.name() + $LL.graphql.objects.Realm.fields.descriptionMin.name(),
-					hidden: !permissions.auth('Realm::description::READ')
+					hidden: !auth('Realm::description::READ')
 				}
 			],
-			hidden: !permissions.auth('Role::realm::READ')
+			hidden: !auth('Role::realm::READ')
 		},
 		{
 			value: 'usersAggregate',
@@ -142,125 +143,125 @@
 				{
 					value: 'idCount',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.idCount.name(),
-					hidden: !permissions.auth('User::id::READ')
+					hidden: !auth('User::id::READ')
 				},
 				{
 					value: 'idMax',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.idMax.name(),
-					hidden: !permissions.auth('User::id::READ')
+					hidden: !auth('User::id::READ')
 				},
 				{
 					value: 'idMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.idMin.name(),
-					hidden: !permissions.auth('User::id::READ')
+					hidden: !auth('User::id::READ')
 				},
 				{
 					value: 'nameCount',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.nameCount.name(),
-					hidden: !permissions.auth('User::name::READ')
+					hidden: !auth('User::name::READ')
 				},
 				{
 					value: 'nameMax',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.nameMax.name(),
-					hidden: !permissions.auth('User::name::READ')
+					hidden: !auth('User::name::READ')
 				},
 				{
 					value: 'nameMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.nameMin.name(),
-					hidden: !permissions.auth('User::name::READ')
+					hidden: !auth('User::name::READ')
 				},
 				{
 					value: 'descriptionCount',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.descriptionCount.name(),
-					hidden: !permissions.auth('User::description::READ')
+					hidden: !auth('User::description::READ')
 				},
 				{
 					value: 'descriptionMax',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.descriptionMax.name(),
-					hidden: !permissions.auth('User::description::READ')
+					hidden: !auth('User::description::READ')
 				},
 				{
 					value: 'descriptionMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.descriptionMin.name(),
-					hidden: !permissions.auth('User::description::READ')
+					hidden: !auth('User::description::READ')
 				},
 				{
 					value: 'lastNameCount',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.lastNameCount.name(),
-					hidden: !permissions.auth('User::lastName::READ')
+					hidden: !auth('User::lastName::READ')
 				},
 				{
 					value: 'lastNameMax',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.lastNameMax.name(),
-					hidden: !permissions.auth('User::lastName::READ')
+					hidden: !auth('User::lastName::READ')
 				},
 				{
 					value: 'lastNameMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.lastNameMin.name(),
-					hidden: !permissions.auth('User::lastName::READ')
+					hidden: !auth('User::lastName::READ')
 				},
 				{
 					value: 'loginCount',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.loginCount.name(),
-					hidden: !permissions.auth('User::login::READ')
+					hidden: !auth('User::login::READ')
 				},
 				{
 					value: 'loginMax',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.loginMax.name(),
-					hidden: !permissions.auth('User::login::READ')
+					hidden: !auth('User::login::READ')
 				},
 				{
 					value: 'loginMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.loginMin.name(),
-					hidden: !permissions.auth('User::login::READ')
+					hidden: !auth('User::login::READ')
 				},
 				{
 					value: 'saltCount',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.saltCount.name(),
-					hidden: !permissions.auth('User::salt::READ')
+					hidden: !auth('User::salt::READ')
 				},
 				{
 					value: 'saltMax',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.saltMax.name(),
-					hidden: !permissions.auth('User::salt::READ')
+					hidden: !auth('User::salt::READ')
 				},
 				{
 					value: 'saltMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.saltMin.name(),
-					hidden: !permissions.auth('User::salt::READ')
+					hidden: !auth('User::salt::READ')
 				},
 				{
 					value: 'hashCount',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.hashCount.name(),
-					hidden: !permissions.auth('User::hash::READ')
+					hidden: !auth('User::hash::READ')
 				},
 				{
 					value: 'hashMax',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.hashMax.name(),
-					hidden: !permissions.auth('User::hash::READ')
+					hidden: !auth('User::hash::READ')
 				},
 				{
 					value: 'hashMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.hashMin.name(),
-					hidden: !permissions.auth('User::hash::READ')
+					hidden: !auth('User::hash::READ')
 				},
 				{
 					value: 'emailCount',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.emailCount.name(),
-					hidden: !permissions.auth('User::email::READ')
+					hidden: !auth('User::email::READ')
 				},
 				{
 					value: 'emailMax',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.emailMax.name(),
-					hidden: !permissions.auth('User::email::READ')
+					hidden: !auth('User::email::READ')
 				},
 				{
 					value: 'emailMin',
 					label: $LL.graphql.objects.Role.fields.users.name() + $LL.graphql.objects.User.fields.emailMin.name(),
-					hidden: !permissions.auth('User::email::READ')
+					hidden: !auth('User::email::READ')
 				}
 			],
-			hidden: !permissions.auth('Role::users::READ')
+			hidden: !auth('Role::users::READ')
 		},
 		{
 			value: 'groupsAggregate',
@@ -269,105 +270,105 @@
 				{
 					value: 'idCount',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.idCount.name(),
-					hidden: !permissions.auth('Group::id::READ')
+					hidden: !auth('Group::id::READ')
 				},
 				{
 					value: 'idMax',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.idMax.name(),
-					hidden: !permissions.auth('Group::id::READ')
+					hidden: !auth('Group::id::READ')
 				},
 				{
 					value: 'idMin',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.idMin.name(),
-					hidden: !permissions.auth('Group::id::READ')
+					hidden: !auth('Group::id::READ')
 				},
 				{
 					value: 'nameCount',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.nameCount.name(),
-					hidden: !permissions.auth('Group::name::READ')
+					hidden: !auth('Group::name::READ')
 				},
 				{
 					value: 'nameMax',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.nameMax.name(),
-					hidden: !permissions.auth('Group::name::READ')
+					hidden: !auth('Group::name::READ')
 				},
 				{
 					value: 'nameMin',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.nameMin.name(),
-					hidden: !permissions.auth('Group::name::READ')
+					hidden: !auth('Group::name::READ')
 				},
 				{
 					value: 'descriptionCount',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.descriptionCount.name(),
-					hidden: !permissions.auth('Group::description::READ')
+					hidden: !auth('Group::description::READ')
 				},
 				{
 					value: 'descriptionMax',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.descriptionMax.name(),
-					hidden: !permissions.auth('Group::description::READ')
+					hidden: !auth('Group::description::READ')
 				},
 				{
 					value: 'descriptionMin',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.descriptionMin.name(),
-					hidden: !permissions.auth('Group::description::READ')
+					hidden: !auth('Group::description::READ')
 				},
 				{
 					value: 'pathCount',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.pathCount.name(),
-					hidden: !permissions.auth('Group::path::READ')
+					hidden: !auth('Group::path::READ')
 				},
 				{
 					value: 'pathMax',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.pathMax.name(),
-					hidden: !permissions.auth('Group::path::READ')
+					hidden: !auth('Group::path::READ')
 				},
 				{
 					value: 'pathMin',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.pathMin.name(),
-					hidden: !permissions.auth('Group::path::READ')
+					hidden: !auth('Group::path::READ')
 				},
 				{
 					value: 'parentIdCount',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.parentIdCount.name(),
-					hidden: !permissions.auth('Group::parentId::READ')
+					hidden: !auth('Group::parentId::READ')
 				},
 				{
 					value: 'parentIdMax',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.parentIdMax.name(),
-					hidden: !permissions.auth('Group::parentId::READ')
+					hidden: !auth('Group::parentId::READ')
 				},
 				{
 					value: 'parentIdMin',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.parentIdMin.name(),
-					hidden: !permissions.auth('Group::parentId::READ')
+					hidden: !auth('Group::parentId::READ')
 				},
 				{
 					value: 'deepCount',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.deepCount.name(),
-					hidden: !permissions.auth('Group::deep::READ')
+					hidden: !auth('Group::deep::READ')
 				},
 				{
 					value: 'deepSum',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.deepSum.name(),
-					hidden: !permissions.auth('Group::deep::READ')
+					hidden: !auth('Group::deep::READ')
 				},
 				{
 					value: 'deepAvg',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.deepAvg.name(),
-					hidden: !permissions.auth('Group::deep::READ')
+					hidden: !auth('Group::deep::READ')
 				},
 				{
 					value: 'deepMax',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.deepMax.name(),
-					hidden: !permissions.auth('Group::deep::READ')
+					hidden: !auth('Group::deep::READ')
 				},
 				{
 					value: 'deepMin',
 					label: $LL.graphql.objects.Role.fields.groups.name() + $LL.graphql.objects.Group.fields.deepMin.name(),
-					hidden: !permissions.auth('Group::deep::READ')
+					hidden: !auth('Group::deep::READ')
 				}
 			],
-			hidden: !permissions.auth('Role::groups::READ')
+			hidden: !auth('Role::groups::READ')
 		},
 		{
 			value: 'compositesAggregate',
@@ -376,132 +377,147 @@
 				{
 					value: 'idCount',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.idCount.name(),
-					hidden: !permissions.auth('Role::id::READ')
+					hidden: !auth('Role::id::READ')
 				},
 				{
 					value: 'idMax',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.idMax.name(),
-					hidden: !permissions.auth('Role::id::READ')
+					hidden: !auth('Role::id::READ')
 				},
 				{
 					value: 'idMin',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.idMin.name(),
-					hidden: !permissions.auth('Role::id::READ')
+					hidden: !auth('Role::id::READ')
 				},
 				{
 					value: 'nameCount',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.nameCount.name(),
-					hidden: !permissions.auth('Role::name::READ')
+					hidden: !auth('Role::name::READ')
 				},
 				{
 					value: 'nameMax',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.nameMax.name(),
-					hidden: !permissions.auth('Role::name::READ')
+					hidden: !auth('Role::name::READ')
 				},
 				{
 					value: 'nameMin',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.nameMin.name(),
-					hidden: !permissions.auth('Role::name::READ')
+					hidden: !auth('Role::name::READ')
 				},
 				{
 					value: 'descriptionCount',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.descriptionCount.name(),
-					hidden: !permissions.auth('Role::description::READ')
+					hidden: !auth('Role::description::READ')
 				},
 				{
 					value: 'descriptionMax',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.descriptionMax.name(),
-					hidden: !permissions.auth('Role::description::READ')
+					hidden: !auth('Role::description::READ')
 				},
 				{
 					value: 'descriptionMin',
 					label: $LL.graphql.objects.Role.fields.composites.name() + $LL.graphql.objects.Role.fields.descriptionMin.name(),
-					hidden: !permissions.auth('Role::description::READ')
+					hidden: !auth('Role::description::READ')
 				}
 			],
-			hidden: !permissions.auth('Role::composites::READ')
+			hidden: !auth('Role::composites::READ')
 		},
 		{
 			value: 'permissionsAggregate',
 			label: $LL.graphql.objects.Role.fields.permissions.name(),
 			options: [
 				{
+					value: 'idCount',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.idCount.name(),
+					hidden: !auth('Permission::id::READ')
+				},
+				{
+					value: 'idMax',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.idMax.name(),
+					hidden: !auth('Permission::id::READ')
+				},
+				{
+					value: 'idMin',
+					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.idMin.name(),
+					hidden: !auth('Permission::id::READ')
+				},
+				{
 					value: 'nameCount',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.nameCount.name(),
-					hidden: !permissions.auth('Permission::name::READ')
+					hidden: !auth('Permission::name::READ')
 				},
 				{
 					value: 'nameMax',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.nameMax.name(),
-					hidden: !permissions.auth('Permission::name::READ')
+					hidden: !auth('Permission::name::READ')
 				},
 				{
 					value: 'nameMin',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.nameMin.name(),
-					hidden: !permissions.auth('Permission::name::READ')
+					hidden: !auth('Permission::name::READ')
 				},
 				{
 					value: 'descriptionCount',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.descriptionCount.name(),
-					hidden: !permissions.auth('Permission::description::READ')
+					hidden: !auth('Permission::description::READ')
 				},
 				{
 					value: 'descriptionMax',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.descriptionMax.name(),
-					hidden: !permissions.auth('Permission::description::READ')
+					hidden: !auth('Permission::description::READ')
 				},
 				{
 					value: 'descriptionMin',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.descriptionMin.name(),
-					hidden: !permissions.auth('Permission::description::READ')
+					hidden: !auth('Permission::description::READ')
 				},
 				{
 					value: 'fieldCount',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.fieldCount.name(),
-					hidden: !permissions.auth('Permission::field::READ')
+					hidden: !auth('Permission::field::READ')
 				},
 				{
 					value: 'fieldMax',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.fieldMax.name(),
-					hidden: !permissions.auth('Permission::field::READ')
+					hidden: !auth('Permission::field::READ')
 				},
 				{
 					value: 'fieldMin',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.fieldMin.name(),
-					hidden: !permissions.auth('Permission::field::READ')
+					hidden: !auth('Permission::field::READ')
 				},
 				{
 					value: 'typeCount',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.typeCount.name(),
-					hidden: !permissions.auth('Permission::type::READ')
+					hidden: !auth('Permission::type::READ')
 				},
 				{
 					value: 'typeMax',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.typeMax.name(),
-					hidden: !permissions.auth('Permission::type::READ')
+					hidden: !auth('Permission::type::READ')
 				},
 				{
 					value: 'typeMin',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.typeMin.name(),
-					hidden: !permissions.auth('Permission::type::READ')
+					hidden: !auth('Permission::type::READ')
 				},
 				{
 					value: 'permissionTypeCount',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionTypeCount.name(),
-					hidden: !permissions.auth('Permission::permissionType::READ')
+					hidden: !auth('Permission::permissionType::READ')
 				},
 				{
 					value: 'permissionTypeMax',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionTypeMax.name(),
-					hidden: !permissions.auth('Permission::permissionType::READ')
+					hidden: !auth('Permission::permissionType::READ')
 				},
 				{
 					value: 'permissionTypeMin',
 					label: $LL.graphql.objects.Role.fields.permissions.name() + $LL.graphql.objects.Permission.fields.permissionTypeMin.name(),
-					hidden: !permissions.auth('Permission::permissionType::READ')
+					hidden: !auth('Permission::permissionType::READ')
 				}
 			],
-			hidden: !permissions.auth('Role::permissions::READ')
+			hidden: !auth('Role::permissions::READ')
 		}
 	];
 
@@ -511,12 +527,12 @@
 		{
 			value: 'name',
 			label: $LL.graphql.objects.Role.fields.name.name(),
-			hidden: !permissions.auth('Role::name::READ')
+			hidden: !auth('Role::name::READ')
 		},
 		{
 			value: 'description',
 			label: $LL.graphql.objects.Role.fields.description.name(),
-			hidden: !permissions.auth('Role::description::READ')
+			hidden: !auth('Role::description::READ')
 		},
 	];
 

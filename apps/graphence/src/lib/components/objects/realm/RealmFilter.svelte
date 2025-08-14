@@ -20,27 +20,29 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
-		filter: {};
+		filter: { value?: RealmExpression | null | undefined };
 	}>();
 
-	if (value === null || value === undefined || Object.keys(value).length === 0) {
-		value = {
-			name: undefined,
-			description: undefined
-		}
+	let _value = {
+		id: undefined,
+		name: undefined,
+		description: undefined
 	}
 
 	const filter = (): void => {
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
 	const clear = (): void => {
-		value = {
+		_value = {
+			id: undefined,
 			name: undefined,
 			description: undefined
 		};
-		dispatch('filter', {});
+		value = _value;
+		dispatch('filter', { value });
 		$open = false;
 	};
 
@@ -63,15 +65,15 @@
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.Realm.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<RealmSelectFilter {id} name="id" bind:value={value.id} />
+					<RealmSelectFilter {id} name="id" bind:value={_value.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Realm.fields.name.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="name" bind:value={value.name} />
+					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Realm.fields.description.name()} />
 				<div class="grid grid-cols-2 gap-1">
-					<StringFilter {id} name="description" bind:value={value.description} />
+					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 			</FormControl>
 		</Form>

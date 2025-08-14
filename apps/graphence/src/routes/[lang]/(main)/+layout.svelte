@@ -14,22 +14,18 @@
 		LocaleDropdown
 	} from '@graphace/ui';
 	import Flag from '~/lib/components/icons/Flag.svelte';
-	import { setLocale, LL, locale } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import { UserMenu } from '~/lib/components/menu';
-	import type { LayoutData } from './$types';
 
-	export let data: LayoutData;
-
-	setLocale(data.locale);
-	setContext('permissions', data.permissions);
-	setContext('jsonSchema', data.jsonSchema);
-	setContext('structQueryStores', data.structQueryStores);
 	setContext('LL', LL);
 	setContext('theme', writable(undefined));
 	setContext('ui.card', 'bg-base-100 shadow-xl');
 	setContext('ui.card-body', 'w-full md:max-h-[calc(100vh-8rem)]');
 	setContext('ui.dropdown-content', 'bg-base-200 text-base-content rounded-box shadow-xl');
 	setContext('ui.popover-content', 'bg-base-200 rounded-box shadow-xl');
+	setContext('ui.table', 'table-zebra');
+	setContext('ui.tab', 'tab-bordered');
+	setContext('ui.drawer', 'gap-1');
 </script>
 
 <NavBar zIndex={$zIndex + 1} class="sticky top-0 bg-base-100">

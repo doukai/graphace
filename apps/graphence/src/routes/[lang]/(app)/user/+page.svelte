@@ -1,20 +1,24 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema, PermissionsStore } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import type { Query_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
 	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import {
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
 	import type { QueryUserConnectionArgs, UserOrderBy, MutationUserArgs } from '~/lib/types/schema';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
-	const permissions = getContext<PermissionsStore>('permissions');
+	const { validate } = validator;
+	const { auth } = permissions;
 
 	$: query_userConnection_Store = data.query_userConnection_Store as Query_userConnection_Store;
 	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map((edge) => edge?.node);
@@ -25,7 +29,6 @@
 	let pageNumber: number = 1;
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
-	let validating = false;
 
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
@@ -45,10 +48,9 @@
 		const row = nodes
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
-		validating = true;
-		validate('Mutation_user_Arguments', args, $locale)
+			
+		validate('Mutation_user_Arguments', args)
 			.then((data) => {
-				validating = false;
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
@@ -74,7 +76,6 @@
 				});
 			})
 			.catch((validErrors) => {
-				validating = false;
 				console.error(validErrors);
 				if (row !== -1 && row !== undefined) {
 					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
@@ -96,57 +97,57 @@
 			bind:orderBy
 			{errors}
 			isFetching={$query_userConnection_Store.isFetching}
-			isMutating={validating || $mutation_user_Store.isFetching}
+			isMutating={$validator.isValidating || $mutation_user_Store.isFetching}
 			fields={{
 				name: {
-					readonly: !permissions.auth('User::name::WRITE'),
-					disabled: !permissions.auth('User::name::WRITE'),
-					hidden: !permissions.auth('User::name::READ')
+					readonly: !auth('User::name::WRITE'),
+					disabled: !auth('User::name::WRITE'),
+					hidden: !auth('User::name::READ')
 				},
 				description: {
-					readonly: !permissions.auth('User::description::WRITE'),
-					disabled: !permissions.auth('User::description::WRITE'),
-					hidden: !permissions.auth('User::description::READ')
+					readonly: !auth('User::description::WRITE'),
+					disabled: !auth('User::description::WRITE'),
+					hidden: !auth('User::description::READ')
 				},
 				lastName: {
-					readonly: !permissions.auth('User::lastName::WRITE'),
-					disabled: !permissions.auth('User::lastName::WRITE'),
-					hidden: !permissions.auth('User::lastName::READ')
+					readonly: !auth('User::lastName::WRITE'),
+					disabled: !auth('User::lastName::WRITE'),
+					hidden: !auth('User::lastName::READ')
 				},
 				login: {
-					readonly: !permissions.auth('User::login::WRITE'),
-					disabled: !permissions.auth('User::login::WRITE'),
-					hidden: !permissions.auth('User::login::READ')
+					readonly: !auth('User::login::WRITE'),
+					disabled: !auth('User::login::WRITE'),
+					hidden: !auth('User::login::READ')
 				},
 				email: {
-					readonly: !permissions.auth('User::email::WRITE'),
-					disabled: !permissions.auth('User::email::WRITE'),
-					hidden: !permissions.auth('User::email::READ')
+					readonly: !auth('User::email::WRITE'),
+					disabled: !auth('User::email::WRITE'),
+					hidden: !auth('User::email::READ')
 				},
 				phones: {
-					readonly: !permissions.auth('User::phones::WRITE'),
-					disabled: !permissions.auth('User::phones::WRITE'),
-					hidden: !permissions.auth('User::phones::READ')
+					readonly: !auth('User::phones::WRITE'),
+					disabled: !auth('User::phones::WRITE'),
+					hidden: !auth('User::phones::READ')
 				},
 				disable: {
-					readonly: !permissions.auth('User::disable::WRITE'),
-					disabled: !permissions.auth('User::disable::WRITE'),
-					hidden: !permissions.auth('User::disable::READ')
+					readonly: !auth('User::disable::WRITE'),
+					disabled: !auth('User::disable::WRITE'),
+					hidden: !auth('User::disable::READ')
 				},
 				groups: {
-					readonly: !permissions.auth('User::groups::WRITE'),
-					disabled: !permissions.auth('User::groups::WRITE'),
-					hidden: !permissions.auth('User::groups::READ')
+					readonly: !auth('User::groups::WRITE'),
+					disabled: !auth('User::groups::WRITE'),
+					hidden: !auth('User::groups::READ')
 				},
 				roles: {
-					readonly: !permissions.auth('User::roles::WRITE'),
-					disabled: !permissions.auth('User::roles::WRITE'),
-					hidden: !permissions.auth('User::roles::READ')
+					readonly: !auth('User::roles::WRITE'),
+					disabled: !auth('User::roles::WRITE'),
+					hidden: !auth('User::roles::READ')
 				},
 				realm: {
-					readonly: !permissions.auth('User::realm::WRITE'),
-					disabled: !permissions.auth('User::realm::WRITE'),
-					hidden: !permissions.auth('User::realm::READ')
+					readonly: !auth('User::realm::WRITE'),
+					disabled: !auth('User::realm::WRITE'),
+					hidden: !auth('User::realm::READ')
 				}
 			}}
 			on:search={(e) => {
@@ -167,7 +168,11 @@
 				}
 				query();
 			}}
-			on:query={(e) => query()}
+			on:query={(e) => {
+				args = e.detail.args;
+				orderBy = e.detail.orderBy;
+				query();
+			}}
 			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					mutation(e.detail.value);

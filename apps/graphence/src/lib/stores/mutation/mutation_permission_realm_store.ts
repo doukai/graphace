@@ -3,8 +3,9 @@ import { type GraphQLStore } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { RealmInput, Permission } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_permission_realm($permission_name: String, $permission_realm: RealmInput) {
-  permission(where: { name: { val: $permission_name } }, realm: $permission_realm) @merge {
+const query = /* GraphQL */ `mutation Mutation_permission_realm($permission_id: String, $permission_realm: RealmInput) {
+  permission(where: { id: { val: $permission_id } }, realm: $permission_realm) @merge {
+    id
     name
     description
     field
@@ -36,7 +37,7 @@ const query = /* GraphQL */ `mutation Mutation_permission_realm($permission_name
 }`;
 
 export function createMutation_permission_realm_Store(event: LoadEvent | RequestEvent): Mutation_permission_realm_Store {
-  return createGraphQLMutationStore<Permission, { permission_name: string, permission_realm: RealmInput | null }>(query, event);
+  return createGraphQLMutationStore<Permission, { permission_id: string, permission_realm: RealmInput | null }>(query, event);
 }
 
-export type Mutation_permission_realm_Store = GraphQLStore<Permission, { permission_name: string, permission_realm: RealmInput | null }>;
+export type Mutation_permission_realm_Store = GraphQLStore<Permission, { permission_id: string, permission_realm: RealmInput | null }>;

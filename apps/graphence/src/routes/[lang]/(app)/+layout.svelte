@@ -26,22 +26,18 @@
 	import { SideBarMenu, ModuleMenu, UserMenu } from '~/lib/components/menu';
 	import Flag from '~/lib/components/icons/Flag.svelte';
 	import pages from '~/lib/data/pages.json';
-	import { setLocale, LL, locale } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { NamespaceGraphqlTranslation } from '$i18n/i18n-types';
-	import type { LayoutData } from './$types';
 
-	export let data: LayoutData;
-
-	setLocale(data.locale);
-	setContext('permissions', data.permissions);
-	setContext('jsonSchema', data.jsonSchema);
-	setContext('structQueryStores', data.structQueryStores);
 	setContext('LL', LL);
 	setContext('theme', writable(undefined));
 	setContext('ui.card', 'bg-base-100 shadow-xl');
-	setContext('ui.card-body', 'w-full md:max-h-[calc(100vh-8rem)]');
+	setContext('ui.card-body', 'w-full md:max-h-[calc(100vh-8rem)] max-sm:p-3');
 	setContext('ui.dropdown-content', 'bg-base-200 text-base-content rounded-box shadow-xl');
 	setContext('ui.popover-content', 'bg-base-200 rounded-box shadow-xl');
+	setContext('ui.table', 'table-zebra');
+	setContext('ui.tab', 'tab-bordered');
+	setContext('ui.drawer', 'gap-1');
 
 	let open = false;
 
