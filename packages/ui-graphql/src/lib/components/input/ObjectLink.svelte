@@ -30,7 +30,7 @@
 					.filter((name) => name !== null)
 					.join(',')
 					.concat('...');
-			} else {
+			} else if (value.length > 0) {
 				text = value
 					.map((node) => node?.[textFieldName])
 					.filter((name) => name !== null)
