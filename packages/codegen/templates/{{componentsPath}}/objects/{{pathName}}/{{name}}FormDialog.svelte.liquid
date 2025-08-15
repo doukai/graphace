@@ -17,7 +17,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { {{ name }}, Mutation{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | null | undefined = {};
 	export let textFieldName: (keyof {{ name }} & keyof {{ name }}Input) | undefined = undefined;
@@ -207,7 +207,7 @@
 					}
 				});
 			{% raw %}}}{% endraw %}
-			on:goto={(e) => to(e.detail.path, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/{{ name | paramCase }}/${e.detail.path}`, e.detail.name)}
 		/>
 	</svelte:fragment>
 </Dialog>

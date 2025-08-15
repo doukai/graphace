@@ -17,7 +17,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -146,7 +146,7 @@
 			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`{{ name | paramCase }}/${e.detail.value.{{ idName }}}`, e.detail.value.{% if isNamed %}name{% else %}{{ idName }}{% endif %});
+					to(`/${$locale}/{{ name | paramCase }}/${e.detail.value.{{ idName }}}`, e.detail.value.{% if isNamed %}name{% else %}{{ idName }}{% endif %});
 				}
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
@@ -170,8 +170,8 @@
 					});
 				}
 			{% raw %}}}{% endraw %}
-			on:create={(e) => to('{{ name | paramCase }}/_', '_')}
-			on:goto={(e) => to(`{{ name | paramCase }}/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/{{ name | paramCase }}/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/{{ name | paramCase }}/${e.detail.path}`, e.detail.name)}
 			{%- if hasFileField %}
 			on:upload={(e) => {
 				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>

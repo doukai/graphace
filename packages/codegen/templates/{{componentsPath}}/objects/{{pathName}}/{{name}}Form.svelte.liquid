@@ -146,7 +146,6 @@
 							{%- endif %}
 							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 							name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-							disabled={fields.{{ field.fieldName }}?.disabled}
 							on:goto
 						/>
 					{:else}

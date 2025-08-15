@@ -100,13 +100,15 @@ export let namedQueryStore: NamedQueryStore;
 export let treeQueryStore: TreeQueryStore;
 
 export const createStructQueryStores = (event: LoadEvent | RequestEvent) => {
-    const structQueryStores = _createStructQueryStores(event, getUrl(event))
-    namedQueryStore = structQueryStores.namedQueryStore;
-    namedQueryStore.subscribe(data => {
-        authInterceptor(event, data.response);
-    });
-    treeQueryStore = structQueryStores.treeQueryStore;
-    treeQueryStore.subscribe(data => {
-        authInterceptor(event, data.response);
-    });
+    if (!namedQueryStore || !treeQueryStore) {
+        const structQueryStores = _createStructQueryStores(event, getUrl(event))
+        namedQueryStore = structQueryStores.namedQueryStore;
+        namedQueryStore.subscribe(data => {
+            authInterceptor(event, data.response);
+        });
+        treeQueryStore = structQueryStores.treeQueryStore;
+        treeQueryStore.subscribe(data => {
+            authInterceptor(event, data.response);
+        });
+    }
 }

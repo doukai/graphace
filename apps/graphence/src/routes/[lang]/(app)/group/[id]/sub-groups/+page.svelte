@@ -16,7 +16,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { GroupInput, MutationGroupArgs, QueryGroupConnectionArgs, GroupOrderBy } from '~/lib/types/schema';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -202,7 +202,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`../../group/${e.detail.value.id}`, e.detail.value.name);
+					to(`/${$locale}/group/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
 			on:remove={(e) => {
@@ -249,8 +249,8 @@
 					}
 				});
 			}}
-			on:create={(e) => to('../../group/_', '_')}
-			on:goto={(e) => to(`../../group/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/group/${group?.id}/subGroups/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
 			<GroupTableDialog

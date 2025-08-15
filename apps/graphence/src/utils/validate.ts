@@ -9,17 +9,19 @@ import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 export let validator: ValidatorStore;
 
 export const createValidator = (event: LoadEvent | RequestEvent) => {
-    const query_jsonSchema_Store = createQuery_jsonSchema_Store(event);
-    validator = _createValidator({
-        loadSchema: async (name: string) => {
-            const jsonSchema = (await query_jsonSchema_Store.fetch({ name })).data?.jsonSchema;
-            if (jsonSchema) {
-                return JSON.parse(jsonSchema);
-            }
-            throw new Error('json schema undefined: ' + name);
-        },
-        buildErrorMessages: (errors: ErrorObject[]) => { }
-    })
+    if (!validator) {
+        const query_jsonSchema_Store = createQuery_jsonSchema_Store(event);
+        validator = _createValidator({
+            loadSchema: async (name: string) => {
+                const jsonSchema = (await query_jsonSchema_Store.fetch({ name })).data?.jsonSchema;
+                if (jsonSchema) {
+                    return JSON.parse(jsonSchema);
+                }
+                throw new Error('json schema undefined: ' + name);
+            },
+            buildErrorMessages: (errors: ErrorObject[]) => { }
+        });
+    }
 }
 
 let $LL: TranslationFunctions;

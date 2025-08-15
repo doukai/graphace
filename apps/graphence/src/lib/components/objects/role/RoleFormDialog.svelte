@@ -15,7 +15,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { Role, MutationRoleArgs, RoleInput } from '~/lib/types/schema';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: RoleInput | null | undefined = {};
 	export let textFieldName: (keyof Role & keyof RoleInput) | undefined = undefined;
@@ -233,7 +233,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(e.detail.path, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`, e.detail.name)}
 		/>
 	</svelte:fragment>
 </Dialog>

@@ -1,23 +1,22 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { Errors, JsonSchema } from '@graphace/commons';
+	import type { Errors } from '@graphace/commons';
 	import { ot, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
 	import type { Mutation_currentUserResetPassword_Store } from '~/lib/stores/mutation/mutation_currentUserResetPassword_store';
 	import ResetPasswordForm from '~/lib/components/settings/ResetPasswordForm.svelte';
-	import { buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
-	import { LL, locale } from '$i18n/i18n-svelte';
+	import { validator, buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
+	import { LL } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const { validate } = getContext<JsonSchema>('jsonSchema');
+	const { validate } = validator;
 
 	$: mutation_currentUserResetPassword =
 		data.mutation_currentUserResetPassword_Store as Mutation_currentUserResetPassword_Store;
 	let errors: Record<string, Errors> = {};
 
 	const mutation = (args: { password: string; newPassword: string }) => {
-		validate('Mutation_currentUserResetPassword_Arguments', args, $locale)
+		validate('Mutation_currentUserResetPassword_Arguments', args)
 			.then((data) => {
 				errors = {};
 				mutation_currentUserResetPassword.fetch(args).then((result) => {

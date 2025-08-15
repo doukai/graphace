@@ -8,7 +8,7 @@
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
 	import { loadEvent{% if useAuth %}, permissions{% endif %} } from '~/utils';
 	import type { {{ name }}, {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input } from '~/{{ schemaTypesPath }}';
-	import LL from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined =
 		undefined;
@@ -227,10 +227,11 @@
 			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./{{ name | paramCase }}/${e.detail.value.{{ idName }}}`);
+					to(`/${$locale}/{{ name | paramCase }}/${e.detail.value.{{ idName }}}`, e.detail.value.{% if isNamed %}name{% else %}{{ idName }}{% endif %});
 				}
 			{% raw %}}}{% endraw %}
-			on:create={(e) => to('./{{ name | paramCase }}/_')}
+			on:create={(e) => to(`/${$locale}/{{ name | paramCase }}/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/{{ name | paramCase }}/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination

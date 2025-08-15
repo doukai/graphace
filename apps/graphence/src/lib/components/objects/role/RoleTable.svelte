@@ -303,7 +303,6 @@
 											textFieldName="name"
 											path={`${node.id}/users`}
 											name={$LL.graphql.objects.Role.fields.users.name()}
-											disabled={fields.users?.disabled}
 											on:goto
 										/>
 									{:else}
@@ -360,7 +359,6 @@
 											bind:value={node.permissions}
 											path={`${node.id}/permissions`}
 											name={$LL.graphql.objects.Role.fields.permissions.name()}
-											disabled={fields.permissions?.disabled}
 											on:goto
 										/>
 									{:else}
@@ -383,7 +381,6 @@
 											textFieldName="name"
 											path={`${node.id}/realm`}
 											name={$LL.graphql.objects.Role.fields.realm.name()}
-											disabled={fields.realm?.disabled}
 											on:goto
 										/>
 									{:else}
@@ -570,7 +567,6 @@
 											<ObjectLink
 												bind:value={node.users}
 												textFieldName="name"
-												disabled={fields.users?.disabled}
 												path={`${node.id}/users`}
 												name={$LL.graphql.objects.Role.fields.users.name()}
 												on:goto
@@ -634,7 +630,6 @@
 										{#if node.id}
 											<ObjectLink
 												bind:value={node.permissions}
-												disabled={fields.permissions?.disabled}
 												path={`${node.id}/permissions`}
 												name={$LL.graphql.objects.Role.fields.permissions.name()}
 												on:goto
@@ -660,7 +655,6 @@
 											<ObjectLink
 												bind:value={node.realm}
 												textFieldName="name"
-												disabled={fields.realm?.disabled}
 												path={`${node.id}/realm`}
 												name={$LL.graphql.objects.Role.fields.realm.name()}
 												on:goto

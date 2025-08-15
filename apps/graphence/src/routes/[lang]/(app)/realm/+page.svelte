@@ -12,7 +12,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { QueryRealmConnectionArgs, RealmOrderBy, MutationRealmArgs } from '~/lib/types/schema';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -136,7 +136,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`realm/${e.detail.value.id}`, e.detail.value.name);
+					to(`/${$locale}/realm/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
 			on:remove={(e) => {
@@ -160,8 +160,8 @@
 					});
 				}
 			}}
-			on:create={(e) => to('realm/_', '_')}
-			on:goto={(e) => to(`realm/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/realm/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination

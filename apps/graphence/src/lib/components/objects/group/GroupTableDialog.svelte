@@ -8,7 +8,7 @@
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
 	import { loadEvent, permissions } from '~/utils';
 	import type { Group, QueryGroupConnectionArgs, GroupOrderBy, GroupInput } from '~/lib/types/schema';
-	import LL from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined =
 		undefined;
@@ -271,10 +271,11 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./group/${e.detail.value.id}`);
+					to(`/${$locale}/group/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
-			on:create={(e) => to('./group/_')}
+			on:create={(e) => to(`/${$locale}/group/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination

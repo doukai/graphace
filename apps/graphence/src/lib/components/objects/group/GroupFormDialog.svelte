@@ -15,7 +15,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { Group, MutationGroupArgs, GroupInput } from '~/lib/types/schema';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: GroupInput | null | undefined = {};
 	export let textFieldName: (keyof Group & keyof GroupInput) | undefined = undefined;
@@ -251,7 +251,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(e.detail.path, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`, e.detail.name)}
 		/>
 	</svelte:fragment>
 </Dialog>

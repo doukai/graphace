@@ -8,7 +8,7 @@
 	import RealmTable from '~/lib/components/objects/realm/RealmTable.svelte';
 	import { loadEvent, permissions } from '~/utils';
 	import type { Realm, QueryRealmConnectionArgs, RealmOrderBy, RealmInput } from '~/lib/types/schema';
-	import LL from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined =
 		undefined;
@@ -221,10 +221,11 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./realm/${e.detail.value.id}`);
+					to(`/${$locale}/realm/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
-			on:create={(e) => to('./realm/_')}
+			on:create={(e) => to(`/${$locale}/realm/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination

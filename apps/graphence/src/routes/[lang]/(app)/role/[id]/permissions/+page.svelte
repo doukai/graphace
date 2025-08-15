@@ -16,7 +16,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { PermissionInput, MutationPermissionArgs, QueryPermissionConnectionArgs, PermissionOrderBy } from '~/lib/types/schema';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -187,7 +187,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`../../permission/${e.detail.value.id}`, e.detail.value.id);
+					to(`/${$locale}/permission/${e.detail.value.id}`, e.detail.value.id);
 				}
 			}}
 			on:remove={(e) => {
@@ -234,8 +234,8 @@
 					}
 				});
 			}}
-			on:create={(e) => to('../../permission/_', '_')}
-			on:goto={(e) => to(`../../permission/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/role/${role?.id}/permissions/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/permission/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
 			<PermissionTableDialog

@@ -21,7 +21,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { {{ fieldObjectInfo.name }}Input, {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args, {{ queryTypeName }}{{ fieldObjectInfo.name }}ConnectionArgs, {{ fieldObjectInfo.name }}OrderBy } from '~/{{ schemaTypesPath }}';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -170,7 +170,7 @@
 			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`../../{{ fieldObjectInfo.name | paramCase }}/${e.detail.value.{{ fieldObjectInfo.idName }}}`, e.detail.value.{% if fieldObjectInfo.isNamed %}name{% else %}{{ fieldObjectInfo.idName }}{% endif %});
+					to(`/${$locale}/{{ fieldObjectInfo.name | paramCase }}/${e.detail.value.{{ fieldObjectInfo.idName }}}`, e.detail.value.{% if fieldObjectInfo.isNamed %}name{% else %}{{ fieldObjectInfo.idName }}{% endif %});
 				}
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
@@ -217,8 +217,8 @@
 					}
 				});
 			{% raw %}}}{% endraw %}
-			on:create={(e) => to('../../{{ fieldObjectInfo.name | paramCase }}/_', '_')}
-			on:goto={(e) => to(`../../{{ fieldObjectInfo.name | paramCase }}/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/{{ name | paramCase }}/${% raw %}{{% endraw %}{{ name | camelCase }}?.{{ idName }}{% raw %}}{% endraw %}/{{ fieldInfo.fieldName }}/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/{{ fieldObjectInfo.name | paramCase }}/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 			{%- if hasFileField %}
 			on:upload={(e) => {

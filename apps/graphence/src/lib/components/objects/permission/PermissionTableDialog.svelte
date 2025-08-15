@@ -8,7 +8,7 @@
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import { loadEvent, permissions } from '~/utils';
 	import type { Permission, QueryPermissionConnectionArgs, PermissionOrderBy, PermissionInput } from '~/lib/types/schema';
-	import LL from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined =
 		undefined;
@@ -253,10 +253,11 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./permission/${e.detail.value.id}`);
+					to(`/${$locale}/permission/${e.detail.value.id}`, e.detail.value.id);
 				}
 			}}
-			on:create={(e) => to('./permission/_')}
+			on:create={(e) => to(`/${$locale}/permission/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/permission/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination

@@ -280,7 +280,6 @@
 											{%- endif %}
 											path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 											name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-											disabled={fields.{{ field.fieldName }}?.disabled}
 											on:goto
 										/>
 									{:else}
@@ -480,7 +479,6 @@
 												{%- if field.isNamed %}
 												textFieldName="name"
 												{%- endif %}
-												disabled={fields.{{ field.fieldName }}?.disabled}
 												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 												name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 												on:goto

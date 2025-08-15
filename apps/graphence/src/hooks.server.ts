@@ -9,7 +9,6 @@ loadAllLocales();
 const L = i18n();
 
 export const handle: Handle = async ({ event, resolve }) => {
-
 	// read language slug
 	const [, lang] = event.url.pathname.split('/');
 	// redirect to base locale if no locale slug was found

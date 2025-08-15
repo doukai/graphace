@@ -180,7 +180,6 @@
 							textFieldName="name"
 							path={`${value.id}/realm`}
 							name={$LL.graphql.objects.Permission.fields.realm.name()}
-							disabled={fields.realm?.disabled}
 							on:goto
 						/>
 					{:else}

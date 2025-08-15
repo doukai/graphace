@@ -4,14 +4,11 @@ import type { Locales } from '$i18n/i18n-types';
 import { namespaces } from '$i18n/i18n-util';
 import { loadLocaleAsync, loadNamespaceAsync } from '$i18n/i18n-util.async';
 import { setLocale } from '$i18n/i18n-svelte';
-import { loadEvent, createValidator, createPermissions, createStructQueryStores } from '~/utils';
+import { loadEvent } from '~/utils';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event: LoadEvent) => {
 	loadEvent.set(event);
-	createValidator(event)
-	createPermissions(event)
-	createStructQueryStores(event)
 	jwt.set(event.data?.jwt);
 	const locale: Locales = event.data?.locale;
 

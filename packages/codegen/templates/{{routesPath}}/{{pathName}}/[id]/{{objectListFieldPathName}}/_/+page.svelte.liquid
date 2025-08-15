@@ -87,7 +87,6 @@
 					merge(e.detail.value);
 				}
 			{% raw %}}}{% endraw %}
-			on:goto={(e) => to(`../../../${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 			{%- if hasFileField %}
 			on:upload={(e) => {

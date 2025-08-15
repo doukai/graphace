@@ -8,7 +8,7 @@
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import { loadEvent, permissions } from '~/utils';
 	import type { Role, QueryRoleConnectionArgs, RoleOrderBy, RoleInput } from '~/lib/types/schema';
-	import LL from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined =
 		undefined;
@@ -251,10 +251,11 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`./role/${e.detail.value.id}`);
+					to(`/${$locale}/role/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
-			on:create={(e) => to('./role/_')}
+			on:create={(e) => to(`/${$locale}/role/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination

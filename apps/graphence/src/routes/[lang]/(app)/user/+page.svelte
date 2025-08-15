@@ -12,7 +12,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { QueryUserConnectionArgs, UserOrderBy, MutationUserArgs } from '~/lib/types/schema';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -180,7 +180,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`user/${e.detail.value.id}`, e.detail.value.name);
+					to(`/${$locale}/user/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
 			on:remove={(e) => {
@@ -204,8 +204,8 @@
 					});
 				}
 			}}
-			on:create={(e) => to('user/_', '_')}
-			on:goto={(e) => to(`user/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/user/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/user/${e.detail.path}`, e.detail.name)}
 		/>
 		<div class="divider" />
 		<Pagination

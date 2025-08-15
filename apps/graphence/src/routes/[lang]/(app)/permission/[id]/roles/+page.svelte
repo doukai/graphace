@@ -16,7 +16,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { RoleInput, MutationRoleArgs, QueryRoleConnectionArgs, RoleOrderBy } from '~/lib/types/schema';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -185,7 +185,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`../../role/${e.detail.value.id}`, e.detail.value.name);
+					to(`/${$locale}/role/${e.detail.value.id}`, e.detail.value.name);
 				}
 			}}
 			on:remove={(e) => {
@@ -232,8 +232,8 @@
 					}
 				});
 			}}
-			on:create={(e) => to('../../role/_', '_')}
-			on:goto={(e) => to(`../../role/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/permission/${permission?.id}/roles/_`, '_')}
+			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
 			<RoleTableDialog

@@ -445,7 +445,6 @@
 											textFieldName="name"
 											path={`${node.id}/realm`}
 											name={$LL.graphql.objects.User.fields.realm.name()}
-											disabled={fields.realm?.disabled}
 											on:goto
 										/>
 									{:else}
@@ -761,7 +760,6 @@
 											<ObjectLink
 												bind:value={node.realm}
 												textFieldName="name"
-												disabled={fields.realm?.disabled}
 												path={`${node.id}/realm`}
 												name={$LL.graphql.objects.User.fields.realm.name()}
 												on:goto

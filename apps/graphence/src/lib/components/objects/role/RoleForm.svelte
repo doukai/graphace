@@ -121,7 +121,6 @@
 							textFieldName="name"
 							path={`${value.id}/users`}
 							name={$LL.graphql.objects.Role.fields.users.name()}
-							disabled={fields.users?.disabled}
 							on:goto
 						/>
 					{:else}
@@ -178,7 +177,6 @@
 							bind:value={value.permissions}
 							path={`${value.id}/permissions`}
 							name={$LL.graphql.objects.Role.fields.permissions.name()}
-							disabled={fields.permissions?.disabled}
 							on:goto
 						/>
 					{:else}
@@ -203,7 +201,6 @@
 							textFieldName="name"
 							path={`${value.id}/realm`}
 							name={$LL.graphql.objects.Role.fields.realm.name()}
-							disabled={fields.realm?.disabled}
 							on:goto
 						/>
 					{:else}

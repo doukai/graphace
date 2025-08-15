@@ -10,7 +10,6 @@
 	export let value: any = undefined;
 	export let textFieldName: string | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
-	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
 
@@ -46,17 +45,13 @@
 	}
 </script>
 
-{#if disabled}
+<a
+	{id}
+	class="link truncate {errors ? 'link-error' : ''} {className}"
+	href={null}
+	on:click|preventDefault={(e) => {
+		dispatch('goto', { path, name });
+	}}
+>
 	{text}
-{:else}
-	<a
-		{id}
-		class="link truncate {errors ? 'link-error' : ''} {className}"
-		href={null}
-		on:click|preventDefault={(e) => {
-			dispatch('goto', { path, name });
-		}}
-	>
-		{text}
-	</a>
-{/if}
+</a>

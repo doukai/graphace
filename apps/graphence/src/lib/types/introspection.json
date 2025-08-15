@@ -95128,10 +95128,10 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "FIELD_DEFINITION",
           "OBJECT",
-          "INPUT_FIELD_DEFINITION"
+          "INPUT_FIELD_DEFINITION",
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION"
         ],
         "args": [
           {
@@ -95755,11 +95755,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "MUTATION",
+          "SUBSCRIPTION",
           "INPUT_OBJECT",
-          "QUERY",
           "FIELD_DEFINITION",
-          "SUBSCRIPTION"
+          "MUTATION",
+          "QUERY"
         ],
         "args": [
           {
@@ -95845,11 +95845,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "MUTATION",
+          "SUBSCRIPTION",
           "INPUT_OBJECT",
-          "QUERY",
           "FIELD_DEFINITION",
-          "SUBSCRIPTION"
+          "MUTATION",
+          "QUERY"
         ],
         "args": [
           {
@@ -96103,11 +96103,11 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "MUTATION",
-          "QUERY",
           "OBJECT",
+          "SUBSCRIPTION",
           "FIELD_DEFINITION",
-          "SUBSCRIPTION"
+          "MUTATION",
+          "QUERY"
         ],
         "args": [
           {
@@ -96191,8 +96191,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "FIELD"
         ],
         "args": [
           {
@@ -96238,8 +96238,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "FIELD_DEFINITION"
+          "FIELD_DEFINITION",
+          "FIELD"
         ],
         "args": [
           {
@@ -96305,8 +96305,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -96328,8 +96328,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -96351,8 +96351,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
-          "OBJECT"
+          "OBJECT",
+          "FIELD"
         ],
         "args": [
           {
@@ -96390,8 +96390,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -96429,8 +96429,8 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "INPUT_OBJECT",
-          "OBJECT"
+          "OBJECT",
+          "INPUT_OBJECT"
         ],
         "args": [
           {
@@ -96452,9 +96452,9 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
           "INLINE_FRAGMENT",
-          "FRAGMENT_SPREAD"
+          "FRAGMENT_SPREAD",
+          "FIELD"
         ],
         "args": [
           {
@@ -96488,9 +96488,9 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "FIELD",
           "INLINE_FRAGMENT",
-          "FRAGMENT_SPREAD"
+          "FRAGMENT_SPREAD",
+          "FIELD"
         ],
         "args": [
           {
@@ -96524,14 +96524,14 @@
         "description": null,
         "isRepeatable": false,
         "locations": [
-          "ENUM_VALUE",
           "ARGUMENT_DEFINITION",
-          "INPUT_OBJECT",
-          "INTERFACE",
           "OBJECT",
-          "FIELD_DEFINITION",
+          "INPUT_FIELD_DEFINITION",
+          "ENUM_VALUE",
           "ENUM",
-          "INPUT_FIELD_DEFINITION"
+          "INPUT_OBJECT",
+          "FIELD_DEFINITION",
+          "INTERFACE"
         ],
         "args": [
           {

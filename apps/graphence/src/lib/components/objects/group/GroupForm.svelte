@@ -234,7 +234,6 @@
 							textFieldName="name"
 							path={`${value.id}/realm`}
 							name={$LL.graphql.objects.Group.fields.realm.name()}
-							disabled={fields.realm?.disabled}
 							on:goto
 						/>
 					{:else}

@@ -131,20 +131,22 @@
 		class="flex flex-row flex-wrap items-center textarea {errors?.errors ||
 		(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 			? 'textarea-error focus-within:outline-error'
-			: 'focus-within:outline-base-content/20'}  focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 {className} {contextClass}"
+			: 'focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 {className} {contextClass}"
 	>
 		{#each $tags as t, index}
 			<div
 				use:melt={$tag(t)}
 				class="badge {errors?.iterms?.[index]
 					? 'badge-error'
-					: 'badge-neutral'} flex items-center [word-break:break-word] data-[disabled]:bg-neutral-content data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
+					: 'badge-neutral'} flex items-center [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 			>
 				<span
-					class="flex items-center border-r {errors?.iterms?.[index]
+					class="flex items-center border-r max-w-xs truncate {errors?.iterms?.[index]
 						? 'bg-error'
-						: 'bg-neutral'} border-white/10">{t.value}</span
+						: 'bg-neutral'} border-white/10"
 				>
+					{t.value}
+				</span>
 				<button
 					use:melt={$deleteTrigger(t)}
 					{disabled}

@@ -15,7 +15,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -146,7 +146,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(`../../${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
 			<RealmTableDialog
