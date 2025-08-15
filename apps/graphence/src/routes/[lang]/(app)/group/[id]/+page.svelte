@@ -61,8 +61,8 @@
 <Card>
 	<CardBody>
 		<GroupForm
-			showSaveButton
-			showRemoveButton
+			showSaveButton={auth('Group::*::WRITE')}
+			showRemoveButton={auth('Group::isDeprecated::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

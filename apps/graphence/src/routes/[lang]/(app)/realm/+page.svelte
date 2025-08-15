@@ -87,9 +87,9 @@
 <Card>
 	<CardBody>
 		<RealmTable
-			showRemoveButton
+			showRemoveButton={auth('Realm::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('Realm::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}

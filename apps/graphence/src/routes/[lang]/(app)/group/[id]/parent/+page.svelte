@@ -99,8 +99,8 @@
 <Card>
 	<CardBody>
 		<GroupForm
-			showSaveButton
-			{showUnbindButton}
+			showSaveButton={auth('Group::*::WRITE')}
+			showUnbindButton={showUnbindButton && auth('Group::isDeprecated::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}
@@ -189,18 +189,20 @@
 			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
-			<GroupTableDialog
-				args={{ not: true, parent: { id: { val: group?.id } } }}
-				singleChoice
-				class="btn-accent"
-				on:select={(e) => {
-					if (!Array.isArray(e.detail.value)) {
-						merge(e.detail.value);
-					}
-				}}
-			>
-				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
-			</GroupTableDialog>
+			{#if auth('Group::*::WRITE')}
+				<GroupTableDialog
+					args={{ not: true, parent: { id: { val: group?.id } } }}
+					singleChoice
+					class="btn-accent"
+					on:select={(e) => {
+						if (!Array.isArray(e.detail.value)) {
+							merge(e.detail.value);
+						}
+					}}
+				>
+					<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+				</GroupTableDialog>
+			{/if}
 		</GroupForm>
 	</CardBody>
 </Card>

@@ -87,9 +87,9 @@
 <Card>
 	<CardBody>
 		<RoleTable
-			showRemoveButton
+			showRemoveButton={auth('Role::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('Role::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}

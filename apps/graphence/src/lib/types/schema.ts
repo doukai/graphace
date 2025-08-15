@@ -5622,6 +5622,19 @@ export type RolePermissionRelationEdge = {
   cursor?: Maybe<Scalars['String']>;
 };
 
+/** Policy */
+export type Policy = {
+  __typename?: 'Policy';
+  id?: Maybe<Scalars['String']>;
+  policy?: Maybe<Scalars['String']>;
+  v0?: Maybe<Scalars['String']>;
+  v1?: Maybe<Scalars['String']>;
+  v2?: Maybe<Scalars['String']>;
+  v3?: Maybe<Scalars['String']>;
+  v4?: Maybe<Scalars['String']>;
+  v5?: Maybe<Scalars['String']>;
+};
+
 /** Current */
 export type Current = {
   __typename?: 'Current';
@@ -5639,19 +5652,6 @@ export type Current = {
   groups?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** 角色 */
   roles?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
-/** Policy */
-export type Policy = {
-  __typename?: 'Policy';
-  id?: Maybe<Scalars['String']>;
-  policy?: Maybe<Scalars['String']>;
-  v0?: Maybe<Scalars['String']>;
-  v1?: Maybe<Scalars['String']>;
-  v2?: Maybe<Scalars['String']>;
-  v3?: Maybe<Scalars['String']>;
-  v4?: Maybe<Scalars['String']>;
-  v5?: Maybe<Scalars['String']>;
 };
 
 export type PageInfo = {

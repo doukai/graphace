@@ -207,8 +207,8 @@
 	</svelte:fragment>
 	<svelte:fragment let:zIndex>
 		<GroupForm
-			showSaveButton={!readonly}
-			showRemoveButton={!readonly}
+			showSaveButton={!readonly && auth('Group::*::WRITE')}
+			showRemoveButton={!readonly && auth('Group::isDeprecated::WRITE')}
 			bind:value
 			{errors}
 			isFetching={$query_group_Store.isFetching}

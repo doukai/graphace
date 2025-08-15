@@ -159,8 +159,8 @@
 	</svelte:fragment>
 	<svelte:fragment let:zIndex>
 		<RealmForm
-			showSaveButton={!readonly}
-			showRemoveButton={!readonly}
+			showSaveButton={!readonly && auth('Realm::*::WRITE')}
+			showRemoveButton={!readonly && auth('Realm::isDeprecated::WRITE')}
 			bind:value
 			{errors}
 			isFetching={$query_realm_Store.isFetching}

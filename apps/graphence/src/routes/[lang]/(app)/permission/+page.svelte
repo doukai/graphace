@@ -87,9 +87,9 @@
 <Card>
 	<CardBody>
 		<PermissionTable
-			showRemoveButton
+			showRemoveButton={auth('Permission::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('Permission::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}

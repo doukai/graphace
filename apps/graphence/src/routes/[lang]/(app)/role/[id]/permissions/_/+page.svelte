@@ -58,7 +58,7 @@
 <Card>
 	<CardBody>
 		<PermissionForm
-			showSaveButton
+			showSaveButton={auth('Permission::*::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

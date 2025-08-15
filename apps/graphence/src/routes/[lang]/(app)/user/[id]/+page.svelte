@@ -61,8 +61,8 @@
 <Card>
 	<CardBody>
 		<UserForm
-			showSaveButton
-			showRemoveButton
+			showSaveButton={auth('User::*::WRITE')}
+			showRemoveButton={auth('User::isDeprecated::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

@@ -7,8 +7,9 @@
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionInput } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import { locale } from '$i18n/i18n-svelte';
 	
 	export let value: PermissionInput | null | undefined = undefined;
 	export let isFetching: boolean = false;

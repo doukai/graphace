@@ -111,9 +111,9 @@
 <Card>
 	<CardBody>
 		<GroupTable
-			showUnbindButton
+			showUnbindButton={auth('Group::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}
@@ -253,19 +253,21 @@
 			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
-			<GroupTableDialog
-				args={{ not: true, parent: { id: { val: group?.id } } }}
-				class="btn-accent"
-				on:select={(e) => {
-					if (Array.isArray(e.detail.value)) {
-						merge(e.detail.value);
-					} else {
-						merge([e.detail.value]);
-					}
-				}}
-			>
-				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
-			</GroupTableDialog>
+			{#if auth('Group::*::WRITE')}
+				<GroupTableDialog
+					args={{ not: true, parent: { id: { val: group?.id } } }}
+					class="btn-accent"
+					on:select={(e) => {
+						if (Array.isArray(e.detail.value)) {
+							merge(e.detail.value);
+						} else {
+							merge([e.detail.value]);
+						}
+					}}
+				>
+					<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+				</GroupTableDialog>
+			{/if}
 		</GroupTable>
 		<div class="divider" />
 		<Pagination

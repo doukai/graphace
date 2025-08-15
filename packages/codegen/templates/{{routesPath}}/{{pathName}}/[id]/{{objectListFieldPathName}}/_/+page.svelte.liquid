@@ -68,7 +68,7 @@
 <Card>
 	<CardBody>
 		<{{ fieldObjectInfo.name }}Form
-			showSaveButton
+			showSaveButton={auth('{{ fieldObjectInfo.name }}::*::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

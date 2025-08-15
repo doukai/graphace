@@ -4,8 +4,9 @@
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
 	import { type Option, StringInput, ObjectLink } from '@graphace/ui-graphql';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmInput } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import { locale } from '$i18n/i18n-svelte';
 	
 	export let value: RealmInput | null | undefined = undefined;
 	export let isFetching: boolean = false;

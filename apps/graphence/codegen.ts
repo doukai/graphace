@@ -34,12 +34,12 @@ const config: CodegenConfig = {
                 }
             }
         },
-        './src/lib/types/introspection.json': {
-            plugins: ['introspection'],
-            config: {
-                minify: false
-            }
-        },
+        // './src/lib/types/introspection.json': {
+        //     plugins: ['introspection'],
+        //     config: {
+        //         minify: false
+        //     }
+        // },
         './src': {
             preset: 'graphace-codegen-preset',
             plugins: ['graphace-codegen'],

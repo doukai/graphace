@@ -99,8 +99,8 @@
 <Card>
 	<CardBody>
 		<RealmForm
-			showSaveButton
-			{showUnbindButton}
+			showSaveButton={auth('Realm::*::WRITE')}
+			showUnbindButton={showUnbindButton && auth('Realm::isDeprecated::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}
@@ -149,17 +149,19 @@
 			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
-			<RealmTableDialog
-				singleChoice
-				class="btn-accent"
-				on:select={(e) => {
-					if (!Array.isArray(e.detail.value)) {
-						merge(e.detail.value);
-					}
-				}}
-			>
-				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
-			</RealmTableDialog>
+			{#if auth('Realm::*::WRITE')}
+				<RealmTableDialog
+					singleChoice
+					class="btn-accent"
+					on:select={(e) => {
+						if (!Array.isArray(e.detail.value)) {
+							merge(e.detail.value);
+						}
+					}}
+				>
+					<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+				</RealmTableDialog>
+			{/if}
 		</RealmForm>
 	</CardBody>
 </Card>

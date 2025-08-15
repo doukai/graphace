@@ -61,8 +61,8 @@
 <Card>
 	<CardBody>
 		<PermissionForm
-			showSaveButton
-			showRemoveButton
+			showSaveButton={auth('Permission::*::WRITE')}
+			showRemoveButton={auth('Permission::isDeprecated::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

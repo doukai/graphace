@@ -87,9 +87,9 @@
 <Card>
 	<CardBody>
 		<GroupTable
-			showRemoveButton
+			showRemoveButton={auth('Group::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}

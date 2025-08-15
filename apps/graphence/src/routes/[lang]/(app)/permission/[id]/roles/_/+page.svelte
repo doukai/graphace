@@ -58,7 +58,7 @@
 <Card>
 	<CardBody>
 		<RoleForm
-			showSaveButton
+			showSaveButton={auth('Role::*::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

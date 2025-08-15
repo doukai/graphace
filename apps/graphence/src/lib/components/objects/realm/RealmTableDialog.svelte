@@ -170,7 +170,7 @@
 			bind:args
 			bind:orderBy
 			showEditButton={!readonly}
-			showCreateButton={!readonly}
+			showCreateButton={!readonly && auth('Realm::*::WRITE')}
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_realmConnection_Store.isFetching}
 			{zIndex}

@@ -61,8 +61,8 @@
 <Card>
 	<CardBody>
 		<RealmForm
-			showSaveButton
-			showRemoveButton
+			showSaveButton={auth('Realm::*::WRITE')}
+			showRemoveButton={auth('Realm::isDeprecated::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

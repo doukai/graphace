@@ -97,9 +97,9 @@
 <Card>
 	<CardBody>
 		<{{ name }}Table
-			showRemoveButton
+			showRemoveButton={auth('{{ name }}::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('{{ name }}::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}

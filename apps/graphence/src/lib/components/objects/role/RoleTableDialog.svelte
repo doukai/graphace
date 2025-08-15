@@ -200,7 +200,7 @@
 			bind:args
 			bind:orderBy
 			showEditButton={!readonly}
-			showCreateButton={!readonly}
+			showCreateButton={!readonly && auth('Role::*::WRITE')}
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_roleConnection_Store.isFetching}
 			{zIndex}

@@ -111,9 +111,9 @@
 <Card>
 	<CardBody>
 		<RoleTable
-			showUnbindButton
+			showUnbindButton={auth('Role::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('Role::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}
@@ -236,19 +236,21 @@
 			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
-			<RoleTableDialog
-				args={{ not: true, users: { id: { val: user?.id } } }}
-				class="btn-accent"
-				on:select={(e) => {
-					if (Array.isArray(e.detail.value)) {
-						merge(e.detail.value);
-					} else {
-						merge([e.detail.value]);
-					}
-				}}
-			>
-				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
-			</RoleTableDialog>
+			{#if auth('Role::*::WRITE')}
+				<RoleTableDialog
+					args={{ not: true, users: { id: { val: user?.id } } }}
+					class="btn-accent"
+					on:select={(e) => {
+						if (Array.isArray(e.detail.value)) {
+							merge(e.detail.value);
+						} else {
+							merge([e.detail.value]);
+						}
+					}}
+				>
+					<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+				</RoleTableDialog>
+			{/if}
 		</RoleTable>
 		<div class="divider" />
 		<Pagination

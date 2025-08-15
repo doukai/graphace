@@ -8,8 +8,9 @@
 	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { GroupInput } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import { locale } from '$i18n/i18n-svelte';
 	
 	export let value: GroupInput | null | undefined = undefined;
 	export let isFetching: boolean = false;

@@ -9,8 +9,9 @@
 	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
 	import PermissionTableDialog from '~/lib/components/objects/permission/PermissionTableDialog.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleInput } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
+	import { locale } from '$i18n/i18n-svelte';
 	
 	export let value: RoleInput | null | undefined = undefined;
 	export let isFetching: boolean = false;

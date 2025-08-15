@@ -161,8 +161,8 @@
 	</svelte:fragment>
 	<svelte:fragment let:zIndex>
 		<{{ name }}Form
-			showSaveButton={!readonly}
-			showRemoveButton={!readonly}
+			showSaveButton={!readonly && auth('{{ name }}::*::WRITE')}
+			showRemoveButton={!readonly && auth('{{ name }}::isDeprecated::WRITE')}
 			bind:value
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_Store.isFetching}

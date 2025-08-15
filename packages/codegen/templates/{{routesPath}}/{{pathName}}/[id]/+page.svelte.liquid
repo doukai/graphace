@@ -71,8 +71,8 @@
 <Card>
 	<CardBody>
 		<{{ name }}Form
-			showSaveButton
-			showRemoveButton
+			showSaveButton={auth('{{ name }}::*::WRITE')}
+			showRemoveButton={auth('{{ name }}::isDeprecated::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

@@ -111,9 +111,9 @@
 <Card>
 	<CardBody>
 		<PermissionTable
-			showUnbindButton
+			showUnbindButton={auth('Permission::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('Permission::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}
@@ -238,19 +238,21 @@
 			on:goto={(e) => to(`/${$locale}/permission/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
-			<PermissionTableDialog
-				args={{ not: true, roles: { id: { val: role?.id } } }}
-				class="btn-accent"
-				on:select={(e) => {
-					if (Array.isArray(e.detail.value)) {
-						merge(e.detail.value);
-					} else {
-						merge([e.detail.value]);
-					}
-				}}
-			>
-				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
-			</PermissionTableDialog>
+			{#if auth('Permission::*::WRITE')}
+				<PermissionTableDialog
+					args={{ not: true, roles: { id: { val: role?.id } } }}
+					class="btn-accent"
+					on:select={(e) => {
+						if (Array.isArray(e.detail.value)) {
+							merge(e.detail.value);
+						} else {
+							merge([e.detail.value]);
+						}
+					}}
+				>
+					<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+				</PermissionTableDialog>
+			{/if}
 		</PermissionTable>
 		<div class="divider" />
 		<Pagination

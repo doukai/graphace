@@ -111,9 +111,9 @@
 <Card>
 	<CardBody>
 		<UserTable
-			showUnbindButton
+			showUnbindButton={auth('User::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('User::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}
@@ -255,19 +255,21 @@
 			on:goto={(e) => to(`/${$locale}/user/${e.detail.path}`, e.detail.name)}
 			on:back={(e) => ot()}
 		>
-			<UserTableDialog
-				args={{ not: true, groups: { id: { val: group?.id } } }}
-				class="btn-accent"
-				on:select={(e) => {
-					if (Array.isArray(e.detail.value)) {
-						merge(e.detail.value);
-					} else {
-						merge([e.detail.value]);
-					}
-				}}
-			>
-				<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
-			</UserTableDialog>
+			{#if auth('User::*::WRITE')}
+				<UserTableDialog
+					args={{ not: true, groups: { id: { val: group?.id } } }}
+					class="btn-accent"
+					on:select={(e) => {
+						if (Array.isArray(e.detail.value)) {
+							merge(e.detail.value);
+						} else {
+							merge([e.detail.value]);
+						}
+					}}
+				>
+					<Icon slot="sm" src={Plus} class="h-6 w-6" solid />
+				</UserTableDialog>
+			{/if}
 		</UserTable>
 		<div class="divider" />
 		<Pagination

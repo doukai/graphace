@@ -61,8 +61,8 @@
 <Card>
 	<CardBody>
 		<RoleForm
-			showSaveButton
-			showRemoveButton
+			showSaveButton={auth('Role::*::WRITE')}
+			showRemoveButton={auth('Role::isDeprecated::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

@@ -87,9 +87,9 @@
 <Card>
 	<CardBody>
 		<UserTable
-			showRemoveButton
+			showRemoveButton={auth('User::isDeprecated::WRITE')}
 			showEditButton
-			showCreateButton
+			showCreateButton={auth('User::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
 			value={nodes}

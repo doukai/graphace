@@ -1,23 +1,22 @@
+import { type Writable, writable, derived } from 'svelte/store';
 import { goto } from '$app/navigation';
-import { type Writable, writable, derived, get } from 'svelte/store';
-import { page } from '$app/stores';
-import type { Page } from '@sveltejs/kit';
 
-export const history: Writable<{ url: URL, name?: string | undefined }[]> = writable([]);
+export const history: Writable<{ url: URL, name?: string | null | undefined }[]> = writable([]);
 
 export const canBack = derived(
     history,
     ($history) => $history.length > 1
 );
 
-export function add(url: string | URL, name?: string, params?: Record<string, string | undefined>): URL {
-    let $page: Page;
-    page.subscribe((value) => {
-        $page = value;
-    });
+export function add(url: string | URL, name?: string | null | undefined, params?: Record<string, string | undefined>): URL {
     let toUrl: URL;
     if (typeof url === "string") {
-        toUrl = new URL(url, $page.url.href);
+        let baseURI = document.baseURI;
+        if (!baseURI) {
+            const baseTags = document.getElementsByTagName('base');
+            baseURI = baseTags.length ? baseTags[0].href : document.URL;
+        }
+        toUrl = new URL(url, baseURI);
     } else {
         toUrl = url;
     }
@@ -39,7 +38,7 @@ export function add(url: string | URL, name?: string, params?: Record<string, st
     return toUrl;
 }
 
-export function to(url: string | URL, name?: string, params?: Record<string, string | undefined>) {
+export function to(url: string | URL, name?: string | null | undefined, params?: Record<string, string | undefined>) {
     const toUrl = add(url, name, params);
     history.update(($history) => {
         const pathname = toUrl.pathname.split("/").splice(2).join("/");
@@ -51,12 +50,12 @@ export function to(url: string | URL, name?: string, params?: Record<string, str
     goto(toUrl);
 }
 
-export function init(url: string | URL, name?: string, params?: Record<string, string | undefined>) {
+export function init(url: string | URL, name?: string | null | undefined, params?: Record<string, string | undefined>) {
     history.set([]);
     to(url, name, params);
 }
 
-let $history: { url: URL, name?: string | undefined }[] = [];
+let $history: { url: URL, name?: string | null | undefined }[] = [];
 history.subscribe((value) => $history = value);
 
 export function ot(params?: Record<string, string | undefined>) {

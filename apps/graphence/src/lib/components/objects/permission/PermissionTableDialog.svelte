@@ -200,7 +200,7 @@
 			bind:args
 			bind:orderBy
 			showEditButton={!readonly}
-			showCreateButton={!readonly}
+			showCreateButton={!readonly && auth('Permission::*::WRITE')}
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_permissionConnection_Store.isFetching}
 			{zIndex}

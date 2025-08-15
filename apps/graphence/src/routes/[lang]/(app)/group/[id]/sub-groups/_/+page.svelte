@@ -58,7 +58,7 @@
 <Card>
 	<CardBody>
 		<GroupForm
-			showSaveButton
+			showSaveButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}

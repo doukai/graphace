@@ -189,8 +189,8 @@
 	</svelte:fragment>
 	<svelte:fragment let:zIndex>
 		<PermissionForm
-			showSaveButton={!readonly}
-			showRemoveButton={!readonly}
+			showSaveButton={!readonly && auth('Permission::*::WRITE')}
+			showRemoveButton={!readonly && auth('Permission::isDeprecated::WRITE')}
 			bind:value
 			{errors}
 			isFetching={$query_permission_Store.isFetching}

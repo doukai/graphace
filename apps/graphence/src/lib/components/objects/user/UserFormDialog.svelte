@@ -207,8 +207,8 @@
 	</svelte:fragment>
 	<svelte:fragment let:zIndex>
 		<UserForm
-			showSaveButton={!readonly}
-			showRemoveButton={!readonly}
+			showSaveButton={!readonly && auth('User::*::WRITE')}
+			showRemoveButton={!readonly && auth('User::isDeprecated::WRITE')}
 			bind:value
 			{errors}
 			isFetching={$query_user_Store.isFetching}

@@ -189,8 +189,8 @@
 	</svelte:fragment>
 	<svelte:fragment let:zIndex>
 		<RoleForm
-			showSaveButton={!readonly}
-			showRemoveButton={!readonly}
+			showSaveButton={!readonly && auth('Role::*::WRITE')}
+			showRemoveButton={!readonly && auth('Role::isDeprecated::WRITE')}
 			bind:value
 			{errors}
 			isFetching={$query_role_Store.isFetching}
