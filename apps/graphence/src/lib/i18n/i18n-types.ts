@@ -2,6 +2,8 @@
 /* eslint-disable */
 import type { BaseTranslation as BaseTranslationType, LocalizedString, RequiredParams } from 'typesafe-i18n'
 
+import type { any } from './custom-types'
+
 export type BaseTranslation = BaseTranslationType & DisallowNamespaces
 export type BaseLocale = 'en'
 
@@ -62,6 +64,306 @@ export type NamespaceErrorsTranslation = {
 		 * U​n​k​n​o​w​n​ ​E​r​r​o​r
 		 */
 		unknown: string
+	}
+	types: {
+		/**
+		 * S​t​r​i​n​g
+		 */
+		string: string
+		/**
+		 * N​u​m​b​e​r
+		 */
+		number: string
+		/**
+		 * I​n​t​e​g​e​r
+		 */
+		integer: string
+		/**
+		 * B​o​o​l​e​a​n
+		 */
+		boolean: string
+		/**
+		 * A​r​r​a​y
+		 */
+		array: string
+		/**
+		 * O​b​j​e​c​t
+		 */
+		object: string
+		/**
+		 * N​u​l​l
+		 */
+		'null': string
+	}
+	formats: {
+		/**
+		 * D​a​t​e​ ​(​Y​Y​Y​Y​-​M​M​-​D​D​)
+		 */
+		date: string
+		/**
+		 * T​i​m​e​ ​(​H​H​:​M​M​:​S​S​)
+		 */
+		time: string
+		/**
+		 * D​a​t​e​-​T​i​m​e​ ​(​I​S​O​ ​8​6​0​1​)
+		 */
+		'date-time': string
+		/**
+		 * I​S​O​ ​T​i​m​e
+		 */
+		'iso-time': string
+		/**
+		 * I​S​O​ ​D​a​t​e​-​T​i​m​e
+		 */
+		'iso-date-time': string
+		/**
+		 * D​u​r​a​t​i​o​n​ ​(​I​S​O​ ​8​6​0​1​)
+		 */
+		duration: string
+		/**
+		 * U​R​I
+		 */
+		uri: string
+		/**
+		 * U​R​I​ ​R​e​f​e​r​e​n​c​e
+		 */
+		'uri-reference': string
+		/**
+		 * U​R​I​ ​T​e​m​p​l​a​t​e
+		 */
+		'uri-template': string
+		/**
+		 * E​m​a​i​l
+		 */
+		email: string
+		/**
+		 * H​o​s​t​n​a​m​e
+		 */
+		hostname: string
+		/**
+		 * I​P​v​4​ ​A​d​d​r​e​s​s
+		 */
+		ipv4: string
+		/**
+		 * I​P​v​6​ ​A​d​d​r​e​s​s
+		 */
+		ipv6: string
+		/**
+		 * R​e​g​u​l​a​r​ ​E​x​p​r​e​s​s​i​o​n
+		 */
+		regex: string
+		/**
+		 * U​U​I​D
+		 */
+		uuid: string
+		/**
+		 * J​S​O​N​ ​P​o​i​n​t​e​r
+		 */
+		'json-pointer': string
+		/**
+		 * R​e​l​a​t​i​v​e​ ​J​S​O​N​ ​P​o​i​n​t​e​r
+		 */
+		'relative-json-pointer': string
+		/**
+		 * B​y​t​e​ ​(​B​a​s​e​6​4​)
+		 */
+		byte: string
+		/**
+		 * I​n​t​e​g​e​r​ ​3​2​-​b​i​t
+		 */
+		int32: string
+		/**
+		 * I​n​t​e​g​e​r​ ​6​4​-​b​i​t
+		 */
+		int64: string
+		/**
+		 * F​l​o​a​t
+		 */
+		float: string
+		/**
+		 * D​o​u​b​l​e
+		 */
+		double: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * B​i​n​a​r​y
+		 */
+		binary: string
+	}
+	jsonSchema: {
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​h​a​v​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​l​i​m​i​t​}​ ​i​t​e​m​s
+		 * @param {any} limit
+		 */
+		items: RequiredParams<'limit'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​h​a​v​e​ ​a​d​d​i​t​i​o​n​a​l​ ​p​r​o​p​e​r​t​i​e​s
+		 */
+		additionalProperties: string
+		/**
+		 * m​u​s​t​ ​m​a​t​c​h​ ​a​ ​s​c​h​e​m​a​ ​i​n​ ​"​a​n​y​O​f​"
+		 */
+		anyOf: string
+		/**
+		 * m​u​s​t​ ​b​e​ ​e​q​u​a​l​ ​t​o​ ​c​o​n​s​t​a​n​t
+		 */
+		'const': string
+		/**
+		 * m​u​s​t​ ​c​o​n​t​a​i​n​ ​a​ ​v​a​l​i​d​ ​i​t​e​m
+		 */
+		contains: string
+		/**
+		 * m​u​s​t​ ​h​a​v​e​ ​p​r​o​p​e​r​t​i​e​s​ ​{​d​e​p​s​}​ ​w​h​e​n​ ​p​r​o​p​e​r​t​y​ ​{​p​r​o​p​e​r​t​y​}​ ​i​s​ ​p​r​e​s​e​n​t
+		 * @param {any} deps
+		 * @param {any} property
+		 */
+		dependencies: RequiredParams<'deps' | 'property'>
+		/**
+		 * m​u​s​t​ ​p​a​s​s​ ​"​{​k​e​y​w​o​r​d​}​"​ ​k​e​y​w​o​r​d​ ​v​a​l​i​d​a​t​i​o​n
+		 * @param {any} keyword
+		 */
+		discriminator: RequiredParams<'keyword'>
+		/**
+		 * t​a​g​ ​"​{​t​a​g​}​"​ ​m​u​s​t​ ​b​e​ ​s​t​r​i​n​g
+		 * @param {any} tag
+		 */
+		tag: RequiredParams<'tag'>
+		/**
+		 * v​a​l​u​e​ ​o​f​ ​t​a​g​ ​"​{​t​a​g​}​"​ ​m​u​s​t​ ​b​e​ ​i​n​ ​o​n​e​O​f
+		 * @param {any} tag
+		 */
+		mapping: RequiredParams<'tag'>
+		/**
+		 * m​u​s​t​ ​b​e​ ​e​q​u​a​l​ ​t​o​ ​o​n​e​ ​o​f​ ​t​h​e​ ​a​l​l​o​w​e​d​ ​v​a​l​u​e​s
+		 */
+		'enum': string
+		/**
+		 * b​o​o​l​e​a​n​ ​s​c​h​e​m​a​ ​i​s​ ​f​a​l​s​e
+		 */
+		'false': string
+		/**
+		 * m​u​s​t​ ​m​a​t​c​h​ ​f​o​r​m​a​t​ ​"​{​f​o​r​m​a​t​}​"
+		 * @param {any} format
+		 */
+		format: RequiredParams<'format'>
+		/**
+		 * m​u​s​t​ ​b​e​ ​{​c​o​m​p​a​r​i​s​o​n​}​ ​{​l​i​m​i​t​}
+		 * @param {any} comparison
+		 * @param {any} limit
+		 */
+		formatMaximum: RequiredParams<'comparison' | 'limit'>
+		/**
+		 * m​u​s​t​ ​b​e​ ​{​c​o​m​p​a​r​i​s​o​n​}​ ​{​l​i​m​i​t​}
+		 * @param {any} comparison
+		 * @param {any} limit
+		 */
+		formatMinimum: RequiredParams<'comparison' | 'limit'>
+		/**
+		 * m​u​s​t​ ​m​a​t​c​h​ ​"​{​f​a​i​l​i​n​g​K​e​y​w​o​r​d​}​"​ ​s​c​h​e​m​a
+		 * @param {any} failingKeyword
+		 */
+		'if': RequiredParams<'failingKeyword'>
+		/**
+		 * m​u​s​t​ ​b​e​ ​{​c​o​m​p​a​r​i​s​o​n​}​ ​{​l​i​m​i​t​}
+		 * @param {any} comparison
+		 * @param {any} limit
+		 */
+		maximum: RequiredParams<'comparison' | 'limit'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​h​a​v​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​l​i​m​i​t​}​ ​i​t​e​m
+		 * @param {any} limit
+		 */
+		maxItems: RequiredParams<'limit'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​b​e​ ​l​o​n​g​e​r​ ​t​h​a​n​ ​{​l​i​m​i​t​}​ ​c​h​a​r​a​c​t​e​r
+		 * @param {any} limit
+		 */
+		maxLength: RequiredParams<'limit'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​b​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​l​i​m​i​t​}​ ​p​r​o​p​e​r​t​i​e​s
+		 * @param {any} limit
+		 */
+		maxProperties: RequiredParams<'limit'>
+		/**
+		 * m​u​s​t​ ​b​e​ ​{​c​o​m​p​a​r​i​s​o​n​}​ ​{​l​i​m​i​t​}
+		 * @param {any} comparison
+		 * @param {any} limit
+		 */
+		minimum: RequiredParams<'comparison' | 'limit'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​h​a​v​e​ ​l​e​s​s​ ​t​h​a​n​ ​{​l​i​m​i​t​}​ ​i​t​e​m
+		 * @param {any} limit
+		 */
+		minItems: RequiredParams<'limit'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​b​e​ ​s​h​o​r​t​e​r​ ​t​h​a​n​ ​{​l​i​m​i​t​}​ ​c​h​a​r​a​c​t​e​r
+		 * @param {any} limit
+		 */
+		minLength: RequiredParams<'limit'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​b​e​ ​l​e​s​s​ ​t​h​a​n​ ​{​l​i​m​i​t​}​ ​p​r​o​p​e​r​t​i​e​s
+		 * @param {any} limit
+		 */
+		minProperties: RequiredParams<'limit'>
+		/**
+		 * m​u​s​t​ ​b​e​ ​a​ ​m​u​l​t​i​p​l​e​ ​o​f​ ​{​m​u​l​t​i​p​l​e​O​f​}
+		 * @param {any} multipleOf
+		 */
+		multipleOf: RequiredParams<'multipleOf'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​b​e​ ​v​a​l​i​d​ ​a​c​c​o​r​d​i​n​g​ ​t​o​ ​s​c​h​e​m​a​ ​i​n​ ​"​n​o​t​"
+		 */
+		not: string
+		/**
+		 * m​u​s​t​ ​m​a​t​c​h​ ​e​x​a​c​t​l​y​ ​o​n​e​ ​s​c​h​e​m​a​ ​i​n​ ​"​o​n​e​O​f​"
+		 */
+		oneOf: string
+		/**
+		 * m​u​s​t​ ​m​a​t​c​h​ ​p​a​t​t​e​r​n​ ​"​{​p​a​t​t​e​r​n​}​"
+		 * @param {any} pattern
+		 */
+		pattern: RequiredParams<'pattern'>
+		/**
+		 * m​u​s​t​ ​h​a​v​e​ ​p​r​o​p​e​r​t​y​ ​m​a​t​c​h​i​n​g​ ​p​a​t​t​e​r​n​ ​"​{​m​i​s​s​i​n​g​P​a​t​t​e​r​n​}​"
+		 * @param {any} missingPattern
+		 */
+		patternRequired: RequiredParams<'missingPattern'>
+		/**
+		 * p​r​o​p​e​r​t​y​ ​n​a​m​e​ ​i​s​ ​i​n​v​a​l​i​d
+		 */
+		propertyNames: string
+		/**
+		 * r​e​q​u​i​r​e​d
+		 */
+		required: string
+		/**
+		 * m​u​s​t​ ​b​e​ ​{​t​y​p​e​}
+		 * @param {any} type
+		 */
+		type: RequiredParams<'type'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​h​a​v​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​l​e​n​}​ ​i​t​e​m​s
+		 * @param {any} len
+		 */
+		unevaluatedItems: RequiredParams<'len'>
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​h​a​v​e​ ​u​n​e​v​a​l​u​a​t​e​d​ ​p​r​o​p​e​r​t​i​e​s
+		 */
+		unevaluatedProperties: string
+		/**
+		 * m​u​s​t​ ​N​O​T​ ​h​a​v​e​ ​d​u​p​l​i​c​a​t​e​ ​i​t​e​m​s​ ​(​i​t​e​m​s​ ​#​#​ ​a​n​d​ ​{​j​}​ ​a​r​e​ ​{​i​}​ ​i​d​e​n​t​i​c​a​l​)
+		 * @param {any} i
+		 * @param {any} j
+		 */
+		uniqueItems: RequiredParams<'i' | 'j'>
+		/**
+		 * m​u​s​t​ ​p​a​s​s​ ​"​{​k​e​y​w​o​r​d​}​"​ ​k​e​y​w​o​r​d​ ​v​a​l​i​d​a​t​i​o​n
+		 * @param {any} keyword
+		 */
+		'default': RequiredParams<'keyword'>
 	}
 }
 
@@ -3045,6 +3347,276 @@ export type TranslationFunctions = {
 			 * Unknown Error
 			 */
 			unknown: () => LocalizedString
+		}
+		types: {
+			/**
+			 * String
+			 */
+			string: () => LocalizedString
+			/**
+			 * Number
+			 */
+			number: () => LocalizedString
+			/**
+			 * Integer
+			 */
+			integer: () => LocalizedString
+			/**
+			 * Boolean
+			 */
+			boolean: () => LocalizedString
+			/**
+			 * Array
+			 */
+			array: () => LocalizedString
+			/**
+			 * Object
+			 */
+			object: () => LocalizedString
+			/**
+			 * Null
+			 */
+			'null': () => LocalizedString
+		}
+		formats: {
+			/**
+			 * Date (YYYY-MM-DD)
+			 */
+			date: () => LocalizedString
+			/**
+			 * Time (HH:MM:SS)
+			 */
+			time: () => LocalizedString
+			/**
+			 * Date-Time (ISO 8601)
+			 */
+			'date-time': () => LocalizedString
+			/**
+			 * ISO Time
+			 */
+			'iso-time': () => LocalizedString
+			/**
+			 * ISO Date-Time
+			 */
+			'iso-date-time': () => LocalizedString
+			/**
+			 * Duration (ISO 8601)
+			 */
+			duration: () => LocalizedString
+			/**
+			 * URI
+			 */
+			uri: () => LocalizedString
+			/**
+			 * URI Reference
+			 */
+			'uri-reference': () => LocalizedString
+			/**
+			 * URI Template
+			 */
+			'uri-template': () => LocalizedString
+			/**
+			 * Email
+			 */
+			email: () => LocalizedString
+			/**
+			 * Hostname
+			 */
+			hostname: () => LocalizedString
+			/**
+			 * IPv4 Address
+			 */
+			ipv4: () => LocalizedString
+			/**
+			 * IPv6 Address
+			 */
+			ipv6: () => LocalizedString
+			/**
+			 * Regular Expression
+			 */
+			regex: () => LocalizedString
+			/**
+			 * UUID
+			 */
+			uuid: () => LocalizedString
+			/**
+			 * JSON Pointer
+			 */
+			'json-pointer': () => LocalizedString
+			/**
+			 * Relative JSON Pointer
+			 */
+			'relative-json-pointer': () => LocalizedString
+			/**
+			 * Byte (Base64)
+			 */
+			byte: () => LocalizedString
+			/**
+			 * Integer 32-bit
+			 */
+			int32: () => LocalizedString
+			/**
+			 * Integer 64-bit
+			 */
+			int64: () => LocalizedString
+			/**
+			 * Float
+			 */
+			float: () => LocalizedString
+			/**
+			 * Double
+			 */
+			double: () => LocalizedString
+			/**
+			 * Password
+			 */
+			password: () => LocalizedString
+			/**
+			 * Binary
+			 */
+			binary: () => LocalizedString
+		}
+		jsonSchema: {
+			/**
+			 * must NOT have more than {limit} items
+			 */
+			items: (arg: { limit: any }) => LocalizedString
+			/**
+			 * must NOT have additional properties
+			 */
+			additionalProperties: () => LocalizedString
+			/**
+			 * must match a schema in "anyOf"
+			 */
+			anyOf: () => LocalizedString
+			/**
+			 * must be equal to constant
+			 */
+			'const': () => LocalizedString
+			/**
+			 * must contain a valid item
+			 */
+			contains: () => LocalizedString
+			/**
+			 * must have properties {deps} when property {property} is present
+			 */
+			dependencies: (arg: { deps: any, property: any }) => LocalizedString
+			/**
+			 * must pass "{keyword}" keyword validation
+			 */
+			discriminator: (arg: { keyword: any }) => LocalizedString
+			/**
+			 * tag "{tag}" must be string
+			 */
+			tag: (arg: { tag: any }) => LocalizedString
+			/**
+			 * value of tag "{tag}" must be in oneOf
+			 */
+			mapping: (arg: { tag: any }) => LocalizedString
+			/**
+			 * must be equal to one of the allowed values
+			 */
+			'enum': () => LocalizedString
+			/**
+			 * boolean schema is false
+			 */
+			'false': () => LocalizedString
+			/**
+			 * must match format "{format}"
+			 */
+			format: (arg: { format: any }) => LocalizedString
+			/**
+			 * must be {comparison} {limit}
+			 */
+			formatMaximum: (arg: { comparison: any, limit: any }) => LocalizedString
+			/**
+			 * must be {comparison} {limit}
+			 */
+			formatMinimum: (arg: { comparison: any, limit: any }) => LocalizedString
+			/**
+			 * must match "{failingKeyword}" schema
+			 */
+			'if': (arg: { failingKeyword: any }) => LocalizedString
+			/**
+			 * must be {comparison} {limit}
+			 */
+			maximum: (arg: { comparison: any, limit: any }) => LocalizedString
+			/**
+			 * must NOT have more than {limit} item
+			 */
+			maxItems: (arg: { limit: any }) => LocalizedString
+			/**
+			 * must NOT be longer than {limit} character
+			 */
+			maxLength: (arg: { limit: any }) => LocalizedString
+			/**
+			 * must NOT be more than {limit} properties
+			 */
+			maxProperties: (arg: { limit: any }) => LocalizedString
+			/**
+			 * must be {comparison} {limit}
+			 */
+			minimum: (arg: { comparison: any, limit: any }) => LocalizedString
+			/**
+			 * must NOT have less than {limit} item
+			 */
+			minItems: (arg: { limit: any }) => LocalizedString
+			/**
+			 * must NOT be shorter than {limit} character
+			 */
+			minLength: (arg: { limit: any }) => LocalizedString
+			/**
+			 * must NOT be less than {limit} properties
+			 */
+			minProperties: (arg: { limit: any }) => LocalizedString
+			/**
+			 * must be a multiple of {multipleOf}
+			 */
+			multipleOf: (arg: { multipleOf: any }) => LocalizedString
+			/**
+			 * must NOT be valid according to schema in "not"
+			 */
+			not: () => LocalizedString
+			/**
+			 * must match exactly one schema in "oneOf"
+			 */
+			oneOf: () => LocalizedString
+			/**
+			 * must match pattern "{pattern}"
+			 */
+			pattern: (arg: { pattern: any }) => LocalizedString
+			/**
+			 * must have property matching pattern "{missingPattern}"
+			 */
+			patternRequired: (arg: { missingPattern: any }) => LocalizedString
+			/**
+			 * property name is invalid
+			 */
+			propertyNames: () => LocalizedString
+			/**
+			 * required
+			 */
+			required: () => LocalizedString
+			/**
+			 * must be {type}
+			 */
+			type: (arg: { type: any }) => LocalizedString
+			/**
+			 * must NOT have more than {len} items
+			 */
+			unevaluatedItems: (arg: { len: any }) => LocalizedString
+			/**
+			 * must NOT have unevaluated properties
+			 */
+			unevaluatedProperties: () => LocalizedString
+			/**
+			 * must NOT have duplicate items (items ## and {j} are {i} identical)
+			 */
+			uniqueItems: (arg: { i: any, j: any }) => LocalizedString
+			/**
+			 * must pass "{keyword}" keyword validation
+			 */
+			'default': (arg: { keyword: any }) => LocalizedString
 		}
 	}
 	graphence: {
