@@ -220,7 +220,7 @@ export type NamespaceErrorsTranslation = {
 		 * @param {any} deps
 		 * @param {any} property
 		 */
-		dependencies: RequiredParams<'deps' | 'property'>
+		dependentRequired: RequiredParams<'deps' | 'property'>
 		/**
 		 * m​u​s​t​ ​p​a​s​s​ ​"​{​k​e​y​w​o​r​d​}​"​ ​k​e​y​w​o​r​d​ ​v​a​l​i​d​a​t​i​o​n
 		 * @param {any} keyword
@@ -3500,7 +3500,7 @@ export type TranslationFunctions = {
 			/**
 			 * must have properties {deps} when property {property} is present
 			 */
-			dependencies: (arg: { deps: any, property: any }) => LocalizedString
+			dependentRequired: (arg: { deps: any, property: any }) => LocalizedString
 			/**
 			 * must pass "{keyword}" keyword validation
 			 */

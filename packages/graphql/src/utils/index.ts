@@ -1,2 +1,2 @@
-export * from "./tree-util.js";
-export * from "./arguments-util.js";
+export * from "./tree.js";
+export * from "./arguments.js";

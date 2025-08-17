@@ -55,7 +55,7 @@ const en: BaseTranslation = {
 		anyOf: 'must match a schema in "anyOf"',
 		const: 'must be equal to constant',
 		contains: 'must contain a valid item',
-		dependencies: 'must have properties {deps:any} when property {property:any} is present',
+		dependentRequired: 'must have properties {deps:any} when property {property:any} is present',
 		discriminator: 'must pass "{keyword:any}" keyword validation',
 		tag: 'tag "{tag:any}" must be string',
 		mapping: 'value of tag "{tag:any}" must be in oneOf',

@@ -58,8 +58,18 @@ export function createValidator(options: {
                 const valid = validate(data);
                 if (!valid) {
                     if (validate.errors) {
-                        options.buildErrorMessages(validate.errors);
-                        const errors = buildErrors(validate.errors);
+                        let targetErrors: ErrorObject[];
+                        if ((<any>data)?.input || (<any>data)?.list) {
+                            targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/0/'));
+                        } else if ((<any>data)?.where) {
+                            targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/1/'));
+                        } else if ((<any>data)?.id !== null && (<any>data)?.id !== undefined) {
+                            targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/2/'));
+                        } else {
+                            targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/3/'));
+                        }
+                        options.buildErrorMessages(targetErrors);
+                        const errors = buildErrors(targetErrors);
                         update(() => ({ isValidating: false, errors }));
                         reject(errors);
                     } else {

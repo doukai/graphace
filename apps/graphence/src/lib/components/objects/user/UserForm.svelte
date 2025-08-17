@@ -89,7 +89,7 @@
 		<slot name="name">
 			{#if !fields.name?.hidden}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.name.name()} />
+					<Label {id} text={$LL.graphql.objects.User.fields.name.name()} required />
 					<StringInput
 						{id}
 						name="name"
@@ -134,7 +134,7 @@
 		<slot name="login">
 			{#if !fields.login?.hidden}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.login.name()} />
+					<Label {id} text={$LL.graphql.objects.User.fields.login.name()} required />
 					<StringInput
 						{id}
 						name="login"

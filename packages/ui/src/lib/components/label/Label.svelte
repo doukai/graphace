@@ -3,6 +3,7 @@
 
 	export let text: string;
 	export let id: string;
+	export let required: boolean | undefined = false;
 	let className: string | undefined = '';
 	export { className as class };
 
@@ -10,5 +11,10 @@
 </script>
 
 <label for={id} class="label">
-	<span class="label-text {className} {contextClass}">{text}</span>
+	<span class="label-text {className} {contextClass}">
+		{#if required}
+			<span class="text-error">*</span>
+		{/if}
+		{text}
+	</span>
 </label>

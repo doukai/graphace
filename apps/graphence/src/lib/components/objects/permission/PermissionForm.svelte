@@ -83,7 +83,7 @@
 		<slot name="name">
 			{#if !fields.name?.hidden}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.Permission.fields.name.name()} />
+					<Label {id} text={$LL.graphql.objects.Permission.fields.name.name()} required />
 					<StringInput
 						{id}
 						name="name"
@@ -113,7 +113,7 @@
 		<slot name="field">
 			{#if !fields.field?.hidden}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.Permission.fields.field.name()} />
+					<Label {id} text={$LL.graphql.objects.Permission.fields.field.name()} required />
 					<StringInput
 						{id}
 						name="field"
@@ -128,7 +128,7 @@
 		<slot name="type">
 			{#if !fields.type?.hidden}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.Permission.fields.type.name()} />
+					<Label {id} text={$LL.graphql.objects.Permission.fields.type.name()} required />
 					<StringInput
 						{id}
 						name="type"
@@ -143,7 +143,7 @@
 		<slot name="permissionType">
 			{#if !fields.permissionType?.hidden}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.Permission.fields.permissionType.name()} />
+					<Label {id} text={$LL.graphql.objects.Permission.fields.permissionType.name()} required />
 					<PermissionTypeInput
 						{id}
 						name="permissionType"

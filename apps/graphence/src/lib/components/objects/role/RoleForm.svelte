@@ -85,7 +85,7 @@
 		<slot name="name">
 			{#if !fields.name?.hidden}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.Role.fields.name.name()} />
+					<Label {id} text={$LL.graphql.objects.Role.fields.name.name()} required />
 					<StringInput
 						{id}
 						name="name"

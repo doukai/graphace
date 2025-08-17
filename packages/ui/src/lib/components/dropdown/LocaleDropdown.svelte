@@ -4,7 +4,6 @@
 	import { browser } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Language, ChevronDown } from '@steeze-ui/heroicons';
-	import { replaceLocaleInUrl } from '@graphace/commons';
 	import { Dropdown, DropdownContent } from '.';
 	import { setLocale, locale } from '~/i18n/i18n-svelte';
 	import type { Locales } from '~/i18n/i18n-types';
@@ -39,6 +38,17 @@
 				invalidateAll: true
 			});
 		}
+	};
+
+	const replaceLocaleInUrl = (url: URL, locale: string, full = false): string => {
+		const [, , ...rest] = url.pathname.split('/');
+		const new_pathname = `/${[locale, ...rest].join('/')}`;
+		if (!full) {
+			return `${new_pathname}${url.search}`;
+		}
+		const newUrl = new URL(url.toString());
+		newUrl.pathname = new_pathname;
+		return newUrl.toString();
 	};
 
 	// update `lang` attribute

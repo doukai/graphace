@@ -70,7 +70,7 @@
 		<slot name="name">
 			{#if !fields.name?.hidden}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.Realm.fields.name.name()} />
+					<Label {id} text={$LL.graphql.objects.Realm.fields.name.name()} required />
 					<StringInput
 						{id}
 						name="name"

@@ -55,7 +55,7 @@ const zh: NamespaceErrorsTranslation = {
         anyOf: '数据必须符合 "anyOf" 中的某个模式',
         const: '数据必须等于指定常量',
         contains: '必须包含至少一个有效项目',
-        dependencies: '当属性 {property} 存在时，必须同时包含 {deps}',
+        dependentRequired: '当属性 {property} 存在时，必须同时包含 {deps}',
         discriminator: '必须通过 "{keyword}" 关键字校验',
         tag: '标签 "{tag}" 必须是字符串',
         mapping: '标签 "{tag}" 的值必须在 oneOf 中',

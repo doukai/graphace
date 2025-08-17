@@ -110,7 +110,7 @@
 				</div>
 				{%- else %}
 				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
+					<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}{% if field.isNonNullType %} required{% endif %} />
 					{%- if field.isScalarType or field.isEnumType or field.isFile %}
 					<{{ field.fieldTypeName }}Input
 						{id}

@@ -44,7 +44,7 @@ export const createValidator = (event: LoadEvent | RequestEvent) => {
                             break
                         case "dependencies":
                         case "dependentRequired":
-                            out = $LL.errors.jsonSchema.dependencies({ deps: e.params.deps, property: e.params.property });
+                            out = $LL.errors.jsonSchema.dependentRequired({ deps: e.params.deps, property: e.params.property });
                             break
                         case "discriminator":
                             switch (e.params.error) {
