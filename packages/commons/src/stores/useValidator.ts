@@ -66,7 +66,7 @@ export function createValidator(options: {
                         } else if ((<any>data)?.id !== null && (<any>data)?.id !== undefined) {
                             targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/2/'));
                         } else {
-                            targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/3/'));
+                            targetErrors = validate.errors.filter(error => !error.schemaPath.startsWith('#/anyOf/') || error.schemaPath.startsWith('#/anyOf/3/'));
                         }
                         options.buildErrorMessages(targetErrors);
                         const errors = buildErrors(targetErrors);
