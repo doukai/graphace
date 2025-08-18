@@ -35,13 +35,11 @@
 					.filter((name) => name !== null)
 					.join(',');
 			}
-			value = undefined;
 		}
 	} else if (value) {
 		if (textFieldName) {
 			text = value?.[textFieldName] + '';
 		}
-		value = undefined;
 	}
 </script>
 
