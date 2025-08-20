@@ -10,7 +10,7 @@
 	export let value: any = undefined;
 	export let textFieldName: string | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
-	let className: string | undefined = 'btn-link p-0';
+	let className: string | undefined = 'h-full content-center self-center';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');

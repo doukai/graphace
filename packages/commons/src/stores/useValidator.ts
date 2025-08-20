@@ -52,7 +52,6 @@ export function createValidator(options: {
     }
 
     const execute = async <T>(validate: AnyValidateFunction<T> | undefined, data: T): Promise<T> => {
-        update(() => ({ isValidating: true }));
         return new Promise((resolve: (data: T) => void, reject: (errors: Record<string, Errors>) => void) => {
             if (validate) {
                 const valid = validate(data);
@@ -88,11 +87,13 @@ export function createValidator(options: {
     }
 
     const validate = async <T>(keyRef: string, data: T): Promise<T> => {
+        update(() => ({ isValidating: true }));
         const validate = await getValidate(keyRef);
         return <T>execute(validate, data);
     };
 
     const validateSchema = async <T>(schemaObject: AnySchemaObject, data: T): Promise<T> => {
+        update(() => ({ isValidating: true }));
         const validate = await ajv.compileAsync(schemaObject);
         return <T>execute(validate, data);
     }
