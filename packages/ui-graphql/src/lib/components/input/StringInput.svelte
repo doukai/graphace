@@ -10,6 +10,9 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	export let textarea: boolean = false;
+	export let cols: number | undefined = undefined;
+	export let rows: number | undefined = undefined;
 	let className: string | undefined = undefined;
 	export { className as class };
 </script>
@@ -32,6 +35,9 @@
 		{name}
 		bind:value
 		{placeholder}
+		{textarea}
+		{cols}
+		{rows}
 		{errors}
 		{readonly}
 		{disabled}
