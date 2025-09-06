@@ -63,10 +63,8 @@ export function createValidator(options: {
                             anyOfErrors = validate.errors.filter(error => error.instancePath?.startsWith('/input/'));
                         } else if ((<any>data)?.list) {
                             anyOfErrors = validate.errors.filter(error => error.instancePath?.startsWith('/list/'));
-                        } else if ((<any>data)?.where || (<any>data)?.id !== undefined && (<any>data)?.id !== null) {
-                            anyOfErrors = validate.errors.filter(error => error.keyword !== 'required');
                         } else {
-                            anyOfErrors = validate.errors.filter(error => error.keyword !== 'required' || error.params?.missingProperty !== 'where' && error.params?.missingProperty !== 'id');
+                            anyOfErrors = validate.errors;
                         }
                         options.buildErrorMessages(anyOfErrors);
                         const errors = buildErrors(anyOfErrors, data);
