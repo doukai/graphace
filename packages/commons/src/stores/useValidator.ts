@@ -7,7 +7,7 @@ import addFormats from "ajv-formats";
 import type { Error, Errors } from '../index.js';
 import { buildErrorsTree } from '../index.js';
 
-const buildErrors = (errors: ErrorObject[]): Record<string, Errors> => {
+const buildErrors = (errors: ErrorObject[], data: any): Record<string, Errors> => {
     const instancePathErrors: Record<string, Error[]> = {};
     errors.map(error => {
         if (error.keyword === "required") {
@@ -22,7 +22,7 @@ const buildErrors = (errors: ErrorObject[]): Record<string, Errors> => {
     let errorsTree: Record<string, Errors> = {};
     Object.entries(instancePathErrors).forEach(
         ([instancePath, errors]) => {
-            errorsTree = buildErrorsTree(instancePath.split('/').slice(1), errors, errorsTree);
+            errorsTree = buildErrorsTree(instancePath.split('/').slice(1), data, errors, errorsTree);
         }
     );
     return errorsTree;
@@ -57,18 +57,19 @@ export function createValidator(options: {
                 const valid = validate(data);
                 if (!valid) {
                     if (validate.errors) {
-                        let targetErrors: ErrorObject[];
-                        if ((<any>data)?.input || (<any>data)?.list) {
-                            targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/0/'));
-                        } else if ((<any>data)?.where) {
-                            targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/1/'));
-                        } else if ((<any>data)?.id !== null && (<any>data)?.id !== undefined) {
-                            targetErrors = validate.errors.filter(error => error.schemaPath.startsWith('#/anyOf/2/'));
+                        console.error(validate.errors);
+                        let anyOfErrors;
+                        if ((<any>data)?.input) {
+                            anyOfErrors = validate.errors.filter(error => error.instancePath?.startsWith('/input/'));
+                        } else if ((<any>data)?.list) {
+                            anyOfErrors = validate.errors.filter(error => error.instancePath?.startsWith('/list/'));
+                        } else if ((<any>data)?.where || (<any>data)?.id !== undefined && (<any>data)?.id !== null) {
+                            anyOfErrors = validate.errors.filter(error => error.keyword !== 'required');
                         } else {
-                            targetErrors = validate.errors.filter(error => !error.schemaPath.startsWith('#/anyOf/') || error.schemaPath.startsWith('#/anyOf/3/'));
+                            anyOfErrors = validate.errors.filter(error => error.keyword !== 'required' || error.params?.missingProperty !== 'where' && error.params?.missingProperty !== 'id');
                         }
-                        options.buildErrorMessages(targetErrors);
-                        const errors = buildErrors(targetErrors);
+                        options.buildErrorMessages(anyOfErrors);
+                        const errors = buildErrors(anyOfErrors, data);
                         update(() => ({ isValidating: false, errors }));
                         reject(errors);
                     } else {

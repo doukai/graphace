@@ -4,7 +4,7 @@ import type { GraphQLError } from '~/types/index.js';
 
 export const createGraphQLErrorBuilder = (loadMessage: (code: number | null | undefined) => string | undefined) => {
 
-    const buildGraphQLErrors = (errors: GraphQLError[]): Record<string, Errors> => {
+    const buildGraphQLErrors = (errors: GraphQLError[], data: any): Record<string, Errors> => {
         const pathErrors: Record<string, Error[]> = {};
         errors.filter(error => error.path)
             .map(error => ({ ...error, message: loadMessage(error.extensions?.code) || error.message }))
@@ -16,7 +16,7 @@ export const createGraphQLErrorBuilder = (loadMessage: (code: number | null | un
         let errorsTree: Record<string, Errors> = {};
         Object.entries(pathErrors).forEach(
             ([path, errors]) => {
-                errorsTree = buildErrorsTree(path.split('/').slice(1), errors, errorsTree);
+                errorsTree = buildErrorsTree(path.split('/').slice(1), data, errors, errorsTree);
             }
         );
         return errorsTree;
