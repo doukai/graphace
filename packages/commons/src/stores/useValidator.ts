@@ -58,16 +58,8 @@ export function createValidator(options: {
                 if (!valid) {
                     if (validate.errors) {
                         console.error(validate.errors);
-                        let anyOfErrors;
-                        if ((<any>data)?.input) {
-                            anyOfErrors = validate.errors.filter(error => error.instancePath?.startsWith('/input/'));
-                        } else if ((<any>data)?.list) {
-                            anyOfErrors = validate.errors.filter(error => error.instancePath?.startsWith('/list/'));
-                        } else {
-                            anyOfErrors = validate.errors;
-                        }
-                        options.buildErrorMessages(anyOfErrors);
-                        const errors = buildErrors(anyOfErrors, data);
+                        options.buildErrorMessages(validate.errors);
+                        const errors = buildErrors(validate.errors, data);
                         update(() => ({ isValidating: false, errors }));
                         reject(errors);
                     } else {

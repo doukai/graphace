@@ -13,25 +13,25 @@ export type Errors = {
 }
 
 export function buildErrorsTree(path: string[], data: any, errors: Error[], errorsTree: Record<string, Errors>): Record<string, Errors> {
-    let anyOfErrors: Error[];
+    let targetErrors: Error[];
     if (data.where || data.id !== undefined && data.id !== null) {
-        anyOfErrors = errors.filter(error => error.keyword !== 'required');
+        targetErrors = errors.filter(error => error.keyword !== 'required');
     } else {
-        anyOfErrors = errors.filter(error => error.keyword !== 'required' || error.params?.missingProperty !== 'where' && error.params?.missingProperty !== 'id');
+        targetErrors = errors.filter(error => error.keyword !== 'required' || error.params?.missingProperty !== 'where' && error.params?.missingProperty !== 'id');
     }
     if (path.length === 1) {
-        anyOfErrors = [...errorsTree[path[0]]?.errors || [], ...anyOfErrors];
+        targetErrors = [...errorsTree[path[0]]?.errors || [], ...targetErrors];
         errorsTree[path[0]] = {
-            errors: anyOfErrors.filter(
+            errors: targetErrors.filter(
                 (error, index) =>
-                    anyOfErrors.findIndex((item) => item.message === error.message) === index
+                    targetErrors.findIndex((item) => item.message === error.message) === index
             ),
             iterms: errorsTree[path[0]]?.iterms
         };
     } else if (path.length > 1) {
         errorsTree[path[0]] = {
             errors: errorsTree[path[0]]?.errors,
-            iterms: { ...errorsTree[path[0]]?.iterms || {}, ...buildErrorsTree(path.slice(1), data[path[0]], anyOfErrors, errorsTree[path[0]]?.iterms || {}) }
+            iterms: { ...errorsTree[path[0]]?.iterms || {}, ...buildErrorsTree(path.slice(1), data[path[0]], targetErrors, errorsTree[path[0]]?.iterms || {}) }
         };
     }
     return Object.fromEntries(
