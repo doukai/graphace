@@ -93,7 +93,7 @@
 						showEditDialog
 						showRemoveButton
 						bind:value={value.{{ field.fieldName }}}
-						errors={errors.{{ field.fieldName }}}
+						errors={errors.{{ field.fieldName }}?.iterms}
 						{isFetching}
 						{isMutating}
 						on:remove={(e) => {

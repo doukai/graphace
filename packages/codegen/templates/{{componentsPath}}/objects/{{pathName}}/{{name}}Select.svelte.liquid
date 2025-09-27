@@ -33,13 +33,14 @@
 	$: options =
 		$namedQueryStore.response.data?.{{ name | camelCase }}List?.map((item) => ({
 			label: item?.name,
-			value: item?.{{ idName }}
+			value: item?.{{ idName }},
+			node: item
 		})) || [];
 
 	$: loading = $namedQueryStore.isFetching;
 
 	$: if (Array.isArray(value)) {
-		if(value.some((item) => !item?.name)){
+		if (value.some((item) => !item?.name)){
 			namedQueryStore
 				.fetch(query, {
 					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }}) }
@@ -48,13 +49,15 @@
 					value = response.data?.{{ name | camelCase }}List;
 					selected = value?.map((item) => ({
 						label: item?.name,
-						value: item?.{{ idName }}
+						value: item?.{{ idName }},
+						node: item
 					}));
 				});
 		} else {
 			selected = value?.map((item) => ({
 				label: item?.name,
-				value: item?.{{ idName }}
+				value: item?.{{ idName }},
+				node: item
 			}))
 		}
 	} else if (value) {
@@ -63,17 +66,18 @@
 				.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} } })
 				.then((response) => {
 					value = response.data?.{{ name | camelCase }}List?.[0];
-					selected = { label: value?.name, value: value?.{{ idName }} };
+					selected = { label: value?.name, value: value?.{{ idName }}, node: value  };
 				});
 		} else {
-			selected = { label: value?.name, value: value.{{ idName }} };
+			selected = { label: value?.name, value: value.{{ idName }}, node: value  };
 		}
 	} else if (val) {
 		namedQueryStore.fetch(query, { {{ idName }}: { opr: 'EQ', val } }).then(
 			(response) =>
 				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
-					value: item?.{{ idName }}
+					value: item?.{{ idName }},
+					node: item
 				}))?.[0])
 		);
 	} else if (arr && arr.length > 0) {
@@ -81,7 +85,8 @@
 			(response) =>
 				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
-					value: item?.{{ idName }}
+					value: item?.{{ idName }},
+					node: item
 				})))
 		);
 	}
@@ -103,12 +108,13 @@
 		if (Array.isArray(e.detail.value)) {
 			value = e.detail.value.map((item) => ({
 				{{ idName }}: item.value,
-				name: item.label
+				name: item.label,
+				...item.node
 			}));
 			arr = e.detail.value.map((item) => item.value);
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			value = { {{ idName }}: e.detail.value.value, name: e.detail.value.label };
+			value = { {{ idName }}: e.detail.value.value, name: e.detail.value.label, ...e.detail.value.node };
 			val = e.detail.value.value;
 			arr = [];
 		} else {

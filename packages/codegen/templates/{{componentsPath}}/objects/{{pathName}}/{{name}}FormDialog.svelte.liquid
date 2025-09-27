@@ -91,7 +91,7 @@
 				mutation_{{ name | camelCase }}_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({

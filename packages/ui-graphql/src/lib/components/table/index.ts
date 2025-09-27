@@ -1,4 +1,3 @@
-
 import BooleanTh from "./BooleanTh.svelte";
 import BooleanTd from "./BooleanTd.svelte";
 import DateTh from "./DateTh.svelte";
@@ -12,6 +11,10 @@ import FieldTds from "./FieldTds.svelte";
 import FileTd from "./FileTd.svelte";
 import FloatTh from "./FloatTh.svelte";
 import FloatTd from "./FloatTd.svelte";
+import BigIntegerTh from "./BigIntegerTh.svelte";
+import BigIntegerTd from "./BigIntegerTd.svelte";
+import BigDecimalTh from "./BigDecimalTh.svelte";
+import BigDecimalTd from "./BigDecimalTd.svelte";
 import IDTh from "./IDTh.svelte";
 import IDTd from "./IDTd.svelte";
 import IntTh from "./IntTh.svelte";
@@ -37,6 +40,10 @@ export {
     FileTd,
     FloatTh,
     FloatTd,
+    BigIntegerTh,
+    BigIntegerTd,
+    BigDecimalTh,
+    BigDecimalTd,
     IDTh,
     IDTd,
     IntTh,

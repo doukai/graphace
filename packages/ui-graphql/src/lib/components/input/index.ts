@@ -15,6 +15,12 @@ import FileLink from "./FileLink.svelte";
 import FloatFilter from "./FloatFilter.svelte";
 import FloatInput from "./FloatInput.svelte";
 import FloatLink from "./FloatLink.svelte";
+import BigIntegerFilter from "./BigIntegerFilter.svelte";
+import BigIntegerInput from "./BigIntegerInput.svelte";
+import BigIntegerLink from "./BigIntegerLink.svelte";
+import BigDecimalFilter from "./BigDecimalFilter.svelte";
+import BigDecimalInput from "./BigDecimalInput.svelte";
+import BigDecimalLink from "./BigDecimalLink.svelte";
 import IDFilter from "./IDFilter.svelte";
 import IDInput from "./IDInput.svelte";
 import IDLink from "./IDLink.svelte";
@@ -52,6 +58,12 @@ export {
     FloatFilter,
     FloatInput,
     FloatLink,
+    BigIntegerFilter,
+    BigIntegerInput,
+    BigIntegerLink,
+    BigDecimalFilter,
+    BigDecimalInput,
+    BigDecimalLink,
     IDFilter,
     IDInput,
     IDLink,
