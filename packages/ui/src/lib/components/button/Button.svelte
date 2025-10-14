@@ -10,7 +10,7 @@
 </script>
 
 <div class="tooltip md:hidden" data-tip={text}>
-	<button disabled={loading} class="btn {className} {contextClass}" on:click>
+	<button disabled={loading} class="btn {className} {contextClass}" on:click|preventDefault>
 		{#if loading}
 			<span class="loading loading-spinner" />
 		{:else}
@@ -20,7 +20,11 @@
 		{/if}
 	</button>
 </div>
-<button disabled={loading} class="btn {className} {contextClass} max-md:hidden" on:click>
+<button
+	disabled={loading}
+	class="btn {className} {contextClass} max-md:hidden"
+	on:click|preventDefault
+>
 	{#if loading}
 		<span class="loading loading-spinner" />
 	{/if}
