@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { getContext, createEventDispatcher } from 'svelte';
-	import type { Readable } from 'svelte/store';
+	import { createEventDispatcher } from 'svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Minus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
 	export let id: string | undefined = undefined;
 	export let path: string;
@@ -13,8 +13,7 @@
 	let className: string | undefined = 'h-full content-center self-center';
 	export { className as class };
 
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
-	export let text: string | undefined = $LL.ui_graphql.table.editBtn();
+	export let text: string | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
 		goto: { path: string; name: string | undefined };
@@ -38,7 +37,7 @@
 		}
 	} else if (value) {
 		if (textFieldName) {
-			text = value?.[textFieldName] + '';
+			text = value?.[textFieldName];
 		}
 	}
 </script>
@@ -51,5 +50,9 @@
 		dispatch('goto', { path, name });
 	}}
 >
-	{text}
+	{#if text !== null && text !== undefined}
+		{text}
+	{:else}
+		<Icon src={Minus} class="h-5 w-5" />
+	{/if}
 </a>
