@@ -7,7 +7,7 @@ export const buildArguments = <T>(args: any): T | undefined => {
         return undefined;
     } else if (typeof args === 'object') {
         if (args.opr &&
-            !(args.val ||
+            !(args.val !== null && args.val !== undefined ||
                 (args.arr && args.arr.length > 0) ||
                 args.opr === 'NIL' ||
                 args.opr === 'NNIL')) {
@@ -31,7 +31,7 @@ export const buildArguments = <T>(args: any): T | undefined => {
 export const hasArguments = (args: any): boolean => args && Object.values(args).some(
     (v: any) =>
         v &&
-        (v.val ||
+        (v.val !== null && v.val !== undefined ||
             (v.arr && v.arr.length > 0) ||
             v.opr === 'NIL' ||
             v.opr === 'NNIL' ||

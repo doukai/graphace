@@ -14,7 +14,7 @@ const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInf
       {%- for field in objectFieldInfo.fields %}
       {%- if field.isLeafType and field.isAggregate == false %}
       {{ field.fieldName }}
-      {%- elsif field.isFile %}
+      {%- elsif field.isFile and field.isAggregate == false %}
       {{ field.fieldName }} {
         id
         name
@@ -24,7 +24,7 @@ const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInf
         {%- for subField in field.fields %}
         {%- if subField.isLeafType and subField.isAggregate == false %}
         {{ subField.fieldName }}
-        {%- elsif subField.isFile %}
+        {%- elsif subField.isFile and subField.isAggregate == false %}
         {{ subField.fieldName }} {
           id
           name

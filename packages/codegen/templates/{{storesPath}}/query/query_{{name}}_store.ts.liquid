@@ -18,7 +18,7 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
         {%- for field in fields %}
         {%- if field.isLeafType and field.isAggregate == false %}
         {{ field.fieldName }}
-        {%- elsif field.isFile %}
+        {%- elsif field.isFile and field.isAggregate == false %}
         {{ field.fieldName }} {
           id
           name
@@ -37,7 +37,7 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
     {%- for field in fields %}
     {%- if field.isLeafType and field.isAggregate == false %}
     {{ field.fieldName }}
-    {%- elsif field.isFile %}
+    {%- elsif field.isFile and field.isAggregate == false %}
     {{ field.fieldName }} {
       id
       name
@@ -47,7 +47,7 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
       {%- for subField in field.fields %}
       {%- if subField.isLeafType and subField.isAggregate == false %}
       {{ subField.fieldName }}
-      {%- elsif subField.isFile %}
+      {%- elsif subField.isFile and subField.isAggregate == false %}
       {{ subField.fieldName }} {
         id
         name
