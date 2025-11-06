@@ -11,6 +11,6 @@
 	const contextClass = getContext<string>('ui.pagination-counter') || '';
 </script>
 
-<span class="{className} {contextClass}">
+<span data-part="pagination-count" class="{className} {contextClass}">
 	{$LL.ui.pagination.total({ total: totalCount })}
 </span>

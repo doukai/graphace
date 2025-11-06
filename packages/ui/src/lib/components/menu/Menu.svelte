@@ -8,6 +8,6 @@
 	const contextClass = getContext<string>('ui.menu') || '';
 </script>
 
-<ul class="menu z-[{zIndex}] {className} {contextClass}">
+<ul data-element="menu" data-part="root" class="menu z-[{zIndex}] {className} {contextClass}">
 	<slot />
 </ul>

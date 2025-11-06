@@ -9,6 +9,6 @@
 	const id = nanoid();
 </script>
 
-<div class="form-control {className} {contextClass}">
+<div data-part="form-control" class="form-control {className} {contextClass}">
 	<slot {id} />
 </div>

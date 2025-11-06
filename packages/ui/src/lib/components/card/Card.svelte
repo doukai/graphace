@@ -8,6 +8,6 @@
 	const contextClass = getContext<string>('ui.card') || '';
 </script>
 
-<div class="card z-[{zIndex}] {className} {contextClass}">
+<div data-element="card" data-part="root" class="card z-[{zIndex}] {className} {contextClass}">
 	<slot />
 </div>

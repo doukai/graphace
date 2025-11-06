@@ -22,12 +22,15 @@
 </script>
 
 <div
+	data-element="menu"
+	data-part="root"
 	class="modal z-[{zIndex}] {className} {contextClass}"
 	class:modal-open={isModalOpen}
 	bind:this={modal}
 >
-	<div class="modal-box">
+	<div data-part="modal-box" class="modal-box">
 		<button
+			data-part="btn-close"
 			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
 			on:click|preventDefault={(e) => {
 				dispatch('close');
@@ -35,7 +38,7 @@
 		>
 			✕
 		</button>
-		<h2 class="font-bold text-lg">{title}</h2>
+		<h2 data-part="modal-title" class="font-bold text-lg">{title}</h2>
 		<slot />
 	</div>
 </div>

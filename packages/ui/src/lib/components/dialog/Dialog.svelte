@@ -4,7 +4,7 @@
 	import { fade } from 'svelte/transition';
 	import { zIndex } from '~';
 
-	let className: string | undefined = 'bg-base-100';
+	let className: string | undefined = '';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.dialog') || '';
@@ -38,14 +38,21 @@
 <slot name="trigger" trigger={$trigger} zIndex={nextZIndex} />
 
 {#if $isOpen}
-	<div class="" use:melt={$portalled}>
+	<div
+		data-element="dialog"
+		data-part="root"
+		class="{className} {contextClass}"
+		use:melt={$portalled}
+	>
 		<div
+			data-part="overlay"
 			use:melt={$overlay}
 			class="fixed inset-0 z-[{nextZIndex}] bg-black/50"
 			transition:fade={{ duration: 100 }}
 		/>
 		<div
-			class="card fixed max-md:w-full max-w-full left-1/2 top-1/2 z-[{nextZIndex}] -translate-x-1/2 -translate-y-1/2 {className} {contextClass}"
+			data-part="card"
+			class="card bg-base-100 fixed max-md:w-full max-w-full left-1/2 top-1/2 z-[{nextZIndex}] -translate-x-1/2 -translate-y-1/2"
 			use:melt={$content}
 		>
 			<div class="card-body max-h-[calc(100vh-5rem)] z-[{nextZIndex}]">

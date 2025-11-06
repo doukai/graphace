@@ -2,7 +2,7 @@
 	import { getContext, createEventDispatcher } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Trash, XMark, Check, Plus, Link, ArrowUturnLeft } from '@steeze-ui/heroicons';
+	import { Trash, Check, Plus, ArrowUturnLeft, CheckCircle, XCircle } from '@steeze-ui/heroicons';
 	import Button from './Button.svelte';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
 
@@ -29,13 +29,13 @@
 	}>();
 </script>
 
-<div class="{className} {contextClass}">
+<div data-element="buttons" data-part="root" class="{className} {contextClass}">
 	<slot name="start" />
 	{#if showRemoveButton}
 		<Button
 			{loading}
 			text={$LL.ui.button.remove()}
-			class="btn-error btn-outline max-sm:btn-square"
+			class="data-[part=button]:btn-error data-[part=button]:btn-outline data-[part=button-sm]:btn-square"
 			on:click={(e) => {
 				dispatch('remove');
 			}}
@@ -47,19 +47,19 @@
 		<Button
 			{loading}
 			text={$LL.ui.button.unbind()}
-			class="btn-error btn-outline max-sm:btn-square"
+			class="data-[part=button]:btn-error data-[part=button]:btn-outline data-[part=button-sm]:btn-square"
 			on:click={(e) => {
 				dispatch('unbind');
 			}}
 		>
-			<Icon slot="sm" src={XMark} class="h-6 w-6" solid />
+			<Icon slot="sm" src={XCircle} class="h-6 w-6" solid />
 		</Button>
 	{/if}
 	{#if showSaveButton}
 		<Button
 			{loading}
 			text={$LL.ui.button.save()}
-			class="btn-secondary max-sm:btn-square"
+			class="data-[part=button]:btn-secondary data-[part=button-sm]:btn-square"
 			on:click={(e) => {
 				dispatch('save');
 			}}
@@ -71,7 +71,7 @@
 		<Button
 			{loading}
 			text={$LL.ui.button.create()}
-			class="btn-primary max-sm:btn-square"
+			class="data-[part=button]:btn-primary data-[part=button-sm]:btn-square"
 			on:click={(e) => {
 				dispatch('create');
 			}}
@@ -83,19 +83,19 @@
 		<Button
 			{loading}
 			text={$LL.ui.button.select()}
-			class="btn-secondary btn-outline max-sm:btn-square"
+			class="data-[part=button]:btn-secondary data-[part=button]:btn-outline data-[part=button-sm]:btn-square"
 			on:click={(e) => {
 				dispatch('select');
 			}}
 		>
-			<Icon slot="sm" src={Link} class="h-6 w-6" solid />
+			<Icon slot="sm" src={CheckCircle} class="h-6 w-6" solid />
 		</Button>
 	{/if}
 	<slot />
 	{#if showBackButton}
 		<Button
 			text={$LL.ui.button.back()}
-			class="btn-neutral max-sm:btn-square"
+			class="data-[part=button]:btn-neutral data-[part=button-sm]:btn-square"
 			on:click={(e) => {
 				dispatch('back');
 			}}

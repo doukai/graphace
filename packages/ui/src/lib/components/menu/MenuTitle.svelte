@@ -7,4 +7,4 @@
 	const contextClass = getContext<string>('ui.menu-title') || '';
 </script>
 
-<li class="menu-title {className} {contextClass}"><slot /></li>
+<li data-part="menu-title" class="menu-title {className} {contextClass}"><slot /></li>

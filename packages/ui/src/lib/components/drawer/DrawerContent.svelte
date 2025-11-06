@@ -8,6 +8,6 @@
 	const contextClass = getContext<string>('ui.drawer-content') || '';
 </script>
 
-<div class="drawer-content {className} {contextClass}">
+<div data-part="drawer-content" class="drawer-content {className} {contextClass}">
 	<slot {id} />
 </div>

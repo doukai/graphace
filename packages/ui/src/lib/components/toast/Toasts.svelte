@@ -46,6 +46,8 @@
 </script>
 
 <div
+	data-element="toasts"
+	data-part="root"
 	class="fixed flex flex-col items-end md:top-auto z-[{$zIndex + 1}] {className} {contextClass}"
 	use:portal
 >

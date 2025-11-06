@@ -22,24 +22,33 @@
 	}>();
 </script>
 
-<div class="flex items-center {placeholder ? 'tooltip' : ''}" data-tip={placeholder}>
-	<input
-		type="checkbox"
-		{id}
-		{name}
-		class="toggle {errors?.errors ? 'toggle-error' : ''} {className} {contextClass}"
-		bind:checked={value}
-		on:change={() => {
-			dispatch('change', { value });
-		}}
-		{readonly}
-		{disabled}
-	/>
+<div data-element="toggle" data-part="root" class="{className} {contextClass}">
+	<div
+		data-element="tooltip"
+		data-part="root"
+		class="flex items-center {placeholder ? 'tooltip' : ''}"
+		data-tip={placeholder}
+	>
+		<input
+			type="checkbox"
+			{id}
+			{name}
+			class="toggle {errors?.errors ? 'toggle-error' : ''}"
+			bind:checked={value}
+			on:change={() => {
+				dispatch('change', { value });
+			}}
+			{readonly}
+			{disabled}
+		/>
+	</div>
+	{#if errors?.errors}
+		<label data-part="label" for={id} class="label">
+			{#each errors.errors as error}
+				<span data-part="label-text-alt" class="label-text-alt">
+					<p data-part="label-text" class="text-error">{error.message}</p>
+				</span>
+			{/each}
+		</label>
+	{/if}
 </div>
-{#if errors?.errors}
-	<label for={id} class="label">
-		{#each errors.errors as error}
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
-		{/each}
-	</label>
-{/if}

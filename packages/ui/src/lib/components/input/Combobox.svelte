@@ -46,7 +46,7 @@
 		return option.label;
 	};
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = 'textarea-bordered w-full min-h-12 p-1 gap-1';
+	let className: string | undefined = '';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.combox') || '';
@@ -125,22 +125,25 @@
 	}
 </script>
 
-<div class="relative">
+<div data-element="combobox" data-part="root" class="relative {className} {contextClass}">
 	<div
+		data-part="input"
 		use:melt={$root}
 		class="flex flex-row flex-wrap items-center textarea {errors?.errors ||
 		(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 			? 'textarea-error focus-within:outline-error'
-			: 'focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 {className} {contextClass}"
+			: 'focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered w-full min-h-12 p-1 gap-1"
 	>
 		{#each $tags as t, index}
 			<div
+				data-part="tag"
 				use:melt={$tag(t)}
 				class="badge {errors?.iterms?.[index]
 					? 'badge-error'
 					: 'badge-neutral'} flex items-center [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 			>
 				<span
+					data-part="text"
 					class="flex items-center border-r max-w-xs truncate {errors?.iterms?.[index]
 						? 'bg-error'
 						: 'bg-neutral'} border-white/10"
@@ -148,6 +151,7 @@
 					{t.value}
 				</span>
 				<button
+					data-part="delete"
 					use:melt={$deleteTrigger(t)}
 					{disabled}
 					class="flex items-center h-full {errors?.iterms?.[index]
@@ -158,6 +162,7 @@
 				</button>
 			</div>
 			<div
+				data-part="edit"
 				use:melt={$edit(t)}
 				class="badge badge-outline flex items-center overflow-hidden [word-break:break-word] data-[invalid-edit]:focus:text-error"
 			>
@@ -165,6 +170,7 @@
 			</div>
 		{/each}
 		<input
+			data-part="search"
 			use:melt={$input}
 			{id}
 			type="text"
@@ -185,30 +191,32 @@
 			{disabled}
 		/>
 	</div>
-	<div class="absolute right-2 top-1/2 z-[{zIndex + 9}] -translate-y-1/2">
+	<div data-part="icon" class="absolute right-2 top-1/2 z-[{zIndex + 9}] -translate-y-1/2">
 		{#if $open}
-			<Icon src={ChevronUp} class="size-4" />
+			<Icon src={ChevronUp} data-part="icon-up" class="size-4" />
 		{:else}
-			<Icon src={ChevronDown} class="size-4" />
+			<Icon src={ChevronDown} data-part="icon-down" class="size-4" />
 		{/if}
 	</div>
 </div>
 {#if $open}
 	<ul
+		data-part="menu"
 		class="menu shadow rounded-xl bg-base-100 z-[{zIndex +
 			9}] max-h-80 mt-4 flex-nowrap overflow-y-auto"
 		use:melt={$menu}
 		transition:fade={{ duration: 100 }}
 	>
 		{#if loading}
-			<li>
+			<li data-part="loading">
 				<Loading />
 			</li>
 		{:else if options}
 			{#each options.filter((option) => !option.hidden) as op}
 				{#if op.options}
-					<div use:melt={$group(op.value)}>
+					<div data-part="group" use:melt={$group(op.value)}>
 						<div
+							data-part="group-label"
 							class="py-1 pl-4 pr-4 font-semibold capitalize text-neutral"
 							use:melt={$groupLabel(op.label)}
 						>
@@ -216,15 +224,16 @@
 						</div>
 						{#each op.options?.filter((option) => !option.hidden) as children, index (index)}
 							<li
+								data-part="option"
 								use:melt={$option({
 									value: { ...children, parent: op },
 									label: children.label
 								})}
 							>
 								<!-- svelte-ignore a11y-missing-attribute -->
-								<a class="flex truncate">
+								<a data-part="option-link" class="flex truncate">
 									{#if $isSelected({ ...children, parent: op })}
-										<Icon src={Check} class="size-4" />
+										<Icon data-part="icon-selected" src={Check} class="size-4" />
 									{:else}
 										<div class="size-4" />
 									{/if}
@@ -239,15 +248,16 @@
 					</div>
 				{:else}
 					<li
+						data-part="option"
 						use:melt={$option({
 							value: op,
 							label: op.label
 						})}
 					>
 						<!-- svelte-ignore a11y-missing-attribute -->
-						<a class="flex">
+						<a data-part="option-link" class="flex">
 							{#if $isSelected(op)}
-								<Icon src={Check} class="size-4" />
+								<Icon data-part="icon-selected" src={Check} class="size-4" />
 							{:else}
 								<div class="size-4" />
 							{/if}
@@ -256,7 +266,7 @@
 					</li>
 				{/if}
 			{:else}
-				<li>
+				<li data-part="empty">
 					<Empty />
 				</li>
 			{/each}
@@ -264,9 +274,11 @@
 	</ul>
 {/if}
 {#if errors?.errors}
-	<label for={id} class="label">
+	<label data-part="label" for={id} class="label">
 		{#each errors.errors as error}
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+			<span data-part="abel-text-alt" class="label-text-alt">
+				<p data-part="label-text" class="text-error">{error.message}</p>
+			</span>
 		{/each}
 	</label>
 {/if}

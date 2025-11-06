@@ -7,6 +7,6 @@
 	const contextClass = getContext<string>('ui.navbar-center') || '';
 </script>
 
-<div class="navbar-center {className} {contextClass}">
+<div data-part="navbar-center" class="navbar-center {className} {contextClass}">
 	<slot />
 </div>

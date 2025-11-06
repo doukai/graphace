@@ -17,8 +17,9 @@
 	}>();
 </script>
 
-<div class="join w-full">
+<div data-element="input-search" data-part="root" class="join w-full">
 	<input
+		data-part="input"
 		type="search"
 		{id}
 		{name}
@@ -27,9 +28,10 @@
 		class="input join-item {className} {contextClass}"
 	/>
 	<button
+		data-part="btn-search"
 		class="btn btn-square join-item"
 		on:click|preventDefault={() => dispatch('search', { value })}
 	>
-		<Icon src={MagnifyingGlass} class="h-6 w-6" />
+		<Icon data-part="icon-search" src={MagnifyingGlass} class="h-6 w-6" />
 	</button>
 </div>

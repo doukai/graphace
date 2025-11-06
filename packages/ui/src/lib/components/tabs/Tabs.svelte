@@ -37,10 +37,11 @@
 	$: value = $curr;
 </script>
 
-<div use:melt={$root} class="z-[{zIndex}]">
-	<div use:melt={$list} class="tabs">
+<div data-element="tabs" data-part="root" use:melt={$root} class="z-[{zIndex}]">
+	<div data-part="list" use:melt={$list} class="tabs">
 		{#each tabs as tab}
 			<a
+				data-part="link"
 				href={undefined}
 				use:melt={$trigger(tab.id)}
 				class="tab {className} {contextClass} {$curr === tab.id ? 'tab-active' : ''}"

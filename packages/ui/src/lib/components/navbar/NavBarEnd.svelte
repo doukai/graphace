@@ -7,6 +7,6 @@
 	const contextClass = getContext<string>('ui.navbar-end') || '';
 </script>
 
-<div class="navbar-end {className} {contextClass}">
+<div data-part="navbar-end" class="navbar-end {className} {contextClass}">
 	<slot />
 </div>

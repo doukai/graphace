@@ -9,26 +9,33 @@
 	const contextClass = getContext<string>('ui.button') || '';
 </script>
 
-<div class="tooltip md:hidden" data-tip={text}>
-	<button disabled={loading} class="btn {className} {contextClass}" on:click|preventDefault>
+<div
+	data-element="button"
+	data-part="root"
+	class="tooltip {className} {contextClass}"
+	data-tip={text}
+>
+	<button data-part="button" disabled={loading} class="btn max-sm:hidden" on:click|preventDefault>
 		{#if loading}
-			<span class="loading loading-spinner" />
+			<span data-part="loading" class="loading loading-spinner" />
+		{:else}
+			<slot>
+				<span data-part="text">{text}</span>
+			</slot>
+		{/if}
+	</button>
+	<button
+		data-part="button-sm"
+		disabled={loading}
+		class="btn btn-square md:hidden"
+		on:click|preventDefault
+	>
+		{#if loading}
+			<span data-part="loading" class="loading loading-spinner" />
 		{:else}
 			<slot name="sm">
-				{text}
+				<span data-part="text">{text}</span>
 			</slot>
 		{/if}
 	</button>
 </div>
-<button
-	disabled={loading}
-	class="btn {className} {contextClass} max-md:hidden"
-	on:click|preventDefault
->
-	{#if loading}
-		<span class="loading loading-spinner" />
-	{/if}
-	<slot>
-		{text}
-	</slot>
-</button>

@@ -12,7 +12,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let id: string | undefined = nanoid();
-	let className: string | undefined = 'flex flex-wrap';
+	let className: string | undefined = '';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.toggle-list') || '';
@@ -37,46 +37,54 @@
 	});
 </script>
 
-<div
-	use:melt={$root}
-	class="join data-[orientation='vertical']:flex-col {placeholder
-		? 'tooltip'
-		: ''} {className} {contextClass}"
-	data-tip={placeholder}
->
-	<button
-		class="btn join-item shrink"
-		aria-label="-"
-		on:click|preventDefault={(e) => (value = [...value.slice(1)])}
+<div data-element="toggle-list" data-part="root" class="{className} {contextClass}">
+	<div
+		data-part="list"
+		use:melt={$root}
+		class="join data-[orientation='vertical']:flex-col {placeholder
+			? 'tooltip'
+			: ''} flex flex-wrap"
+		data-tip={placeholder}
 	>
-		<Icon src={Minus} class="h-5 w-5" />
-	</button>
-	{#each value as v, index}
 		<button
-			class="btn join-item shrink data-[state='on']:btn-neutral"
-			use:melt={$item(index + '')}
-			aria-label="index"
+			data-part="btn-delete"
+			class="btn join-item shrink"
+			aria-label="-"
+			on:click|preventDefault={(e) => (value = [...value.slice(1)])}
 		>
-			{#if v}
-				<Icon src={Check} class="h-5 w-5" />
-			{:else}
-				<Icon src={XMark} class="h-5 w-5" />
-			{/if}
+			<Icon data-part="icon-delete" src={Minus} class="h-5 w-5" />
 		</button>
-	{/each}
-	<button
-		{id}
-		class="btn join-item shrink"
-		aria-label="+"
-		on:click|preventDefault={(e) => (value = [...value, false])}
-	>
-		<Icon src={Plus} class="h-5 w-5" />
-	</button>
-</div>
-{#if errors?.errors}
-	<label for={id} class="label">
-		{#each errors.errors as error}
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
+		{#each value as v, index}
+			<button
+				data-part="btn-toggle"
+				class="btn join-item shrink data-[state='on']:btn-neutral"
+				use:melt={$item(index + '')}
+				aria-label="index"
+			>
+				{#if v}
+					<Icon data-part="icon-checked" src={Check} class="h-5 w-5" />
+				{:else}
+					<Icon data-part="icon-unchecked" src={XMark} class="h-5 w-5" />
+				{/if}
+			</button>
 		{/each}
-	</label>
-{/if}
+		<button
+			data-part="btn-add"
+			{id}
+			class="btn join-item shrink"
+			aria-label="+"
+			on:click|preventDefault={(e) => (value = [...value, false])}
+		>
+			<Icon data-part="icon-add" src={Plus} class="h-5 w-5" />
+		</button>
+	</div>
+	{#if errors?.errors}
+		<label data-part="label" for={id} class="label">
+			{#each errors.errors as error}
+				<span data-part="label-text-alt" class="label-text-alt">
+					<p data-part="label-text" class="text-error">{error.message}</p>
+				</span>
+			{/each}
+		</label>
+	{/if}
+</div>

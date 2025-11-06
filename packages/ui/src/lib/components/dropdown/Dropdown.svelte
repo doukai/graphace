@@ -7,6 +7,6 @@
 	const contextClass = getContext<string>('ui.dropdown') || '';
 </script>
 
-<div class="dropdown {className} {contextClass}">
+<div data-element="dropdown" data-part="root" class="dropdown {className} {contextClass}">
 	<slot />
 </div>

@@ -7,7 +7,7 @@
 	const contextClass = getContext<string>('ui.breadcrumbs') || '';
 </script>
 
-<div class="breadcrumbs {className} {contextClass}">
+<div data-element="breadcrumbs" data-part="root" class="breadcrumbs {className} {contextClass}">
 	<ul>
 		<slot />
 	</ul>

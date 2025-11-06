@@ -13,7 +13,7 @@
 	export let textarea: boolean = false;
 	export let cols: number | undefined = undefined;
 	export let rows: number | undefined = undefined;
-	let className: string | undefined = `${textarea ? 'textarea-bordered' : 'input-bordered'} w-full`;
+	let className: string | undefined = '';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.input') || '';
@@ -25,46 +25,52 @@
 	}>();
 </script>
 
-{#if textarea}
-	<textarea
-		{id}
-		{name}
-		{cols}
-		{rows}
-		{placeholder}
-		class="textarea {errors?.errors ? 'textarea-error' : ''} {className} {contextClass}"
-		bind:value
-		on:change={() => {
-			if (value === '') {
-				value = null;
-			}
-			dispatch('change', { value });
-		}}
-		{readonly}
-		{disabled}
-	/>
-{:else}
-	<input
-		type="text"
-		{id}
-		{name}
-		{placeholder}
-		class="input {errors?.errors ? 'input-error' : ''} {className} {contextClass}"
-		bind:value
-		on:change={() => {
-			if (value === '') {
-				value = null;
-			}
-			dispatch('change', { value });
-		}}
-		{readonly}
-		{disabled}
-	/>
-{/if}
-{#if errors?.errors}
-	<label for={id} class="label">
-		{#each errors.errors as error}
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
-		{/each}
-	</label>
-{/if}
+<div data-element="input-text" data-part="root" class="{className} {contextClass}">
+	{#if textarea}
+		<textarea
+			data-part="textarea"
+			{id}
+			{name}
+			{cols}
+			{rows}
+			{placeholder}
+			class="textarea {errors?.errors ? 'textarea-error' : ''} textarea-bordered w-full"
+			bind:value
+			on:change={() => {
+				if (value === '') {
+					value = null;
+				}
+				dispatch('change', { value });
+			}}
+			{readonly}
+			{disabled}
+		/>
+	{:else}
+		<input
+			data-part="input"
+			type="text"
+			{id}
+			{name}
+			{placeholder}
+			class="input {errors?.errors ? 'input-error' : ''} input-bordered w-full"
+			bind:value
+			on:change={() => {
+				if (value === '') {
+					value = null;
+				}
+				dispatch('change', { value });
+			}}
+			{readonly}
+			{disabled}
+		/>
+	{/if}
+	{#if errors?.errors}
+		<label data-part="label" for={id} class="label">
+			{#each errors.errors as error}
+				<span data-part="label-text-alt" class="label-text-alt">
+					<p data-part="label-text" class="text-error">{error.message}</p>
+				</span>
+			{/each}
+		</label>
+	{/if}
+</div>

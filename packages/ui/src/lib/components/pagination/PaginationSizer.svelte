@@ -15,11 +15,12 @@
 	}>();
 </script>
 
-<div class="form-control">
+<div data-part="pagination-size" class="form-control {className} {contextClass}">
 	<label class="input-group">
-		<span>{$LL.ui.pagination.size()}</span>
+		<span data-part="text-size">{$LL.ui.pagination.size()}</span>
 		<select
-			class="select {className} {contextClass}"
+			data-part="select-size"
+			class="select"
 			bind:value={pageSize}
 			on:change={() => {
 				dispatch('sizeChange', { pageSize });

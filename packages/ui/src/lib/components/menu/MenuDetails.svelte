@@ -8,7 +8,7 @@
 	const contextClass = getContext<string>('ui.details') || '';
 </script>
 
-<details {open} class="{className} {contextClass}">
+<details data-part="menu-details" {open} class="{className} {contextClass}">
 	<summary><slot name="summary" /></summary>
 	<ul>
 		<slot />

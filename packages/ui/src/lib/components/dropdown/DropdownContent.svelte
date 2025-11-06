@@ -9,6 +9,10 @@
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<ul tabindex="0" class="dropdown-content z-[{zIndex}] {className} {contextClass}">
+<ul
+	data-part="dropdown-content"
+	tabindex="0"
+	class="dropdown-content z-[{zIndex}] {className} {contextClass}"
+>
 	<slot />
 </ul>

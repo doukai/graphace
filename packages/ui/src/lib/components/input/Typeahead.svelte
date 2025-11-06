@@ -21,7 +21,7 @@
 </script>
 
 <script lang="ts">
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { onMount, createEventDispatcher, getContext } from 'svelte';
 	import Typeahead from 'svelte-typeahead';
 	import { getOS } from '@graphace/commons';
 
@@ -31,6 +31,8 @@
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
+
+	const contextClass = getContext<string>('ui.typeahead') || '';
 
 	const dispatch = createEventDispatcher<{
 		focus: {};
@@ -57,7 +59,12 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class="typeahead relative flex {className}" bind:this={rootElement}>
+<label
+	data-element="typeahead"
+	data-part="root"
+	class="typeahead relative flex {className} {contextClass}"
+	bind:this={rootElement}
+>
 	<svg
 		class="pointer-events-none absolute self-center ml-4 stroke-current opacity-60 text-base-content z-[{zIndex +
 			1}]"
@@ -75,6 +82,7 @@
 		/>
 	</svg>
 	<Typeahead
+		data-part="input"
 		{placeholder}
 		{limit}
 		hideLabel
@@ -93,11 +101,14 @@
 		on:keydown
 		let:result
 	>
-		<div class="py-1 text-sm font-normal">
+		<div data-part="text" class="py-1 text-sm font-normal">
 			{result.original.name}
 		</div>
 	</Typeahead>
-	<div class="pointer-events-none absolute right-4 self-center gap-1 opacity-50 hidden lg:flex">
+	<div
+		data-part="kbd"
+		class="pointer-events-none absolute right-4 self-center gap-1 opacity-50 hidden lg:flex"
+	>
 		{#if ['macos'].includes(os)}
 			<kbd class="kbd kbd-sm">⌘</kbd>
 			<kbd class="kbd kbd-sm">K</kbd>

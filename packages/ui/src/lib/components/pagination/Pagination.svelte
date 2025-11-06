@@ -10,7 +10,7 @@
 	export let totalCount: number = 0;
 	export let siblingCount: number = 1;
 	export let pageSizeOptions: number[] = [10, 20, 30];
-	let className: string = '';
+	let className: string | undefined = '';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -42,60 +42,65 @@
 	$: $perPage = pageSize;
 </script>
 
-<div class="hidden md:flex md:justify-between">
-	<slot {pageSize} {totalCount}>
-		<PaginationSizer bind:pageSize {pageSizeOptions} on:sizeChange />
-		<PaginationCounter {totalCount} />
-	</slot>
-	<div class="join" use:melt={$root}>
+<div data-element="pagination" data-part="root" class="{className} {contextClass}">
+	<div data-part="md" class="flex justify-between max-sm:hidden">
+		<slot {pageSize} {totalCount}>
+			<PaginationSizer bind:pageSize {pageSizeOptions} on:sizeChange />
+			<PaginationCounter {totalCount} />
+		</slot>
+		<div class="join" use:melt={$root}>
+			<button
+				data-part="btn-prev"
+				use:melt={$prevButton}
+				class="join-item btn data-[selected]:btn-active disabled:btn-disabled"
+			>
+				«
+			</button>
+			{#each $pages as page (page.key)}
+				{#if page.type === 'ellipsis'}
+					<button data-part="btn-page" class="join-item btn btn-disabled"> ... </button>
+				{:else}
+					<button
+						data-part="btn-selected"
+						class="join-item btn data-[selected]:btn-active"
+						use:melt={$pageTrigger(page)}
+					>
+						{page.value}
+					</button>
+				{/if}
+			{/each}
+			<button
+				data-part="btn-next"
+				use:melt={$nextButton}
+				class="join-item btn data-[selected]:btn-active disabled:btn-disabled"
+			>
+				»
+			</button>
+		</div>
+	</div>
+	<div data-part="sm" class="flex justify-center join md:hidden">
 		<button
-			use:melt={$prevButton}
-			class="join-item btn {className} {contextClass} data-[selected]:btn-active disabled:btn-disabled"
+			data-part="btn-prev"
+			class="join-item btn {pageNumber - 1 ? '' : 'btn-disabled'}"
+			on:click={() => {
+				pageNumber = pageNumber - 1;
+				dispatch('pageChange', { pageNumber });
+			}}
 		>
 			«
 		</button>
-		{#each $pages as page (page.key)}
-			{#if page.type === 'ellipsis'}
-				<button class="join-item btn {className} {contextClass} btn-disabled">...</button>
-			{:else}
-				<button
-					class="join-item btn {className} {contextClass} data-[selected]:btn-active"
-					use:melt={$pageTrigger(page)}
-				>
-					{page.value}
-				</button>
-			{/if}
-		{/each}
+		<button data-part="btn-page" class="join-item btn">
+			{$LL.ui.pagination.current({ current: pageNumber })}
+		</button>
 		<button
-			use:melt={$nextButton}
-			class="join-item btn {className} {contextClass} data-[selected]:btn-active disabled:btn-disabled"
+			data-part="btn-next"
+			class="join-item btn {pageNumber + 1 <= pageCount ? '' : 'btn-disabled'}"
+			on:click={() => {
+				pageNumber = pageNumber + 1;
+				dispatch('pageChange', { pageNumber });
+			}}
 		>
 			»
 		</button>
 	</div>
-</div>
-<div class="flex justify-center join md:hidden">
-	<button
-		class="join-item btn {className} {contextClass} {pageNumber - 1 ? '' : 'btn-disabled'}"
-		on:click={() => {
-			pageNumber = pageNumber - 1;
-			dispatch('pageChange', { pageNumber });
-		}}
-	>
-		«
-	</button>
-	<button class="join-item btn {className} {contextClass}">
-		{$LL.ui.pagination.current({ current: pageNumber })}
-	</button>
-	<button
-		class="join-item btn {className} {contextClass} {pageNumber + 1 <= pageCount
-			? ''
-			: 'btn-disabled'}"
-		on:click={() => {
-			pageNumber = pageNumber + 1;
-			dispatch('pageChange', { pageNumber });
-		}}
-	>
-		»
-	</button>
 </div>

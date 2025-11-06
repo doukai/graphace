@@ -611,7 +611,7 @@ function createZIndex() {
         subscribe,
         next: (n?: number | undefined) => {
             update(($zIndex) => $zIndex + (n || 100));
-            return zIndex;
+            return $zIndex;
         },
         top: (n?: number | undefined) => $zIndex + (n || 0),
         reset: () => set(0)

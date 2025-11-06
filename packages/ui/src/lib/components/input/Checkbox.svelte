@@ -21,22 +21,27 @@
 	}>();
 </script>
 
-<input
-	type="checkbox"
-	{id}
-	{name}
-	class="checkbox {errors?.errors ? 'checkbox-error' : ''} {className} {contextClass}"
-	bind:value
-	on:change={() => {
-		dispatch('change', { value });
-	}}
-	{readonly}
-	{disabled}
-/>
-{#if errors?.errors}
-	<label for={id} class="label">
-		{#each errors.errors as error}
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
-		{/each}
-	</label>
-{/if}
+<div data-element="checkbox" data-part="root" class="{className} {contextClass}">
+	<input
+		data-part="input"
+		type="checkbox"
+		{id}
+		{name}
+		class="checkbox {errors?.errors ? 'checkbox-error' : ''}"
+		bind:value
+		on:change={() => {
+			dispatch('change', { value });
+		}}
+		{readonly}
+		{disabled}
+	/>
+	{#if errors?.errors}
+		<label data-part="label" for={id} class="label">
+			{#each errors.errors as error}
+				<span data-part="label-text-alt" class="label-text-alt">
+					<p data-part="label-text" class="text-error">{error.message}</p>
+				</span>
+			{/each}
+		</label>
+	{/if}
+</div>

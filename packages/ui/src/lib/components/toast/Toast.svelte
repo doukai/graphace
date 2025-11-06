@@ -40,6 +40,8 @@
 
 <!-- alert-info alert-success alert-warning alert-error -->
 <div
+	data-element="toast"
+	data-part="root"
 	use:melt={$content(id)}
 	in:fly={{ duration: 150, x: '100%' }}
 	out:fly={{ duration: 150, x: '100%' }}
@@ -57,13 +59,15 @@
 		<Icon src={InformationCircle} class="h-5 w-5" />
 	{/if}
 	<div>
-		<progress class="progress h-1 w-full" value={$percentage} max="100" />
-		<h3 use:melt={$title(id)} class="font-bold">{data.title}</h3>
+		<progress data-part="progress" class="progress h-1 w-full" value={$percentage} max="100" />
+		<h3 data-part="title" use:melt={$title(id)} class="font-bold">{data.title}</h3>
 		{#if data.description}
-			<div use:melt={$description(id)} class="text-xs">{data.description}</div>
+			<div data-part="description" use:melt={$description(id)} class="text-xs">
+				{data.description}
+			</div>
 		{/if}
 	</div>
-	<button use:melt={$close(id)} class="btn btn-sm btn-circle btn-ghost">
-		<Icon src={XMark} class="h-5 w-5" />
+	<button data-part="btn-close" use:melt={$close(id)} class="btn btn-sm btn-circle btn-ghost">
+		<Icon data-part="icon-close" src={XMark} class="h-5 w-5" />
 	</button>
 </div>

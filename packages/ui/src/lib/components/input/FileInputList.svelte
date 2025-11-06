@@ -15,7 +15,7 @@
 	export let disabled = false;
 	export let downloadUrl = '/download';
 	export let id: string | undefined = nanoid();
-	let className: string | undefined = 'file-input-bordered w-full';
+	let className: string | undefined = '';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.input-list') || '';
@@ -42,61 +42,74 @@
 	};
 </script>
 
-<div {id} class="{errors?.errors ? 'border-2 border-error' : ''} space-y-2">
-	{#each value || [] as item, index}
-		<div class="flex justify-between space-x-1">
-			{#if item}
-				<a href={downloadUrl + '/' + item.id} class="link" download>{item.name}</a>
-			{:else}
-				<input
-					type="file"
-					id={id + index}
-					{name}
-					{placeholder}
-					class="file-input {errors?.iterms && errors.iterms[index]
-						? 'file-input-error'
-						: ''} {className} {contextClass}"
-					on:change={(e) => {
-						if (e.currentTarget?.files?.[0]) {
-							dispatch('upload', {
-								file: e.currentTarget.files[0],
-								then: (fileInfo) => {
-									item = fileInfo;
-								}
-							});
-						}
-					}}
-					{readonly}
-					{disabled}
-				/>
-			{/if}
-			<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.remove()}>
-				<button
-					class="btn btn-xs btn-square btn-outline"
-					on:click|preventDefault={(e) => {
-						removeItem(index);
-					}}
+<div data-element="input-file-list" data-part="root" class="{className} {contextClass}">
+	<div data-part="list" {id} class="{errors?.errors ? 'border-2 border-error' : ''} space-y-2">
+		{#each value || [] as item, index}
+			<div data-part="file" class="flex justify-between space-x-1">
+				{#if item}
+					<a data-part="link" href={downloadUrl + '/' + item.id} class="link" download>
+						{item.name}
+					</a>
+				{:else}
+					<input
+						data-part="input"
+						type="file"
+						id={id + index}
+						{name}
+						{placeholder}
+						class="file-input {errors?.iterms && errors.iterms[index]
+							? 'file-input-error'
+							: ''} file-input-bordered w-full"
+						on:change={(e) => {
+							if (e.currentTarget?.files?.[0]) {
+								dispatch('upload', {
+									file: e.currentTarget.files[0],
+									then: (fileInfo) => {
+										item = fileInfo;
+									}
+								});
+							}
+						}}
+						{readonly}
+						{disabled}
+					/>
+				{/if}
+				<div
+					data-part="delete"
+					class="tooltip flex items-center"
+					data-tip={$LL.ui.inputList.remove()}
 				>
-					<Icon src={MinusSmall} class="h-5 w-5" />
-				</button>
+					<button
+						data-part="btn-delete"
+						class="btn btn-xs btn-square btn-outline"
+						on:click|preventDefault={(e) => {
+							removeItem(index);
+						}}
+					>
+						<Icon data-part="icon-delete" src={MinusSmall} class="h-5 w-5" />
+					</button>
+				</div>
 			</div>
-		</div>
-	{/each}
-	<div class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
-		<button
-			class="btn btn-xs btn-square btn-outline w-full"
-			on:click|preventDefault={(e) => {
-				addItem(value?.length || 0);
-			}}
-		>
-			<Icon src={Plus} class="h-5 w-5" />
-		</button>
-	</div>
-</div>
-{#if errors?.errors}
-	<label for={id} class="label">
-		{#each errors.errors as error}
-			<span class="label-text-alt"><p class="text-error">{error.message}</p></span>
 		{/each}
-	</label>
-{/if}
+		<div data-part="add" class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
+			<button
+				data-part="btn-add"
+				class="btn btn-xs btn-square btn-outline w-full"
+				on:click|preventDefault={(e) => {
+					addItem(value?.length || 0);
+				}}
+			>
+				<Icon data-part="icon-add" src={Plus} class="h-5 w-5" />
+			</button>
+		</div>
+	</div>
+	{#if errors?.errors}
+		<label data-part="label" for={id} class="label">
+			{#each errors.errors as error}
+				<span data-part="label-text-alt" class="label-text-alt">
+					<p data-part="label-text" class="text-error">{error.message}</p>
+				</span>
+			{/each}
+		</label>
+	{/if}
+</div>
