@@ -11,7 +11,7 @@
 	const id = nanoid();
 </script>
 
-<div data-element="drawer" data-part="root" class="drawer z-[{zIndex}] {className} {contextClass}">
+<div data-element="drawer" data-part="root" class="drawer z-[{zIndex}] {contextClass} {className}">
 	<input {id} bind:checked={open} type="checkbox" class="drawer-toggle" />
 	<slot {id} />
 </div>

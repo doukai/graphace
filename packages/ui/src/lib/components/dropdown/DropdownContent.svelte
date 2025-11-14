@@ -12,7 +12,7 @@
 <ul
 	data-part="dropdown-content"
 	tabindex="0"
-	class="dropdown-content z-[{zIndex}] {className} {contextClass}"
+	class="dropdown-content z-[{zIndex}] {contextClass} {className}"
 >
 	<slot />
 </ul>

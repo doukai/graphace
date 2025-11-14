@@ -8,6 +8,6 @@
 	const contextClass = getContext<string>('ui.form') || '';
 </script>
 
-<form data-element="form" data-part="root" class="z-[{zIndex}] {className} {contextClass}">
+<form data-element="form" data-part="root" class="z-[{zIndex}] {contextClass} {className}">
 	<slot />
 </form>

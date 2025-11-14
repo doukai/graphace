@@ -10,8 +10,10 @@
 	export const tItems = {
 		add: (tItem: TItem | TItem[]) => {
 			if (Array.isArray(tItem)) {
-				data.push(...tItem?.filter((newItem) => !data.some((item) => item.name === newItem.name)));
-			} else {
+				data.push(
+					...tItem?.filter((newItem) => newItem && !data.some((item) => item.name === newItem.name))
+				);
+			} else if (tItem) {
 				if (!data.some((item) => item.name === tItem.name)) {
 					data.push(tItem);
 				}
@@ -24,11 +26,12 @@
 	import { onMount, createEventDispatcher, getContext } from 'svelte';
 	import Typeahead from 'svelte-typeahead';
 	import { getOS } from '@graphace/commons';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { MagnifyingGlass } from '@steeze-ui/heroicons';
 
 	export let placeholder: string | undefined;
 	export let limit: number = 10;
 	export let inputAfterSelect: 'clear' | 'update' | 'keep' = 'clear';
-	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
 
@@ -43,7 +46,7 @@
 		os = getOS() || '';
 	});
 
-	let rootElement: HTMLLabelElement;
+	let rootElement: HTMLDivElement;
 	function handleKeydown(e: KeyboardEvent) {
 		if ((e.keyCode === 75 && e.metaKey) || (e.keyCode === 75 && e.ctrlKey)) {
 			e.preventDefault();
@@ -58,31 +61,14 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<!-- svelte-ignore a11y-label-has-associated-control -->
-<label
+<div
 	data-element="typeahead"
 	data-part="root"
-	class="typeahead relative flex {className} {contextClass}"
+	class="flex flex-wrap items-center textarea focus-within:outline focus-within:outline-2 focus-within:outline-base-content/20 focus-within:outline-offset-2 textarea-bordered min-h-12 p-1 gap-1 {contextClass} {className}"
 	bind:this={rootElement}
 >
-	<svg
-		class="pointer-events-none absolute self-center ml-4 stroke-current opacity-60 text-base-content z-[{zIndex +
-			1}]"
-		width="16"
-		height="16"
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-	>
-		<path
-			stroke-linecap="round"
-			stroke-linejoin="round"
-			stroke-width="2"
-			d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-		/>
-	</svg>
+	<Icon src={MagnifyingGlass} data-part="icon" class="size-4 ml-2" />
 	<Typeahead
-		data-part="input"
 		{placeholder}
 		{limit}
 		hideLabel
@@ -107,7 +93,7 @@
 	</Typeahead>
 	<div
 		data-part="kbd"
-		class="pointer-events-none absolute right-4 self-center gap-1 opacity-50 hidden lg:flex"
+		class="flex pointer-events-none right-2 self-center gap-1 opacity-50 max-sm:hidden"
 	>
 		{#if ['macos'].includes(os)}
 			<kbd class="kbd kbd-sm">⌘</kbd>
@@ -117,43 +103,52 @@
 			<kbd class="kbd kbd-sm">K</kbd>
 		{/if}
 	</div>
-</label>
+</div>
 
 <style global>
-	.typeahead.typeahead [data-svelte-typeahead][data-svelte-typeahead] {
+	[data-svelte-typeahead][data-svelte-typeahead] {
 		background-color: transparent;
-		width: 100%;
-		max-width: 100%;
 	}
 	[data-svelte-search][data-svelte-search] input {
-		background-color: transparent;
-		color: inherit;
-		border: 2px solid transparent;
-		border-radius: var(--rounded-btn);
-		padding-left: 2.5em;
+		flex-shrink: 1;
+		font-size: 1rem /* 16px */;
+		line-height: 1.25rem /* 20px */;
+		--tw-bg-opacity: 1;
+		background-color: hsl(var(--b1) / var(--tw-bg-opacity));
+		border-width: 0px;
+		padding-left: 0.25rem /* 4px */;
+		padding-right: 0.25rem /* 4px */;
 		width: 100%;
+		outline: 2px solid transparent;
+		outline-offset: 2px;
 	}
 	[data-svelte-search][data-svelte-search] input::placeholder {
-		color: inherit;
+		color: hsl(var(--bc) / var(--tw-placeholder-opacity));
+		--tw-placeholder-opacity: 0.2;
 	}
 	[data-svelte-search][data-svelte-search] input:focus {
-		outline: none;
-		outline-offset: 0;
-		border: 2px solid hsl(var(--bc) / 0.2);
-		background-color: hsl(var(--b1));
-		color: hsl(var(--bc));
+		outline: 2px solid transparent;
+		outline-offset: 2px;
+		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
+			var(--tw-ring-offset-color) !important;
+		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width))
+			var(--tw-ring-color) !important;
+		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000) !important;
 	}
 	[data-svelte-typeahead][data-svelte-typeahead].dropdown[aria-expanded='true']
 		.svelte-typeahead-list {
 		transform: translateY(0.5em);
 		background: hsl(var(--b1) / 0.99);
 		border: 0 solid hsl(var(--bc) / 0.2);
-		border-radius: var(--rounded-box);
+		border-radius: 0.25rem /* 4px */;
 		overflow: hidden;
 		padding: 0.5rem;
 		backdrop-filter: blur(1rem);
 		margin-top: 0.5rem;
-		box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+		--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+		--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+			var(--tw-shadow);
 	}
 	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list .selected,
 	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list .selected:hover {
@@ -162,7 +157,7 @@
 	}
 	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list li {
 		color: hsl(var(--bc));
-		border-radius: var(--rounded-btn);
+		border-radius: var(--rounded-btn, 0.5rem /* 8px */);
 	}
 	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list li:hover {
 		background: hsl(var(--b2));

@@ -37,7 +37,7 @@
 	});
 </script>
 
-<div data-element="toggle-list" data-part="root" class="{className} {contextClass}">
+<div data-element="toggle-list" data-part="root" class="{contextClass} {className}">
 	<div
 		data-part="list"
 		use:melt={$root}

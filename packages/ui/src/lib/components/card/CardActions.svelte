@@ -6,6 +6,6 @@
 	const contextClass = getContext<string>('ui.card-actions') || '';
 </script>
 
-<div data-part="card-actions" class="card-actions {className} {contextClass}">
+<div data-part="card-actions" class="card-actions {contextClass} {className}">
 	<slot />
 </div>

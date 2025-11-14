@@ -30,7 +30,7 @@
 	}>();
 </script>
 
-<div data-element="input-file" data-part="root" class="{className} {contextClass}">
+<div data-element="file-input" data-part="root" class="{contextClass} {className}">
 	{#if value}
 		<div data-element="file" class="flex items-center justify-between">
 			<a data-part="link" href={downloadUrl + '/' + value.id} class="link" download>

@@ -9,7 +9,12 @@
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
 	export let value: StringExpression | null | undefined = undefined;
-	export let enums: { name: string; value: string | null | undefined; description?: string }[];
+	export let enums: {
+		name: string;
+		value: string | null | undefined;
+		description?: string;
+		disabled?: boolean;
+	}[];
 	export let disabled = false;
 	let className: string | undefined = undefined;
 	export { className as class };
@@ -44,7 +49,7 @@
 	>
 		<option value={undefined} />
 		{#each enums as item}
-			<option value={item.value}>{item.name}</option>
+			<option value={item.value} disabled={item.disabled}>{item.name}</option>
 		{/each}
 	</Select>
 {:else}
@@ -63,7 +68,7 @@
 	>
 		<option value={undefined} />
 		{#each enums as item}
-			<option value={item.value}>{item.name}</option>
+			<option value={item.value} disabled={item.disabled}>{item.name}</option>
 		{/each}
 	</Select>
 {/if}

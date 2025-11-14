@@ -22,7 +22,7 @@
 	}>();
 </script>
 
-<div data-element="toggle" data-part="root" class="{className} {contextClass}">
+<div data-element="toggle" data-part="root" class="{contextClass} {className}">
 	<div
 		data-element="tooltip"
 		data-part="root"

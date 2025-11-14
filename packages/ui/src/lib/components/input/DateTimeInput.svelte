@@ -22,7 +22,7 @@
 	}>();
 </script>
 
-<div data-element="input-datetime-local" data-part="root" class="{className} {contextClass}">
+<div data-element="datetime-local-input" data-part="root" class="{contextClass} {className}">
 	<input
 		data-part="input"
 		type="datetime-local"

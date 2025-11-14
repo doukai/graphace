@@ -8,7 +8,7 @@
 	export let name: string | undefined = undefined;
 	export let value: Operator | null | undefined;
 	export let disabled = false;
-	let className: string | undefined = 'select-bordered w-full';
+	let className: string | undefined = 'select-bordered';
 	export { className as class };
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');

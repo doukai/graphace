@@ -15,10 +15,9 @@
 	export let sort: Sort | null | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = 'p-1';
+	let className: string | undefined = '';
 	export { className as class };
 
-	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _expression: NumberExpression = { opr: 'EQ', val: undefined, arr: [] };
@@ -63,7 +62,7 @@
 	});
 </script>
 
-<td>
+<td class={className}>
 	<a class="link group inline-flex truncate" href={null} use:melt={$trigger}>
 		{name}
 		{#if value?.val || (value?.arr && value.arr.length > 0)}
@@ -86,13 +85,13 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
+	<div class="rounded-box shadow bg-base-200 p-1 z-[{zIndex + 5}]" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div
 			class="flex items-center flex-col space-x-0 space-y-1 md:flex-row md:space-x-1 md:space-y-0"
 			transition:fade={{ duration: 100 }}
 		>
-			<IntFilter {disabled} bind:value={_expression} />
+			<IntFilter class="w-full" {disabled} bind:value={_expression} />
 			<SortSelect {disabled} bind:value={_sort} />
 			<div class="flex space-x-1">
 				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.th.filter()}>

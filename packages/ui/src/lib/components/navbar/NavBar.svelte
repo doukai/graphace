@@ -8,6 +8,6 @@
 	const contextClass = getContext<string>('ui.navbar') || '';
 </script>
 
-<div data-element="navbar" data-part="root" class="navbar z-[{zIndex}] {className} {contextClass}">
+<div data-element="navbar" data-part="root" class="navbar z-[{zIndex}] {contextClass} {className}">
 	<slot />
 </div>

@@ -19,10 +19,9 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let zIndex: number | undefined = 0;
-	let className: string | undefined = 'p-1';
+	let className: string | undefined = '';
 	export { className as class };
 
-	const contextClass = getContext<string>('ui.popover-content') || '';
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
@@ -53,7 +52,7 @@
 	});
 </script>
 
-<Td {errors} {zIndex}>
+<Td {errors} {zIndex} class={className}>
 	<a class="link inline-flex truncate" href={null} use:melt={$trigger}>
 		{#if list}
 			{#if Array.isArray(value)}
@@ -81,7 +80,7 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
+	<div class="rounded-box shadow bg-base-200 p-1 z-[{zIndex + 5}]" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-center space-x-1" transition:fade={{ duration: 100 }}>
 			<FormControl>

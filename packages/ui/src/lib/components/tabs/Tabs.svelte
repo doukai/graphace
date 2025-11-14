@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	export type TabInfo = {
-		id: string;
+		id: string | undefined;
 		title: string;
 	};
 </script>
@@ -9,7 +9,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { createTabs, melt } from '@melt-ui/svelte';
 
-	export let value: string | undefined = undefined;
+	export let value: string = '';
 	export let tabs: TabInfo[] = [];
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
@@ -18,7 +18,7 @@
 	const contextClass = getContext<string>('ui.tab') || '';
 
 	const dispatch = createEventDispatcher<{
-		change: { value: string };
+		change: { origin: string; value: string };
 	}>();
 
 	const {
@@ -27,14 +27,11 @@
 	} = createTabs({
 		defaultValue: value,
 		onValueChange: ({ curr, next }) => {
-			if (next) {
-				dispatch('change', { value: next });
-			}
+			dispatch('change', { origin: curr, value: next });
+			value = next;
 			return next;
 		}
 	});
-
-	$: value = $curr;
 </script>
 
 <div data-element="tabs" data-part="root" use:melt={$root} class="z-[{zIndex}]">
@@ -43,8 +40,9 @@
 			<a
 				data-part="link"
 				href={undefined}
+				on:click={(e) => e.preventDefault()}
 				use:melt={$trigger(tab.id)}
-				class="tab {className} {contextClass} {$curr === tab.id ? 'tab-active' : ''}"
+				class="tab {contextClass} {className} {$curr === tab.id ? 'tab-active' : ''}"
 			>
 				{tab.title}
 			</a>

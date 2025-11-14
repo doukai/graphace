@@ -8,7 +8,7 @@
 	const contextClass = getContext<string>('ui.drawer-side') || '';
 </script>
 
-<div data-part="drawer-side" class="drawer-side {className} {contextClass}">
+<div data-part="drawer-side" class="drawer-side {contextClass} {className}">
 	<label for={id} class="drawer-overlay" />
 	<slot />
 </div>

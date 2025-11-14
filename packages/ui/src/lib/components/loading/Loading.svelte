@@ -10,7 +10,7 @@
 <div
 	data-element="loading"
 	data-part="root"
-	class="flex justify-center content-center w-full h-full {className} {contextClass}"
+	class="flex justify-center content-center w-full h-full {contextClass} {className}"
 >
 	<span data-part="loading" class="loading loading-spinner" />
 </div>

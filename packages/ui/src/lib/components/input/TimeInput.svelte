@@ -22,7 +22,7 @@
 	}>();
 </script>
 
-<div data-element="input-time" data-part="root" class="{className} {contextClass}">
+<div data-element="time-input" data-part="root" class="{contextClass} {className}">
 	<input
 		data-part="input"
 		type="time"

@@ -45,7 +45,7 @@
 	use:melt={$content(id)}
 	in:fly={{ duration: 150, x: '100%' }}
 	out:fly={{ duration: 150, x: '100%' }}
-	class="alert {data.type ? `alert-${data.type}` : ''} {className} {contextClass}"
+	class="alert {data.type ? `alert-${data.type}` : ''} {contextClass} {className}"
 >
 	{#if data.type === 'info'}
 		<Icon src={InformationCircle} class="h-5 w-5" />

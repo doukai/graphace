@@ -25,7 +25,7 @@
 	}>();
 </script>
 
-<div data-element="input-text" data-part="root" class="{className} {contextClass}">
+<div data-element="input" data-part="root" class="{contextClass} {className}">
 	{#if textarea}
 		<textarea
 			data-part="textarea"

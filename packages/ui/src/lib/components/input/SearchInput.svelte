@@ -7,7 +7,7 @@
 	export let name: string | undefined = undefined;
 	export let value: string | undefined = undefined;
 	export let placeholder: string = '';
-	let className: string | undefined = 'input-bordered w-full';
+	let className: string | undefined = '';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.input') || '';
@@ -17,7 +17,7 @@
 	}>();
 </script>
 
-<div data-element="input-search" data-part="root" class="join w-full">
+<div data-element="search-input" data-part="root" class="join {contextClass} {className}">
 	<input
 		data-part="input"
 		type="search"
@@ -25,7 +25,7 @@
 		{name}
 		{placeholder}
 		bind:value
-		class="input join-item {className} {contextClass}"
+		class="input join-item input-bordered w-full"
 	/>
 	<button
 		data-part="btn-search"

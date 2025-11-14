@@ -7,6 +7,6 @@
 	const contextClass = getContext<string>('ui.modal-action') || '';
 </script>
 
-<div data-part="modal-action" class="modal-action {className} {contextClass}">
+<div data-part="modal-action" class="modal-action {contextClass} {className}">
 	<slot />
 </div>

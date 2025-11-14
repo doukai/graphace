@@ -48,7 +48,7 @@
 <div
 	data-element="toasts"
 	data-part="root"
-	class="fixed flex flex-col items-end md:top-auto z-[{$zIndex + 1}] {className} {contextClass}"
+	class="fixed flex flex-col items-end md:top-auto z-[{$zIndex + 1}] {contextClass} {className}"
 	use:portal
 >
 	{#each $toasts as toast (toast.id)}

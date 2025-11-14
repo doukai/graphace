@@ -47,7 +47,7 @@
 	});
 </script>
 
-<div data-element="input-datetime-local-list" data-part="root" class="{className} {contextClass}">
+<div data-element="datetime-local-input-list" data-part="root" class="{contextClass} {className}">
 	<div
 		data-element="list"
 		use:melt={$root}

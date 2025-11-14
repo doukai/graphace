@@ -41,7 +41,7 @@
 	<div
 		data-element="dialog"
 		data-part="root"
-		class="{className} {contextClass}"
+		class="{contextClass} {className}"
 		use:melt={$portalled}
 	>
 		<div

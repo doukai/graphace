@@ -50,7 +50,7 @@
 	});
 </script>
 
-<div data-element="input-number-list" data-part="root" class="{className} {contextClass}">
+<div data-element="number-input-list" data-part="root" class="{contextClass} {className}">
 	<div
 		data-part="list"
 		use:melt={$root}

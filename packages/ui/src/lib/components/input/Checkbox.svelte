@@ -21,7 +21,7 @@
 	}>();
 </script>
 
-<div data-element="checkbox" data-part="root" class="{className} {contextClass}">
+<div data-element="checkbox" data-part="root" class="{contextClass} {className}">
 	<input
 		data-part="input"
 		type="checkbox"

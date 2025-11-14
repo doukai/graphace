@@ -42,7 +42,7 @@
 	};
 </script>
 
-<div data-element="input-file-list" data-part="root" class="{className} {contextClass}">
+<div data-element="file-input-list" data-part="root" class="{contextClass} {className}">
 	<div data-part="list" {id} class="{errors?.errors ? 'border-2 border-error' : ''} space-y-2">
 		{#each value || [] as item, index}
 			<div data-part="file" class="flex justify-between space-x-1">

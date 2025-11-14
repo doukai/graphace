@@ -29,13 +29,14 @@
 	}>();
 </script>
 
-<div data-element="buttons" data-part="root" class="{className} {contextClass}">
+<div data-element="buttons" data-part="root" class="{contextClass} {className}">
 	<slot name="start" />
 	{#if showRemoveButton}
 		<Button
 			{loading}
 			text={$LL.ui.button.remove()}
-			class="data-[part=button]:btn-error data-[part=button]:btn-outline data-[part=button-sm]:btn-square"
+			color="error"
+			class="[&_[data-part=button]]:btn-outline [&_[data-part=button-sm]]:btn-square"
 			on:click={(e) => {
 				dispatch('remove');
 			}}
@@ -47,7 +48,8 @@
 		<Button
 			{loading}
 			text={$LL.ui.button.unbind()}
-			class="data-[part=button]:btn-error data-[part=button]:btn-outline data-[part=button-sm]:btn-square"
+			color="error"
+			class="[&_[data-part=button]]:btn-outline [&_[data-part=button-sm]]:btn-square"
 			on:click={(e) => {
 				dispatch('unbind');
 			}}
@@ -58,8 +60,9 @@
 	{#if showSaveButton}
 		<Button
 			{loading}
+			color="secondary"
 			text={$LL.ui.button.save()}
-			class="data-[part=button]:btn-secondary data-[part=button-sm]:btn-square"
+			class="[&_[data-part=button-sm]]:btn-square"
 			on:click={(e) => {
 				dispatch('save');
 			}}
@@ -70,8 +73,9 @@
 	{#if showCreateButton}
 		<Button
 			{loading}
+			color="primary"
 			text={$LL.ui.button.create()}
-			class="data-[part=button]:btn-primary data-[part=button-sm]:btn-square"
+			class="[&_[data-part=button-sm]]:btn-square"
 			on:click={(e) => {
 				dispatch('create');
 			}}
@@ -82,8 +86,9 @@
 	{#if showSelectButton}
 		<Button
 			{loading}
+			color="secondary"
 			text={$LL.ui.button.select()}
-			class="data-[part=button]:btn-secondary data-[part=button]:btn-outline data-[part=button-sm]:btn-square"
+			class="[&_[data-part=button-sm]]:btn-square"
 			on:click={(e) => {
 				dispatch('select');
 			}}
@@ -94,8 +99,9 @@
 	<slot />
 	{#if showBackButton}
 		<Button
+			color="neutral"
 			text={$LL.ui.button.back()}
-			class="data-[part=button]:btn-neutral data-[part=button-sm]:btn-square"
+			class="[&_[data-part=button-sm]]:btn-square"
 			on:click={(e) => {
 				dispatch('back');
 			}}

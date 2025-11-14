@@ -125,7 +125,7 @@
 	}
 </script>
 
-<div data-element="combobox" data-part="root" class="relative {className} {contextClass}">
+<div data-element="combobox" data-part="root" class="{contextClass} {className}">
 	<div
 		data-part="input"
 		use:melt={$root}
@@ -169,40 +169,42 @@
 				{t.value}
 			</div>
 		{/each}
-		<input
-			data-part="search"
-			use:melt={$input}
-			{id}
-			type="text"
-			class="input px-1 h-5 w-full min-w-20 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
-			on:focus={(e) => {
-				if ($touchedInput) {
-					debounce(() => {
-						dispatch('search', { searchValue: $inputValue });
-					});
-				} else {
-					debounce(() => {
-						dispatch('search', { searchValue: undefined });
-					});
-				}
-			}}
-			{name}
-			placeholder={value || (Array.isArray(value) && value.length > 0) ? '' : placeholder}
-			{disabled}
-		/>
-	</div>
-	<div data-part="icon" class="absolute right-2 top-1/2 z-[{zIndex + 9}] -translate-y-1/2">
-		{#if $open}
-			<Icon src={ChevronUp} data-part="icon-up" class="size-4" />
-		{:else}
-			<Icon src={ChevronDown} data-part="icon-down" class="size-4" />
+		{#if !disabled && !readonly}
+			<input
+				data-part="search"
+				use:melt={$input}
+				{id}
+				type="text"
+				class="input px-1 h-5 w-full min-w-20 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+				on:focus={(e) => {
+					if ($touchedInput) {
+						debounce(() => {
+							dispatch('search', { searchValue: $inputValue });
+						});
+					} else {
+						debounce(() => {
+							dispatch('search', { searchValue: undefined });
+						});
+					}
+				}}
+				{name}
+				placeholder={value || (Array.isArray(value) && value.length > 0) ? '' : placeholder}
+				{disabled}
+			/>
+			<div data-part="icon" class="w-4 right-2 top-1/2 z-[{zIndex + 9}]">
+				{#if $open}
+					<Icon src={ChevronUp} data-part="icon-up" class="size-4" />
+				{:else}
+					<Icon src={ChevronDown} data-part="icon-down" class="size-4" />
+				{/if}
+			</div>
 		{/if}
 	</div>
 </div>
 {#if $open}
 	<ul
 		data-part="menu"
-		class="menu shadow rounded-xl bg-base-100 z-[{zIndex +
+		class="menu rounded shadow bg-base-100 z-[{zIndex +
 			9}] max-h-80 mt-4 flex-nowrap overflow-y-auto"
 		use:melt={$menu}
 		transition:fade={{ duration: 100 }}

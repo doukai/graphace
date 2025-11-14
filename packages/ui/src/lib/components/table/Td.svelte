@@ -10,7 +10,7 @@
 	const contextClass = getContext<string>('ui.td') || '';
 </script>
 
-<td data-element="td" data-part="root" class="{className} {contextClass}">
+<td data-element="td" data-part="root" class="{contextClass} {className}">
 	<div
 		data-part="tooltip"
 		class={errors ? `tooltip tooltip-open tooltip-error hover:z-[${zIndex + 3}]` : undefined}

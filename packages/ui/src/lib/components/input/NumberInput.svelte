@@ -25,7 +25,7 @@
 	}>();
 </script>
 
-<div data-element="input-number" data-part="root" class="{className} {contextClass}">
+<div data-element="number-input" data-part="root" class="{contextClass} {className}">
 	<input
 		data-part="input"
 		type="number"

@@ -22,9 +22,9 @@
 </script>
 
 <div
-	data-element="menu"
+	data-element="modal"
 	data-part="root"
-	class="modal z-[{zIndex}] {className} {contextClass}"
+	class="modal z-[{zIndex}] {contextClass} {className}"
 	class:modal-open={isModalOpen}
 	bind:this={modal}
 >

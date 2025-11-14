@@ -27,7 +27,7 @@
 	}
 </script>
 
-<div data-element="select" data-part="root" class="{className} {contextClass}">
+<div data-element="select" data-part="root" class="{contextClass} {className}">
 	{#if multiple}
 		<select
 			data-part="select"

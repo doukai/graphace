@@ -47,7 +47,7 @@
 	});
 </script>
 
-<div data-element="input-date-list" data-part="root" class="{className} {contextClass}">
+<div data-element="date-input-list" data-part="root" class="{contextClass} {className}">
 	<div
 		data-part="list"
 		use:melt={$root}

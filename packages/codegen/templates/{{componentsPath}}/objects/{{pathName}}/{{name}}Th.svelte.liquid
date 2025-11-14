@@ -8,12 +8,14 @@
 
 	export let name: string;
 	export let value: {{ name }}Expression | null | undefined = undefined;
+	let className: string | undefined = '';
+	export { className as class };
 
 	$: filtered = value && hasArguments(value);
 </script>
 
 <{{ name }}Filter bind:value let:trigger on:filter>
-	<td>
+	<td class={className}>
 		<a class="link group inline-flex truncate" href={null} use:melt={trigger}>
 			{name}
 			{#if filtered}

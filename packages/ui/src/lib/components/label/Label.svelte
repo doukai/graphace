@@ -10,7 +10,7 @@
 	const contextClass = getContext<string>('ui.label') || '';
 </script>
 
-<label data-element="label" data-part="root" for={id} class="label {className} {contextClass}">
+<label data-element="label" data-part="root" for={id} class="label {contextClass} {className}">
 	<span data-part="label-text" class="label-text">
 		{#if required}
 			<span data-part="label-required" class="text-error">*</span>

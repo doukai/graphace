@@ -86,7 +86,7 @@
 	let selectAll: boolean;
 </script>
 
-<div class="flex sm:justify-between">
+<div class="flex justify-between">
 	<span class="max-sm:hidden text-xl font-semibold self-center">
 		{#if title}
 			{title}
@@ -121,7 +121,7 @@
 	>
 		<svelte:fragment slot="start">
 			{#if showSearchInput}
-				<SearchInput on:search />
+				<SearchInput class="max-sm:w-full" on:search />
 			{/if}
 			<div class="sm:hidden">
 				<{{ name }}Filter

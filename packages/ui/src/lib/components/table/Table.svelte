@@ -8,7 +8,7 @@
 	const contextClass = getContext<string>('ui.table') || '';
 </script>
 
-<div data-element="table" data-part="root" class="overflow-x-auto {className} {contextClass}">
+<div data-element="table" data-part="root" class="overflow-x-auto {contextClass} {className}">
 	<table data-part="table" class="table table-zebra table-pin-rows table-pin-cols z-[{zIndex}]">
 		<slot />
 	</table>

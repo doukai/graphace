@@ -15,7 +15,7 @@
 		data-element="error-labels"
 		data-part="root"
 		for={id}
-		class="label {className} {contextClass}"
+		class="label {contextClass} {className}"
 	>
 		{#each errors.errors as error}
 			<span data-part="label-text-alt" class="label-text-alt">

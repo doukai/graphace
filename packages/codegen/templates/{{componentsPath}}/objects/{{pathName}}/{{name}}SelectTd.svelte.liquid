@@ -118,7 +118,7 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {className} {contextClass}" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {contextClass} {className}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-start space-x-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 			<FormControl>
