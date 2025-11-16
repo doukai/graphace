@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	export type TabInfo = {
-		id: string | undefined;
+		id: string;
 		title: string;
 	};
 </script>
