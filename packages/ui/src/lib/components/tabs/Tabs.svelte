@@ -2,6 +2,7 @@
 	export type TabInfo = {
 		id: string;
 		title: string;
+		hidden?: boolean;
 	};
 </script>
 
@@ -34,19 +35,26 @@
 	});
 </script>
 
-<div data-element="tabs" data-part="root" use:melt={$root} class="z-[{zIndex}]">
+<div
+	data-element="tabs"
+	data-part="root"
+	use:melt={$root}
+	class="{contextClass} {className} z-[{zIndex}]"
+>
 	<div data-part="list" use:melt={$list} class="tabs">
 		{#each tabs as tab}
-			<a
-				data-part="link"
-				href={undefined}
-				on:click={(e) => e.preventDefault()}
-				use:melt={$trigger(tab.id)}
-				class="tab {contextClass} {className} {$curr === tab.id ? 'tab-active' : ''}"
-			>
-				{tab.title}
-			</a>
+			{#if !tab.hidden}
+				<a
+					data-part="link"
+					href={undefined}
+					on:click={(e) => e.preventDefault()}
+					use:melt={$trigger(tab.id)}
+					class="tab {$curr === tab.id ? 'tab-active' : ''}"
+				>
+					{tab.title}
+				</a>
+			{/if}
 		{/each}
 	</div>
-	<slot {content} />
+	<slot content={$content} />
 </div>
