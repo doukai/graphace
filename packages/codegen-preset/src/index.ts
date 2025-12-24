@@ -21,7 +21,8 @@ import {
     inComponentObject,
     inComponentEnum,
     inRouteObject,
-    inRouteField
+    inRouteField,
+    inQueryField
 } from 'graphace-codegen-commons'
 import type { GraphacePresetConfig } from "./config";
 import { buildPath } from "./builder";
