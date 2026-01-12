@@ -1,13 +1,23 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
+	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast } from '@graphace/ui';
+	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
 	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
+	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
-	import { loadEvent{% if useAuth %}, permissions{% endif %} } from '~/utils';
-	import type { {{ name }}, {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import {
+		loadEvent,
+		validator,
+		{%- if useAuth %}
+		permissions,
+		{%- endif %}
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
+	import type { {{ name }}, {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input, Mutation{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined =
@@ -21,6 +31,7 @@
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
 
+	const { validate } = validator;
 	{%- if useAuth %}
 	const { auth } = permissions;
 	export let fields: {
@@ -43,6 +54,7 @@
 	}>();
 
 	const query_{{ name | camelCase }}Connection_Store = createQuery_{{ name | camelCase }}Connection_Store($loadEvent);
+	const mutation_{{ name | camelCase }}_Store = createMutation_{{ name | camelCase }}_Store($loadEvent);
 	$: nodes = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.edges?.map(
 		(edge) => edge?.node
 	);
@@ -51,12 +63,13 @@
 	export let orderBy: {{ name }}OrderBy = {};
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
+	export let errors: Record<number, Errors> = {};
 	export let selectedIdList: (string | null | undefined)[] | undefined = [];
 	export let close: (() => void) | undefined = undefined;
 	
 	$: if (textFieldName) {
 		if (Array.isArray(value)) {
-			if (value.some((item) => !item?.[textFieldName])) {
+			if (value.some((item) => !item?.[textFieldName] && item?.{{ idName }})) {
 				query_{{ name | camelCase }}Connection_Store
 					.fetch({
 						{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }}) }
@@ -83,7 +96,7 @@
 				}
 			}
 		} else if (value) {
-			if (!value?.[textFieldName]) {
+			if (!value?.[textFieldName] && value.{{ idName }}) {
 				query_{{ name | camelCase }}Connection_Store
 					.fetch({
 						{{ idName }}: { opr: 'EQ', val: value.{{ idName }} }
@@ -110,6 +123,45 @@
 				toast.error($LL.{{ appName }}.message.requestFailed());
 			}
 		});
+	};
+
+	const mutation = (args: Mutation{{ name }}Args) => {
+		const row = nodes
+			?.map((node) => node?.id)
+			?.indexOf(args.id || args.where?.id?.val || undefined);
+			
+		validate('Mutation_{{ name | camelCase }}_Arguments', args)
+			.then((data) => {
+				if (row !== -1 && row !== undefined && errors[row]) {
+					errors[row].iterms = {};
+				}
+				mutation_{{ name | camelCase }}_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.{{ appName }}.message.requestFailed(),
+								description: globalError,
+								confirm: () => {
+									query();
+									return true;
+								}
+							});
+						}
+					} else {
+						toast.success($LL.{{ appName }}.message.requestSuccess());
+						query();
+					}
+				});
+			})
+			.catch((validErrors) => {
+				console.error(validErrors);
+				if (row !== -1 && row !== undefined) {
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
+				}
+			});
 	};
 </script>
 
@@ -170,6 +222,7 @@
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
+			{errors}
 			showEditButton={!readonly}
 			showCreateButton={!readonly && auth('{{ name }}::*::WRITE')}
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
@@ -224,6 +277,11 @@
 				args = e.detail.args;
 				orderBy = e.detail.orderBy;
 				query();
+			{% raw %}}}{% endraw %}
+			on:save={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					mutation(e.detail.value);
+				}
 			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {

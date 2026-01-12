@@ -33,7 +33,7 @@
 		filter: { value?: {{ name }}Expression | null | undefined };
 	}>();
 
-	let _value = {
+	let _value: {{ name }}Expression = {
 		{{ idName }}: undefined,
 		{%- for field in fields %}
 		{%- if field.isScalarType or field.isEnumType %}
@@ -42,6 +42,10 @@
 		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- endfor %}
+	}
+
+	if (value) {
+		_value = { ..._value, ...value };
 	}
 
 	const filter = (): void => {

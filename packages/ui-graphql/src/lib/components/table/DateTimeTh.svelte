@@ -30,6 +30,21 @@
 		};
 	}>();
 
+	if (value) {
+		_expression = value;
+		if (!value.opr) {
+			if (value.arr) {
+				_expression.opr = 'IN';
+			} else {
+				_expression.opr = 'EQ';
+			}
+		}
+	}
+
+	if (sort) {
+		_sort = sort;
+	}
+
 	const filter = (): void => {
 		if (_expression.val) {
 			value = { opr: _expression.opr, val: _expression.val, arr: undefined };

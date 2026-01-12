@@ -328,6 +328,23 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
         generateOptions.push(
             ...targetComponentObjectTypes
                 .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Editable.svelte';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
                     return {

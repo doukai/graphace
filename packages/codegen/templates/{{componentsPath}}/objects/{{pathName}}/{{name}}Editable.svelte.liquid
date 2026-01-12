@@ -6,18 +6,18 @@
 	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel, Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Td, {% endfor %}{% if hasFileField %}FileTd, {% endif %}ObjectLink } from '@graphace/ui-graphql';
+	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	import {{ name }}Filter from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Filter.svelte';
 	import {{ name }}FormDialog from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}FormDialog.svelte';
 	{%- for enum in enums %}
 	import {{ enum }}Th from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Th.svelte';
-	import {{ enum }}Td from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Td.svelte';
+	import {{ enum }}Input from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Input.svelte';
 	{%- endfor %}
 	{%- for object in objects %}
 	import {{ object }}Th from '~/{{ componentsPath }}/objects/{{ object | paramCase }}/{{ object }}Th.svelte';
 	{%- endfor %}
 	{%- for select in selects %}
-	import {{ select }}SelectTd from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}SelectTd.svelte';
+	import {{ select }}Select from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}Select.svelte';
 	{%- endfor %}
 	{%- for dialog in nonSelects %}
 	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
@@ -33,6 +33,7 @@
 	export let args: {{ queryTypeName }}{{ name }}ListArgs = {};
 	export let orderBy: {{ name }}OrderBy = {};
 	export let selectedIdList: (string | null | undefined)[] = [];
+	export let selectedRowList: number[] = [];
 	export let isFetching: boolean = false;
 	export let isMutating: boolean = false;
 	export let errors: Record<number, Errors> = {};
@@ -108,15 +109,18 @@
 		on:save={(e) => dispatch('save', { value })}
 		on:remove={(e) =>
 			dispatch('remove', {
-				value: value?.filter((node) => selectedIdList.includes(node?.{{ idName }}))
+				value: value?.filter((node) => selectedIdList.includes(node?.id)),
+				row: selectedRowList
 			})}
 		on:unbind={(e) =>
 			dispatch('unbind', {
-				value: value?.filter((node) => selectedIdList.includes(node?.{{ idName }}))
+				value: value?.filter((node) => selectedIdList.includes(node?.id)),
+				row: selectedRowList
 			})}
 		on:select={(e) =>
 			dispatch('select', {
-				value: value?.filter((node) => selectedIdList.includes(node?.{{ idName }}))
+				value: value?.filter((node) => selectedIdList.includes(node?.id)),
+				row: selectedRowList
 			})}
 		on:create
 		on:back
@@ -172,12 +176,14 @@
 									selectedIdList = [
 										...new Set([...selectedIdList, ...value.map((node) => node?.{{ idName }})])
 									];
+									selectedRowList = [...value?.map((_, row) => row)];
 								} else {
 									selectedIdList = [
 										...selectedIdList.filter(
 											(selectedId) => !value?.some((node) => node?.{{ idName }} === selectedId)
 										)
 									];
+									selectedRowList = [];
 								}
 							}
 						{% raw %}}}{% endraw %}
@@ -225,8 +231,17 @@
 								<input
 									type="checkbox"
 									class="checkbox"
-									bind:group={selectedIdList}
-									value={node.{{ idName }}}
+									bind:group={selectedRowList}
+									value={row}
+									on:change={(e) => {
+										selectedIdList = [
+											...selectedRowList
+												.filter(
+													(row) => value?.[row]?.id !== undefined && value?.[row]?.id !== null
+												)
+												.map((row) => value?.[row]?.id)
+										];
+									}}
 								/>
 							</label>
 						</th>
@@ -234,44 +249,46 @@
 						<slot name="{{ field.fieldName }}">
 							{#if !fields.{{ field.fieldName }}?.hidden}
 								{%- if field.isScalarType or field.isEnumType or field.isFile %}
-								<{{ field.fieldTypeName }}Td
-									name="{{ field.fieldName }}"
-									bind:value={node.{{ field.fieldName }}}
-									{%- if field.isListType %}
-									list
-									{%- endif %}
-									{%- if field.inMutationArgs and field.fieldName != idName %}
-									on:save={(e) =>
-										dispatch('save', {
-											value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-										})}
-									readonly={fields.{{ field.fieldName }}?.readonly}
-									disabled={fields.{{ field.fieldName }}?.disabled}
-									{%- else %}
-									readonly
-									{%- endif %}
-									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-									{%- if field.isFile %}
-									on:upload
-									{%- endif %}
-									{zIndex}
-								/>
+								<Td {zIndex}>
+									<{{ field.fieldTypeName }}Input
+										name="{{ field.fieldName }}"
+										bind:value={node.{{ field.fieldName }}}
+										{%- if field.isListType %}
+										list
+										{%- endif %}
+										{%- if field.inMutationArgs and field.fieldName != idName %}
+										on:save={(e) =>
+											dispatch('save', {
+												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+											})}
+										readonly={fields.{{ field.fieldName }}?.readonly}
+										disabled={fields.{{ field.fieldName }}?.disabled}
+										{%- else %}
+										readonly
+										{%- endif %}
+										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										{%- if field.isFile %}
+										on:upload
+										{%- endif %}
+									/>
+								</Td>
 								{%- elsif field.isSelect %}
-								<{{ field.fieldTypeName }}SelectTd
-									name="{{ field.fieldName }}"
-									bind:value={node.{{ field.fieldName }}}
-									{%- if field.isListType %}
-									list
-									{%- endif %}
-									errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-									readonly={fields.{{ field.fieldName }}?.readonly}
-									disabled={fields.{{ field.fieldName }}?.disabled}
-									on:save={(e) =>
-										dispatch('save', {
-											value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-										})}
-									{zIndex}
-								/>
+								<Td {zIndex}>
+									<{{ field.fieldTypeName }}Select
+										name="{{ field.fieldName }}"
+										bind:value={node.{{ field.fieldName }}}
+										{%- if field.isListType %}
+										list
+										{%- endif %}
+										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										readonly={fields.{{ field.fieldName }}?.readonly}
+										disabled={fields.{{ field.fieldName }}?.disabled}
+										on:save={(e) =>
+											dispatch('save', {
+												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+											})}
+									/>
+								</Td>
 								{%- else %}
 								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
 									{#if node.{{idName}}}
@@ -375,8 +392,17 @@
 									<input
 										type="checkbox"
 										class="checkbox"
-										bind:group={selectedIdList}
-										value={node.{{ idName }}}
+										bind:group={selectedRowList}
+										value={row}
+										on:change={(e) => {
+											selectedIdList = [
+												...selectedRowList
+													.filter(
+														(row) => value?.[row]?.id !== undefined && value?.[row]?.id !== null
+													)
+													.map((row) => value?.[row]?.id)
+											];
+										}}
 									/>
 								</label>
 							</th>
@@ -435,44 +461,46 @@
 								<tr class="hover">
 									<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
 									{%- if field.isScalarType or field.isEnumType or field.isFile %}
-									<{{ field.fieldTypeName }}Td
-										name="{{ field.fieldName }}"
-										bind:value={node.{{ field.fieldName }}}
-										{%- if field.isListType %}
-										list
-										{%- endif %}
-										{%- if field.inMutationArgs and field.fieldName != idName %}
-										on:save={(e) =>
-											dispatch('save', {
-												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-											})}
-										readonly={fields.{{ field.fieldName }}?.readonly}
-										disabled={fields.{{ field.fieldName }}?.disabled}
-										{%- else %}
-										readonly
-										{%- endif %}
-										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-										{%- if field.isFile %}
-										on:upload
-										{%- endif %}
-										{zIndex}
-									/>
+									<Td {zIndex}>
+										<{{ field.fieldTypeName }}Input
+											name="{{ field.fieldName }}"
+											bind:value={node.{{ field.fieldName }}}
+											{%- if field.isListType %}
+											list
+											{%- endif %}
+											{%- if field.inMutationArgs and field.fieldName != idName %}
+											on:save={(e) =>
+												dispatch('save', {
+													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+												})}
+											readonly={fields.{{ field.fieldName }}?.readonly}
+											disabled={fields.{{ field.fieldName }}?.disabled}
+											{%- else %}
+											readonly
+											{%- endif %}
+											errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+											{%- if field.isFile %}
+											on:upload
+											{%- endif %}
+										/>
+									</Td>
 									{%- elsif field.isSelect %}
-									<{{ field.fieldTypeName }}SelectTd
-										name="{{ field.fieldName }}"
-										bind:value={node.{{ field.fieldName }}}
-										{%- if field.isListType %}
-										list
-										{%- endif %}
-										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-										readonly={fields.{{ field.fieldName }}?.readonly}
-										disabled={fields.{{ field.fieldName }}?.disabled}
-										on:save={(e) =>
-											dispatch('save', {
-												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-											})}
-										{zIndex}
-									/>
+									<Td {zIndex}>
+										<{{ field.fieldTypeName }}Select
+											name="{{ field.fieldName }}"
+											bind:value={node.{{ field.fieldName }}}
+											{%- if field.isListType %}
+											list
+											{%- endif %}
+											errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+											readonly={fields.{{ field.fieldName }}?.readonly}
+											disabled={fields.{{ field.fieldName }}?.disabled}
+											on:save={(e) =>
+												dispatch('save', {
+													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+												})}
+										/>
+									</Td>
 									{%- else %}
 									<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
 										{#if node.{{idName}}}

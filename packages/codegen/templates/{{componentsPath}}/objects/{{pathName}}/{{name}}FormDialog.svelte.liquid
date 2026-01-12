@@ -58,7 +58,7 @@
 	export let close: (() => void) | undefined = undefined;
 
  	$: if (textFieldName) {
-		if (value && !value?.[textFieldName]) {
+		if (value && !value?.[textFieldName] && value.{{ idName }}) {
 			query_{{ name | camelCase }}_Store
 				.fetch({
 					{{ idName }}: { opr: 'EQ', val: value.{{ idName }} }

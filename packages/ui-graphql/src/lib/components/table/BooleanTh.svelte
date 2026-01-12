@@ -17,14 +17,30 @@
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
-	
+
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	let _expression: BooleanExpression = { opr: 'EQ', val: undefined, arr: [] };
 	let _sort: Sort | undefined = undefined;
+
 	const dispatch = createEventDispatcher<{
 		filter: { value: BooleanExpression | null | undefined; sort: Sort | null | undefined };
 	}>();
+
+	if (value) {
+		_expression = value;
+		if (!value.opr) {
+			if (value.arr) {
+				_expression.opr = 'IN';
+			} else {
+				_expression.opr = 'EQ';
+			}
+		}
+	}
+
+	if (sort) {
+		_sort = sort;
+	}
 
 	const filter = (): void => {
 		if (_expression.val) {

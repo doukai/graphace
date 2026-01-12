@@ -8,6 +8,7 @@ export type Template =
     '{{storesPath}}/mutation/mutation_{{name}}_{{objectFieldName}}_store.ts' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}FormDialog.svelte' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Editable.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Table.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}TableDialog.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Select.svelte' |

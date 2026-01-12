@@ -11,14 +11,16 @@
 	import {{ select }}Select from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}Select.svelte';
 	{%- endfor %}
 	{%- for table in tables %}
-	import {{ table }}Table from '~/{{ componentsPath }}/objects/{{ table | paramCase }}/{{ table }}Table.svelte';
+	import {{ table }}Editable from '~/{{ componentsPath }}/objects/{{ table | paramCase }}/{{ table }}Editable.svelte';
 	{%- endfor %}
 	{%- for dialog in nonSelects %}
 	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
 	{%- endfor %}
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { locale } from '$i18n/i18n-svelte';
+	{%- if tables and tables.length > 0 %}
+	import { locale } from '~/lib/i18n/i18n-svelte';
+	{%- endif %}
 	
 	export let value: {{ name }}Input | null | undefined = undefined;
 	export let isFetching: boolean = false;
@@ -49,12 +51,13 @@
 		remove: { value: {{ name }}Input | null | undefined };
 		unbind: { value: {{ name }}Input | null | undefined };
 		save: { value: {{ name }}Input | null | undefined };
+		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
 </script>
 
-<div class="flex justify-end sm:justify-between">
-	<span class="max-sm:hidden text-xl font-semibold self-center">
+<div class="flex justify-between">
+	<span class="text-xl font-semibold self-center">
 		{#if title}
 			{title}
 		{:else}
@@ -86,8 +89,7 @@
 			{#if !fields.{{ field.fieldName }}?.hidden}
 				{%- if field.isTable %}
 				<div class="col-span-full">
-					<div class="divider" />
-					<{{ field.fieldTypeName }}Table
+					<{{ field.fieldTypeName }}Editable
 						title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 						showCreateDialog
 						showEditDialog
@@ -104,9 +106,6 @@
 						on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`, e.detail.name)}
 					/>
 					<ErrorLabels errors={errors.{{ field.fieldName }}} />
-					{%- if forloop.last == false %}
-					<div class="divider" />
-					{%- endif %}
 				</div>
 				{%- else %}
 				<FormControl let:id>
