@@ -20,7 +20,7 @@
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	let _expression: BooleanExpression = { opr: 'EQ', val: undefined, arr: [] };
+	let _value: BooleanExpression = { opr: 'EQ', val: undefined, arr: [] };
 	let _sort: Sort | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{
@@ -28,12 +28,12 @@
 	}>();
 
 	if (value) {
-		_expression = value;
+		_value = value;
 		if (!value.opr) {
 			if (value.arr) {
-				_expression.opr = 'IN';
+				_value.opr = 'IN';
 			} else {
-				_expression.opr = 'EQ';
+				_value.opr = 'EQ';
 			}
 		}
 	}
@@ -43,12 +43,12 @@
 	}
 
 	const filter = (): void => {
-		if (_expression.val) {
-			value = { opr: _expression.opr, val: _expression.val, arr: undefined };
-		} else if (_expression.arr && _expression.arr.length > 0) {
-			value = { opr: _expression.opr, val: undefined, arr: _expression.arr };
-		} else if (_expression.opr === 'NIL' || _expression.opr === 'NNIL') {
-			value = { opr: _expression.opr, val: undefined, arr: undefined };
+		if (_value.val) {
+			value = { opr: _value.opr, val: _value.val, arr: undefined };
+		} else if (_value.arr && _value.arr.length > 0) {
+			value = { opr: _value.opr, val: undefined, arr: _value.arr };
+		} else if (_value.opr === 'NIL' || _value.opr === 'NNIL') {
+			value = { opr: _value.opr, val: undefined, arr: undefined };
 		} else {
 			value = undefined;
 		}
@@ -58,9 +58,9 @@
 	};
 
 	const clear = (): void => {
-		_expression.opr = 'EQ';
-		_expression.arr = [];
-		_expression.val = undefined;
+		_value.opr = 'EQ';
+		_value.arr = [];
+		_value.val = undefined;
 		_sort = undefined;
 		value = undefined;
 		sort = undefined;
@@ -106,7 +106,7 @@
 			class="flex items-center flex-col space-x-0 space-y-1 md:flex-row md:space-x-1 md:space-y-0"
 			transition:fade={{ duration: 100 }}
 		>
-			<BooleanFilter class="w-full" {disabled} bind:value={_expression} />
+			<BooleanFilter class="w-full" {disabled} bind:value={_value} />
 			<SortSelect {disabled} bind:value={_sort} />
 			<div class="flex space-x-1">
 				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.th.filter()}>
