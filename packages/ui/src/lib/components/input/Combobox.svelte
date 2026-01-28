@@ -175,7 +175,7 @@
 				use:melt={$input}
 				{id}
 				type="text"
-				class="input px-1 h-5 w-full min-w-20 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+				class="input px-1 h-5 min-w-20 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 				on:focus={(e) => {
 					if ($touchedInput) {
 						debounce(() => {
