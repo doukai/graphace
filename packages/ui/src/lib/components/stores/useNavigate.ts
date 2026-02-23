@@ -1,14 +1,14 @@
-import { type Writable, writable, derived } from 'svelte/store';
+import { type Writable, writable, derived, get } from 'svelte/store';
 import { goto } from '$app/navigation';
 
-export const history: Writable<{ url: URL, name?: string | null | undefined }[]> = writable([]);
+export const history: Writable<{ url: URL }[]> = writable([]);
 
 export const canBack = derived(
     history,
     ($history) => $history.length > 1
 );
 
-export function add(url: string | URL, name?: string | null | undefined, params?: Record<string, string | undefined>): URL {
+export function to(url: string | URL, params?: Record<string, string | undefined>) {
     let toUrl: URL;
     if (typeof url === "string") {
         let baseURI = document.baseURI;
@@ -20,56 +20,25 @@ export function add(url: string | URL, name?: string | null | undefined, params?
     } else {
         toUrl = url;
     }
-    if (params) {
-        Object.entries(params).forEach(param => {
-            if (param[1] === undefined) {
-                toUrl?.searchParams.delete(param[0]);
-            } else {
-                toUrl?.searchParams.set(param[0], param[1]);
-            }
-        });
-    }
-    history.update(($history) => {
-        if (!$history.some(page => page.url.pathname.split("/").splice(2).join("/") === toUrl.pathname.split("/").splice(2).join("/"))) {
-            $history.push({ url: toUrl, name });
-        }
-        return $history;
+    Object.entries(params || {}).forEach(([k, v]) => {
+        toUrl.searchParams.set(k, v);
     });
-    return toUrl;
-}
-
-export function to(url: string | URL, name?: string | null | undefined, params?: Record<string, string | undefined>) {
-    const toUrl = add(url, name, params);
     history.update(($history) => {
-        const pathname = toUrl.pathname.split("/").splice(2).join("/");
-        if ($history.map(page => page.url.pathname.split("/").splice(2).join("/")).includes(pathname)) {
-            return $history.splice(0, $history.map(page => page.url.pathname.split("/").splice(2).join("/")).indexOf(pathname) + 1);
-        }
+        $history.push({ url: toUrl });
         return $history;
     });
     goto(toUrl);
 }
 
-export function init(url: string | URL, name?: string | null | undefined, params?: Record<string, string | undefined>) {
+export function init(url: string | URL, params?: Record<string, string | undefined>) {
     history.set([]);
-    to(url, name, params);
+    to(url, params);
 }
 
-let $history: { url: URL, name?: string | null | undefined }[] = [];
-history.subscribe((value) => $history = value);
-
-export function ot(params?: Record<string, string | undefined>) {
+export function ot() {
+    const $history = get(history);
     const backPage = $history[$history.length - 2];
     if (backPage) {
-        if (params) {
-            Object.entries(params).forEach(param => {
-                if (param[1] === undefined) {
-                    backPage.url.searchParams.delete(param[0]);
-                } else {
-                    backPage.url.searchParams.set(param[0], param[1]);
-                }
-            });
-        }
         history.update($history => {
             $history.pop();
             return $history;

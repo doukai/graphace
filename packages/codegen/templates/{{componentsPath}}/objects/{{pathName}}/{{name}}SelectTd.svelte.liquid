@@ -12,6 +12,7 @@
 	import { namedQueryStore } from '~/utils';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 
+	export let id: string | undefined = undefined;
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
@@ -123,6 +124,7 @@
 		<div class="flex items-start space-x-1" transition:fade={% raw %}{{{% endraw %} duration: 100 {% raw %}}}{% endraw %}>
 			<FormControl>
 				<{{ name }}Select
+					{id}
 					{name}
 					{list}
 					{disabled}
@@ -130,6 +132,7 @@
 					{placeholder}
 					bind:value
 					bind:selected
+					on:change
 				/>
 			</FormControl>
 			{#if !readonly}

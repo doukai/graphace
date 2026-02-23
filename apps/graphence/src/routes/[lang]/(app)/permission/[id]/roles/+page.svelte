@@ -3,7 +3,7 @@
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
 	import type { Query_permission_rolesConnection_Store } from '~/lib/stores/query/query_permission_rolesConnection_store';
@@ -57,7 +57,7 @@
 				mutation_role_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -77,17 +77,17 @@
 			});
 	};
 
-	const merge = (args: RoleInput[]) => {
-		validate('Mutation_permission_Arguments', { where: { id: { val: permission?.id } }, roles: args })
+	const merge = (input: RoleInput[]) => {
+		validate('Mutation_permission_Arguments', { where: { id: { val: permission?.id } }, roles: input })
 			.then((data) => {
 				errors = {};
 				mutation_permission_roles_Store.fetch({
 					permission_id: permission?.id,
-					permission_roles: args
+					permission_roles: input
 				}).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -108,8 +108,23 @@
 	};
 </script>
 
-<Card>
-	<CardBody>
+<Card class="max-h-full max-w-full">
+	<CardBody class="overflow-y-auto pt-0">
+		<Breadcrumbs>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission`)}>
+					<span class="badge badge-outline">{$LL.graphql.objects.Permission.name()}</span>
+				</a>
+			</li>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission/${permission?.id}`)}>
+					<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Permission.name() })}</span>
+				</a>
+			</li>
+			<li>
+				<span class="badge badge-neutral">{$LL.graphql.objects.Permission.fields.roles.name()}</span>
+			</li>
+		</Breadcrumbs>
 		<RoleTable
 			showUnbindButton={auth('Role::isDeprecated::WRITE')}
 			showEditButton
@@ -122,43 +137,6 @@
 			{errors}
 			isFetching={$query_permission_rolesConnection_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_permission_roles_Store.isFetching || $mutation_role_Store.isFetching}
-			fields={{
-				name: {
-					readonly: !auth('Role::name::WRITE'),
-					disabled: !auth('Role::name::WRITE'),
-					hidden: !auth('Role::name::READ')
-				},
-				description: {
-					readonly: !auth('Role::description::WRITE'),
-					disabled: !auth('Role::description::WRITE'),
-					hidden: !auth('Role::description::READ')
-				},
-				users: {
-					readonly: !auth('Role::users::WRITE'),
-					disabled: !auth('Role::users::WRITE'),
-					hidden: !auth('Role::users::READ')
-				},
-				groups: {
-					readonly: !auth('Role::groups::WRITE'),
-					disabled: !auth('Role::groups::WRITE'),
-					hidden: !auth('Role::groups::READ')
-				},
-				composites: {
-					readonly: !auth('Role::composites::WRITE'),
-					disabled: !auth('Role::composites::WRITE'),
-					hidden: !auth('Role::composites::READ')
-				},
-				permissions: {
-					readonly: !auth('Role::permissions::WRITE'),
-					disabled: !auth('Role::permissions::WRITE'),
-					hidden: !auth('Role::permissions::READ')
-				},
-				realm: {
-					readonly: !auth('Role::realm::WRITE'),
-					disabled: !auth('Role::realm::WRITE'),
-					hidden: !auth('Role::realm::READ')
-				}
-			}}
 			on:search={(e) => {
 				if (e.detail.value) {
 					args = {
@@ -185,7 +163,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`/${$locale}/role/${e.detail.value.id}`, e.detail.value.name);
+					to(`/${$locale}/role/${e.detail.value.id}`);
 				}
 			}}
 			on:remove={(e) => {
@@ -232,8 +210,8 @@
 					}
 				});
 			}}
-			on:create={(e) => to(`/${$locale}/permission/${permission?.id}/roles/_`, '_')}
-			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/permission/${permission?.id}/roles/_`)}
+			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`)}
 			on:back={(e) => ot()}
 		>
 			{#if auth('Role::*::WRITE')}
@@ -252,7 +230,7 @@
 				</RoleTableDialog>
 			{/if}
 		</RoleTable>
-		<div class="divider" />
+		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

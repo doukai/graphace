@@ -5,8 +5,19 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel, Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, StringTh, StringTd, BooleanTh, BooleanTd, ObjectLink } from '@graphace/ui-graphql';
+	import {
+		Buttons,
+		Empty,
+		Label,
+		Loading,
+		SearchInput,
+		Table,
+		Tr,
+		Td,
+		Tabs,
+		type TabInfo
+	} from '@graphace/ui';
+	import { StringTh, StringTd, BooleanTh, BooleanTd, ObjectLink } from '@graphace/ui-graphql';
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
 	import UserFormDialog from '~/lib/components/objects/user/UserFormDialog.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
@@ -15,6 +26,13 @@
 	import GroupSelectTd from '~/lib/components/objects/group/GroupSelectTd.svelte';
 	import RoleSelectTd from '~/lib/components/objects/role/RoleSelectTd.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
+	import {
+		userTabs,
+		userTab,
+		userTabChange,
+		userFields,
+		type UserFields
+	} from '~/lib/components/objects/user/UserOption';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		UserOrderBy,
@@ -43,58 +61,115 @@
 	export let zIndex: number = 0;
 	let className: string | undefined = 'table-pin-rows table-pin-cols';
 	export { className as class };
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		lastName?: Option | undefined;
-		login?: Option | undefined;
-		email?: Option | undefined;
-		phones?: Option | undefined;
-		disable?: Option | undefined;
-		groups?: Option | undefined;
-		roles?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: { readonly: false, disabled: false, hidden: false },
-		description: { readonly: false, disabled: false, hidden: false },
-		lastName: { readonly: false, disabled: false, hidden: false },
-		login: { readonly: false, disabled: false, hidden: false },
-		email: { readonly: false, disabled: false, hidden: false },
-		phones: { readonly: false, disabled: false, hidden: false },
-		disable: { readonly: false, disabled: false, hidden: false },
-		groups: { readonly: false, disabled: false, hidden: false },
-		roles: { readonly: false, disabled: false, hidden: false },
-		realm: { readonly: false, disabled: false, hidden: false }
-	};
+	export let tabs: TabInfo[] | undefined = userTabs;
+	export let tab: string | undefined = userTab;
+	export let fields: UserFields | undefined = userFields;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		search: { value: string | undefined };
 		query: { args: QueryUserListArgs; orderBy: UserOrderBy };
-		remove: { 
+		remove: {
 			value: UserInput | (UserInput | null | undefined)[] | null | undefined;
-			row?: number | undefined;
+			row?: number[] | number | undefined;
 		};
-		unbind: { 
+		unbind: {
 			value: UserInput | (UserInput | null | undefined)[] | null | undefined;
-			row?: number | undefined;
+			row?: number[] | number | undefined;
 		};
-		edit: { 
+		edit: {
 			value: UserInput | (UserInput | null | undefined)[] | null | undefined;
-			row?: number | undefined;
+			row?: number[] | number | undefined;
 		};
 		save: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
-		select: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
+		select: {
+			value: UserInput | (UserInput | null | undefined)[] | null | undefined ;
+			row?: number[] | number | undefined;
+		};
 		create: {};
 		back: {};
 	}>();
 
 	let selectAll: boolean;
+
+	const validate = async () => {
+		errors = {};
+		if (value) {
+			for (let row = 0; row < value.length; row++) {
+				const node = value[row];
+				if (node) {
+					const rowErrors = await validateRow(node);
+					if (Object.keys(rowErrors).length > 0) {
+						errors[row] = { iterms: rowErrors };
+					}
+				}
+			}
+		}
+
+		return new Promise(
+			(
+				resolve: (data: (UserInput | null | undefined)[] | null | undefined) => void,
+				reject: (errors: Record<number, Errors>) => void
+			) => {
+				if (Object.keys(errors).length === 0) {
+					resolve(value);
+				} else {
+					reject(errors);
+				}
+			}
+		);
+	};
+
+	const validateRow = async (value: UserInput) => {
+		const errors: Record<string, Errors> = {};
+		const nameErrors = await fields?.name.validate?.(value);
+		if (nameErrors && nameErrors.length > 0) {
+			errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
+		}
+		const descriptionErrors = await fields?.description.validate?.(value);
+		if (descriptionErrors && descriptionErrors.length > 0) {
+			errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
+		}
+		const lastNameErrors = await fields?.lastName.validate?.(value);
+		if (lastNameErrors && lastNameErrors.length > 0) {
+			errors['lastName'] = { errors: lastNameErrors.map((message) => ({ message })) };
+		}
+		const loginErrors = await fields?.login.validate?.(value);
+		if (loginErrors && loginErrors.length > 0) {
+			errors['login'] = { errors: loginErrors.map((message) => ({ message })) };
+		}
+		const emailErrors = await fields?.email.validate?.(value);
+		if (emailErrors && emailErrors.length > 0) {
+			errors['email'] = { errors: emailErrors.map((message) => ({ message })) };
+		}
+		const phonesErrors = await fields?.phones.validate?.(value);
+		if (phonesErrors && phonesErrors.length > 0) {
+			errors['phones'] = { errors: phonesErrors.map((message) => ({ message })) };
+		}
+		const disableErrors = await fields?.disable.validate?.(value);
+		if (disableErrors && disableErrors.length > 0) {
+			errors['disable'] = { errors: disableErrors.map((message) => ({ message })) };
+		}
+		const groupsErrors = await fields?.groups.validate?.(value);
+		if (groupsErrors && groupsErrors.length > 0) {
+			errors['groups'] = { errors: groupsErrors.map((message) => ({ message })) };
+		}
+		const rolesErrors = await fields?.roles.validate?.(value);
+		if (rolesErrors && rolesErrors.length > 0) {
+			errors['roles'] = { errors: rolesErrors.map((message) => ({ message })) };
+		}
+		const realmErrors = await fields?.realm.validate?.(value);
+		if (realmErrors && realmErrors.length > 0) {
+			errors['realm'] = { errors: realmErrors.map((message) => ({ message })) };
+		}
+		return errors;
+	};
 </script>
 
-<div class="flex sm:justify-between">
-	<span class="max-sm:hidden text-xl font-semibold self-center">
+<div class="flex justify-between">
+	<slot name="start" />
+	<span class="text-xl font-semibold self-center max-sm:hidden">
 		{#if title}
 			{title}
 		{:else}
@@ -102,7 +177,6 @@
 		{/if}
 	</span>
 	<Buttons
-		class="flex space-x-1 max-sm:w-full"
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
@@ -110,7 +184,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => dispatch('save', { value })}
+		on:save={(e) => validate().then(() => dispatch('save', { value }))}
 		on:remove={(e) =>
 			dispatch('remove', {
 				value: value?.filter((node) => selectedIdList.includes(node?.id))
@@ -128,7 +202,7 @@
 	>
 		<svelte:fragment slot="start">
 			{#if showSearchInput}
-				<SearchInput on:search />
+				<SearchInput class="max-sm:w-full" on:search />
 			{/if}
 			<div class="sm:hidden">
 				<UserFilter
@@ -161,7 +235,23 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider" />
+<div class="divider my-0" />
+{#if tabs}
+	<Tabs
+		value={tab}
+		{tabs}
+		on:change={(e) => {
+			if (e.detail.value !== e.detail.origin) {
+				userTabChange(e.detail.value, args).then((args) => {
+					dispatch('query', {
+						args,
+						orderBy
+					});
+				});
+			}
+		}}
+	/>
+{/if}
 <Table {zIndex} class="max-sm:hidden {className}">
 	<thead>
 		<tr>
@@ -189,82 +279,122 @@
 					/>
 				</label>
 			</th>
-			{#if !fields.name?.hidden}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.name.name()}
-					bind:value={args.name}
-					bind:sort={orderBy.name}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.description?.hidden}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.description.name()}
-					bind:value={args.description}
-					bind:sort={orderBy.description}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.lastName?.hidden}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.lastName.name()}
-					bind:value={args.lastName}
-					bind:sort={orderBy.lastName}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.login?.hidden}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.login.name()}
-					bind:value={args.login}
-					bind:sort={orderBy.login}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.email?.hidden}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.email.name()}
-					bind:value={args.email}
-					bind:sort={orderBy.email}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.phones?.hidden}
-				<StringTh
-					name={$LL.graphql.objects.User.fields.phones.name()}
-					bind:value={args.phones}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.disable?.hidden}
-				<BooleanTh
-					name={$LL.graphql.objects.User.fields.disable.name()}
-					bind:value={args.disable}
-					bind:sort={orderBy.disable}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.groups?.hidden}
-				<GroupTh
-					name={$LL.graphql.objects.User.fields.groups.name()}
-					bind:value={args.groups}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.roles?.hidden}
-				<RoleTh
-					name={$LL.graphql.objects.User.fields.roles.name()}
-					bind:value={args.roles}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.realm?.hidden}
-				<RealmTh
-					name={$LL.graphql.objects.User.fields.realm.name()}
-					bind:value={args.realm}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
+			<slot name="name-th">
+				{#if !fields?.name?.hiddenCol?.(args, tab)}
+					<StringTh
+						name={$LL.graphql.objects.User.fields.name.name()}
+						bind:value={args.name}
+						bind:sort={orderBy.name}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.name?.required?.()}
+						{...fields?.name?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="description-th">
+				{#if !fields?.description?.hiddenCol?.(args, tab)}
+					<StringTh
+						name={$LL.graphql.objects.User.fields.description.name()}
+						bind:value={args.description}
+						bind:sort={orderBy.description}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.description?.required?.()}
+						{...fields?.description?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="lastName-th">
+				{#if !fields?.lastName?.hiddenCol?.(args, tab)}
+					<StringTh
+						name={$LL.graphql.objects.User.fields.lastName.name()}
+						bind:value={args.lastName}
+						bind:sort={orderBy.lastName}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.lastName?.required?.()}
+						{...fields?.lastName?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="login-th">
+				{#if !fields?.login?.hiddenCol?.(args, tab)}
+					<StringTh
+						name={$LL.graphql.objects.User.fields.login.name()}
+						bind:value={args.login}
+						bind:sort={orderBy.login}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.login?.required?.()}
+						{...fields?.login?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="email-th">
+				{#if !fields?.email?.hiddenCol?.(args, tab)}
+					<StringTh
+						name={$LL.graphql.objects.User.fields.email.name()}
+						bind:value={args.email}
+						bind:sort={orderBy.email}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.email?.required?.()}
+						{...fields?.email?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="phones-th">
+				{#if !fields?.phones?.hiddenCol?.(args, tab)}
+					<StringTh
+						name={$LL.graphql.objects.User.fields.phones.name()}
+						bind:value={args.phones}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.phones?.required?.()}
+						{...fields?.phones?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="disable-th">
+				{#if !fields?.disable?.hiddenCol?.(args, tab)}
+					<BooleanTh
+						name={$LL.graphql.objects.User.fields.disable.name()}
+						bind:value={args.disable}
+						bind:sort={orderBy.disable}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.disable?.required?.()}
+						{...fields?.disable?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="groups-th">
+				{#if !fields?.groups?.hiddenCol?.(args, tab)}
+					<GroupTh
+						name={$LL.graphql.objects.User.fields.groups.name()}
+						bind:value={args.groups}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.groups?.required?.()}
+						{...fields?.groups?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="roles-th">
+				{#if !fields?.roles?.hiddenCol?.(args, tab)}
+					<RoleTh
+						name={$LL.graphql.objects.User.fields.roles.name()}
+						bind:value={args.roles}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.roles?.required?.()}
+						{...fields?.roles?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="realm-th">
+				{#if !fields?.realm?.hiddenCol?.(args, tab)}
+					<RealmTh
+						name={$LL.graphql.objects.User.fields.realm.name()}
+						bind:value={args.realm}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.realm?.required?.()}
+						{...fields?.realm?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
 			<th class="w-0" />
 		</tr>
 	</thead>
@@ -290,171 +420,209 @@
 							</label>
 						</th>
 						<slot name="name">
-							{#if !fields.name?.hidden}
+							{#if !fields?.name?.hiddenCol?.(args, tab)}
 								<StringTd
 									name="name"
 									bind:value={node.name}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { name: node?.name, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.name?.readonly}
-									disabled={fields.name?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { name: node?.name, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.name?.readonly?.(node)}
+									disabled={fields?.name?.disabled?.(node)}
+									on:change={(e) => fields?.name.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.name}
 									{zIndex}
+									{...fields?.name?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="description">
-							{#if !fields.description?.hidden}
+							{#if !fields?.description?.hiddenCol?.(args, tab)}
 								<StringTd
 									name="description"
 									bind:value={node.description}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { description: node?.description, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.description?.readonly}
-									disabled={fields.description?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { description: node?.description, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.description?.readonly?.(node)}
+									disabled={fields?.description?.disabled?.(node)}
+									on:change={(e) => fields?.description.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.description}
 									{zIndex}
+									{...fields?.description?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="lastName">
-							{#if !fields.lastName?.hidden}
+							{#if !fields?.lastName?.hiddenCol?.(args, tab)}
 								<StringTd
 									name="lastName"
 									bind:value={node.lastName}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { lastName: node?.lastName, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.lastName?.readonly}
-									disabled={fields.lastName?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { lastName: node?.lastName, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.lastName?.readonly?.(node)}
+									disabled={fields?.lastName?.disabled?.(node)}
+									on:change={(e) => fields?.lastName.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.lastName}
 									{zIndex}
+									{...fields?.lastName?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="login">
-							{#if !fields.login?.hidden}
+							{#if !fields?.login?.hiddenCol?.(args, tab)}
 								<StringTd
 									name="login"
 									bind:value={node.login}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { login: node?.login, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.login?.readonly}
-									disabled={fields.login?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { login: node?.login, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.login?.readonly?.(node)}
+									disabled={fields?.login?.disabled?.(node)}
+									on:change={(e) => fields?.login.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.login}
 									{zIndex}
+									{...fields?.login?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="email">
-							{#if !fields.email?.hidden}
+							{#if !fields?.email?.hiddenCol?.(args, tab)}
 								<StringTd
 									name="email"
 									bind:value={node.email}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { email: node?.email, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.email?.readonly}
-									disabled={fields.email?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { email: node?.email, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.email?.readonly?.(node)}
+									disabled={fields?.email?.disabled?.(node)}
+									on:change={(e) => fields?.email.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.email}
 									{zIndex}
+									{...fields?.email?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="phones">
-							{#if !fields.phones?.hidden}
+							{#if !fields?.phones?.hiddenCol?.(args, tab)}
 								<StringTd
 									name="phones"
 									bind:value={node.phones}
 									list
 									on:save={(e) =>
-										dispatch('save', {
-											value: { phones: node?.phones, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.phones?.readonly}
-									disabled={fields.phones?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { phones: node?.phones, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.phones?.readonly?.(node)}
+									disabled={fields?.phones?.disabled?.(node)}
+									on:change={(e) => fields?.phones.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.phones}
 									{zIndex}
+									{...fields?.phones?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="disable">
-							{#if !fields.disable?.hidden}
+							{#if !fields?.disable?.hiddenCol?.(args, tab)}
 								<BooleanTd
 									name="disable"
 									bind:value={node.disable}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { disable: node?.disable, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.disable?.readonly}
-									disabled={fields.disable?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { disable: node?.disable, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.disable?.readonly?.(node)}
+									disabled={fields?.disable?.disabled?.(node)}
+									on:change={(e) => fields?.disable.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.disable}
 									{zIndex}
+									{...fields?.disable?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="groups">
-							{#if !fields.groups?.hidden}
+							{#if !fields?.groups?.hiddenCol?.(args, tab)}
 								<GroupSelectTd
 									name="groups"
 									bind:value={node.groups}
 									list
 									errors={errors?.[row]?.iterms?.groups}
-									readonly={fields.groups?.readonly}
-									disabled={fields.groups?.disabled}
+									readonly={fields?.groups?.readonly?.(node)}
+									disabled={fields?.groups?.disabled?.(node)}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { groups: node?.groups, where: { id: { val: node?.id } } }
-										})}
+										validate().then(() =>
+											dispatch('save', {
+												value: { groups: node?.groups, where: { id: { val: node?.id } } }
+											})
+										)}
+									on:change={(e) => fields?.groups.onChange?.(e.detail.value, node).then((next) => node = next)}
 									{zIndex}
+									{...fields?.groups?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="roles">
-							{#if !fields.roles?.hidden}
+							{#if !fields?.roles?.hiddenCol?.(args, tab)}
 								<RoleSelectTd
 									name="roles"
 									bind:value={node.roles}
 									list
 									errors={errors?.[row]?.iterms?.roles}
-									readonly={fields.roles?.readonly}
-									disabled={fields.roles?.disabled}
+									readonly={fields?.roles?.readonly?.(node)}
+									disabled={fields?.roles?.disabled?.(node)}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { roles: node?.roles, where: { id: { val: node?.id } } }
-										})}
+										validate().then(() =>
+											dispatch('save', {
+												value: { roles: node?.roles, where: { id: { val: node?.id } } }
+											})
+										)}
+									on:change={(e) => fields?.roles.onChange?.(e.detail.value, node).then((next) => node = next)}
 									{zIndex}
+									{...fields?.roles?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="realm">
-							{#if !fields.realm?.hidden}
-								<Td errors={errors?.[row]?.iterms?.realm} {zIndex}>
+							{#if !fields?.realm?.hiddenCol?.(args, tab)}
+								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.(node)?.['td']}>
 									{#if node.id}
 										<ObjectLink
 											bind:value={node.realm}
 											textFieldName="name"
 											path={`${node.id}/realm`}
-											name={$LL.graphql.objects.User.fields.realm.name()}
 											on:goto
+											{...fields?.realm?.props?.(node)?.['link']}
 										/>
 									{:else}
 										<RealmTableDialog
 											bind:value={node.realm}
-											class="btn-link"
 											textFieldName="name"
 											singleChoice
-											readonly={fields.realm?.readonly}
-											disabled={fields.realm?.disabled}
+											class="btn-link"
+											readonly={fields?.realm?.readonly?.(node)}
+											disabled={fields?.realm?.disabled?.(node)}
+											on:select={(e) => fields?.realm.onChange?.(e.detail.value, node).then((next) => node = next)}
+											{...fields?.realm?.props?.(node)?.['dialog']}
 										/>
 									{/if}
 								</Td>
@@ -518,274 +686,396 @@
 		{/if}
 	</tbody>
 </Table>
-<div class="sm:hidden">
+<Table {zIndex} class="sm:hidden {className}">
 	{#if isFetching}
 		<Loading />
 	{:else if value && value.length > 0}
 		{#each value as node, row}
 			{#if node}
-				<Table {zIndex} class={className}>
-					<thead>
-						<tr>
-							<th class="w-0">
-								<label>
-									<input
-										type="checkbox"
-										class="checkbox"
-										bind:group={selectedIdList}
-										value={node.id}
-									/>
-								</label>
-							</th>
-							<th class="flex justify-end hover:z-[{zIndex + 3}]">
-								<div class="flex space-x-1">
-									{#if showEditButton}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
-											>
-												<Icon src={PencilSquare} solid />
-											</button>
-										</div>
-									{/if}
-									{#if showEditDialog}
-										<UserFormDialog
-											text={$LL.graphence.components.table.editBtn()}
+				<thead class="border">
+					<tr>
+						<th class="w-0">
+							<label>
+								<input
+									type="checkbox"
+									class="checkbox"
+									bind:group={selectedIdList}
+									value={node.id}
+								/>
+							</label>
+						</th>
+						<th class="flex justify-end hover:z-[{zIndex + 3}]">
+							<div class="flex space-x-1">
+								{#if showEditButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
+										<button
 											class="btn btn-square btn-ghost btn-xs"
-											bind:value={node}
-											select
-											{fields}
+											on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
 										>
-											<Icon slot="sm" src={PencilSquare} solid />
 											<Icon src={PencilSquare} solid />
-										</UserFormDialog>
-									{/if}
-									{#if showUnbindButton}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
-											>
-												<Icon src={ArchiveBoxXMark} solid />
-											</button>
-										</div>
-									{/if}
-									{#if showRemoveButton}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
-											>
-												<Icon src={Trash} solid />
-											</button>
-										</div>
-									{/if}
-								</div>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<slot name="name">
-							{#if !fields.name?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.name.name()}</td>
-									<StringTd
-										name="name"
-										bind:value={node.name}
-										on:save={(e) =>
+										</button>
+									</div>
+								{/if}
+								{#if showEditDialog}
+									<UserFormDialog
+										text={$LL.graphence.components.table.editBtn()}
+										class="btn btn-square btn-ghost btn-xs"
+										bind:value={node}
+										select
+										{fields}
+									>
+										<Icon slot="sm" src={PencilSquare} solid />
+										<Icon src={PencilSquare} solid />
+									</UserFormDialog>
+								{/if}
+								{#if showUnbindButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
+										>
+											<Icon src={ArchiveBoxXMark} solid />
+										</button>
+									</div>
+								{/if}
+								{#if showRemoveButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
+										>
+											<Icon src={Trash} solid />
+										</button>
+									</div>
+								{/if}
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="border">
+					<slot name="name-sm">
+						{#if !fields?.name?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.name?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.name.name()}
+										required={fields?.name?.required?.(node)}
+										class="truncate"
+									/>
+								</td>
+								<StringTd
+									{id}
+									name="name"
+									bind:value={node.name}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { name: node?.name, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.name?.readonly}
-										disabled={fields.name?.disabled}
-										errors={errors?.[row]?.iterms?.name}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.name.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.name?.readonly?.(node)}
+									disabled={fields?.name?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.name}
+									{zIndex}
+									{...fields?.name?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="description-sm">
+						{#if !fields?.description?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.description?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.description.name()}
+										required={fields?.description?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="description">
-							{#if !fields.description?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.description.name()}</td>
-									<StringTd
-										name="description"
-										bind:value={node.description}
-										on:save={(e) =>
+								</td>
+								<StringTd
+									{id}
+									name="description"
+									bind:value={node.description}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { description: node?.description, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.description?.readonly}
-										disabled={fields.description?.disabled}
-										errors={errors?.[row]?.iterms?.description}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.description.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.description?.readonly?.(node)}
+									disabled={fields?.description?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.description}
+									{zIndex}
+									{...fields?.description?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="lastName-sm">
+						{#if !fields?.lastName?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.lastName?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.lastName.name()}
+										required={fields?.lastName?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="lastName">
-							{#if !fields.lastName?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.lastName.name()}</td>
-									<StringTd
-										name="lastName"
-										bind:value={node.lastName}
-										on:save={(e) =>
+								</td>
+								<StringTd
+									{id}
+									name="lastName"
+									bind:value={node.lastName}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { lastName: node?.lastName, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.lastName?.readonly}
-										disabled={fields.lastName?.disabled}
-										errors={errors?.[row]?.iterms?.lastName}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.lastName.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.lastName?.readonly?.(node)}
+									disabled={fields?.lastName?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.lastName}
+									{zIndex}
+									{...fields?.lastName?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="login-sm">
+						{#if !fields?.login?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.login?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.login.name()}
+										required={fields?.login?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="login">
-							{#if !fields.login?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.login.name()}</td>
-									<StringTd
-										name="login"
-										bind:value={node.login}
-										on:save={(e) =>
+								</td>
+								<StringTd
+									{id}
+									name="login"
+									bind:value={node.login}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { login: node?.login, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.login?.readonly}
-										disabled={fields.login?.disabled}
-										errors={errors?.[row]?.iterms?.login}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.login.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.login?.readonly?.(node)}
+									disabled={fields?.login?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.login}
+									{zIndex}
+									{...fields?.login?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="email-sm">
+						{#if !fields?.email?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.email?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.email.name()}
+										required={fields?.email?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="email">
-							{#if !fields.email?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.email.name()}</td>
-									<StringTd
-										name="email"
-										bind:value={node.email}
-										on:save={(e) =>
+								</td>
+								<StringTd
+									{id}
+									name="email"
+									bind:value={node.email}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { email: node?.email, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.email?.readonly}
-										disabled={fields.email?.disabled}
-										errors={errors?.[row]?.iterms?.email}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.email.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.email?.readonly?.(node)}
+									disabled={fields?.email?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.email}
+									{zIndex}
+									{...fields?.email?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="phones-sm">
+						{#if !fields?.phones?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.phones?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.phones.name()}
+										required={fields?.phones?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="phones">
-							{#if !fields.phones?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.phones.name()}</td>
-									<StringTd
-										name="phones"
-										bind:value={node.phones}
-										list
-										on:save={(e) =>
+								</td>
+								<StringTd
+									{id}
+									name="phones"
+									bind:value={node.phones}
+									list
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { phones: node?.phones, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.phones?.readonly}
-										disabled={fields.phones?.disabled}
-										errors={errors?.[row]?.iterms?.phones}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.phones.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.phones?.readonly?.(node)}
+									disabled={fields?.phones?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.phones}
+									{zIndex}
+									{...fields?.phones?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="disable-sm">
+						{#if !fields?.disable?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.disable?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.disable.name()}
+										required={fields?.disable?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="disable">
-							{#if !fields.disable?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.disable.name()}</td>
-									<BooleanTd
-										name="disable"
-										bind:value={node.disable}
-										on:save={(e) =>
+								</td>
+								<BooleanTd
+									{id}
+									name="disable"
+									bind:value={node.disable}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { disable: node?.disable, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.disable?.readonly}
-										disabled={fields.disable?.disabled}
-										errors={errors?.[row]?.iterms?.disable}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.disable.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.disable?.readonly?.(node)}
+									disabled={fields?.disable?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.disable}
+									{zIndex}
+									{...fields?.disable?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="groups-sm">
+						{#if !fields?.groups?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.groups?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.groups.name()}
+										required={fields?.groups?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="groups">
-							{#if !fields.groups?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.groups.name()}</td>
-									<GroupSelectTd
-										name="groups"
-										bind:value={node.groups}
-										list
-										errors={errors?.[row]?.iterms?.groups}
-										readonly={fields.groups?.readonly}
-										disabled={fields.groups?.disabled}
-										on:save={(e) =>
+								</td>
+								<GroupSelectTd
+									{id}
+									name="groups"
+									bind:value={node.groups}
+									list
+									errors={errors?.[row]?.iterms?.groups}
+									readonly={fields?.groups?.readonly?.(node)}
+									disabled={fields?.groups?.disabled?.(node)}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { groups: node?.groups, where: { id: { val: node?.id } } }
-											})}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.groups.onChange?.(e.detail.value, node).then((next) => node = next)}
+									{zIndex}
+									{...fields?.groups?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="roles-sm">
+						{#if !fields?.roles?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.roles?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.roles.name()}
+										required={fields?.roles?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="roles">
-							{#if !fields.roles?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.roles.name()}</td>
-									<RoleSelectTd
-										name="roles"
-										bind:value={node.roles}
-										list
-										errors={errors?.[row]?.iterms?.roles}
-										readonly={fields.roles?.readonly}
-										disabled={fields.roles?.disabled}
-										on:save={(e) =>
+								</td>
+								<RoleSelectTd
+									{id}
+									name="roles"
+									bind:value={node.roles}
+									list
+									errors={errors?.[row]?.iterms?.roles}
+									readonly={fields?.roles?.readonly?.(node)}
+									disabled={fields?.roles?.disabled?.(node)}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { roles: node?.roles, where: { id: { val: node?.id } } }
-											})}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.roles.onChange?.(e.detail.value, node).then((next) => node = next)}
+									{zIndex}
+									{...fields?.roles?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="realm-sm">
+						{#if !fields?.realm?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.realm?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.User.fields.realm.name()}
+										required={fields?.realm?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="realm">
-							{#if !fields.realm?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.User.fields.realm.name()}</td>
-									<Td errors={errors?.[row]?.iterms?.realm} {zIndex}>
-										{#if node.id}
-											<ObjectLink
-												bind:value={node.realm}
-												textFieldName="name"
-												path={`${node.id}/realm`}
-												name={$LL.graphql.objects.User.fields.realm.name()}
-												on:goto
-											/>
-										{:else}
-											<RealmTableDialog
-												bind:value={node.realm}
-												class="btn-link"
-												textFieldName="name"
-												singleChoice
-												readonly={fields.realm?.readonly}
-												disabled={fields.realm?.disabled}
-											/>
-										{/if}
-									</Td>
-								</tr>
-							{/if}
-						</slot>
-					</tbody>
-				</Table>
-				{#if row < value.length - 1}
-					<div class="divider my-0" />
-				{/if}
+								</td>
+								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.(node)?.['td']}>
+									{#if node.id}
+										<ObjectLink
+											bind:value={node.realm}
+											textFieldName="name"
+											path={`${node.id}/realm`}
+											on:goto
+											{...fields?.realm?.props?.(node)?.['link']}
+										/>
+									{:else}
+										<RealmTableDialog
+											bind:value={node.realm}
+											textFieldName="name"
+											singleChoice
+											class="btn-link"
+											readonly={fields?.realm?.readonly?.(node)}
+											disabled={fields?.realm?.disabled?.(node)}
+											on:select={(e) => fields?.realm.onChange?.(e.detail.value, node).then((next) => node = next)}
+											{...fields?.realm?.props?.(node)?.['dialog']}
+										/>
+									{/if}
+								</Td>
+							</Tr>
+						{/if}
+					</slot>
+				</tbody>
 			{/if}
 		{/each}
 	{:else}
 		<Empty />
 	{/if}
-</div>
+</Table>
+<slot name="table-bottom" />

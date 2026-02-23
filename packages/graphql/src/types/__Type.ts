@@ -38,10 +38,10 @@ export class __Type {
     public getIDField = (): __Field | undefined => {
         return this.fields?.find((field) => field.getType().getNamedType()?.name === 'ID');
     }
-    public getInterfacess = (): __Type[] | null | undefined => {
+    public getInterfaces = (): __Type[] | null | undefined => {
         return this.interfaces;
     }
-    public getInterfaces = (name: string): __Type | undefined => {
+    public getInterface = (name: string): __Type | undefined => {
         return this.interfaces?.find((__interface) => __interface.name === name);
     }
     public getPossibleTypes = (): __Type[] | null | undefined => {

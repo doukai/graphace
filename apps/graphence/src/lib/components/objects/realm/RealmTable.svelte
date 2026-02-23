@@ -5,10 +5,28 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel, Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, StringTh, StringTd, ObjectLink } from '@graphace/ui-graphql';
+	import {
+		Buttons,
+		Empty,
+		Label,
+		Loading,
+		SearchInput,
+		Table,
+		Tr,
+		Td,
+		Tabs,
+		type TabInfo
+	} from '@graphace/ui';
+	import { StringTh, StringTd, ObjectLink } from '@graphace/ui-graphql';
 	import RealmFilter from '~/lib/components/objects/realm/RealmFilter.svelte';
 	import RealmFormDialog from '~/lib/components/objects/realm/RealmFormDialog.svelte';
+	import {
+		realmTabs,
+		realmTab,
+		realmTabChange,
+		realmFields,
+		type RealmFields
+	} from '~/lib/components/objects/realm/RealmOption';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		RealmOrderBy,
@@ -37,42 +55,83 @@
 	export let zIndex: number = 0;
 	let className: string | undefined = 'table-pin-rows table-pin-cols';
 	export { className as class };
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-	} = {
-		name: { readonly: false, disabled: false, hidden: false },
-		description: { readonly: false, disabled: false, hidden: false }
-	};
+	export let tabs: TabInfo[] | undefined = realmTabs;
+	export let tab: string | undefined = realmTab;
+	export let fields: RealmFields | undefined = realmFields;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
 		search: { value: string | undefined };
 		query: { args: QueryRealmListArgs; orderBy: RealmOrderBy };
-		remove: { 
+		remove: {
 			value: RealmInput | (RealmInput | null | undefined)[] | null | undefined;
-			row?: number | undefined;
+			row?: number[] | number | undefined;
 		};
-		unbind: { 
+		unbind: {
 			value: RealmInput | (RealmInput | null | undefined)[] | null | undefined;
-			row?: number | undefined;
+			row?: number[] | number | undefined;
 		};
-		edit: { 
+		edit: {
 			value: RealmInput | (RealmInput | null | undefined)[] | null | undefined;
-			row?: number | undefined;
+			row?: number[] | number | undefined;
 		};
 		save: { value: RealmInput | (RealmInput | null | undefined)[] | null | undefined };
-		select: { value: RealmInput | (RealmInput | null | undefined)[] | null | undefined };
+		select: {
+			value: RealmInput | (RealmInput | null | undefined)[] | null | undefined ;
+			row?: number[] | number | undefined;
+		};
 		create: {};
 		back: {};
 	}>();
 
 	let selectAll: boolean;
+
+	const validate = async () => {
+		errors = {};
+		if (value) {
+			for (let row = 0; row < value.length; row++) {
+				const node = value[row];
+				if (node) {
+					const rowErrors = await validateRow(node);
+					if (Object.keys(rowErrors).length > 0) {
+						errors[row] = { iterms: rowErrors };
+					}
+				}
+			}
+		}
+
+		return new Promise(
+			(
+				resolve: (data: (RealmInput | null | undefined)[] | null | undefined) => void,
+				reject: (errors: Record<number, Errors>) => void
+			) => {
+				if (Object.keys(errors).length === 0) {
+					resolve(value);
+				} else {
+					reject(errors);
+				}
+			}
+		);
+	};
+
+	const validateRow = async (value: RealmInput) => {
+		const errors: Record<string, Errors> = {};
+		const nameErrors = await fields?.name.validate?.(value);
+		if (nameErrors && nameErrors.length > 0) {
+			errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
+		}
+		const descriptionErrors = await fields?.description.validate?.(value);
+		if (descriptionErrors && descriptionErrors.length > 0) {
+			errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
+		}
+		return errors;
+	};
 </script>
 
-<div class="flex sm:justify-between">
-	<span class="max-sm:hidden text-xl font-semibold self-center">
+<div class="flex justify-between">
+	<slot name="start" />
+	<span class="text-xl font-semibold self-center max-sm:hidden">
 		{#if title}
 			{title}
 		{:else}
@@ -80,7 +139,6 @@
 		{/if}
 	</span>
 	<Buttons
-		class="flex space-x-1 max-sm:w-full"
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
 		{showSaveButton}
@@ -88,7 +146,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => dispatch('save', { value })}
+		on:save={(e) => validate().then(() => dispatch('save', { value }))}
 		on:remove={(e) =>
 			dispatch('remove', {
 				value: value?.filter((node) => selectedIdList.includes(node?.id))
@@ -106,7 +164,7 @@
 	>
 		<svelte:fragment slot="start">
 			{#if showSearchInput}
-				<SearchInput on:search />
+				<SearchInput class="max-sm:w-full" on:search />
 			{/if}
 			<div class="sm:hidden">
 				<RealmFilter
@@ -139,7 +197,23 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider" />
+<div class="divider my-0" />
+{#if tabs}
+	<Tabs
+		value={tab}
+		{tabs}
+		on:change={(e) => {
+			if (e.detail.value !== e.detail.origin) {
+				realmTabChange(e.detail.value, args).then((args) => {
+					dispatch('query', {
+						args,
+						orderBy
+					});
+				});
+			}
+		}}
+	/>
+{/if}
 <Table {zIndex} class="max-sm:hidden {className}">
 	<thead>
 		<tr>
@@ -167,22 +241,30 @@
 					/>
 				</label>
 			</th>
-			{#if !fields.name?.hidden}
-				<StringTh
-					name={$LL.graphql.objects.Realm.fields.name.name()}
-					bind:value={args.name}
-					bind:sort={orderBy.name}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
-			{#if !fields.description?.hidden}
-				<StringTh
-					name={$LL.graphql.objects.Realm.fields.description.name()}
-					bind:value={args.description}
-					bind:sort={orderBy.description}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-			{/if}
+			<slot name="name-th">
+				{#if !fields?.name?.hiddenCol?.(args, tab)}
+					<StringTh
+						name={$LL.graphql.objects.Realm.fields.name.name()}
+						bind:value={args.name}
+						bind:sort={orderBy.name}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.name?.required?.()}
+						{...fields?.name?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="description-th">
+				{#if !fields?.description?.hiddenCol?.(args, tab)}
+					<StringTh
+						name={$LL.graphql.objects.Realm.fields.description.name()}
+						bind:value={args.description}
+						bind:sort={orderBy.description}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.description?.required?.()}
+						{...fields?.description?.props?.()?.['th']}
+					/>
+				{/if}
+			</slot>
 			<th class="w-0" />
 		</tr>
 	</thead>
@@ -208,34 +290,42 @@
 							</label>
 						</th>
 						<slot name="name">
-							{#if !fields.name?.hidden}
+							{#if !fields?.name?.hiddenCol?.(args, tab)}
 								<StringTd
 									name="name"
 									bind:value={node.name}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { name: node?.name, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.name?.readonly}
-									disabled={fields.name?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { name: node?.name, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.name?.readonly?.(node)}
+									disabled={fields?.name?.disabled?.(node)}
+									on:change={(e) => fields?.name.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.name}
 									{zIndex}
+									{...fields?.name?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
 						<slot name="description">
-							{#if !fields.description?.hidden}
+							{#if !fields?.description?.hiddenCol?.(args, tab)}
 								<StringTd
 									name="description"
 									bind:value={node.description}
 									on:save={(e) =>
-										dispatch('save', {
-											value: { description: node?.description, where: { id: { val: node?.id } } }
-										})}
-									readonly={fields.description?.readonly}
-									disabled={fields.description?.disabled}
+										validate().then(() =>
+											dispatch('save', {
+												value: { description: node?.description, where: { id: { val: node?.id } } }
+											})
+										)}
+									readonly={fields?.description?.readonly?.(node)}
+									disabled={fields?.description?.disabled?.(node)}
+									on:change={(e) => fields?.description.onChange?.(e.detail.value, node).then((next) => node = next)}
 									errors={errors?.[row]?.iterms?.description}
 									{zIndex}
+									{...fields?.description?.props?.(node)?.['td']}
 								/>
 							{/if}
 						</slot>
@@ -297,118 +387,140 @@
 		{/if}
 	</tbody>
 </Table>
-<div class="sm:hidden">
+<Table {zIndex} class="sm:hidden {className}">
 	{#if isFetching}
 		<Loading />
 	{:else if value && value.length > 0}
 		{#each value as node, row}
 			{#if node}
-				<Table {zIndex} class={className}>
-					<thead>
-						<tr>
-							<th class="w-0">
-								<label>
-									<input
-										type="checkbox"
-										class="checkbox"
-										bind:group={selectedIdList}
-										value={node.id}
-									/>
-								</label>
-							</th>
-							<th class="flex justify-end hover:z-[{zIndex + 3}]">
-								<div class="flex space-x-1">
-									{#if showEditButton}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
-											>
-												<Icon src={PencilSquare} solid />
-											</button>
-										</div>
-									{/if}
-									{#if showEditDialog}
-										<RealmFormDialog
-											text={$LL.graphence.components.table.editBtn()}
+				<thead class="border">
+					<tr>
+						<th class="w-0">
+							<label>
+								<input
+									type="checkbox"
+									class="checkbox"
+									bind:group={selectedIdList}
+									value={node.id}
+								/>
+							</label>
+						</th>
+						<th class="flex justify-end hover:z-[{zIndex + 3}]">
+							<div class="flex space-x-1">
+								{#if showEditButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
+										<button
 											class="btn btn-square btn-ghost btn-xs"
-											bind:value={node}
-											select
-											{fields}
+											on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
 										>
-											<Icon slot="sm" src={PencilSquare} solid />
 											<Icon src={PencilSquare} solid />
-										</RealmFormDialog>
-									{/if}
-									{#if showUnbindButton}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
-											>
-												<Icon src={ArchiveBoxXMark} solid />
-											</button>
-										</div>
-									{/if}
-									{#if showRemoveButton}
-										<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
-											>
-												<Icon src={Trash} solid />
-											</button>
-										</div>
-									{/if}
-								</div>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<slot name="name">
-							{#if !fields.name?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.Realm.fields.name.name()}</td>
-									<StringTd
-										name="name"
-										bind:value={node.name}
-										on:save={(e) =>
+										</button>
+									</div>
+								{/if}
+								{#if showEditDialog}
+									<RealmFormDialog
+										text={$LL.graphence.components.table.editBtn()}
+										class="btn btn-square btn-ghost btn-xs"
+										bind:value={node}
+										select
+										{fields}
+									>
+										<Icon slot="sm" src={PencilSquare} solid />
+										<Icon src={PencilSquare} solid />
+									</RealmFormDialog>
+								{/if}
+								{#if showUnbindButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.unbindBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
+										>
+											<Icon src={ArchiveBoxXMark} solid />
+										</button>
+									</div>
+								{/if}
+								{#if showRemoveButton}
+									<div class="tooltip" data-tip={$LL.graphence.components.table.removeBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
+										>
+											<Icon src={Trash} solid />
+										</button>
+									</div>
+								{/if}
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="border">
+					<slot name="name-sm">
+						{#if !fields?.name?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.name?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.Realm.fields.name.name()}
+										required={fields?.name?.required?.(node)}
+										class="truncate"
+									/>
+								</td>
+								<StringTd
+									{id}
+									name="name"
+									bind:value={node.name}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { name: node?.name, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.name?.readonly}
-										disabled={fields.name?.disabled}
-										errors={errors?.[row]?.iterms?.name}
-										{zIndex}
+											})
+										)}
+									on:change={(e) => fields?.name.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.name?.readonly?.(node)}
+									disabled={fields?.name?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.name}
+									{zIndex}
+									{...fields?.name?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="description-sm">
+						{#if !fields?.description?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.description?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.Realm.fields.description.name()}
+										required={fields?.description?.required?.(node)}
+										class="truncate"
 									/>
-							{/if}
-						</slot>
-						<slot name="description">
-							{#if !fields.description?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.Realm.fields.description.name()}</td>
-									<StringTd
-										name="description"
-										bind:value={node.description}
-										on:save={(e) =>
+								</td>
+								<StringTd
+									{id}
+									name="description"
+									bind:value={node.description}
+									on:save={(e) =>
+										validate().then(() =>
 											dispatch('save', {
 												value: { description: node?.description, where: { id: { val: node?.id } } }
-											})}
-										readonly={fields.description?.readonly}
-										disabled={fields.description?.disabled}
-										errors={errors?.[row]?.iterms?.description}
-										{zIndex}
-									/>
-							{/if}
-						</slot>
-					</tbody>
-				</Table>
-				{#if row < value.length - 1}
-					<div class="divider my-0" />
-				{/if}
+											})
+										)}
+									on:change={(e) => fields?.description.onChange?.(e.detail.value, node).then((next) => node = next)}
+									readonly={fields?.description?.readonly?.(node)}
+									disabled={fields?.description?.disabled?.(node)}
+									errors={errors?.[row]?.iterms?.description}
+									{zIndex}
+									{...fields?.description?.props?.(node)?.['td']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+				</tbody>
 			{/if}
 		{/each}
 	{:else}
 		<Empty />
 	{/if}
-</div>
+</Table>
+<slot name="table-bottom" />

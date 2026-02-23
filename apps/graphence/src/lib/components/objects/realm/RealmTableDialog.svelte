@@ -1,13 +1,21 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
+	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
+	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
 	import { createQuery_realmConnection_Store } from '~/lib/stores/query/query_realmConnection_store';
+	import { createMutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import RealmTable from '~/lib/components/objects/realm/RealmTable.svelte';
-	import { loadEvent, permissions } from '~/utils';
-	import type { Realm, QueryRealmConnectionArgs, RealmOrderBy, RealmInput } from '~/lib/types/schema';
+	import { realmFields, type RealmFields } from '~/lib/components/objects/realm/RealmOption';
+	import {
+		loadEvent,
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
+	import type { Realm, QueryRealmConnectionArgs, RealmOrderBy, RealmInput, MutationRealmArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: RealmInput | (RealmInput | null | undefined)[] | null | undefined =
@@ -20,28 +28,17 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
-	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('Realm::name::WRITE'),
-			disabled: !auth('Realm::name::WRITE'),
-			hidden: !auth('Realm::name::READ')
-		},
-		description: {
-			readonly: !auth('Realm::description::WRITE'),
-			disabled: !auth('Realm::description::WRITE'),
-			hidden: !auth('Realm::description::READ')
-		}
-	};
+	export let fields: RealmFields = realmFields;
 
+	const { validate } = validator;
+	const { auth } = permissions;
+	
 	const dispatch = createEventDispatcher<{
 		select: { value: RealmInput | (RealmInput | null | undefined)[] | null | undefined };
 	}>();
 
 	const query_realmConnection_Store = createQuery_realmConnection_Store($loadEvent);
+	const mutation_realm_Store = createMutation_realm_Store($loadEvent);
 	$: nodes = $query_realmConnection_Store.response.data?.realmConnection?.edges?.map(
 		(edge) => edge?.node
 	);
@@ -50,12 +47,13 @@
 	export let orderBy: RealmOrderBy = {};
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
+	export let errors: Record<number, Errors> = {};
 	export let selectedIdList: (string | null | undefined)[] | undefined = [];
 	export let close: (() => void) | undefined = undefined;
 	
 	$: if (textFieldName) {
 		if (Array.isArray(value)) {
-			if (value.some((item) => !item?.[textFieldName])) {
+			if (value.some((item) => !item?.[textFieldName] && item?.id)) {
 				query_realmConnection_Store
 					.fetch({
 						id: { opr: 'IN', arr: value?.map((item) => item?.id) }
@@ -82,7 +80,7 @@
 				}
 			}
 		} else if (value) {
-			if (!value?.[textFieldName]) {
+			if (!value?.[textFieldName] && value.id) {
 				query_realmConnection_Store
 					.fetch({
 						id: { opr: 'EQ', val: value.id }
@@ -109,6 +107,45 @@
 				toast.error($LL.graphence.message.requestFailed());
 			}
 		});
+	};
+
+	const mutation = (args: MutationRealmArgs) => {
+		const row = nodes
+			?.map((node) => node?.id)
+			?.indexOf(args.id || args.where?.id?.val || undefined);
+			
+		validate('Mutation_realm_Arguments', args)
+			.then((data) => {
+				if (row !== -1 && row !== undefined && errors[row]) {
+					errors[row].iterms = {};
+				}
+				mutation_realm_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError,
+								confirm: () => {
+									query();
+									return true;
+								}
+							});
+						}
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						query();
+					}
+				});
+			})
+			.catch((validErrors) => {
+				console.error(validErrors);
+				if (row !== -1 && row !== undefined) {
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
+				}
+			});
 	};
 </script>
 
@@ -169,6 +206,7 @@
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
+			{errors}
 			showEditButton={!readonly}
 			showCreateButton={!readonly && auth('Realm::*::WRITE')}
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
@@ -219,15 +257,20 @@
 				orderBy = e.detail.orderBy;
 				query();
 			}}
-			on:edit={(e) => {
+			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`/${$locale}/realm/${e.detail.value.id}`, e.detail.value.name);
+					mutation(e.detail.value);
 				}
 			}}
-			on:create={(e) => to(`/${$locale}/realm/_`, '_')}
-			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`, e.detail.name)}
+			on:edit={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					to(`/${$locale}/realm/${e.detail.value.id}`);
+				}
+			}}
+			on:create={(e) => to(`/${$locale}/realm/_`)}
+			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`)}
 		/>
-		<div class="divider" />
+		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

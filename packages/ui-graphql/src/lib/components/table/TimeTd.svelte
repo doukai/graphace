@@ -89,7 +89,7 @@
 					{name}
 					bind:value
 					{list}
-					on:save
+					on:change
 					{readonly}
 					{disabled}
 					{placeholder}

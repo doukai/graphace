@@ -1,42 +1,21 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+import { fragment_RealmFields } from '~/lib/stores/fragment/fragment_RealmFields';
+import { fragment_UserFields } from '~/lib/stores/fragment/fragment_UserFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { RealmInput, User } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `mutation Mutation_user_realm($user_id: String, $user_realm: RealmInput) {
   user(where: { id: { val: $user_id } }, realm: $user_realm) @merge {
-    id
-    name
-    description
-    lastName
-    login
-    email
-    phones
-    disable
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
+    ...UserFields
     syncUserPolicy
     realm {
-      id
-      name
-      description
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
+      ...RealmFields
     }
   }
-}`;
+}
+${fragment_RealmFields}
+${fragment_UserFields}`;
 
 export function createMutation_user_realm_Store(event: LoadEvent | RequestEvent): Mutation_user_realm_Store {
   return createGraphQLMutationStore<User, { user_id: string, user_realm: RealmInput | null }>(query, event);

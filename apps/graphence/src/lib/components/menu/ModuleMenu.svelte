@@ -43,12 +43,9 @@
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
 								if (pathSize === 3) {
-									init(
-										new URL('./chart/bar', window.location.href + '/'),
-										$LL.graphence.components.sideBarMenu.bar()
-									);
+									init(new URL('./chart/bar', window.location.href + '/'));
 								} else {
-									init('../chart/bar', $LL.graphence.components.sideBarMenu.bar());
+									init('../chart/bar');
 								}
 							}}
 							class={$page.url.pathname.endsWith('/chart/bar') ? 'active' : ''}
@@ -63,12 +60,9 @@
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
 								if (pathSize === 3) {
-									init(
-										new URL('./chart/line', window.location.href + '/'),
-										$LL.graphence.components.sideBarMenu.line()
-									);
+									init(new URL('./chart/line', window.location.href + '/'));
 								} else {
-									init('../chart/line', $LL.graphence.components.sideBarMenu.line());
+									init('../chart/line');
 								}
 							}}
 							class={$page.url.pathname.endsWith('/chart/line') ? 'active' : ''}
@@ -83,12 +77,9 @@
 							on:click|preventDefault={(e) => {
 								zIndex.reset();
 								if (pathSize === 3) {
-									init(
-										new URL('./chart/pie', window.location.href + '/'),
-										$LL.graphence.components.sideBarMenu.pie()
-									);
+									init(new URL('./chart/pie', window.location.href + '/'));
 								} else {
-									init('../chart/pie', $LL.graphence.components.sideBarMenu.pie());
+									init('../chart/pie');
 								}
 							}}
 							class={$page.url.pathname.endsWith('/chart/pie') ? 'active' : ''}

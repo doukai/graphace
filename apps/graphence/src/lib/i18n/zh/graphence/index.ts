@@ -18,10 +18,12 @@ const zh: NamespaceGraphenceTranslation = {
         saveFailed: "保存失败",
         createFailed: "创建失败",
         removeFailed: "删除失败",
-        unbindFailed: "移除失败"
+        unbindFailed: "移除失败",
+        loading: "加载中..."
     },
     path: {
         home: "主页",
+        edit: "编辑 {name}",
         create: "新建 {name}",
         select: "选择 {name}"
     },

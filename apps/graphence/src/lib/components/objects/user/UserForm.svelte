@@ -3,13 +3,13 @@
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
 	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
-	import { type Option, StringInput, BooleanInput, ObjectLink } from '@graphace/ui-graphql';
+	import { StringInput, BooleanInput, ObjectLink } from '@graphace/ui-graphql';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
+	import { userFields, type UserFields } from '~/lib/components/objects/user/UserOption';
 	import type { UserInput } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { locale } from '$i18n/i18n-svelte';
 	
 	export let value: UserInput | null | undefined = undefined;
 	export let isFetching: boolean = false;
@@ -24,29 +24,7 @@
 	let className: string | undefined =
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
 	export { className as class };
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		lastName?: Option | undefined;
-		login?: Option | undefined;
-		email?: Option | undefined;
-		phones?: Option | undefined;
-		disable?: Option | undefined;
-		groups?: Option | undefined;
-		roles?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: { readonly: false, disabled: false, hidden: false },
-		description: { readonly: false, disabled: false, hidden: false },
-		lastName: { readonly: false, disabled: false, hidden: false },
-		login: { readonly: false, disabled: false, hidden: false },
-		email: { readonly: false, disabled: false, hidden: false },
-		phones: { readonly: false, disabled: false, hidden: false },
-		disable: { readonly: false, disabled: false, hidden: false },
-		groups: { readonly: false, disabled: false, hidden: false },
-		roles: { readonly: false, disabled: false, hidden: false },
-		realm: { readonly: false, disabled: false, hidden: false }
-	};
+	export let fields: UserFields | undefined = userFields;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -54,12 +32,72 @@
 		remove: { value: UserInput | null | undefined };
 		unbind: { value: UserInput | null | undefined };
 		save: { value: UserInput | null | undefined };
+		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
+
+	const validate = async () => {
+		errors = {};
+		if (value) {
+			const nameErrors = await fields?.name.validate?.(value);
+			if (nameErrors && nameErrors.length > 0) {
+				errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
+			}
+			const descriptionErrors = await fields?.description.validate?.(value);
+			if (descriptionErrors && descriptionErrors.length > 0) {
+				errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
+			}
+			const lastNameErrors = await fields?.lastName.validate?.(value);
+			if (lastNameErrors && lastNameErrors.length > 0) {
+				errors['lastName'] = { errors: lastNameErrors.map((message) => ({ message })) };
+			}
+			const loginErrors = await fields?.login.validate?.(value);
+			if (loginErrors && loginErrors.length > 0) {
+				errors['login'] = { errors: loginErrors.map((message) => ({ message })) };
+			}
+			const emailErrors = await fields?.email.validate?.(value);
+			if (emailErrors && emailErrors.length > 0) {
+				errors['email'] = { errors: emailErrors.map((message) => ({ message })) };
+			}
+			const phonesErrors = await fields?.phones.validate?.(value);
+			if (phonesErrors && phonesErrors.length > 0) {
+				errors['phones'] = { errors: phonesErrors.map((message) => ({ message })) };
+			}
+			const disableErrors = await fields?.disable.validate?.(value);
+			if (disableErrors && disableErrors.length > 0) {
+				errors['disable'] = { errors: disableErrors.map((message) => ({ message })) };
+			}
+			const groupsErrors = await fields?.groups.validate?.(value);
+			if (groupsErrors && groupsErrors.length > 0) {
+				errors['groups'] = { errors: groupsErrors.map((message) => ({ message })) };
+			}
+			const rolesErrors = await fields?.roles.validate?.(value);
+			if (rolesErrors && rolesErrors.length > 0) {
+				errors['roles'] = { errors: rolesErrors.map((message) => ({ message })) };
+			}
+			const realmErrors = await fields?.realm.validate?.(value);
+			if (realmErrors && realmErrors.length > 0) {
+				errors['realm'] = { errors: realmErrors.map((message) => ({ message })) };
+			}
+		}
+
+		return new Promise(
+			(
+				resolve: (data: UserInput | null | undefined) => void,
+				reject: (errors: Record<string, Errors>) => void
+			) => {
+				if (Object.keys(errors).length === 0) {
+					resolve(value);
+				} else {
+					reject(errors);
+				}
+			}
+		);
+	};
 </script>
 
-<div class="flex justify-end sm:justify-between">
-	<span class="max-sm:hidden text-xl font-semibold self-center">
+<div class="flex justify-between">
+	<span class="text-xl font-semibold self-center">
 		{#if title}
 			{title}
 		{:else}
@@ -73,7 +111,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => dispatch('save', { value })}
+		on:save={(e) => validate().then(() => dispatch('save', { value }))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back
@@ -81,169 +119,229 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider" />
+<div class="divider my-0" />
 <Form class={className}>
 	{#if isFetching}
 		<Loading />
 	{:else if value}
 		<slot name="name">
-			{#if !fields.name?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.name.name()} required />
+			{#if !fields?.name?.hidden?.(value)}
+				<FormControl let:id {...fields?.name?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.name.name()}
+						required={fields?.name?.required?.(value)}
+					/>
 					<StringInput
 						{id}
 						name="name"
 						bind:value={value.name}
 						errors={errors.name}
-						readonly={fields.name?.readonly}
-						disabled={fields.name?.disabled}
+						readonly={fields?.name?.readonly?.(value)}
+						disabled={fields?.name?.disabled?.(value)}
+						on:change={(e) => fields?.name.onChange?.(e.detail.value, value).then((next) => value = next)}
+						{...fields?.name?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="description">
-			{#if !fields.description?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.description.name()} />
+			{#if !fields?.description?.hidden?.(value)}
+				<FormControl let:id {...fields?.description?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.description.name()}
+						required={fields?.description?.required?.(value)}
+					/>
 					<StringInput
 						{id}
 						name="description"
 						bind:value={value.description}
 						errors={errors.description}
-						readonly={fields.description?.readonly}
-						disabled={fields.description?.disabled}
+						readonly={fields?.description?.readonly?.(value)}
+						disabled={fields?.description?.disabled?.(value)}
+						on:change={(e) => fields?.description.onChange?.(e.detail.value, value).then((next) => value = next)}
+						{...fields?.description?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="lastName">
-			{#if !fields.lastName?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.lastName.name()} />
+			{#if !fields?.lastName?.hidden?.(value)}
+				<FormControl let:id {...fields?.lastName?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.lastName.name()}
+						required={fields?.lastName?.required?.(value)}
+					/>
 					<StringInput
 						{id}
 						name="lastName"
 						bind:value={value.lastName}
 						errors={errors.lastName}
-						readonly={fields.lastName?.readonly}
-						disabled={fields.lastName?.disabled}
+						readonly={fields?.lastName?.readonly?.(value)}
+						disabled={fields?.lastName?.disabled?.(value)}
+						on:change={(e) => fields?.lastName.onChange?.(e.detail.value, value).then((next) => value = next)}
+						{...fields?.lastName?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="login">
-			{#if !fields.login?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.login.name()} required />
+			{#if !fields?.login?.hidden?.(value)}
+				<FormControl let:id {...fields?.login?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.login.name()}
+						required={fields?.login?.required?.(value)}
+					/>
 					<StringInput
 						{id}
 						name="login"
 						bind:value={value.login}
 						errors={errors.login}
-						readonly={fields.login?.readonly}
-						disabled={fields.login?.disabled}
+						readonly={fields?.login?.readonly?.(value)}
+						disabled={fields?.login?.disabled?.(value)}
+						on:change={(e) => fields?.login.onChange?.(e.detail.value, value).then((next) => value = next)}
+						{...fields?.login?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="email">
-			{#if !fields.email?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.email.name()} />
+			{#if !fields?.email?.hidden?.(value)}
+				<FormControl let:id {...fields?.email?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.email.name()}
+						required={fields?.email?.required?.(value)}
+					/>
 					<StringInput
 						{id}
 						name="email"
 						bind:value={value.email}
 						errors={errors.email}
-						readonly={fields.email?.readonly}
-						disabled={fields.email?.disabled}
+						readonly={fields?.email?.readonly?.(value)}
+						disabled={fields?.email?.disabled?.(value)}
+						on:change={(e) => fields?.email.onChange?.(e.detail.value, value).then((next) => value = next)}
+						{...fields?.email?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="phones">
-			{#if !fields.phones?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.phones.name()} />
+			{#if !fields?.phones?.hidden?.(value)}
+				<FormControl let:id {...fields?.phones?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.phones.name()}
+						required={fields?.phones?.required?.(value)}
+					/>
 					<StringInput
 						{id}
 						name="phones"
 						bind:value={value.phones}
 						errors={errors.phones}
-						readonly={fields.phones?.readonly}
-						disabled={fields.phones?.disabled}
+						readonly={fields?.phones?.readonly?.(value)}
+						disabled={fields?.phones?.disabled?.(value)}
+						on:change={(e) => fields?.phones.onChange?.(e.detail.value, value).then((next) => value = next)}
 						list
+						{...fields?.phones?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="disable">
-			{#if !fields.disable?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.disable.name()} />
+			{#if !fields?.disable?.hidden?.(value)}
+				<FormControl let:id {...fields?.disable?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.disable.name()}
+						required={fields?.disable?.required?.(value)}
+					/>
 					<BooleanInput
 						{id}
 						name="disable"
 						bind:value={value.disable}
 						errors={errors.disable}
-						readonly={fields.disable?.readonly}
-						disabled={fields.disable?.disabled}
+						readonly={fields?.disable?.readonly?.(value)}
+						disabled={fields?.disable?.disabled?.(value)}
+						on:change={(e) => fields?.disable.onChange?.(e.detail.value, value).then((next) => value = next)}
+						{...fields?.disable?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="groups">
-			{#if !fields.groups?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.groups.name()} />
+			{#if !fields?.groups?.hidden?.(value)}
+				<FormControl let:id {...fields?.groups?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.groups.name()}
+						required={fields?.groups?.required?.(value)}
+					/>
 					<GroupSelect
 						{id}
 						name="groups"
-						errors={errors.groups}
 						bind:value={value.groups}
-						readonly={fields.groups?.readonly}
-						disabled={fields.groups?.disabled}
+						errors={errors.groups}
+						readonly={fields?.groups?.readonly?.(value)}
+						disabled={fields?.groups?.disabled?.(value)}
+						on:change={(e) => fields?.groups.onChange?.(e.detail.value, value).then((next) => value = next)}
 						list
+						{...fields?.groups?.props?.(value)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="roles">
-			{#if !fields.roles?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.roles.name()} />
+			{#if !fields?.roles?.hidden?.(value)}
+				<FormControl let:id {...fields?.roles?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.roles.name()}
+						required={fields?.roles?.required?.(value)}
+					/>
 					<RoleSelect
 						{id}
 						name="roles"
-						errors={errors.roles}
 						bind:value={value.roles}
-						readonly={fields.roles?.readonly}
-						disabled={fields.roles?.disabled}
+						errors={errors.roles}
+						readonly={fields?.roles?.readonly?.(value)}
+						disabled={fields?.roles?.disabled?.(value)}
+						on:change={(e) => fields?.roles.onChange?.(e.detail.value, value).then((next) => value = next)}
 						list
+						{...fields?.roles?.props?.(value)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="realm">
-			{#if !fields.realm?.hidden}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.User.fields.realm.name()} />
+			{#if !fields?.realm?.hidden?.(value)}
+				<FormControl let:id {...fields?.realm?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.User.fields.realm.name()}
+						required={fields?.realm?.required?.(value)}
+					/>
 					{#if value.id}
 						<ObjectLink
 							bind:value={value.realm}
 							textFieldName="name"
 							path={`${value.id}/realm`}
-							name={$LL.graphql.objects.User.fields.realm.name()}
 							on:goto
+							{...fields?.realm?.props?.(value)?.['link']}
 						/>
 					{:else}
 						<RealmTableDialog
 							bind:value={value.realm}
-							class="btn-link"
 							textFieldName="name"
 							singleChoice
-							readonly={fields.realm?.readonly}
-							disabled={fields.realm?.disabled}
+							class="btn-link"
+							readonly={fields?.realm?.readonly?.(value)}
+							disabled={fields?.realm?.disabled?.(value)}
+							on:select={(e) => fields?.realm.onChange?.(e.detail.value, value).then((next) => value = next)}
+							{...fields?.realm?.props?.(value)?.['dialog']}
 						/>
 					{/if}
 					<ErrorLabels {id} errors={errors.realm} />
@@ -256,7 +354,7 @@
 		</div>
 	{/if}
 </Form>
-<div class="divider" />
+<div class="divider my-0" />
 <div class="flex justify-end">
 	<Buttons
 		{showRemoveButton}
@@ -265,7 +363,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => dispatch('save', { value })}
+		on:save={(e) => validate().then(() => dispatch('save', { value }))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back

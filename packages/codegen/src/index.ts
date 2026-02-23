@@ -103,6 +103,22 @@ const renders: Record<Template, Render> = {
             ),
         };
     },
+    '{{storesPath}}/fragment/fragment_{{name}}Fields.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fields = objectInfo.fields
+                .filter(field => field.inGraphQL && !field.queryOnly && !field.mutationOnly && !field.subscriptionOnly)
+            return {
+                content: buildFileContent(config.template, {
+                    ...objectInfo,
+                    fields,
+                    ...config
+                }),
+            };
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
     '{{storesPath}}/query/query_{{name}}_store.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const queryFieldInfo = getQueryFieldInfo(schema, config.name!);
         if (queryFieldInfo) {
@@ -110,7 +126,7 @@ const renders: Record<Template, Render> = {
                 content: buildFileContent(config.template, {
                     ...queryFieldInfo,
                     fields: getObjectFieldInfos(schema, queryFieldInfo.originalFieldTypeName)
-                        ?.filter(field => field.inGraphQL && field.inQuery),
+                        ?.filter(field => field.inGraphQL),
                     ...config
                 }),
             };
@@ -127,11 +143,11 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         ...queryFieldInfo,
                         fields: getObjectFieldInfos(schema, queryFieldInfo.originalFieldTypeName)
-                            ?.filter(field => field.inGraphQL && field.inQuery),
+                            ?.filter(field => field.inGraphQL),
                         objectFieldInfo: {
                             ...objectFieldInfo,
                             fields: getObjectFieldInfos(schema, objectFieldInfo.originalFieldTypeName)
-                                ?.filter(field => field.inGraphQL && field.inQuery)
+                                ?.filter(field => field.inGraphQL)
                         },
                         ...config
                     }),
@@ -148,7 +164,7 @@ const renders: Record<Template, Render> = {
                 content: buildFileContent(config.template, {
                     ...mutationFieldInfo,
                     fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
-                        ?.filter(field => field.inGraphQL && field.inMutation),
+                        ?.filter(field => field.inGraphQL),
                     ...config
                 }),
             };
@@ -165,16 +181,36 @@ const renders: Record<Template, Render> = {
                     content: buildFileContent(config.template, {
                         ...mutationFieldInfo,
                         fields: getObjectFieldInfos(schema, mutationFieldInfo.originalFieldTypeName)
-                            ?.filter(field => field.inGraphQL && field.inMutation),
+                            ?.filter(field => field.inGraphQL),
                         objectFieldInfo: {
                             ...objectFieldInfo,
                             fields: getObjectFieldInfos(schema, objectFieldInfo.originalFieldTypeName)
-                                ?.filter(field => field.inGraphQL && field.inMutation)
+                                ?.filter(field => field.inGraphQL)
                         },
                         ...config
                     }),
                 };
             }
+        }
+        console.error(config);
+        throw new Error(`${config.name} undefined`);
+    },
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Option.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
+        const objectInfo = getObjectInfo(schema, config.name!)
+        if (objectInfo) {
+            const fields = objectInfo.fields
+                ?.filter(field => field.inDetail)
+                .filter(field => !field.isAggregate)
+                .filter(field => !field.isConnection);
+            const importInfo = getImportInfo(fields);
+            return {
+                content: buildFileContent(config.template, {
+                    ...objectInfo,
+                    fields,
+                    ...importInfo,
+                    ...config
+                }),
+            };
         }
         console.error(config);
         throw new Error(`${config.name} undefined`);
@@ -371,126 +407,6 @@ const renders: Record<Template, Render> = {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
                     fields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const aggFields = objectInfo.aggFields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    aggFields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const aggFields = objectInfo.aggFields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    aggFields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Line.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const aggFields = objectInfo.aggFields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    aggFields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const aggFields = objectInfo.aggFields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    aggFields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const aggFields = objectInfo.aggFields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    aggFields,
                     ...importInfo,
                     ...config
                 }),
@@ -854,46 +770,6 @@ const renders: Record<Template, Render> = {
                     };
                 }
             }
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
-        }
-        console.error(config);
-        throw new Error(`${config.name} undefined`);
-    },
-    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
-        const objectInfo = getObjectInfo(schema, config.name!)
-        if (objectInfo) {
-            const fields = objectInfo.fields
-                ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
-                .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
-            return {
-                content: buildFileContent(config.template, {
-                    ...objectInfo,
-                    fields,
-                    ...importInfo,
-                    ...config
-                }),
-            };
         }
         console.error(config);
         throw new Error(`${config.name} undefined`);

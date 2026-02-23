@@ -38,6 +38,7 @@
 			bind:val={value.val}
 			bind:arr={value.arr}
 			class={className}
+			on:change
 		/>
 	{:else}
 		<RealmSelect
@@ -47,6 +48,7 @@
 			bind:val={value.val}
 			bind:arr={value.arr}
 			class={className}
+			on:change
 		/>
 	{/if}
 {/if}

@@ -357,11 +357,13 @@ export type StructQueryStores = {
 }
 
 export function extractFiles(value: any, path = "") {
-    if (!arguments.length) throw new TypeError("Argument 1 `value` is required.");
+    if (!arguments.length) {
+        throw new TypeError("Argument 1 `value` is required.");
+    }
 
-
-    if (typeof path !== "string")
+    if (typeof path !== "string") {
         throw new TypeError("Argument 2 `path` must be a string.");
+    }
 
     const clones = new Map();
 

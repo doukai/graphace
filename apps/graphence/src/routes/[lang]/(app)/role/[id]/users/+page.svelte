@@ -3,7 +3,7 @@
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { ot, to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
 	import type { Query_role_usersConnection_Store } from '~/lib/stores/query/query_role_usersConnection_store';
@@ -57,7 +57,7 @@
 				mutation_user_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -77,17 +77,17 @@
 			});
 	};
 
-	const merge = (args: UserInput[]) => {
-		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, users: args })
+	const merge = (input: UserInput[]) => {
+		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, users: input })
 			.then((data) => {
 				errors = {};
 				mutation_role_users_Store.fetch({
 					role_id: role?.id,
-					role_users: args
+					role_users: input
 				}).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -108,8 +108,23 @@
 	};
 </script>
 
-<Card>
-	<CardBody>
+<Card class="max-h-full max-w-full">
+	<CardBody class="overflow-y-auto pt-0">
+		<Breadcrumbs>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/role`)}>
+					<span class="badge badge-outline">{$LL.graphql.objects.Role.name()}</span>
+				</a>
+			</li>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/role/${role?.id}`)}>
+					<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Role.name() })}</span>
+				</a>
+			</li>
+			<li>
+				<span class="badge badge-neutral">{$LL.graphql.objects.Role.fields.users.name()}</span>
+			</li>
+		</Breadcrumbs>
 		<UserTable
 			showUnbindButton={auth('User::isDeprecated::WRITE')}
 			showEditButton
@@ -122,58 +137,6 @@
 			{errors}
 			isFetching={$query_role_usersConnection_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_role_users_Store.isFetching || $mutation_user_Store.isFetching}
-			fields={{
-				name: {
-					readonly: !auth('User::name::WRITE'),
-					disabled: !auth('User::name::WRITE'),
-					hidden: !auth('User::name::READ')
-				},
-				description: {
-					readonly: !auth('User::description::WRITE'),
-					disabled: !auth('User::description::WRITE'),
-					hidden: !auth('User::description::READ')
-				},
-				lastName: {
-					readonly: !auth('User::lastName::WRITE'),
-					disabled: !auth('User::lastName::WRITE'),
-					hidden: !auth('User::lastName::READ')
-				},
-				login: {
-					readonly: !auth('User::login::WRITE'),
-					disabled: !auth('User::login::WRITE'),
-					hidden: !auth('User::login::READ')
-				},
-				email: {
-					readonly: !auth('User::email::WRITE'),
-					disabled: !auth('User::email::WRITE'),
-					hidden: !auth('User::email::READ')
-				},
-				phones: {
-					readonly: !auth('User::phones::WRITE'),
-					disabled: !auth('User::phones::WRITE'),
-					hidden: !auth('User::phones::READ')
-				},
-				disable: {
-					readonly: !auth('User::disable::WRITE'),
-					disabled: !auth('User::disable::WRITE'),
-					hidden: !auth('User::disable::READ')
-				},
-				groups: {
-					readonly: !auth('User::groups::WRITE'),
-					disabled: !auth('User::groups::WRITE'),
-					hidden: !auth('User::groups::READ')
-				},
-				roles: {
-					readonly: !auth('User::roles::WRITE'),
-					disabled: !auth('User::roles::WRITE'),
-					hidden: !auth('User::roles::READ')
-				},
-				realm: {
-					readonly: !auth('User::realm::WRITE'),
-					disabled: !auth('User::realm::WRITE'),
-					hidden: !auth('User::realm::READ')
-				}
-			}}
 			on:search={(e) => {
 				if (e.detail.value) {
 					args = {
@@ -204,7 +167,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`/${$locale}/user/${e.detail.value.id}`, e.detail.value.name);
+					to(`/${$locale}/user/${e.detail.value.id}`);
 				}
 			}}
 			on:remove={(e) => {
@@ -251,8 +214,8 @@
 					}
 				});
 			}}
-			on:create={(e) => to(`/${$locale}/role/${role?.id}/users/_`, '_')}
-			on:goto={(e) => to(`/${$locale}/user/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/role/${role?.id}/users/_`)}
+			on:goto={(e) => to(`/${$locale}/user/${e.detail.path}`)}
 			on:back={(e) => ot()}
 		>
 			{#if auth('User::*::WRITE')}
@@ -271,7 +234,7 @@
 				</UserTableDialog>
 			{/if}
 		</UserTable>
-		<div class="divider" />
+		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

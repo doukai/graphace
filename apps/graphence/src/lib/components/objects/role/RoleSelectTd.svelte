@@ -12,6 +12,7 @@
 	import { namedQueryStore } from '~/utils';
 	import type { RoleInput } from '~/lib/types/schema';
 
+	export let id: string | undefined = undefined;
 	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
@@ -35,7 +36,7 @@
 	let selected: Option | Option[] | undefined;
 
 	$: if (Array.isArray(value)) {
-		if(value.some((item) => !item?.name)){
+		if (value.some((item) => !item?.name && item?.id)){
 			namedQueryStore
 				.fetch(query, {
 					id: { opr: 'IN', arr: value?.map((item) => item?.id) }
@@ -54,7 +55,7 @@
 			}))
 		}
 	} else if (value) {
-		if (!value.name) {
+		if (!value.name && value.id) {
 			namedQueryStore
 				.fetch(query, { id: { opr: 'EQ', val: value.id } })
 				.then((response) => {
@@ -123,6 +124,7 @@
 		<div class="flex items-start space-x-1" transition:fade={{ duration: 100 }}>
 			<FormControl>
 				<RoleSelect
+					{id}
 					{name}
 					{list}
 					{disabled}
@@ -130,6 +132,7 @@
 					{placeholder}
 					bind:value
 					bind:selected
+					on:change
 				/>
 			</FormControl>
 			{#if !readonly}

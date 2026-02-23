@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
+	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Form from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Form.svelte';
 	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 	{%- if hasFileField %}
@@ -15,7 +15,7 @@
 		buildGraphQLErrors
 	} from '~/utils';
 	import type { {{ fieldObjectInfo.name }}Input } from '~/{{ schemaTypesPath }}';
-	import { LL } from '$i18n/i18n-svelte';
+	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -34,13 +34,13 @@
 	let value = {};
 	let errors: Record<string, Errors> = {};
 
-	const merge = (args: {{ fieldObjectInfo.name }}Input) => {
-		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ idName }} } }, {{ fieldInfo.fieldName }}: [args] })
+	const merge = (input: {{ fieldObjectInfo.name }}Input) => {
+		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ idName }} } }, {{ fieldInfo.fieldName }}: [input] })
 			.then((data) => {
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({
 					{{ name | camelCase }}_{{ idName }}: {{ idName }},
-					{{ name | camelCase }}_{{ fieldInfo.fieldName }}: [args]
+					{{ name | camelCase }}_{{ fieldInfo.fieldName }}: [input]
 				}).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
@@ -65,23 +65,34 @@
 	};
 </script>
 
-<Card>
-	<CardBody>
+<Card class="max-h-full max-w-full">
+	<CardBody class="overflow-y-auto pt-0">
+		<Breadcrumbs>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | camelCase }}`)}>
+					<span class="badge badge-outline">{$LL.graphql.objects.{{ name }}.name()}</span>
+				</a>
+			</li>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | camelCase }}/${% raw %}{{% endraw %}{{ idName }}{% raw %}}{% endraw %}`)}>
+					<span class="badge badge-outline">{$LL.{{ appName }}.path.edit({ name: $LL.graphql.objects.{{ name }}.name() })}</span>
+				</a>
+			</li>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | camelCase }}/${% raw %}{{% endraw %}{{ idName }}{% raw %}}{% endraw %}/{{ fieldInfo.fieldName }}`)}>
+					<span class="badge badge-outline">{$LL.graphql.objects.{{ name }}.fields.{{ fieldInfo.fieldName }}.name()}</span>
+				</a>
+			</li>
+			<li>
+				<span class="badge badge-neutral">{$LL.{{ appName }}.path.create({ name: $LL.graphql.objects.{{ fieldObjectInfo.name }}.name() })}</span>
+			</li>
+		</Breadcrumbs>
 		<{{ fieldObjectInfo.name }}Form
 			showSaveButton={auth('{{ fieldObjectInfo.name }}::*::WRITE')}
 			showBackButton={$canBack}
 			bind:value
 			{errors}
 			isMutating={$validator.isValidating || $mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
-			fields={% raw %}{{{% endraw %}
-				{%- for field in fieldObjectInfo.fields %}
-				{{ field.fieldName }}: {
-					readonly: !auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::WRITE'),
-					disabled: !auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::WRITE'),
-					hidden: !auth('{{ fieldObjectInfo.name }}::{{ field.fieldName }}::READ')
-				}{% if forloop.last == false %},{% endif %}
-				{%- endfor %}
-			{% raw %}}}{% endraw %}
 			on:save={(e) => {
 				if (e.detail.value) {
 					merge(e.detail.value);

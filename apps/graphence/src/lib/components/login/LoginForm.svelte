@@ -19,11 +19,11 @@
 	const passwordId = nanoid();
 </script>
 
-<div class="hero min-h-[calc(100vh-6rem)] bg-base-200">
+<div class="hero h-full bg-base-200">
 	<div class="hero-content flex-col lg:flex-row-reverse">
 		<div class="text-center lg:text-left">
-			<div class="font-title inline-flex text-5xl font-bold">
-				<span>Graph</span>
+			<div class="inline-flex text-5xl font-bold">
+				<span class="capitalize text-neutral">Graph</span>
 				<span class="uppercase text-[#E535AB]">ACE</span>
 			</div>
 			<p class="py-6">{$LL.graphence.login.detail()}</p>

@@ -3,10 +3,10 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_group_Store } from '~/lib/stores/query/query_group_store';
 	import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
+	import { groupFields, type GroupFields } from '~/lib/components/objects/group/GroupOption';
 	import {
 		loadEvent,
 		validator,
@@ -28,72 +28,10 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let fields: GroupFields = groupFields;
 
 	const { validate } = validator;
 	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		path?: Option | undefined;
-		deep?: Option | undefined;
-		parentId?: Option | undefined;
-		parent?: Option | undefined;
-		subGroups?: Option | undefined;
-		users?: Option | undefined;
-		roles?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('Group::name::WRITE'),
-			disabled: !auth('Group::name::WRITE'),
-			hidden: !auth('Group::name::READ')
-		},
-		description: {
-			readonly: !auth('Group::description::WRITE'),
-			disabled: !auth('Group::description::WRITE'),
-			hidden: !auth('Group::description::READ')
-		},
-		path: {
-			readonly: !auth('Group::path::WRITE'),
-			disabled: !auth('Group::path::WRITE'),
-			hidden: !auth('Group::path::READ')
-		},
-		deep: {
-			readonly: !auth('Group::deep::WRITE'),
-			disabled: !auth('Group::deep::WRITE'),
-			hidden: !auth('Group::deep::READ')
-		},
-		parentId: {
-			readonly: !auth('Group::parentId::WRITE'),
-			disabled: !auth('Group::parentId::WRITE'),
-			hidden: !auth('Group::parentId::READ')
-		},
-		parent: {
-			readonly: !auth('Group::parent::WRITE'),
-			disabled: !auth('Group::parent::WRITE'),
-			hidden: !auth('Group::parent::READ')
-		},
-		subGroups: {
-			readonly: !auth('Group::subGroups::WRITE'),
-			disabled: !auth('Group::subGroups::WRITE'),
-			hidden: !auth('Group::subGroups::READ')
-		},
-		users: {
-			readonly: !auth('Group::users::WRITE'),
-			disabled: !auth('Group::users::WRITE'),
-			hidden: !auth('Group::users::READ')
-		},
-		roles: {
-			readonly: !auth('Group::roles::WRITE'),
-			disabled: !auth('Group::roles::WRITE'),
-			hidden: !auth('Group::roles::READ')
-		},
-		realm: {
-			readonly: !auth('Group::realm::WRITE'),
-			disabled: !auth('Group::realm::WRITE'),
-			hidden: !auth('Group::realm::READ')
-		}
-	};
 
 	const dispatch = createEventDispatcher<{
 		select: { value: GroupInput | null | undefined };
@@ -104,7 +42,7 @@
 	export let close: (() => void) | undefined = undefined;
 
  	$: if (textFieldName) {
-		if (value && !value?.[textFieldName]) {
+		if (value && !value?.[textFieldName] && value.id) {
 			query_group_Store
 				.fetch({
 					id: { opr: 'EQ', val: value.id }
@@ -137,7 +75,7 @@
 				mutation_group_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -251,7 +189,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`)}
 		/>
 	</svelte:fragment>
 </Dialog>

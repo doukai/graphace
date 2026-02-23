@@ -1,13 +1,21 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
+	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
+	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
 	import { createQuery_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
+	import { createMutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
-	import { loadEvent, permissions } from '~/utils';
-	import type { User, QueryUserConnectionArgs, UserOrderBy, UserInput } from '~/lib/types/schema';
+	import { userFields, type UserFields } from '~/lib/components/objects/user/UserOption';
+	import {
+		loadEvent,
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
+	import type { User, QueryUserConnectionArgs, UserOrderBy, UserInput, MutationUserArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined =
@@ -20,76 +28,17 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
-	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		lastName?: Option | undefined;
-		login?: Option | undefined;
-		email?: Option | undefined;
-		phones?: Option | undefined;
-		disable?: Option | undefined;
-		groups?: Option | undefined;
-		roles?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('User::name::WRITE'),
-			disabled: !auth('User::name::WRITE'),
-			hidden: !auth('User::name::READ')
-		},
-		description: {
-			readonly: !auth('User::description::WRITE'),
-			disabled: !auth('User::description::WRITE'),
-			hidden: !auth('User::description::READ')
-		},
-		lastName: {
-			readonly: !auth('User::lastName::WRITE'),
-			disabled: !auth('User::lastName::WRITE'),
-			hidden: !auth('User::lastName::READ')
-		},
-		login: {
-			readonly: !auth('User::login::WRITE'),
-			disabled: !auth('User::login::WRITE'),
-			hidden: !auth('User::login::READ')
-		},
-		email: {
-			readonly: !auth('User::email::WRITE'),
-			disabled: !auth('User::email::WRITE'),
-			hidden: !auth('User::email::READ')
-		},
-		phones: {
-			readonly: !auth('User::phones::WRITE'),
-			disabled: !auth('User::phones::WRITE'),
-			hidden: !auth('User::phones::READ')
-		},
-		disable: {
-			readonly: !auth('User::disable::WRITE'),
-			disabled: !auth('User::disable::WRITE'),
-			hidden: !auth('User::disable::READ')
-		},
-		groups: {
-			readonly: !auth('User::groups::WRITE'),
-			disabled: !auth('User::groups::WRITE'),
-			hidden: !auth('User::groups::READ')
-		},
-		roles: {
-			readonly: !auth('User::roles::WRITE'),
-			disabled: !auth('User::roles::WRITE'),
-			hidden: !auth('User::roles::READ')
-		},
-		realm: {
-			readonly: !auth('User::realm::WRITE'),
-			disabled: !auth('User::realm::WRITE'),
-			hidden: !auth('User::realm::READ')
-		}
-	};
+	export let fields: UserFields = userFields;
 
+	const { validate } = validator;
+	const { auth } = permissions;
+	
 	const dispatch = createEventDispatcher<{
 		select: { value: UserInput | (UserInput | null | undefined)[] | null | undefined };
 	}>();
 
 	const query_userConnection_Store = createQuery_userConnection_Store($loadEvent);
+	const mutation_user_Store = createMutation_user_Store($loadEvent);
 	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map(
 		(edge) => edge?.node
 	);
@@ -98,12 +47,13 @@
 	export let orderBy: UserOrderBy = {};
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
+	export let errors: Record<number, Errors> = {};
 	export let selectedIdList: (string | null | undefined)[] | undefined = [];
 	export let close: (() => void) | undefined = undefined;
 	
 	$: if (textFieldName) {
 		if (Array.isArray(value)) {
-			if (value.some((item) => !item?.[textFieldName])) {
+			if (value.some((item) => !item?.[textFieldName] && item?.id)) {
 				query_userConnection_Store
 					.fetch({
 						id: { opr: 'IN', arr: value?.map((item) => item?.id) }
@@ -130,7 +80,7 @@
 				}
 			}
 		} else if (value) {
-			if (!value?.[textFieldName]) {
+			if (!value?.[textFieldName] && value.id) {
 				query_userConnection_Store
 					.fetch({
 						id: { opr: 'EQ', val: value.id }
@@ -157,6 +107,45 @@
 				toast.error($LL.graphence.message.requestFailed());
 			}
 		});
+	};
+
+	const mutation = (args: MutationUserArgs) => {
+		const row = nodes
+			?.map((node) => node?.id)
+			?.indexOf(args.id || args.where?.id?.val || undefined);
+			
+		validate('Mutation_user_Arguments', args)
+			.then((data) => {
+				if (row !== -1 && row !== undefined && errors[row]) {
+					errors[row].iterms = {};
+				}
+				mutation_user_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError,
+								confirm: () => {
+									query();
+									return true;
+								}
+							});
+						}
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						query();
+					}
+				});
+			})
+			.catch((validErrors) => {
+				console.error(validErrors);
+				if (row !== -1 && row !== undefined) {
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
+				}
+			});
 	};
 </script>
 
@@ -217,6 +206,7 @@
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
+			{errors}
 			showEditButton={!readonly}
 			showCreateButton={!readonly && auth('User::*::WRITE')}
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
@@ -271,15 +261,20 @@
 				orderBy = e.detail.orderBy;
 				query();
 			}}
-			on:edit={(e) => {
+			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`/${$locale}/user/${e.detail.value.id}`, e.detail.value.name);
+					mutation(e.detail.value);
 				}
 			}}
-			on:create={(e) => to(`/${$locale}/user/_`, '_')}
-			on:goto={(e) => to(`/${$locale}/user/${e.detail.path}`, e.detail.name)}
+			on:edit={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					to(`/${$locale}/user/${e.detail.value.id}`);
+				}
+			}}
+			on:create={(e) => to(`/${$locale}/user/_`)}
+			on:goto={(e) => to(`/${$locale}/user/${e.detail.path}`)}
 		/>
-		<div class="divider" />
+		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

@@ -18,20 +18,27 @@ export type ObjectConfig = {
     table?: boolean;
     fields?: FieldConfig[];
     isContainer?: boolean;
+    textFieldName?: string | undefined;
+    groups?: GroupConfig[];
 }
 
 export type FieldConfig = {
     name: string;
     ignore?: boolean;
-    inQuery?: boolean;
-    inMutation?: boolean;
-    inSubscription?: boolean;
+    queryOnly?: boolean;
+    mutationOnly?: boolean;
+    subscriptionOnly?: boolean;
     inGraphQL?: boolean;
     inRoute?: boolean;
     inList?: boolean;
     inDetail?: boolean;
     select?: boolean;
     table?: boolean;
+}
+
+export type GroupConfig = {
+    name: string;
+    fields: string[];
 }
 
 export type EnumConfig = {
@@ -53,6 +60,8 @@ export type ObjectInfo = {
     isConnection: boolean;
     isNamed: boolean;
     aggFields?: FieldInfo[] | undefined;
+    textFieldName?: string | undefined;
+    groups?: GroupInfo[] | undefined;
 }
 
 export type ImportInfo = {
@@ -88,15 +97,21 @@ export type FieldInfo = {
     isTable: boolean;
     inQueryArgs: boolean;
     inMutationArgs: boolean;
-    inQuery: boolean;
-    inMutation: boolean;
-    inSubscription: boolean;
+    queryOnly: boolean;
+    mutationOnly: boolean;
+    subscriptionOnly: boolean;
     inGraphQL: boolean;
     inRoute: boolean;
     inList: boolean;
     inDetail: boolean;
     fields?: FieldInfo[] | undefined;
     aggFields?: FieldInfo[] | undefined;
+    textFieldName?: string | undefined;
+}
+
+export type GroupInfo = {
+    name: string;
+    fields: FieldInfo[];
 }
 
 export type InputInfo = {

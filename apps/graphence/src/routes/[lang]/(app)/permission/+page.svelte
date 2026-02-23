@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, canBack, Card, CardBody, Pagination, toast, modal } from '@graphace/ui';
+	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import type { Query_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
 	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
@@ -57,7 +57,7 @@
 				mutation_permission_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -84,8 +84,13 @@
 	};
 </script>
 
-<Card>
-	<CardBody>
+<Card class="max-h-full max-w-full">
+	<CardBody class="overflow-y-auto pt-0">
+		<Breadcrumbs>
+			<li>
+				<span class="badge badge-neutral">{$LL.graphql.objects.Permission.name()}</span>
+			</li>
+		</Breadcrumbs>
 		<PermissionTable
 			showRemoveButton={auth('Permission::isDeprecated::WRITE')}
 			showEditButton
@@ -98,43 +103,6 @@
 			{errors}
 			isFetching={$query_permissionConnection_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_permission_Store.isFetching}
-			fields={{
-				name: {
-					readonly: !auth('Permission::name::WRITE'),
-					disabled: !auth('Permission::name::WRITE'),
-					hidden: !auth('Permission::name::READ')
-				},
-				description: {
-					readonly: !auth('Permission::description::WRITE'),
-					disabled: !auth('Permission::description::WRITE'),
-					hidden: !auth('Permission::description::READ')
-				},
-				field: {
-					readonly: !auth('Permission::field::WRITE'),
-					disabled: !auth('Permission::field::WRITE'),
-					hidden: !auth('Permission::field::READ')
-				},
-				type: {
-					readonly: !auth('Permission::type::WRITE'),
-					disabled: !auth('Permission::type::WRITE'),
-					hidden: !auth('Permission::type::READ')
-				},
-				permissionType: {
-					readonly: !auth('Permission::permissionType::WRITE'),
-					disabled: !auth('Permission::permissionType::WRITE'),
-					hidden: !auth('Permission::permissionType::READ')
-				},
-				roles: {
-					readonly: !auth('Permission::roles::WRITE'),
-					disabled: !auth('Permission::roles::WRITE'),
-					hidden: !auth('Permission::roles::READ')
-				},
-				realm: {
-					readonly: !auth('Permission::realm::WRITE'),
-					disabled: !auth('Permission::realm::WRITE'),
-					hidden: !auth('Permission::realm::READ')
-				}
-			}}
 			on:search={(e) => {
 				if (e.detail.value) {
 					args = {
@@ -163,7 +131,7 @@
 			}}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`/${$locale}/permission/${e.detail.value.id}`, e.detail.value.id);
+					to(`/${$locale}/permission/${e.detail.value.id}`);
 				}
 			}}
 			on:remove={(e) => {
@@ -187,10 +155,10 @@
 					});
 				}
 			}}
-			on:create={(e) => to(`/${$locale}/permission/_`, '_')}
-			on:goto={(e) => to(`/${$locale}/permission/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/permission/_`)}
+			on:goto={(e) => to(`/${$locale}/permission/${e.detail.path}`)}
 		/>
-		<div class="divider" />
+		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

@@ -1,0 +1,98 @@
+import type { TabInfo } from '@graphace/ui';
+import type { Option } from '@graphace/ui-graphql';
+{%- for object in objects %}
+{%- if object != name %}
+import { {{ object | camelCase }}Fields, type {{ object }}Fields } from '~/{{ componentsPath }}/objects/{{ object | paramCase }}/{{ object }}Option';
+{%- endif %}
+{%- endfor %}
+import type {
+	{{ name }}Input,
+	Query{{ name }}ListArgs
+{%- for object in objects %}
+{%- if object != name %},
+	{{ object }}Input
+{%- endif %}
+{%- endfor %}
+} from '~/{{ schemaTypesPath }}';
+import { LL } from '$i18n/i18n-svelte';
+{%- if useAuth %}
+import { permissions } from '~/utils';
+{%- endif %}
+
+{%- if useAuth %}
+const { auth } = permissions;
+{%- endif %}
+
+export const {{ name | camelCase }}Tabs: TabInfo[] | undefined = undefined;
+
+export const {{ name | camelCase }}Tab: string | undefined = undefined;
+
+export const {{ name | camelCase }}TabChange = async (tab: any, args: Query{{ name }}ListArgs) => {
+	return new Promise(
+		(
+			resolve: (data: Query{{ name }}ListArgs) => void,
+			reject: (errors: any) => void
+		) => {
+			resolve(args);
+		}
+	);
+}
+
+export type {{ name }}Fields = {
+	{%- for field in fields %}
+	{{ field.fieldName }}: Option<{{ name }}Input, Query{{ name }}ListArgs>{% if field.isObjectType %} & { fields?: () => {{ field.fieldTypeName }}Fields }{% endif %};
+	{%- endfor %}
+};
+
+export const {{ name | camelCase }}Fields: {{ name }}Fields = {
+	{%- for field in fields %}
+	{{ field.fieldName }}: {
+		readonly: (value?: {{ name }}Input | undefined) => {
+			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::WRITE'){% else %}false{% endif %};
+		},
+		disabled: (value?: {{ name }}Input | undefined) => {
+			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::WRITE'){% else %}false{% endif %};
+		},
+		hidden: (value?: {{ name }}Input | undefined) => {
+			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::READ'){% else %}false{% endif %};
+		},
+		hiddenCol: (args: Query{{ name }}ListArgs, tab: any) => {
+			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::READ'){% else %}false{% endif %};
+		},
+		required: (value?: {{ name }}Input | undefined) => {
+			return {% if field.isNonNullType %}true{% else %}false{% endif %};
+		},
+		validate: async (value: {{ name }}Input) => {
+			return [];
+		},
+		{%- if field.isListType %}
+		onChange: async (fieldValue: ({% if field.isObjectType %}{{ field.fieldTypeName }}Input{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined)[] | null | undefined, value?: {{ name }}Input | null | undefined) => {
+			return new Promise(
+				(
+					resolve: (data: {{ name }}Input | null | undefined) => void,
+					reject: (errors: any) => void
+				) => {
+					resolve(value);
+				}
+			);
+		},
+		{%- else %}
+		onChange: async (fieldValue: {% if field.isObjectType %}{{ field.fieldTypeName }}Input{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined, value?: {{ name }}Input | null | undefined) => {
+			return new Promise(
+				(
+					resolve: (data: {{ name }}Input | null | undefined) => void,
+					reject: (errors: any) => void
+				) => {
+					resolve(value);
+				}
+			);
+		},
+		{%- endif %}
+		props: (value?: {{ name }}Input | undefined) => {
+			return {};
+		}{%- if field.isObjectType%},
+		fields: () => {{ field.fieldTypeName | camelCase }}Fields
+		{%- endif %}
+	}{% if forloop.last == false %},{% endif %}
+	{%- endfor %}
+};

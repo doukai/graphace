@@ -35,7 +35,7 @@
 					<a
 						href={null}
 						on:click|preventDefault={(e) => {
-							init(`/${$locale}/settings/account`, $LL.graphence.components.userMenu.profile());
+							init(`/${$locale}/settings/account`);
 						}}
 					>
 						{$LL.graphence.components.userMenu.profile()}
@@ -45,7 +45,7 @@
 					<a
 						href={null}
 						on:click|preventDefault={(e) => {
-							init(`/${$locale}/settings/password`, $LL.graphence.components.userMenu.password());
+							init(`/${$locale}/settings/password`);
 						}}
 					>
 						{$LL.graphence.components.userMenu.password()}

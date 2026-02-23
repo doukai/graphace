@@ -25,7 +25,7 @@
 		filter: { value?: GroupExpression | null | undefined };
 	}>();
 
-	let _value = {
+	let _value: GroupExpression = {
 		id: undefined,
 		name: undefined,
 		description: undefined,
@@ -36,6 +36,10 @@
 		subGroups: { id: undefined },
 		users: { id: undefined },
 		roles: { id: undefined },
+	}
+
+	if (value) {
+		_value = { ..._value, ...value };
 	}
 
 	const filter = (): void => {
@@ -75,7 +79,7 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {contextClass} {className}" use:melt={$content}>
+	<div class="p-1 z-[{zIndex + 5}] {contextClass} {className}" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<Form class="max-h-60 overflow-y-auto">
 			<FormControl let:id>

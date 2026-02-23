@@ -1,4 +1,4 @@
-<div class="hero text-base-content mx-auto">
+<div class="hero text-base-content mx-auto max-h-full overflow-y-auto">
 	<div class="hero-content text-center">
 		<div class="w-full max-w-md">
 			<h2 class="mb-2 mt-2 text-[clamp(2rem,8vw,5rem)] font-black md:text-3xl">

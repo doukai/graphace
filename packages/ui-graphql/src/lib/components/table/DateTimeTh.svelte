@@ -14,6 +14,7 @@
 	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
 	export let disabled = false;
+	export let required: boolean | undefined = false;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
@@ -87,6 +88,9 @@
 
 <td class={className}>
 	<a class="link group inline-flex truncate" href={null} use:melt={$trigger}>
+		{#if required}
+			<span data-part="label-required" class="text-error">*</span>
+		{/if}
 		{name}
 		{#if value?.val || (value?.arr && value.arr.length > 0)}
 			<span class="ml-1 flex-none">

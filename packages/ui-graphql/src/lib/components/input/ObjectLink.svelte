@@ -6,17 +6,15 @@
 
 	export let id: string | undefined = undefined;
 	export let path: string;
-	export let name: string | undefined = undefined;
 	export let value: any = undefined;
 	export let textFieldName: string | undefined = undefined;
+	export let text: string | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	let className: string | undefined = 'h-full content-center self-center';
 	export { className as class };
 
-	export let text: string | undefined = undefined;
-
 	const dispatch = createEventDispatcher<{
-		goto: { path: string; name: string | undefined };
+		goto: { path: string };
 	}>();
 
 	$: if (Array.isArray(value)) {
@@ -47,7 +45,7 @@
 	class="link truncate {errors ? 'link-error' : ''} {className}"
 	href={null}
 	on:click|preventDefault={(e) => {
-		dispatch('goto', { path, name });
+		dispatch('goto', { path });
 	}}
 >
 	{#if text !== null && text !== undefined}

@@ -47,7 +47,7 @@
 										href={null}
 										on:click|preventDefault={(e) => {
 											zIndex.reset();
-											init(`/${$locale}${subMenu.href}`, $LL.graphql.objects[subMenu.name].name());
+											init(`/${$locale}${subMenu.href}`);
 										}}
 										class={$page.url.pathname === `/${$locale}${subMenu.href}` ||
 										$page.url.pathname.startsWith(`/${$locale}${subMenu.href}/`)
@@ -70,7 +70,7 @@
 						href={null}
 						on:click|preventDefault={(e) => {
 							zIndex.reset();
-							init(`/${$locale}${menu.href}`, $LL.graphql.objects[menu.name].name());
+							init(`/${$locale}${menu.href}`);
 						}}
 						class={$page.url.pathname === `/${$locale}${menu.href}` ||
 						$page.url.pathname.startsWith(`/${$locale}${menu.href}/`)

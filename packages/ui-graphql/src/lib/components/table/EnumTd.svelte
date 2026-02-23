@@ -93,7 +93,7 @@
 					bind:value
 					{enums}
 					{list}
-					on:save
+					on:change
 					{readonly}
 					{disabled}
 					{placeholder}

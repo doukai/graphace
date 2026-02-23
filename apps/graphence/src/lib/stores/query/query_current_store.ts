@@ -1,19 +1,15 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+import { fragment_CurrentFields } from '~/lib/stores/fragment/fragment_CurrentFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { Current } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_current {
   current {
-    id
-    name
-    lastName
-    login
-    realmId
-    groups
-    roles
+    ...CurrentFields
   }
-}`;
+}
+${fragment_CurrentFields}`;
 
 export function createQuery_current_Store(event: LoadEvent | RequestEvent): Query_current_Store {
   return createGraphQLQueryStore<Current, undefined>(query, event);

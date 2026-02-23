@@ -8,13 +8,19 @@
 
 	export let name: string;
 	export let value: GroupExpression | null | undefined = undefined;
+	export let required: boolean | undefined = false;
+	let className: string | undefined = '';
+	export { className as class };
 
 	$: filtered = value && hasArguments(value);
 </script>
 
 <GroupFilter bind:value let:trigger on:filter>
-	<td>
+	<td class={className}>
 		<a class="link group inline-flex truncate" href={null} use:melt={trigger}>
+			{#if required}
+				<span data-part="label-required" class="text-error">*</span>
+			{/if}
 			{name}
 			{#if filtered}
 				<span class="flex-none">

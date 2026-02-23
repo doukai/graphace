@@ -2,15 +2,11 @@ import type { BuilderConfig } from "graphace-codegen-commons";
 export interface GraphacePresetConfig {
   appName?: string;
 
-  graphqlPath?: string;
-
   componentsPath?: string;
 
   dataPath?: string;
 
   routesPath?: string;
-
-  chartRoutesPath?: string;
 
   gridRoutesPath?: string;
 

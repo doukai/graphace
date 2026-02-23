@@ -1,61 +1,22 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
+import { fragment_PermissionFields } from '~/lib/stores/fragment/fragment_PermissionFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { RoleInput, Permission } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `mutation Mutation_permission_roles($permission_id: String, $permission_roles: [RoleInput]) {
   permission(where: { id: { val: $permission_id } }, roles: $permission_roles) @merge {
-    id
-    name
-    description
-    field
-    type
-    permissionType
-    isDeprecated
-    version
-    realmId
-    createUserId
-    createTime
-    updateUserId
-    updateTime
-    createGroupId
+    ...PermissionFields
     syncPermissionPolicy
     roles {
-      id
-      name
-      description
-      users(first: 3) {
-        id
-        name
-        description
-      }
-      groups {
-        id
-        name
-        description
-      }
-      composites {
-        id
-        name
-        description
-      }
-      realm {
-        id
-        name
-        description
-      }
-      isDeprecated
-      version
-      realmId
-      createUserId
-      createTime
-      updateUserId
-      updateTime
-      createGroupId
+      ...RoleFields
       syncRolePolicy
     }
   }
-}`;
+}
+${fragment_RoleFields}
+${fragment_PermissionFields}`;
 
 export function createMutation_permission_roles_Store(event: LoadEvent | RequestEvent): Mutation_permission_roles_Store {
   return createGraphQLMutationStore<Permission, { permission_id: string, permission_roles: RoleInput[] | null }>(query, event);

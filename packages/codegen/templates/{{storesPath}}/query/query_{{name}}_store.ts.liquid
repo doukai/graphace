@@ -1,5 +1,8 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+{%- if isObjectType %}
+import { fragment_{{ originalFieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ originalFieldTypeName }}Fields';
+{%- endif %}
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 {%- if args and args.length > 0 %}
 import type { Query{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
@@ -15,7 +18,9 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
     totalCount
     edges {
       node { 
+        ...{{ originalFieldTypeName }}Fields
         {%- for field in fields %}
+        {%- if field.queryOnly %}
         {%- if field.isLeafType and field.isAggregate == false %}
         {{ field.fieldName }}
         {%- elsif field.isFile and field.isAggregate == false %}
@@ -30,11 +35,14 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
           description
         }
         {%- endif %}
+        {%- endif %}
         {%- endfor %}
       }
     }
     {%- else %}
+    ...{{ originalFieldTypeName }}Fields
     {%- for field in fields %}
+    {%- if field.queryOnly %}
     {%- if field.isLeafType and field.isAggregate == false %}
     {{ field.fieldName }}
     {%- elsif field.isFile and field.isAggregate == false %}
@@ -68,11 +76,15 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
       description
     }
     {%- endif %}
+    {%- endif %}
     {%- endfor %}
     {%- endif %}
   }
   {%- endif %}
-}`;
+}
+{%- if isObjectType %}
+${fragment_{{ originalFieldTypeName }}Fields}
+{%- endif %}`;
 
 export function createQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent): Query_{{ fieldName }}_Store {
   return createGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);

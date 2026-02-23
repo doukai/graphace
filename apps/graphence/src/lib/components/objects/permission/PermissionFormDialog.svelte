@@ -3,10 +3,10 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_permission_Store } from '~/lib/stores/query/query_permission_store';
 	import { createMutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
+	import { permissionFields, type PermissionFields } from '~/lib/components/objects/permission/PermissionOption';
 	import {
 		loadEvent,
 		validator,
@@ -28,54 +28,10 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let fields: PermissionFields = permissionFields;
 
 	const { validate } = validator;
 	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		field?: Option | undefined;
-		type?: Option | undefined;
-		permissionType?: Option | undefined;
-		roles?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('Permission::name::WRITE'),
-			disabled: !auth('Permission::name::WRITE'),
-			hidden: !auth('Permission::name::READ')
-		},
-		description: {
-			readonly: !auth('Permission::description::WRITE'),
-			disabled: !auth('Permission::description::WRITE'),
-			hidden: !auth('Permission::description::READ')
-		},
-		field: {
-			readonly: !auth('Permission::field::WRITE'),
-			disabled: !auth('Permission::field::WRITE'),
-			hidden: !auth('Permission::field::READ')
-		},
-		type: {
-			readonly: !auth('Permission::type::WRITE'),
-			disabled: !auth('Permission::type::WRITE'),
-			hidden: !auth('Permission::type::READ')
-		},
-		permissionType: {
-			readonly: !auth('Permission::permissionType::WRITE'),
-			disabled: !auth('Permission::permissionType::WRITE'),
-			hidden: !auth('Permission::permissionType::READ')
-		},
-		roles: {
-			readonly: !auth('Permission::roles::WRITE'),
-			disabled: !auth('Permission::roles::WRITE'),
-			hidden: !auth('Permission::roles::READ')
-		},
-		realm: {
-			readonly: !auth('Permission::realm::WRITE'),
-			disabled: !auth('Permission::realm::WRITE'),
-			hidden: !auth('Permission::realm::READ')
-		}
-	};
 
 	const dispatch = createEventDispatcher<{
 		select: { value: PermissionInput | null | undefined };
@@ -86,7 +42,7 @@
 	export let close: (() => void) | undefined = undefined;
 
  	$: if (textFieldName) {
-		if (value && !value?.[textFieldName]) {
+		if (value && !value?.[textFieldName] && value.id) {
 			query_permission_Store
 				.fetch({
 					id: { opr: 'EQ', val: value.id }
@@ -119,7 +75,7 @@
 				mutation_permission_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -233,7 +189,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(`/${$locale}/permission/${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/permission/${e.detail.path}`)}
 		/>
 	</svelte:fragment>
 </Dialog>

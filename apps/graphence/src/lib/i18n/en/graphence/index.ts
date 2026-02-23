@@ -18,10 +18,12 @@ const en: BaseTranslation = {
         saveFailed: "Save failed",
         createFailed: "Create failed",
         removeFailed: "Remove failed",
-        unbindFailed: "Unbind failed"
+        unbindFailed: "Unbind failed",
+        loading: "Loading..."
     },
     path: {
         home: "Home",
+        edit: "Edit {name:string}",
         create: "Create {name:string}",
         select: "Select {name:string}"
     },

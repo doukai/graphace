@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { createEventDispatcher, getContext{% if groups != undefined and groups.length > 0 %}, type ComponentType{% endif %} } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
-	import { type Option, {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
+	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading{% if groups != undefined and groups.length > 0 %}, Wrapper{% endif %}, to } from '@graphace/ui';
+	import { {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Input.svelte';
 	{%- endfor %}
@@ -16,6 +16,7 @@
 	{%- for dialog in nonSelects %}
 	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
 	{%- endfor %}
+	import { {{ name | camelCase }}Fields, type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	{%- if tables and tables.length > 0 %}
@@ -35,15 +36,21 @@
 	let className: string | undefined =
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
 	export { className as class };
-	export let fields: {
-		{%- for field in fields %}
-		{{ field.fieldName }}?: Option | undefined;
-		{%- endfor %}
-	} = {
-		{%- for field in fields %}
-		{{ field.fieldName }}: { readonly: false, disabled: false, hidden: false }{% if forloop.last == false %},{% endif %}
+	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
+	{%- if groups != undefined and groups.length > 0 %}
+	export let wrapper: Record<string, ComponentType> = {
+		{%- for group in groups %}
+		'{{ group.name }}': Wrapper{% if forloop.last == false %},{% endif %}
 		{%- endfor %}
 	};
+	export let wrapperProps: Record<string, Record<string, any>> = {
+		{%- for group in groups %}
+		{%- if forloop.last %}
+		'{{ group.name }}': { last: true }
+		{%- endif %}
+		{%- endfor %}
+	};
+	{%- endif %}
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -54,6 +61,31 @@
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
+
+	const validate = async () => {
+		errors = {};
+		if (value) {
+			{%- for field in fields %}
+			const {{ field.fieldName }}Errors = await fields?.{{ field.fieldName }}.validate?.(value);
+			if ({{ field.fieldName }}Errors && {{ field.fieldName }}Errors.length > 0) {
+				errors['{{ field.fieldName }}'] = { errors: {{ field.fieldName }}Errors.map((message) => ({ message })) };
+			}
+			{%- endfor %}
+		}
+
+		return new Promise(
+			(
+				resolve: (data: {{ name }}Input | null | undefined) => void,
+				reject: (errors: Record<string, Errors>) => void
+			) => {
+				if (Object.keys(errors).length === 0) {
+					resolve(value);
+				} else {
+					reject(errors);
+				}
+			}
+		);
+	};
 </script>
 
 <div class="flex justify-between">
@@ -71,7 +103,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => dispatch('save', { value })}
+		on:save={(e) => validate().then(() => dispatch('save', { value }))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back
@@ -79,18 +111,126 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider" />
+<div class="divider my-0" />
 <Form class={className}>
 	{#if isFetching}
 		<Loading />
 	{:else if value}
+		{%- if groups != undefined and groups.length > 0 %}
+		{%- for group in groups %}
+		<svelte:component this={wrapper['{{ group.name }}']} {...wrapperProps['{{ group.name }}']}>
+			{%- for field in group.fields %}
+			<slot name="{{ field.fieldName }}">
+				{#if !fields?.{{ field.fieldName }}?.hidden?.(value)}
+					{%- if field.isTable %}
+					<div class="col-span-full">
+						<{{ field.fieldTypeName }}Editable
+							title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+							fields={fields?.{{ field.fieldName }}?.fields?.()}
+							showCreateDialog
+							showEditDialog
+							showRemoveButton
+							bind:value={value.{{ field.fieldName }}}
+							errors={errors.{{ field.fieldName }}?.iterms}
+							{isFetching}
+							{isMutating}
+							on:remove={(e) => {
+								if (e.detail.row !== undefined) {
+									value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
+								}
+							{% raw %}}}{% endraw %}
+							on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
+							{...fields?.{{ field.fieldName }}?.props?.(value)?.['table']}
+						/>
+						<ErrorLabels errors={errors.{{ field.fieldName }}} />
+					</div>
+					{%- else %}
+					<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.(value)?.['control']}>
+						<Label
+							{id}
+							text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+							required={fields?.{{ field.fieldName }}?.required?.(value)}
+						/>
+						{%- if field.isScalarType or field.isEnumType or field.isFile %}
+						<{{ field.fieldTypeName }}Input
+							{id}
+							name="{{ field.fieldName }}"
+							bind:value={value.{{ field.fieldName }}}
+							errors={errors.{{ field.fieldName }}}
+							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
+							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
+							on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+							{%- if field.isListType %}
+							list
+							{%- endif %}
+							{%- if field.fieldTypeName == 'File' %}
+							on:upload
+							{%- endif %}
+							{...fields?.{{ field.fieldName }}?.props?.(value)?.['input']}
+						/>
+						{%- elsif field.isSelect %}
+						<{{ field.fieldTypeName }}Select
+							{id}
+							name="{{ field.fieldName }}"
+							bind:value={value.{{ field.fieldName }}}
+							errors={errors.{{ field.fieldName }}}
+							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
+							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
+							on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+							{%- if field.isListType %}
+							list
+							{%- endif %}
+							{...fields?.{{ field.fieldName }}?.props?.(value)?.['select']}
+						/>
+						{%- else %}
+						{#if value.{{idName}}}
+							<ObjectLink
+								bind:value={value.{{ field.fieldName }}}
+								{%- if field.textFieldName %}
+								textFieldName="{{field.textFieldName}}"
+								{%- elsif field.isNamed %}
+								textFieldName="name"
+								{%- endif %}
+								path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+								on:goto
+								{...fields?.{{ field.fieldName }}?.props?.(value)?.['link']}
+							/>
+						{:else}
+							<{{ field.fieldTypeName }}TableDialog
+								bind:value={value.{{ field.fieldName }}}
+								{%- if field.textFieldName %}
+								textFieldName="{{field.textFieldName}}"
+								{%- elsif field.isNamed %}
+								textFieldName="name"
+								{%- endif %}
+								{%- if field.isListType == false %}
+								singleChoice
+								{%- endif %}
+								class="btn-link"
+								readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
+								disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
+								on:select={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+								{...fields?.{{ field.fieldName }}?.props?.(value)?.['dialog']}
+							/>
+						{/if}
+						<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
+						{%- endif %}
+					</FormControl>
+					{%- endif %}
+				{/if}
+			</slot>
+			{%- endfor %}
+		</svelte:component>
+		{%- endfor %}
+		{%- else %}
 		{%- for field in fields %}
 		<slot name="{{ field.fieldName }}">
-			{#if !fields.{{ field.fieldName }}?.hidden}
+			{#if !fields?.{{ field.fieldName }}?.hidden?.(value)}
 				{%- if field.isTable %}
 				<div class="col-span-full">
 					<{{ field.fieldTypeName }}Editable
 						title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						fields={fields?.{{ field.fieldName }}?.fields?.()}
 						showCreateDialog
 						showEditDialog
 						showRemoveButton
@@ -103,63 +243,78 @@
 								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
 							}
 						{% raw %}}}{% endraw %}
-						on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`, e.detail.name)}
+						on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
+						{...fields?.{{ field.fieldName }}?.props?.(value)?.['table']}
 					/>
 					<ErrorLabels errors={errors.{{ field.fieldName }}} />
 				</div>
 				{%- else %}
-				<FormControl let:id>
-					<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}{% if field.isNonNullType %} required{% endif %} />
+				<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.(value)?.['control']}>
+					<Label
+						{id}
+						text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						required={fields?.{{ field.fieldName }}?.required?.(value)}
+					/>
 					{%- if field.isScalarType or field.isEnumType or field.isFile %}
 					<{{ field.fieldTypeName }}Input
 						{id}
 						name="{{ field.fieldName }}"
 						bind:value={value.{{ field.fieldName }}}
 						errors={errors.{{ field.fieldName }}}
-						readonly={fields.{{ field.fieldName }}?.readonly}
-						disabled={fields.{{ field.fieldName }}?.disabled}
+						readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
+						disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
+						on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{%- if field.isListType %}
 						list
 						{%- endif %}
 						{%- if field.fieldTypeName == 'File' %}
 						on:upload
 						{%- endif %}
+						{...fields?.{{ field.fieldName }}?.props?.(value)?.['input']}
 					/>
 					{%- elsif field.isSelect %}
 					<{{ field.fieldTypeName }}Select
 						{id}
 						name="{{ field.fieldName }}"
-						errors={errors.{{ field.fieldName }}}
 						bind:value={value.{{ field.fieldName }}}
-						readonly={fields.{{ field.fieldName }}?.readonly}
-						disabled={fields.{{ field.fieldName }}?.disabled}
+						errors={errors.{{ field.fieldName }}}
+						readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
+						disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
+						on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{%- if field.isListType %}
 						list
 						{%- endif %}
+						{...fields?.{{ field.fieldName }}?.props?.(value)?.['select']}
 					/>
 					{%- else %}
 					{#if value.{{idName}}}
 						<ObjectLink
 							bind:value={value.{{ field.fieldName }}}
-							{%- if field.isNamed %}
+							{%- if field.textFieldName %}
+							textFieldName="{{field.textFieldName}}"
+							{%- elsif field.isNamed %}
 							textFieldName="name"
 							{%- endif %}
 							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-							name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 							on:goto
+							{...fields?.{{ field.fieldName }}?.props?.(value)?.['link']}
 						/>
 					{:else}
 						<{{ field.fieldTypeName }}TableDialog
 							bind:value={value.{{ field.fieldName }}}
-							class="btn-link"
-							{%- if field.isNamed %}
+							{%- if field.textFieldName %}
+							textFieldName="{{field.textFieldName}}"
+							{%- elsif field.isNamed %}
 							textFieldName="name"
 							{%- endif %}
 							{%- if field.isListType == false %}
 							singleChoice
 							{%- endif %}
-							readonly={fields.{{ field.fieldName }}?.readonly}
-							disabled={fields.{{ field.fieldName }}?.disabled}
+							class="btn-link"
+							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
+							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
+							on:select={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+							{...fields?.{{ field.fieldName }}?.props?.(value)?.['dialog']}
 						/>
 					{/if}
 					<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
@@ -169,13 +324,14 @@
 			{/if}
 		</slot>
 		{%- endfor %}
+		{%- endif %}
 	{:else}
 		<div class="col-span-full">
 			<Empty />
 		</div>
 	{/if}
 </Form>
-<div class="divider" />
+<div class="divider my-0" />
 <div class="flex justify-end">
 	<Buttons
 		{showRemoveButton}
@@ -184,7 +340,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => dispatch('save', { value })}
+		on:save={(e) => validate().then(() => dispatch('save', { value }))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back

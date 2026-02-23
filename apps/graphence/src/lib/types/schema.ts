@@ -5622,19 +5622,6 @@ export type RolePermissionRelationEdge = {
   cursor?: Maybe<Scalars['String']>;
 };
 
-/** Policy */
-export type Policy = {
-  __typename?: 'Policy';
-  id?: Maybe<Scalars['String']>;
-  policy?: Maybe<Scalars['String']>;
-  v0?: Maybe<Scalars['String']>;
-  v1?: Maybe<Scalars['String']>;
-  v2?: Maybe<Scalars['String']>;
-  v3?: Maybe<Scalars['String']>;
-  v4?: Maybe<Scalars['String']>;
-  v5?: Maybe<Scalars['String']>;
-};
-
 /** Current */
 export type Current = {
   __typename?: 'Current';
@@ -5652,6 +5639,19 @@ export type Current = {
   groups?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** 角色 */
   roles?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** Policy */
+export type Policy = {
+  __typename?: 'Policy';
+  id?: Maybe<Scalars['String']>;
+  policy?: Maybe<Scalars['String']>;
+  v0?: Maybe<Scalars['String']>;
+  v1?: Maybe<Scalars['String']>;
+  v2?: Maybe<Scalars['String']>;
+  v3?: Maybe<Scalars['String']>;
+  v4?: Maybe<Scalars['String']>;
+  v5?: Maybe<Scalars['String']>;
 };
 
 export type PageInfo = {
@@ -5951,12 +5951,6 @@ export type UserOrderBy = {
   phones?: InputMaybe<Sort>;
   /** 禁用 */
   disable?: InputMaybe<Sort>;
-  /** 组 */
-  groups?: InputMaybe<GroupOrderBy>;
-  /** 角色 */
-  roles?: InputMaybe<RoleOrderBy>;
-  /** 租户 */
-  realm?: InputMaybe<RealmOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -5973,22 +5967,6 @@ export type UserOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<UserPhonesRelationOrderBy>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationOrderBy>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationOrderBy>;
-  /** 组 统计字段 */
-  groupsAggregate?: InputMaybe<GroupOrderBy>;
-  /** 角色 统计字段 */
-  rolesAggregate?: InputMaybe<RoleOrderBy>;
-  /** 用户 手机号 关系 统计字段 */
-  userPhonesRelationAggregate?: InputMaybe<UserPhonesRelationOrderBy>;
-  /** 用户 组 关系 统计字段 */
-  groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
-  /** 用户 角色 关系 统计字段 */
-  roleUserRelationAggregate?: InputMaybe<RoleUserRelationOrderBy>;
   /** 用户 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
@@ -6239,16 +6217,6 @@ export type RoleOrderBy = {
   name?: InputMaybe<Sort>;
   /** 描述 */
   description?: InputMaybe<Sort>;
-  /** 用户 */
-  users?: InputMaybe<UserOrderBy>;
-  /** 组 */
-  groups?: InputMaybe<GroupOrderBy>;
-  /** 组合 */
-  composites?: InputMaybe<RoleOrderBy>;
-  /** 权限 */
-  permissions?: InputMaybe<PermissionOrderBy>;
-  /** 租户 */
-  realm?: InputMaybe<RealmOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -6265,30 +6233,6 @@ export type RoleOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationOrderBy>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationOrderBy>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<RoleCompositeRelationOrderBy>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationOrderBy>;
-  /** 用户 统计字段 */
-  usersAggregate?: InputMaybe<UserOrderBy>;
-  /** 组 统计字段 */
-  groupsAggregate?: InputMaybe<GroupOrderBy>;
-  /** 组合 统计字段 */
-  compositesAggregate?: InputMaybe<RoleOrderBy>;
-  /** 权限 统计字段 */
-  permissionsAggregate?: InputMaybe<PermissionOrderBy>;
-  /** 用户 角色 关系 统计字段 */
-  roleUserRelationAggregate?: InputMaybe<RoleUserRelationOrderBy>;
-  /** 角色 组 关系 统计字段 */
-  groupRoleRelationAggregate?: InputMaybe<GroupRoleRelationOrderBy>;
-  /** 角色 角色 关系 统计字段 */
-  roleCompositeRelationAggregate?: InputMaybe<RoleCompositeRelationOrderBy>;
-  /** 角色 权限 关系 统计字段 */
-  rolePermissionRelationAggregate?: InputMaybe<RolePermissionRelationOrderBy>;
   /** 角色 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
@@ -6523,16 +6467,6 @@ export type GroupOrderBy = {
   deep?: InputMaybe<Sort>;
   /** 上级ID */
   parentId?: InputMaybe<Sort>;
-  /** 上级 */
-  parent?: InputMaybe<GroupOrderBy>;
-  /** 下级 */
-  subGroups?: InputMaybe<GroupOrderBy>;
-  /** 用户 */
-  users?: InputMaybe<UserOrderBy>;
-  /** 角色 */
-  roles?: InputMaybe<RoleOrderBy>;
-  /** 租户 */
-  realm?: InputMaybe<RealmOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -6549,20 +6483,6 @@ export type GroupOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationOrderBy>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationOrderBy>;
-  /** 下级 统计字段 */
-  subGroupsAggregate?: InputMaybe<GroupOrderBy>;
-  /** 用户 统计字段 */
-  usersAggregate?: InputMaybe<UserOrderBy>;
-  /** 角色 统计字段 */
-  rolesAggregate?: InputMaybe<RoleOrderBy>;
-  /** 用户 组 关系 统计字段 */
-  groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
-  /** 角色 组 关系 统计字段 */
-  groupRoleRelationAggregate?: InputMaybe<GroupRoleRelationOrderBy>;
   /** 组 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
@@ -6951,10 +6871,6 @@ export type PermissionOrderBy = {
   type?: InputMaybe<Sort>;
   /** 权限类型 */
   permissionType?: InputMaybe<Sort>;
-  /** 角色 */
-  roles?: InputMaybe<RoleOrderBy>;
-  /** 租户 */
-  realm?: InputMaybe<RealmOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -6971,12 +6887,6 @@ export type PermissionOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationOrderBy>;
-  /** 角色 统计字段 */
-  rolesAggregate?: InputMaybe<RoleOrderBy>;
-  /** 角色 权限 关系 统计字段 */
-  rolePermissionRelationAggregate?: InputMaybe<RolePermissionRelationOrderBy>;
   /** 权限 数量 */
   idCount?: InputMaybe<Sort>;
   /** ID 最大值 */
@@ -7149,8 +7059,6 @@ export type UserPhonesRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
-  /** 用户 */
-  user?: InputMaybe<UserOrderBy>;
   /** 手机号 引用 */
   phonesRef?: InputMaybe<Sort>;
   /** 已移除 */
@@ -7331,12 +7239,8 @@ export type GroupUserRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
-  /** 用户 */
-  user?: InputMaybe<UserOrderBy>;
   /** 组 引用 */
   groupRef?: InputMaybe<Sort>;
-  /** 组 */
-  group?: InputMaybe<GroupOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -7515,12 +7419,8 @@ export type RoleUserRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
-  /** 用户 */
-  user?: InputMaybe<UserOrderBy>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
-  /** 角色 */
-  role?: InputMaybe<RoleOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -7699,12 +7599,8 @@ export type GroupRoleRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
-  /** 角色 */
-  role?: InputMaybe<RoleOrderBy>;
   /** 组 引用 */
   groupRef?: InputMaybe<Sort>;
-  /** 组 */
-  group?: InputMaybe<GroupOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -7883,12 +7779,8 @@ export type RoleCompositeRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
-  /** 角色 */
-  role?: InputMaybe<RoleOrderBy>;
   /** 角色 引用 */
   compositeRef?: InputMaybe<Sort>;
-  /** 角色 */
-  composite?: InputMaybe<RoleOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -8067,12 +7959,8 @@ export type RolePermissionRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
-  /** 角色 */
-  role?: InputMaybe<RoleOrderBy>;
   /** 权限 引用 */
   permissionRef?: InputMaybe<Sort>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */

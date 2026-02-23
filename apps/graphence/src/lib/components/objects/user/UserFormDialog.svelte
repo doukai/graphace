@@ -3,10 +3,10 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_user_Store } from '~/lib/stores/query/query_user_store';
 	import { createMutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
+	import { userFields, type UserFields } from '~/lib/components/objects/user/UserOption';
 	import {
 		loadEvent,
 		validator,
@@ -28,72 +28,10 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let fields: UserFields = userFields;
 
 	const { validate } = validator;
 	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		lastName?: Option | undefined;
-		login?: Option | undefined;
-		email?: Option | undefined;
-		phones?: Option | undefined;
-		disable?: Option | undefined;
-		groups?: Option | undefined;
-		roles?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('User::name::WRITE'),
-			disabled: !auth('User::name::WRITE'),
-			hidden: !auth('User::name::READ')
-		},
-		description: {
-			readonly: !auth('User::description::WRITE'),
-			disabled: !auth('User::description::WRITE'),
-			hidden: !auth('User::description::READ')
-		},
-		lastName: {
-			readonly: !auth('User::lastName::WRITE'),
-			disabled: !auth('User::lastName::WRITE'),
-			hidden: !auth('User::lastName::READ')
-		},
-		login: {
-			readonly: !auth('User::login::WRITE'),
-			disabled: !auth('User::login::WRITE'),
-			hidden: !auth('User::login::READ')
-		},
-		email: {
-			readonly: !auth('User::email::WRITE'),
-			disabled: !auth('User::email::WRITE'),
-			hidden: !auth('User::email::READ')
-		},
-		phones: {
-			readonly: !auth('User::phones::WRITE'),
-			disabled: !auth('User::phones::WRITE'),
-			hidden: !auth('User::phones::READ')
-		},
-		disable: {
-			readonly: !auth('User::disable::WRITE'),
-			disabled: !auth('User::disable::WRITE'),
-			hidden: !auth('User::disable::READ')
-		},
-		groups: {
-			readonly: !auth('User::groups::WRITE'),
-			disabled: !auth('User::groups::WRITE'),
-			hidden: !auth('User::groups::READ')
-		},
-		roles: {
-			readonly: !auth('User::roles::WRITE'),
-			disabled: !auth('User::roles::WRITE'),
-			hidden: !auth('User::roles::READ')
-		},
-		realm: {
-			readonly: !auth('User::realm::WRITE'),
-			disabled: !auth('User::realm::WRITE'),
-			hidden: !auth('User::realm::READ')
-		}
-	};
 
 	const dispatch = createEventDispatcher<{
 		select: { value: UserInput | null | undefined };
@@ -104,7 +42,7 @@
 	export let close: (() => void) | undefined = undefined;
 
  	$: if (textFieldName) {
-		if (value && !value?.[textFieldName]) {
+		if (value && !value?.[textFieldName] && value.id) {
 			query_user_Store
 				.fetch({
 					id: { opr: 'EQ', val: value.id }
@@ -137,7 +75,7 @@
 				mutation_user_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -251,7 +189,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(`/${$locale}/user/${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/user/${e.detail.path}`)}
 		/>
 	</svelte:fragment>
 </Dialog>

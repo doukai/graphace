@@ -2,10 +2,12 @@ export type Template =
     '{{dataPath}}/pages.json' |
     '{{i18nPath}}/{{i18nDefault}}/graphql/index.ts' |
     '{{i18nPath}}/{{i18nDescription}}/graphql/index.ts' |
+    '{{storesPath}}/fragment/fragment_{{name}}Fields.ts' |
     '{{storesPath}}/query/query_{{name}}_store.ts' |
     '{{storesPath}}/query/query_{{name}}_{{objectFieldName}}_store.ts' |
     '{{storesPath}}/mutation/mutation_{{name}}_store.ts' |
     '{{storesPath}}/mutation/mutation_{{name}}_{{objectFieldName}}_store.ts' |
+    '{{componentsPath}}/objects/{{pathName}}/{{name}}Option.ts' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Form.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}FormDialog.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Editable.svelte' |
@@ -16,11 +18,6 @@ export type Template =
     '{{componentsPath}}/objects/{{pathName}}/{{name}}SelectTd.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Filter.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte' |
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte' |
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte' |
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Line.svelte' |
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte' |
-    '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte' |
     '{{componentsPath}}/objects/{{pathName}}/index.ts' |
     '{{componentsPath}}/objects/index.ts' |
     '{{componentsPath}}/enums/{{pathName}}/{{name}}Th.svelte' |
@@ -38,6 +35,4 @@ export type Template =
     '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.svelte' |
     '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/+page.ts' |
     '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.svelte' |
-    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts' |
-    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte' |
-    '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts' 
+    '{{routesPath}}/{{pathName}}/[id]/{{objectListFieldPathName}}/_/+page.ts' 

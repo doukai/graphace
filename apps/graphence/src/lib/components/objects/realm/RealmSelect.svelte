@@ -33,13 +33,14 @@
 	$: options =
 		$namedQueryStore.response.data?.realmList?.map((item) => ({
 			label: item?.name,
-			value: item?.id
+			value: item?.id,
+			node: item
 		})) || [];
 
 	$: loading = $namedQueryStore.isFetching;
 
 	$: if (Array.isArray(value)) {
-		if(value.some((item) => !item?.name)){
+		if (value.some((item) => !item?.name && item?.id)){
 			namedQueryStore
 				.fetch(query, {
 					id: { opr: 'IN', arr: value?.map((item) => item?.id) }
@@ -48,32 +49,35 @@
 					value = response.data?.realmList;
 					selected = value?.map((item) => ({
 						label: item?.name,
-						value: item?.id
+						value: item?.id,
+						node: item
 					}));
 				});
 		} else {
 			selected = value?.map((item) => ({
 				label: item?.name,
-				value: item?.id
+				value: item?.id,
+				node: item
 			}))
 		}
 	} else if (value) {
-		if (!value.name) {
+		if (!value.name && value.id) {
 			namedQueryStore
 				.fetch(query, { id: { opr: 'EQ', val: value.id } })
 				.then((response) => {
 					value = response.data?.realmList?.[0];
-					selected = { label: value?.name, value: value?.id };
+					selected = { label: value?.name, value: value?.id, node: value  };
 				});
 		} else {
-			selected = { label: value?.name, value: value.id };
+			selected = { label: value?.name, value: value.id, node: value  };
 		}
 	} else if (val) {
 		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
 			(response) =>
 				(selected = response.data?.realmList?.map((item) => ({
 					label: item?.name,
-					value: item?.id
+					value: item?.id,
+					node: item
 				}))?.[0])
 		);
 	} else if (arr && arr.length > 0) {
@@ -81,7 +85,8 @@
 			(response) =>
 				(selected = response.data?.realmList?.map((item) => ({
 					label: item?.name,
-					value: item?.id
+					value: item?.id,
+					node: item
 				})))
 		);
 	}
@@ -103,16 +108,17 @@
 		if (Array.isArray(e.detail.value)) {
 			value = e.detail.value.map((item) => ({
 				id: item.value,
-				name: item.label
+				name: item.label,
+				...item.node
 			}));
 			arr = e.detail.value.map((item) => item.value);
 			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
-			value = { id: e.detail.value.value, name: e.detail.value.label };
+			value = { id: e.detail.value.value, name: e.detail.value.label, ...e.detail.value.node };
 			val = e.detail.value.value;
 			arr = [];
 		} else {
-			value = undefined;
+			value = null;
 			val = undefined;
 			arr = [];
 		}

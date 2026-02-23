@@ -3,10 +3,10 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_role_Store } from '~/lib/stores/query/query_role_store';
 	import { createMutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
+	import { roleFields, type RoleFields } from '~/lib/components/objects/role/RoleOption';
 	import {
 		loadEvent,
 		validator,
@@ -28,54 +28,10 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let fields: RoleFields = roleFields;
 
 	const { validate } = validator;
 	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		users?: Option | undefined;
-		groups?: Option | undefined;
-		composites?: Option | undefined;
-		permissions?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('Role::name::WRITE'),
-			disabled: !auth('Role::name::WRITE'),
-			hidden: !auth('Role::name::READ')
-		},
-		description: {
-			readonly: !auth('Role::description::WRITE'),
-			disabled: !auth('Role::description::WRITE'),
-			hidden: !auth('Role::description::READ')
-		},
-		users: {
-			readonly: !auth('Role::users::WRITE'),
-			disabled: !auth('Role::users::WRITE'),
-			hidden: !auth('Role::users::READ')
-		},
-		groups: {
-			readonly: !auth('Role::groups::WRITE'),
-			disabled: !auth('Role::groups::WRITE'),
-			hidden: !auth('Role::groups::READ')
-		},
-		composites: {
-			readonly: !auth('Role::composites::WRITE'),
-			disabled: !auth('Role::composites::WRITE'),
-			hidden: !auth('Role::composites::READ')
-		},
-		permissions: {
-			readonly: !auth('Role::permissions::WRITE'),
-			disabled: !auth('Role::permissions::WRITE'),
-			hidden: !auth('Role::permissions::READ')
-		},
-		realm: {
-			readonly: !auth('Role::realm::WRITE'),
-			disabled: !auth('Role::realm::WRITE'),
-			hidden: !auth('Role::realm::READ')
-		}
-	};
 
 	const dispatch = createEventDispatcher<{
 		select: { value: RoleInput | null | undefined };
@@ -86,7 +42,7 @@
 	export let close: (() => void) | undefined = undefined;
 
  	$: if (textFieldName) {
-		if (value && !value?.[textFieldName]) {
+		if (value && !value?.[textFieldName] && value.id) {
 			query_role_Store
 				.fetch({
 					id: { opr: 'EQ', val: value.id }
@@ -119,7 +75,7 @@
 				mutation_role_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -233,7 +189,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`)}
 		/>
 	</svelte:fragment>
 </Dialog>

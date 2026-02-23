@@ -5,13 +5,6 @@ module.exports = {
         './node_modules/@graphace/ui/dist/**/*.{html,js,svelte,ts}',
         './node_modules/@graphace/ui-graphql/dist/**/*.{html,js,svelte,ts}'
     ],
-    theme: {
-        extend: {
-            fontFamily: {
-                title: ["Figtree", "Noto Sans JP", "Noto Sans", "sans-serif"],
-            }
-        },
-    },
     plugins: [
         require('@tailwindcss/typography'),
         require('daisyui')

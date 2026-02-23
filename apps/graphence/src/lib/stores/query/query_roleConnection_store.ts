@@ -1,5 +1,6 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRoleConnectionArgs } from '~/lib/types/schema';
 import type { RoleConnection } from '~/lib/types/schema';
@@ -8,42 +9,13 @@ const query = /* GraphQL */ `query Query_roleConnection($id: StringExpression, $
   roleConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation rolePermissionRelation: $rolePermissionRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) {
     totalCount
     edges {
-      node {
-        id
-        name
-        description
-        users(first: 3) {
-          id
-          name
-          description
-        }
-        groups {
-          id
-          name
-          description
-        }
-        composites {
-          id
-          name
-          description
-        }
-        realm {
-          id
-          name
-          description
-        }
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
+      node { 
+        ...RoleFields
       }
     }
   }
-}`;
+}
+${fragment_RoleFields}`;
 
 export function createQuery_roleConnection_Store(event: LoadEvent | RequestEvent): Query_roleConnection_Store {
   return createGraphQLQueryStore<RoleConnection, QueryRoleConnectionArgs>(query, event);

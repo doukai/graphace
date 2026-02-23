@@ -4,10 +4,10 @@
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
+	import { {{ name | camelCase }}Fields, type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import {
 		loadEvent,
 		validator,
@@ -30,25 +30,13 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let fields: {{ name }}Fields = {{ name | camelCase }}Fields;
 
 	const { validate } = validator;
 	{%- if useAuth %}
 	const { auth } = permissions;
-	export let fields: {
-		{%- for field in fields %}
-		{{ field.fieldName }}?: Option | undefined;
-		{%- endfor %}
-	} = {
-		{%- for field in fields %}
-		{{ field.fieldName }}: {
-			readonly: !auth('{{ name }}::{{ field.fieldName }}::WRITE'),
-			disabled: !auth('{{ name }}::{{ field.fieldName }}::WRITE'),
-			hidden: !auth('{{ name }}::{{ field.fieldName }}::READ')
-		}{% if forloop.last == false %},{% endif %}
-		{%- endfor %}
-	};
 	{%- endif %}
-
+	
 	const dispatch = createEventDispatcher<{
 		select: { value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined };
 	}>();
@@ -285,13 +273,13 @@
 			{% raw %}}}{% endraw %}
 			on:edit={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`/${$locale}/{{ name | paramCase }}/${e.detail.value.{{ idName }}}`, e.detail.value.{% if isNamed %}name{% else %}{{ idName }}{% endif %});
+					to(`/${$locale}/{{ name | paramCase }}/${e.detail.value.{{ idName }}}`);
 				}
 			{% raw %}}}{% endraw %}
-			on:create={(e) => to(`/${$locale}/{{ name | paramCase }}/_`, '_')}
-			on:goto={(e) => to(`/${$locale}/{{ name | paramCase }}/${e.detail.path}`, e.detail.name)}
+			on:create={(e) => to(`/${$locale}/{{ name | paramCase }}/_`)}
+			on:goto={(e) => to(`/${$locale}/{{ name | paramCase }}/${e.detail.path}`)}
 		/>
-		<div class="divider" />
+		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

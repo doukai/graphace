@@ -26,5 +26,5 @@
 	{placeholder}
 	{zIndex}
 	class={className}
-	on:save
+	on:change
 />

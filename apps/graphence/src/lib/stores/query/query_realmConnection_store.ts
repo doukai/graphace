@@ -1,5 +1,6 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+import { fragment_RealmFields } from '~/lib/stores/fragment/fragment_RealmFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRealmConnectionArgs } from '~/lib/types/schema';
 import type { RealmConnection } from '~/lib/types/schema';
@@ -8,22 +9,13 @@ const query = /* GraphQL */ `query Query_realmConnection($id: StringExpression, 
   realmConnection(id: $id name: $name description: $description includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) {
     totalCount
     edges {
-      node {
-        id
-        name
-        description
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
+      node { 
+        ...RealmFields
       }
     }
   }
-}`;
+}
+${fragment_RealmFields}`;
 
 export function createQuery_realmConnection_Store(event: LoadEvent | RequestEvent): Query_realmConnection_Store {
   return createGraphQLQueryStore<RealmConnection, QueryRealmConnectionArgs>(query, event);

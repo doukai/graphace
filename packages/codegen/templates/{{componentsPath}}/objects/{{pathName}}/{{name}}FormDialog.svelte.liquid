@@ -3,10 +3,10 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Form.svelte';
+	import { {{ name | camelCase }}Fields, type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import {
 		loadEvent,
 		validator,
@@ -30,23 +30,11 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let fields: {{ name }}Fields = {{ name | camelCase }}Fields;
 
 	const { validate } = validator;
 	{%- if useAuth %}
 	const { auth } = permissions;
-	export let fields: {
-		{%- for field in fields %}
-		{{ field.fieldName }}?: Option | undefined;
-		{%- endfor %}
-	} = {
-		{%- for field in fields %}
-		{{ field.fieldName }}: {
-			readonly: !auth('{{ name }}::{{ field.fieldName }}::WRITE'),
-			disabled: !auth('{{ name }}::{{ field.fieldName }}::WRITE'),
-			hidden: !auth('{{ name }}::{{ field.fieldName }}::READ')
-		}{% if forloop.last == false %},{% endif %}
-		{%- endfor %}
-	};
 	{%- endif %}
 
 	const dispatch = createEventDispatcher<{
@@ -207,7 +195,7 @@
 					}
 				});
 			{% raw %}}}{% endraw %}
-			on:goto={(e) => to(`/${$locale}/{{ name | paramCase }}/${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/{{ name | paramCase }}/${e.detail.path}`)}
 		/>
 	</svelte:fragment>
 </Dialog>

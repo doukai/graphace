@@ -23,3 +23,6 @@ export * from "./Operation.js";
 export * from "./Field.js";
 export * from "./Directive.js";
 export * from "./Arguments.js";
+export * from "./__TypeKindExpression.js";
+export * from "./__TypeListQueryArguments.js";
+export * from "./__TypeQueryArguments.js";

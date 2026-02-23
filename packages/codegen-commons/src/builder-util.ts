@@ -93,40 +93,37 @@ export function inGraphQLField(typeName: string, fieldName: string, fieldTypeNam
         graphqlFieldIsNotIgnore(fieldName, fieldTypeName);
 }
 
-export function inQueryField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+export function isQueryOnly(typeName: string, fieldName: string, fieldTypeName: string): boolean {
     const originalTypeName = typeName.lastIndexOf(connectionSuffix) === -1 ?
         typeName :
         typeName.substring(0, typeName.lastIndexOf(connectionSuffix));
-    return !(builderConfig?.objects || [])
+    return (builderConfig?.objects || [])
         .filter(objectConfig => objectConfig.name === originalTypeName || objectConfig.name === 'any')
         .flatMap(objectConfig => objectConfig.fields || [])
-        .filter(fieldConfig => fieldConfig.inQuery === false || fieldConfig.ignore === true)
-        .some(fieldConfig => fieldConfig.name === fieldName) &&
-        graphqlFieldIsNotIgnore(fieldName, fieldTypeName);
+        .filter(fieldConfig => fieldConfig.queryOnly === true)
+        .some(fieldConfig => fieldConfig.name === fieldName);
 }
 
-export function inMutationField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+export function isMutationOnly(typeName: string, fieldName: string, fieldTypeName: string): boolean {
     const originalTypeName = typeName.lastIndexOf(connectionSuffix) === -1 ?
         typeName :
         typeName.substring(0, typeName.lastIndexOf(connectionSuffix));
-    return !(builderConfig?.objects || [])
+    return (builderConfig?.objects || [])
         .filter(objectConfig => objectConfig.name === originalTypeName || objectConfig.name === 'any')
         .flatMap(objectConfig => objectConfig.fields || [])
-        .filter(fieldConfig => fieldConfig.inMutation === false || fieldConfig.ignore === true)
-        .some(fieldConfig => fieldConfig.name === fieldName) &&
-        graphqlFieldIsNotIgnore(fieldName, fieldTypeName);
+        .filter(fieldConfig => fieldConfig.mutationOnly === true)
+        .some(fieldConfig => fieldConfig.name === fieldName);
 }
 
-export function inSubscriptionField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
+export function isSubscriptionOnly(typeName: string, fieldName: string, fieldTypeName: string): boolean {
     const originalTypeName = typeName.lastIndexOf(connectionSuffix) === -1 ?
         typeName :
         typeName.substring(0, typeName.lastIndexOf(connectionSuffix));
-    return !(builderConfig?.objects || [])
+    return (builderConfig?.objects || [])
         .filter(objectConfig => objectConfig.name === originalTypeName || objectConfig.name === 'any')
         .flatMap(objectConfig => objectConfig.fields || [])
-        .filter(fieldConfig => fieldConfig.inSubscription === false || fieldConfig.ignore === true)
-        .some(fieldConfig => fieldConfig.name === fieldName) &&
-        graphqlFieldIsNotIgnore(fieldName, fieldTypeName);
+        .filter(fieldConfig => fieldConfig.subscriptionOnly === true)
+        .some(fieldConfig => fieldConfig.name === fieldName);
 }
 
 export function inListField(typeName: string, fieldName: string, fieldTypeName: string): boolean {
@@ -185,23 +182,31 @@ export function isTableField(typeName: string, fieldName: string): boolean {
 export const getObjectInfo = (schema: GraphQLSchema, name: string): ObjectInfo | undefined => {
     const type = schema.getType(name);
     if (isObjectType(type)) {
-        const fields = getFieldInfos(schema, type);
+        const fields = getFieldInfos(schema, type)?.map(field => {
+            if (field.isObjectType) {
+                const fieldType = schema.getType(field.fieldTypeName);
+                if (fieldType) {
+                    field.fields = getFieldInfos(schema, fieldType);
+                }
+            }
+            return field;
+        });
         return {
             name,
             idName: getIDFieldName(type),
             hasFileField: hasFileField(type),
             isConnection: isConnection(type.name),
             isNamed: isNamedStruct(type),
-            fields: fields?.map(field => {
-                if (field.isObjectType) {
-                    const fieldType = schema.getType(field.fieldTypeName);
-                    if (fieldType) {
-                        field.fields = getFieldInfos(schema, fieldType);
-                    }
-                }
-                return field;
-            }),
-            aggFields: getAggFieldInfos(schema, type)
+            fields: fields,
+            aggFields: getAggFieldInfos(schema, type),
+            textFieldName: builderConfig?.objects?.find(objectConfig => objectConfig.name === name)?.textFieldName,
+            groups: builderConfig?.objects
+                ?.find(objectConfig => objectConfig.name === name)
+                ?.groups
+                ?.map(group => ({
+                    name: group.name,
+                    fields: group.fields.flatMap(fieldName => fields.filter(field => field.fieldName === fieldName))
+                }))
         };
     }
     return undefined;
@@ -251,12 +256,13 @@ export const getQueryFieldInfo = (schema: GraphQLSchema, name: string): FieldInf
             inQueryArgs: false,
             inMutationArgs: false,
             inGraphQL: inGraphQLField(getQueryTypeName(), name, fieldType.name),
-            inQuery: inQueryField(getQueryTypeName(), name, fieldType.name),
-            inMutation: inMutationField(getQueryTypeName(), name, fieldType.name),
-            inSubscription: inSubscriptionField(getQueryTypeName(), name, fieldType.name),
+            queryOnly: isQueryOnly(getQueryTypeName(), name, fieldType.name),
+            mutationOnly: isMutationOnly(getQueryTypeName(), name, fieldType.name),
+            subscriptionOnly: isSubscriptionOnly(getQueryTypeName(), name, fieldType.name),
             inRoute: inRouteField(getQueryTypeName(), name, fieldType.name),
             inList: inListField(getQueryTypeName(), name, fieldType.name),
-            inDetail: inDetailField(getQueryTypeName(), name, fieldType.name)
+            inDetail: inDetailField(getQueryTypeName(), name, fieldType.name),
+            textFieldName: builderConfig?.objects?.find(objectConfig => objectConfig.name === fieldType.name)?.textFieldName
         }
     }
     return undefined;
@@ -294,12 +300,13 @@ export const getMutationFieldInfo = (schema: GraphQLSchema, name: string): Field
             inQueryArgs: false,
             inMutationArgs: false,
             inGraphQL: inGraphQLField(getMutationTypeName(), name, fieldType.name),
-            inQuery: inQueryField(getMutationTypeName(), name, fieldType.name),
-            inMutation: inMutationField(getMutationTypeName(), name, fieldType.name),
-            inSubscription: inSubscriptionField(getMutationTypeName(), name, fieldType.name),
+            queryOnly: isQueryOnly(getMutationTypeName(), name, fieldType.name),
+            mutationOnly: isMutationOnly(getMutationTypeName(), name, fieldType.name),
+            subscriptionOnly: isSubscriptionOnly(getMutationTypeName(), name, fieldType.name),
             inRoute: inRouteField(getMutationTypeName(), name, fieldType.name),
             inList: inListField(getMutationTypeName(), name, fieldType.name),
-            inDetail: inDetailField(getMutationTypeName(), name, fieldType.name)
+            inDetail: inDetailField(getMutationTypeName(), name, fieldType.name),
+            textFieldName: builderConfig?.objects?.find(objectConfig => objectConfig.name === fieldType.name)?.textFieldName
         }
     }
     return undefined;
@@ -356,12 +363,13 @@ export const getFieldInfos = (schema: GraphQLSchema, type: GraphQLNamedType, sub
                     inQueryArgs: fieldInQueryArgs(schema, type.name, field.name),
                     inMutationArgs: fieldInMutationArgs(schema, type.name, field.name),
                     inGraphQL: inGraphQLField(type.name, field.name, fieldType.name),
-                    inQuery: inQueryField(type.name, field.name, fieldType.name),
-                    inMutation: inMutationField(type.name, field.name, fieldType.name),
-                    inSubscription: inSubscriptionField(type.name, field.name, fieldType.name),
+                    queryOnly: isQueryOnly(type.name, field.name, fieldType.name),
+                    mutationOnly: isMutationOnly(type.name, field.name, fieldType.name),
+                    subscriptionOnly: isSubscriptionOnly(type.name, field.name, fieldType.name),
                     inRoute: inRouteField(type.name, field.name, fieldType.name),
                     inList: inListField(type.name, field.name, fieldType.name),
-                    inDetail: inDetailField(type.name, field.name, fieldType.name)
+                    inDetail: inDetailField(type.name, field.name, fieldType.name),
+                    textFieldName: builderConfig?.objects?.find(objectConfig => objectConfig.name === fieldType.name)?.textFieldName
                 }
             });
     }

@@ -2,7 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
+	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import type { Query_permission_realm_Store } from '~/lib/stores/query/query_permission_realm_store';
@@ -45,7 +45,7 @@
 				mutation_realm_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -65,17 +65,17 @@
 			});
 	};
 
-	const merge = (args: RealmInput | null) => {
-		validate('Mutation_permission_Arguments', { where: { id: { val: permission?.id } }, realm: args })
+	const merge = (input: RealmInput | null) => {
+		validate('Mutation_permission_Arguments', { where: { id: { val: permission?.id } }, realm: input })
 			.then((data) => {
 				errors = {};
 				mutation_permission_realm_Store.fetch({
 					permission_id: permission?.id,
-					permission_realm: args
+					permission_realm: input
 				}).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -96,8 +96,23 @@
 	};
 </script>
 
-<Card>
-	<CardBody>
+<Card class="max-h-full max-w-full">
+	<CardBody class="overflow-y-auto pt-0">
+		<Breadcrumbs>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission`)}>
+					<span class="badge badge-outline">{$LL.graphql.objects.Permission.name()}</span>
+				</a>
+			</li>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission/${permission?.id}`)}>
+					<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Permission.name() })}</span>
+				</a>
+			</li>
+			<li>
+				<span class="badge badge-neutral">{$LL.graphql.objects.Permission.fields.realm.name()}</span>
+			</li>
+		</Breadcrumbs>
 		<RealmForm
 			showSaveButton={auth('Realm::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('Realm::isDeprecated::WRITE')}
@@ -106,18 +121,6 @@
 			{errors}
 			isFetching={$query_permission_realm_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_permission_realm_Store.isFetching || $mutation_realm_Store.isFetching}
-			fields={{
-				name: {
-					readonly: !auth('Realm::name::WRITE'),
-					disabled: !auth('Realm::name::WRITE'),
-					hidden: !auth('Realm::name::READ')
-				},
-				description: {
-					readonly: !auth('Realm::description::WRITE'),
-					disabled: !auth('Realm::description::WRITE'),
-					hidden: !auth('Realm::description::READ')
-				}
-			}}
 			on:save={(e) => {
 				if (e.detail.value) {
 					merge(e.detail.value);
@@ -146,7 +149,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`)}
 			on:back={(e) => ot()}
 		>
 			{#if auth('Realm::*::WRITE')}

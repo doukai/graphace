@@ -21,20 +21,16 @@ import {
     inComponentObject,
     inComponentEnum,
     inRouteObject,
-    inRouteField,
-    inQueryField
+    inRouteField
 } from 'graphace-codegen-commons'
 import type { GraphacePresetConfig } from "./config";
 import { buildPath } from "./builder";
 
 const _appName = 'web';
-const _graphqlPath = 'graphql';
 const _componentsPath = 'lib/components';
 const _storesPath = 'lib/stores';
 const _dataPath = 'lib/data';
 const _routesPath = 'routes/[lang]/(app)';
-const _chartRoutesPath = 'chart';
-const _gridRoutesPath = 'grid';
 const _i18nPath = 'lib/i18n';
 const _i18nDefault = 'en';
 
@@ -42,13 +38,10 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
     buildGeneratesSection: options => {
         initConfig(options.presetConfig.builder);
         const generateOptions: Types.GenerateOptions[] = [];
-        const graphqlPath = `${options.baseOutputDir}/${options.presetConfig.graphqlPath || _graphqlPath}`;
         const componentsPath = `${options.baseOutputDir}/${options.presetConfig.componentsPath || _componentsPath}`;
         const storesPath = `${options.baseOutputDir}/${options.presetConfig.storesPath || _storesPath}`;
         const dataPath = `${options.baseOutputDir}/${options.presetConfig.dataPath || _dataPath}`;
         const routesPath = `${options.baseOutputDir}/${options.presetConfig.routesPath || _routesPath}`;
-        const chartRoutesPath = options.presetConfig.chartRoutesPath || _chartRoutesPath;
-        const gridRoutesPath = options.presetConfig.gridRoutesPath || _gridRoutesPath;
         const i18nPath = `${options.baseOutputDir}/${options.presetConfig.i18nPath || _i18nPath}`;
         const i18nDefault = options.presetConfig.i18nDefault || _i18nDefault;
         const i18nDescription = options.presetConfig.i18nDescription;
@@ -70,6 +63,16 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             .filter(type => !isIntrospection(type.name))
             .filter(type => isObjectType(type))
             .filter(type => getIDFieldName(type))
+            .map(type => assertObjectType(type));
+
+        const fragmentTypes = Object.values(options.schemaAst?.getTypeMap() || {})
+            .filter(type => !isOperationType(type.name))
+            .filter(type => !isConnection(type.name))
+            .filter(type => !isEdge(type.name))
+            .filter(type => !isPageInfo(type.name))
+            .filter(type => !isAggregate(type.name))
+            .filter(type => !isIntrospection(type.name))
+            .filter(type => isObjectType(type))
             .map(type => assertObjectType(type));
 
         const enumTypes = Object.values(options.schemaAst?.getTypeMap() || {})
@@ -154,10 +157,9 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
 
         const _config = {
             appName: options.presetConfig.appName || _appName,
-            graphqlPath: options.presetConfig.graphqlPath || _graphqlPath,
             storesPath: options.presetConfig.storesPath || _storesPath,
-            componentsPath: options.presetConfig.graphqlPath || _componentsPath,
-            routesPath: options.presetConfig.graphqlPath || _routesPath,
+            componentsPath: options.presetConfig.componentsPath || _componentsPath,
+            routesPath: options.presetConfig.routesPath || _routesPath,
             dataPath: options.presetConfig.dataPath || _dataPath,
             i18nPath: options.presetConfig.i18nPath || _i18nPath,
             i18nDefault: options.presetConfig.i18nDefault || _i18nDefault,
@@ -218,6 +220,23 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                 }
             );
         }
+
+        generateOptions.push(
+            ...fragmentTypes
+                .map(type => {
+                    const template = '{{storesPath}}/fragment/fragment_{{name}}Fields.ts';
+                    const scope = { storesPath, name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
 
         generateOptions.push(
             ...targetQueryFields
@@ -285,6 +304,23 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             template,
                             name,
                             objectFieldName
+                        },
+                        ..._generateOptions
+                    };
+                })
+        );
+
+        generateOptions.push(
+            ...targetComponentObjectTypes
+                .map(type => {
+                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Option.ts';
+                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
+                    return {
+                        filename: buildPath(template, scope),
+                        config: {
+                            ..._config,
+                            template,
+                            name: type.name
                         },
                         ..._generateOptions
                     };
@@ -451,91 +487,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             ...targetComponentObjectTypes
                 .map(type => {
                     const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Th.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Agg.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Bar.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Line.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}Pie.svelte';
-                    const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetComponentObjectTypes
-                .map(type => {
-                    const template = '{{componentsPath}}/objects/{{pathName}}/{{name}}AggTable.svelte';
                     const scope = { componentsPath, pathName: changeCase.paramCase(type.name), name: type.name };
                     return {
                         filename: buildPath(template, scope),
@@ -854,40 +805,6 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                             template,
                             name,
                             objectFieldName
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetRouteObjectType
-                .map(type => {
-                    const template = '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.svelte';
-                    const scope = { routesPath, chartRoutesPath, pathName: changeCase.paramCase(type.name) };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
-                        },
-                        ..._generateOptions
-                    };
-                })
-        );
-
-        generateOptions.push(
-            ...targetRouteObjectType
-                .map(type => {
-                    const template = '{{routesPath}}/{{pathName}}/{{chartRoutesPath}}/[type]/+page.ts';
-                    const scope = { routesPath, chartRoutesPath, pathName: changeCase.paramCase(type.name) };
-                    return {
-                        filename: buildPath(template, scope),
-                        config: {
-                            ..._config,
-                            template,
-                            name: type.name
                         },
                         ..._generateOptions
                     };

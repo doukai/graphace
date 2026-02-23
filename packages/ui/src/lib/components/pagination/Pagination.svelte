@@ -96,7 +96,7 @@
 			</button>
 		</div>
 	</div>
-	<div data-part="pagination-sm" class="flex justify-center join md:hidden">
+	<div data-part="pagination-sm" class="flex justify-center join sm:hidden">
 		<button
 			data-part="btn-prev"
 			class="join-item btn {pageNumber - 1 ? '' : 'btn-disabled'}"

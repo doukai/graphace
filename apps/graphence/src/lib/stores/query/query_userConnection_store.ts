@@ -1,5 +1,6 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+import { fragment_UserFields } from '~/lib/stores/fragment/fragment_UserFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryUserConnectionArgs } from '~/lib/types/schema';
 import type { UserConnection } from '~/lib/types/schema';
@@ -8,42 +9,13 @@ const query = /* GraphQL */ `query Query_userConnection($id: StringExpression, $
   userConnection(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) {
     totalCount
     edges {
-      node {
-        id
-        name
-        description
-        lastName
-        login
-        email
-        phones
-        disable
-        groups {
-          id
-          name
-          description
-        }
-        roles {
-          id
-          name
-          description
-        }
-        realm {
-          id
-          name
-          description
-        }
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
+      node { 
+        ...UserFields
       }
     }
   }
-}`;
+}
+${fragment_UserFields}`;
 
 export function createQuery_userConnection_Store(event: LoadEvent | RequestEvent): Query_userConnection_Store {
   return createGraphQLQueryStore<UserConnection, QueryUserConnectionArgs>(query, event);

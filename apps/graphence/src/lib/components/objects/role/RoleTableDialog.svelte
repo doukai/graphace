@@ -1,13 +1,21 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
+	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
+	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
 	import { createQuery_roleConnection_Store } from '~/lib/stores/query/query_roleConnection_store';
+	import { createMutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
-	import { loadEvent, permissions } from '~/utils';
-	import type { Role, QueryRoleConnectionArgs, RoleOrderBy, RoleInput } from '~/lib/types/schema';
+	import { roleFields, type RoleFields } from '~/lib/components/objects/role/RoleOption';
+	import {
+		loadEvent,
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
+	import type { Role, QueryRoleConnectionArgs, RoleOrderBy, RoleInput, MutationRoleArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: RoleInput | (RoleInput | null | undefined)[] | null | undefined =
@@ -20,58 +28,17 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
-	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		users?: Option | undefined;
-		groups?: Option | undefined;
-		composites?: Option | undefined;
-		permissions?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('Role::name::WRITE'),
-			disabled: !auth('Role::name::WRITE'),
-			hidden: !auth('Role::name::READ')
-		},
-		description: {
-			readonly: !auth('Role::description::WRITE'),
-			disabled: !auth('Role::description::WRITE'),
-			hidden: !auth('Role::description::READ')
-		},
-		users: {
-			readonly: !auth('Role::users::WRITE'),
-			disabled: !auth('Role::users::WRITE'),
-			hidden: !auth('Role::users::READ')
-		},
-		groups: {
-			readonly: !auth('Role::groups::WRITE'),
-			disabled: !auth('Role::groups::WRITE'),
-			hidden: !auth('Role::groups::READ')
-		},
-		composites: {
-			readonly: !auth('Role::composites::WRITE'),
-			disabled: !auth('Role::composites::WRITE'),
-			hidden: !auth('Role::composites::READ')
-		},
-		permissions: {
-			readonly: !auth('Role::permissions::WRITE'),
-			disabled: !auth('Role::permissions::WRITE'),
-			hidden: !auth('Role::permissions::READ')
-		},
-		realm: {
-			readonly: !auth('Role::realm::WRITE'),
-			disabled: !auth('Role::realm::WRITE'),
-			hidden: !auth('Role::realm::READ')
-		}
-	};
+	export let fields: RoleFields = roleFields;
 
+	const { validate } = validator;
+	const { auth } = permissions;
+	
 	const dispatch = createEventDispatcher<{
 		select: { value: RoleInput | (RoleInput | null | undefined)[] | null | undefined };
 	}>();
 
 	const query_roleConnection_Store = createQuery_roleConnection_Store($loadEvent);
+	const mutation_role_Store = createMutation_role_Store($loadEvent);
 	$: nodes = $query_roleConnection_Store.response.data?.roleConnection?.edges?.map(
 		(edge) => edge?.node
 	);
@@ -80,12 +47,13 @@
 	export let orderBy: RoleOrderBy = {};
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
+	export let errors: Record<number, Errors> = {};
 	export let selectedIdList: (string | null | undefined)[] | undefined = [];
 	export let close: (() => void) | undefined = undefined;
 	
 	$: if (textFieldName) {
 		if (Array.isArray(value)) {
-			if (value.some((item) => !item?.[textFieldName])) {
+			if (value.some((item) => !item?.[textFieldName] && item?.id)) {
 				query_roleConnection_Store
 					.fetch({
 						id: { opr: 'IN', arr: value?.map((item) => item?.id) }
@@ -112,7 +80,7 @@
 				}
 			}
 		} else if (value) {
-			if (!value?.[textFieldName]) {
+			if (!value?.[textFieldName] && value.id) {
 				query_roleConnection_Store
 					.fetch({
 						id: { opr: 'EQ', val: value.id }
@@ -139,6 +107,45 @@
 				toast.error($LL.graphence.message.requestFailed());
 			}
 		});
+	};
+
+	const mutation = (args: MutationRoleArgs) => {
+		const row = nodes
+			?.map((node) => node?.id)
+			?.indexOf(args.id || args.where?.id?.val || undefined);
+			
+		validate('Mutation_role_Arguments', args)
+			.then((data) => {
+				if (row !== -1 && row !== undefined && errors[row]) {
+					errors[row].iterms = {};
+				}
+				mutation_role_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError,
+								confirm: () => {
+									query();
+									return true;
+								}
+							});
+						}
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						query();
+					}
+				});
+			})
+			.catch((validErrors) => {
+				console.error(validErrors);
+				if (row !== -1 && row !== undefined) {
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
+				}
+			});
 	};
 </script>
 
@@ -199,6 +206,7 @@
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
+			{errors}
 			showEditButton={!readonly}
 			showCreateButton={!readonly && auth('Role::*::WRITE')}
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
@@ -249,15 +257,20 @@
 				orderBy = e.detail.orderBy;
 				query();
 			}}
-			on:edit={(e) => {
+			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`/${$locale}/role/${e.detail.value.id}`, e.detail.value.name);
+					mutation(e.detail.value);
 				}
 			}}
-			on:create={(e) => to(`/${$locale}/role/_`, '_')}
-			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`, e.detail.name)}
+			on:edit={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					to(`/${$locale}/role/${e.detail.value.id}`);
+				}
+			}}
+			on:create={(e) => to(`/${$locale}/role/_`)}
+			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`)}
 		/>
-		<div class="divider" />
+		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

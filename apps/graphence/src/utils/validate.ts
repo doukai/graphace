@@ -1,13 +1,11 @@
+import { get } from 'svelte/store';
+import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import type { ErrorObject } from 'ajv';
 import { createValidator as _createValidator, type ValidatorStore } from '@graphace/commons';
 import { createGraphQLErrorBuilder } from '@graphace/graphql';
 import { createQuery_jsonSchema_Store } from '~/lib/stores/query/query_jsonSchema_store';
 import { LL } from '$i18n/i18n-svelte';
 import type { NamespaceErrorsTranslation } from '$i18n/i18n-types';
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-
-let $LL: TranslationFunctions;
-LL.subscribe(value => $LL = value);
 
 export let validator: ValidatorStore;
 
@@ -23,6 +21,7 @@ export const createValidator = (event: LoadEvent | RequestEvent) => {
                 throw new Error('json schema undefined: ' + name);
             },
             buildErrorMessages: (errors: ErrorObject[]) => {
+                const $LL = get(LL);
                 for (const e of errors) {
                     let out
                     switch (e.keyword) {
@@ -149,6 +148,7 @@ export const createValidator = (event: LoadEvent | RequestEvent) => {
 }
 
 export const { buildGraphQLErrors, buildGlobalGraphQLErrors, buildGlobalGraphQLErrorMessage } = createGraphQLErrorBuilder((code: number | null | undefined) => {
+    const $LL = get(LL);
     if (code !== null && code !== undefined) {
         const errorCode = '' + code as keyof NamespaceErrorsTranslation['code'];
         const error = $LL.errors.code[errorCode];

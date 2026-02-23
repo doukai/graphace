@@ -431,12 +431,21 @@ export type NamespaceGraphenceTranslation = {
 		 * U​n​b​i​n​d​ ​f​a​i​l​e​d
 		 */
 		unbindFailed: string
+		/**
+		 * L​o​a​d​i​n​g​.​.​.
+		 */
+		loading: string
 	}
 	path: {
 		/**
 		 * H​o​m​e
 		 */
 		home: string
+		/**
+		 * E​d​i​t​ ​{​n​a​m​e​}
+		 * @param {string} name
+		 */
+		edit: RequiredParams<'name'>
 		/**
 		 * C​r​e​a​t​e​ ​{​n​a​m​e​}
 		 * @param {string} name
@@ -3683,12 +3692,20 @@ export type TranslationFunctions = {
 			 * Unbind failed
 			 */
 			unbindFailed: () => LocalizedString
+			/**
+			 * Loading...
+			 */
+			loading: () => LocalizedString
 		}
 		path: {
 			/**
 			 * Home
 			 */
 			home: () => LocalizedString
+			/**
+			 * Edit {name}
+			 */
+			edit: (arg: { name: string }) => LocalizedString
 			/**
 			 * Create {name}
 			 */

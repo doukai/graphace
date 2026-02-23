@@ -1,13 +1,20 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+{%- if objectFieldInfo.originalFieldTypeName != fieldTypeName %}
+import { fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields';
+{%- endif %}
+import { fragment_{{ fieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ fieldTypeName }}Fields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
 const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}(${{ fieldName }}_{{ fieldTypeIdName }}: String{% if objectFieldInfo.args and objectFieldInfo.args.length > 0 %}, {% for arg in objectFieldInfo.args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %}) {
   {{ fieldName }}({{ fieldTypeIdName }}: { val: ${{ fieldName }}_{{ fieldTypeIdName }} }) {
+    ...{{ fieldTypeName }}Fields
     {%- for field in fields %}
+    {%- if field.queryOnly %}
     {%- if field.isLeafType and field.isAggregate == false %}
     {{ field.fieldName }}
+    {%- endif %}
     {%- endif %}
     {%- endfor %}
     {{ objectFieldInfo.fieldName }}{% if objectFieldInfo.args and objectFieldInfo.args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %} {
@@ -15,7 +22,9 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
       totalCount
       edges {
         node {
+          ...{{ objectFieldInfo.originalFieldTypeName }}Fields
           {%- for field in objectFieldInfo.fields %}
+          {%- if field.queryOnly %}
           {%- if field.isLeafType and field.isAggregate == false %}
           {{ field.fieldName }}
           {%- elsif field.isFile and field.isAggregate == false %}
@@ -30,11 +39,14 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
             description
           }
           {%- endif %}
+          {%- endif %}
           {%- endfor %}
         }
       }
       {%- else %}
+      ...{{ objectFieldInfo.originalFieldTypeName }}Fields
       {%- for field in objectFieldInfo.fields %}
+      {%- if field.queryOnly %}
       {%- if field.isLeafType and field.isAggregate == false %}
       {{ field.fieldName }}
       {%- elsif field.isFile and field.isAggregate == false %}
@@ -68,11 +80,16 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
         description
       }
       {%- endif %}
+      {%- endif %}
       {%- endfor %}
       {%- endif %}
     }
   }
-}`;
+}
+{%- if objectFieldInfo.originalFieldTypeName != fieldTypeName %}
+${fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields}
+{%- endif %}
+${fragment_{{ fieldTypeName }}Fields}`;
 
 export function createQuery_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store(event: LoadEvent | RequestEvent): Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store {
   return createGraphQLQueryStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event);

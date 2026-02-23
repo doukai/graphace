@@ -1,13 +1,21 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
+	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
+	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
 	import { createQuery_groupConnection_Store } from '~/lib/stores/query/query_groupConnection_store';
+	import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
-	import { loadEvent, permissions } from '~/utils';
-	import type { Group, QueryGroupConnectionArgs, GroupOrderBy, GroupInput } from '~/lib/types/schema';
+	import { groupFields, type GroupFields } from '~/lib/components/objects/group/GroupOption';
+	import {
+		loadEvent,
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
+	import type { Group, QueryGroupConnectionArgs, GroupOrderBy, GroupInput, MutationGroupArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined =
@@ -20,76 +28,17 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
-	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-		path?: Option | undefined;
-		deep?: Option | undefined;
-		parentId?: Option | undefined;
-		parent?: Option | undefined;
-		subGroups?: Option | undefined;
-		users?: Option | undefined;
-		roles?: Option | undefined;
-		realm?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('Group::name::WRITE'),
-			disabled: !auth('Group::name::WRITE'),
-			hidden: !auth('Group::name::READ')
-		},
-		description: {
-			readonly: !auth('Group::description::WRITE'),
-			disabled: !auth('Group::description::WRITE'),
-			hidden: !auth('Group::description::READ')
-		},
-		path: {
-			readonly: !auth('Group::path::WRITE'),
-			disabled: !auth('Group::path::WRITE'),
-			hidden: !auth('Group::path::READ')
-		},
-		deep: {
-			readonly: !auth('Group::deep::WRITE'),
-			disabled: !auth('Group::deep::WRITE'),
-			hidden: !auth('Group::deep::READ')
-		},
-		parentId: {
-			readonly: !auth('Group::parentId::WRITE'),
-			disabled: !auth('Group::parentId::WRITE'),
-			hidden: !auth('Group::parentId::READ')
-		},
-		parent: {
-			readonly: !auth('Group::parent::WRITE'),
-			disabled: !auth('Group::parent::WRITE'),
-			hidden: !auth('Group::parent::READ')
-		},
-		subGroups: {
-			readonly: !auth('Group::subGroups::WRITE'),
-			disabled: !auth('Group::subGroups::WRITE'),
-			hidden: !auth('Group::subGroups::READ')
-		},
-		users: {
-			readonly: !auth('Group::users::WRITE'),
-			disabled: !auth('Group::users::WRITE'),
-			hidden: !auth('Group::users::READ')
-		},
-		roles: {
-			readonly: !auth('Group::roles::WRITE'),
-			disabled: !auth('Group::roles::WRITE'),
-			hidden: !auth('Group::roles::READ')
-		},
-		realm: {
-			readonly: !auth('Group::realm::WRITE'),
-			disabled: !auth('Group::realm::WRITE'),
-			hidden: !auth('Group::realm::READ')
-		}
-	};
+	export let fields: GroupFields = groupFields;
 
+	const { validate } = validator;
+	const { auth } = permissions;
+	
 	const dispatch = createEventDispatcher<{
 		select: { value: GroupInput | (GroupInput | null | undefined)[] | null | undefined };
 	}>();
 
 	const query_groupConnection_Store = createQuery_groupConnection_Store($loadEvent);
+	const mutation_group_Store = createMutation_group_Store($loadEvent);
 	$: nodes = $query_groupConnection_Store.response.data?.groupConnection?.edges?.map(
 		(edge) => edge?.node
 	);
@@ -98,12 +47,13 @@
 	export let orderBy: GroupOrderBy = {};
 	export let pageNumber: number = 1;
 	export let pageSize: number = 10;
+	export let errors: Record<number, Errors> = {};
 	export let selectedIdList: (string | null | undefined)[] | undefined = [];
 	export let close: (() => void) | undefined = undefined;
 	
 	$: if (textFieldName) {
 		if (Array.isArray(value)) {
-			if (value.some((item) => !item?.[textFieldName])) {
+			if (value.some((item) => !item?.[textFieldName] && item?.id)) {
 				query_groupConnection_Store
 					.fetch({
 						id: { opr: 'IN', arr: value?.map((item) => item?.id) }
@@ -130,7 +80,7 @@
 				}
 			}
 		} else if (value) {
-			if (!value?.[textFieldName]) {
+			if (!value?.[textFieldName] && value.id) {
 				query_groupConnection_Store
 					.fetch({
 						id: { opr: 'EQ', val: value.id }
@@ -157,6 +107,45 @@
 				toast.error($LL.graphence.message.requestFailed());
 			}
 		});
+	};
+
+	const mutation = (args: MutationGroupArgs) => {
+		const row = nodes
+			?.map((node) => node?.id)
+			?.indexOf(args.id || args.where?.id?.val || undefined);
+			
+		validate('Mutation_group_Arguments', args)
+			.then((data) => {
+				if (row !== -1 && row !== undefined && errors[row]) {
+					errors[row].iterms = {};
+				}
+				mutation_group_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError,
+								confirm: () => {
+									query();
+									return true;
+								}
+							});
+						}
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						query();
+					}
+				});
+			})
+			.catch((validErrors) => {
+				console.error(validErrors);
+				if (row !== -1 && row !== undefined) {
+					errors[row] = { errors: errors[row]?.errors, iterms: validErrors };
+				}
+			});
 	};
 </script>
 
@@ -217,6 +206,7 @@
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
+			{errors}
 			showEditButton={!readonly}
 			showCreateButton={!readonly && auth('Group::*::WRITE')}
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
@@ -269,15 +259,20 @@
 				orderBy = e.detail.orderBy;
 				query();
 			}}
-			on:edit={(e) => {
+			on:save={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
-					to(`/${$locale}/group/${e.detail.value.id}`, e.detail.value.name);
+					mutation(e.detail.value);
 				}
 			}}
-			on:create={(e) => to(`/${$locale}/group/_`, '_')}
-			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`, e.detail.name)}
+			on:edit={(e) => {
+				if (e.detail.value && !Array.isArray(e.detail.value)) {
+					to(`/${$locale}/group/${e.detail.value.id}`);
+				}
+			}}
+			on:create={(e) => to(`/${$locale}/group/_`)}
+			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`)}
 		/>
-		<div class="divider" />
+		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

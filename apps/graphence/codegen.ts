@@ -34,12 +34,6 @@ const config: CodegenConfig = {
                 }
             }
         },
-        // './src/lib/types/introspection.json': {
-        //     plugins: ['introspection'],
-        //     config: {
-        //         minify: false
-        //     }
-        // },
         './src': {
             preset: 'graphace-codegen-preset',
             plugins: ['graphace-codegen'],
@@ -113,8 +107,7 @@ const config: CodegenConfig = {
                                 },
                                 {
                                     name: 'syncUserPolicy',
-                                    inQuery: false,
-                                    inSubscription: false,
+                                    mutationOnly: true,
                                     inList: false,
                                     inDetail: false
                                 }
@@ -130,8 +123,7 @@ const config: CodegenConfig = {
                                 },
                                 {
                                     name: 'syncRolePolicy',
-                                    inQuery: false,
-                                    inSubscription: false,
+                                    mutationOnly: true,
                                     inList: false,
                                     inDetail: false
                                 }
@@ -143,8 +135,7 @@ const config: CodegenConfig = {
                             fields: [
                                 {
                                     name: 'syncGroupPolicy',
-                                    inQuery: false,
-                                    inSubscription: false,
+                                    mutationOnly: true,
                                     inList: false,
                                     inDetail: false
                                 }
@@ -159,8 +150,7 @@ const config: CodegenConfig = {
                                 },
                                 {
                                     name: 'syncPermissionPolicy',
-                                    inQuery: false,
-                                    inSubscription: false,
+                                    mutationOnly: true,
                                     inList: false,
                                     inDetail: false
                                 }

@@ -5,8 +5,19 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel, Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Loading, SearchInput, Table, Td } from '@graphace/ui';
-	import { type Option, {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
+	import {
+		Buttons,
+		Empty,
+		Label,
+		Loading,
+		SearchInput,
+		Table,
+		Tr,
+		Td,
+		Tabs,
+		type TabInfo
+	} from '@graphace/ui';
+	import { {% for scalar in scalars %}{{ scalar }}Th, {{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	import {{ name }}Filter from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Filter.svelte';
 	import {{ name }}FormDialog from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}FormDialog.svelte';
 	{%- for enum in enums %}
@@ -22,6 +33,13 @@
 	{%- for dialog in nonSelects %}
 	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
 	{%- endfor %}
+	import {
+		{{ name | camelCase }}Tabs,
+		{{ name | camelCase }}Tab,
+		{{ name | camelCase }}TabChange,
+		{{ name | camelCase }}Fields,
+		type {{ name }}Fields
+	} from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
 		{{ name }}OrderBy,
@@ -51,15 +69,9 @@
 	export let zIndex: number = 0;
 	let className: string | undefined = 'table-pin-rows table-pin-cols';
 	export { className as class };
-	export let fields: {
-		{%- for field in fields %}
-		{{ field.fieldName }}?: Option | undefined;
-		{%- endfor %}
-	} = {
-		{%- for field in fields %}
-		{{ field.fieldName }}: { readonly: false, disabled: false, hidden: false }{% if forloop.last == false %},{% endif %}
-		{%- endfor %}
-	};
+	export let tabs: TabInfo[] | undefined = {{ name | camelCase }}Tabs;
+	export let tab: string | undefined = {{ name | camelCase }}Tab;
+	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -88,10 +100,50 @@
 	}>();
 
 	let selectAll: boolean;
+
+	const validate = async () => {
+		errors = {};
+		if (value) {
+			for (let row = 0; row < value.length; row++) {
+				const node = value[row];
+				if (node) {
+					const rowErrors = await validateRow(node);
+					if (Object.keys(rowErrors).length > 0) {
+						errors[row] = { iterms: rowErrors };
+					}
+				}
+			}
+		}
+
+		return new Promise(
+			(
+				resolve: (data: ({{ name }}Input | null | undefined)[] | null | undefined) => void,
+				reject: (errors: Record<number, Errors>) => void
+			) => {
+				if (Object.keys(errors).length === 0) {
+					resolve(value);
+				} else {
+					reject(errors);
+				}
+			}
+		);
+	};
+
+	const validateRow = async (value: {{ name }}Input) => {
+		const errors: Record<string, Errors> = {};
+		{%- for field in fields %}
+		const {{ field.fieldName }}Errors = await fields?.{{ field.fieldName }}.validate?.(value);
+		if ({{ field.fieldName }}Errors && {{ field.fieldName }}Errors.length > 0) {
+			errors['{{ field.fieldName }}'] = { errors: {{ field.fieldName }}Errors.map((message) => ({ message })) };
+		}
+		{%- endfor %}
+		return errors;
+	};
 </script>
 
 <div class="flex justify-between">
-	<span class="text-xl font-semibold self-center">
+	<slot name="start" />
+	<span class="text-xl font-semibold self-center max-sm:hidden">
 		{#if title}
 			{title}
 		{:else}
@@ -106,7 +158,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => dispatch('save', { value })}
+		on:save={(e) => validate().then(() => dispatch('save', { value }))}
 		on:remove={(e) =>
 			dispatch('remove', {
 				value: value?.filter((node) => selectedIdList.includes(node?.id)),
@@ -160,7 +212,23 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider" />
+<div class="divider my-0" />
+{#if tabs}
+	<Tabs
+		value={tab}
+		{tabs}
+		on:change={(e) => {
+			if (e.detail.value !== e.detail.origin) {
+				{{ name | camelCase }}TabChange(e.detail.value, args).then((args) => {
+					dispatch('query', {
+						args,
+						orderBy
+					});
+				});
+			}
+		}}
+	/>
+{/if}
 <Table {zIndex} class="max-sm:hidden {className}">
 	<thead>
 		<tr>
@@ -191,26 +259,32 @@
 				</label>
 			</th>
 			{%- for field in fields %}
-			{#if !fields.{{ field.fieldName }}?.hidden}
-				{%- if field.isScalarType or field.isEnumType %}
-				<{{ field.fieldTypeName }}Th
-					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-					bind:value={args.{{ field.fieldName }}}
-					{%- if field.isListType == false %}
-					bind:sort={orderBy.{{ field.fieldName }}}
+			<slot name="{{ field.fieldName }}-th">
+				{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab)}
+					{%- if field.isScalarType or field.isEnumType %}
+					<{{ field.fieldTypeName }}Th
+						name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						bind:value={args.{{ field.fieldName }}}
+						{%- if field.isListType == false %}
+						bind:sort={orderBy.{{ field.fieldName }}}
+						{%- endif %}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.{{ field.fieldName }}?.required?.()}
+						{...fields?.{{ field.fieldName }}?.props?.()?.['th']}
+					/>
+					{%- elsif field.inQueryArgs %}
+					<{{ field.fieldTypeName }}Th
+						name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						bind:value={args.{{ field.fieldName }}}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.{{ field.fieldName }}?.required?.()}
+						{...fields?.{{ field.fieldName }}?.props?.()?.['th']}
+					/>
+					{%- else %}
+					<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
 					{%- endif %}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-				{%- elsif field.inQueryArgs %}
-				<{{ field.fieldTypeName }}Th
-					name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-					bind:value={args.{{ field.fieldName }}}
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				/>
-				{%- else %}
-				<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
-				{%- endif %}
-			{/if}
+				{/if}
+			</slot>
 			{%- endfor %}
 			<th class="w-0" />
 		</tr>
@@ -247,9 +321,9 @@
 						</th>
 						{%- for field in fields %}
 						<slot name="{{ field.fieldName }}">
-							{#if !fields.{{ field.fieldName }}?.hidden}
+							{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab)}
 								{%- if field.isScalarType or field.isEnumType or field.isFile %}
-								<Td {zIndex}>
+								<Td {zIndex} {...fields?.{{ field.fieldName }}?.props?.(node)?.['td']}>
 									<{{ field.fieldTypeName }}Input
 										name="{{ field.fieldName }}"
 										bind:value={node.{{ field.fieldName }}}
@@ -257,12 +331,9 @@
 										list
 										{%- endif %}
 										{%- if field.inMutationArgs and field.fieldName != idName %}
-										on:save={(e) =>
-											dispatch('save', {
-												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-											})}
-										readonly={fields.{{ field.fieldName }}?.readonly}
-										disabled={fields.{{ field.fieldName }}?.disabled}
+										readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
+										disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
+										on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
 										{%- else %}
 										readonly
 										{%- endif %}
@@ -270,10 +341,11 @@
 										{%- if field.isFile %}
 										on:upload
 										{%- endif %}
+										{...fields?.{{ field.fieldName }}?.props?.(node)?.['input']}
 									/>
 								</Td>
 								{%- elsif field.isSelect %}
-								<Td {zIndex}>
+								<Td {zIndex} {...fields?.{{ field.fieldName }}?.props?.(node)?.['td']}>
 									<{{ field.fieldTypeName }}Select
 										name="{{ field.fieldName }}"
 										bind:value={node.{{ field.fieldName }}}
@@ -281,38 +353,42 @@
 										list
 										{%- endif %}
 										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-										readonly={fields.{{ field.fieldName }}?.readonly}
-										disabled={fields.{{ field.fieldName }}?.disabled}
-										on:save={(e) =>
-											dispatch('save', {
-												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-											})}
+										readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
+										disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
+										on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+										{...fields?.{{ field.fieldName }}?.props?.(node)?.['select']}
 									/>
 								</Td>
 								{%- else %}
-								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
+								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex} {...fields?.{{ field.fieldName }}?.props?.(node)?.['td']}>
 									{#if node.{{idName}}}
 										<ObjectLink
 											bind:value={node.{{ field.fieldName }}}
-											{%- if field.isNamed %}
+											{%- if field.textFieldName %}
+											textFieldName="{{field.textFieldName}}"
+											{%- elsif field.isNamed %}
 											textFieldName="name"
 											{%- endif %}
 											path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-											name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 											on:goto
+											{...fields?.{{ field.fieldName }}?.props?.(node)?.['link']}
 										/>
 									{:else}
 										<{{ field.fieldTypeName }}TableDialog
 											bind:value={node.{{ field.fieldName }}}
-											class="btn-link"
-											{%- if field.isNamed %}
+											{%- if field.textFieldName %}
+											textFieldName="{{field.textFieldName}}"
+											{%- elsif field.isNamed %}
 											textFieldName="name"
 											{%- endif %}
 											{%- if field.isListType == false %}
 											singleChoice
 											{%- endif %}
-											readonly={fields.{{ field.fieldName }}?.readonly}
-											disabled={fields.{{ field.fieldName }}?.disabled}
+											class="btn-link"
+											readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
+											disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
+											on:select={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+											{...fields?.{{ field.fieldName }}?.props?.(node)?.['dialog']}
 										/>
 									{/if}
 								</Td>
@@ -378,169 +454,176 @@
 		{/if}
 	</tbody>
 </Table>
-<div class="sm:hidden overflow-auto">
+<Table {zIndex} class="sm:hidden {className}">
 	{#if isFetching}
 		<Loading />
 	{:else if value && value.length > 0}
 		{#each value as node, row}
 			{#if node}
-				<Table {zIndex} class="{className} border">
-					<thead>
-						<tr>
-							<th class="w-0">
-								<label>
-									<input
-										type="checkbox"
-										class="checkbox"
-										bind:group={selectedRowList}
-										value={row}
-										on:change={(e) => {
-											selectedIdList = [
-												...selectedRowList
-													.filter(
-														(row) => value?.[row]?.id !== undefined && value?.[row]?.id !== null
-													)
-													.map((row) => value?.[row]?.id)
-											];
-										}}
-									/>
-								</label>
-							</th>
-							<th class="flex justify-end hover:z-[{zIndex + 3}]">
-								<div class="flex space-x-1">
-									{#if showEditButton}
-										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
-											>
-												<Icon src={PencilSquare} solid />
-											</button>
-										</div>
-									{/if}
-									{#if showEditDialog}
-										<{{ name }}FormDialog
-											text={$LL.{{ appName }}.components.table.editBtn()}
+				<thead class="border">
+					<tr>
+						<th class="w-0">
+							<label>
+								<input
+									type="checkbox"
+									class="checkbox"
+									bind:group={selectedRowList}
+									value={row}
+									on:change={(e) => {
+										selectedIdList = [
+											...selectedRowList
+												.filter(
+													(row) => value?.[row]?.id !== undefined && value?.[row]?.id !== null
+												)
+												.map((row) => value?.[row]?.id)
+										];
+									}}
+								/>
+							</label>
+						</th>
+						<th class="flex justify-end hover:z-[{zIndex + 3}]">
+							<div class="flex space-x-1">
+								{#if showEditButton}
+									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.editBtn()}>
+										<button
 											class="btn btn-square btn-ghost btn-xs"
-											bind:value={node}
-											select
-											{fields}
+											on:click|preventDefault={(e) => dispatch('edit', { value: node, row })}
 										>
-											<Icon slot="sm" src={PencilSquare} solid />
 											<Icon src={PencilSquare} solid />
-										</{{ name }}FormDialog>
-									{/if}
-									{#if showUnbindButton}
-										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
-											>
-												<Icon src={ArchiveBoxXMark} solid />
-											</button>
-										</div>
-									{/if}
-									{#if showRemoveButton}
-										<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
-											<button
-												class="btn btn-square btn-ghost btn-xs"
-												on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
-											>
-												<Icon src={Trash} solid />
-											</button>
-										</div>
-									{/if}
-								</div>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{%- for field in fields %}
-						<slot name="{{ field.fieldName }}">
-							{#if !fields.{{ field.fieldName }}?.hidden}
-								<tr class="hover">
-									<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
-									{%- if field.isScalarType or field.isEnumType or field.isFile %}
-									<Td {zIndex}>
-										<{{ field.fieldTypeName }}Input
-											name="{{ field.fieldName }}"
+										</button>
+									</div>
+								{/if}
+								{#if showEditDialog}
+									<{{ name }}FormDialog
+										text={$LL.{{ appName }}.components.table.editBtn()}
+										class="btn btn-square btn-ghost btn-xs"
+										bind:value={node}
+										select
+										{fields}
+									>
+										<Icon slot="sm" src={PencilSquare} solid />
+										<Icon src={PencilSquare} solid />
+									</{{ name }}FormDialog>
+								{/if}
+								{#if showUnbindButton}
+									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.unbindBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('unbind', { value: node, row })}
+										>
+											<Icon src={ArchiveBoxXMark} solid />
+										</button>
+									</div>
+								{/if}
+								{#if showRemoveButton}
+									<div class="tooltip" data-tip={$LL.{{ appName }}.components.table.removeBtn()}>
+										<button
+											class="btn btn-square btn-ghost btn-xs"
+											on:click|preventDefault={(e) => dispatch('remove', { value: node, row })}
+										>
+											<Icon src={Trash} solid />
+										</button>
+									</div>
+								{/if}
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="border">
+					{%- for field in fields %}
+					<slot name="{{ field.fieldName }}-sm">
+						{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab)}
+							<Tr class="hover" let:id {...fields?.{{ field.fieldName }}?.props?.(node)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+										required={fields?.{{ field.fieldName }}?.required?.(node)}
+										class="truncate"
+									/>
+								</td>
+								{%- if field.isScalarType or field.isEnumType or field.isFile %}
+								<Td {zIndex} {...fields?.{{ field.fieldName }}?.props?.(node)?.['td']}>
+									<{{ field.fieldTypeName }}Input
+										{id}
+										name="{{ field.fieldName }}"
+										bind:value={node.{{ field.fieldName }}}
+										{%- if field.isListType %}
+										list
+										{%- endif %}
+										{%- if field.inMutationArgs and field.fieldName != idName %}
+										readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
+										disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
+										on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+										{%- else %}
+										readonly
+										{%- endif %}
+										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										{%- if field.isFile %}
+										on:upload
+										{%- endif %}
+										{...fields?.{{ field.fieldName }}?.props?.(node)?.['input']}
+									/>
+								</Td>
+								{%- elsif field.isSelect %}
+								<Td {zIndex} {...fields?.{{ field.fieldName }}?.props?.(node)?.['td']}>
+									<{{ field.fieldTypeName }}Select
+										{id}
+										name="{{ field.fieldName }}"
+										bind:value={node.{{ field.fieldName }}}
+										{%- if field.isListType %}
+										list
+										{%- endif %}
+										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
+										readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
+										disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
+										on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+										{...fields?.{{ field.fieldName }}?.props?.(node)?.['select']}
+									/>
+								</Td>
+								{%- else %}
+								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex} {...fields?.{{ field.fieldName }}?.props?.(node)?.['td']}>
+									{#if node.{{idName}}}
+										<ObjectLink
 											bind:value={node.{{ field.fieldName }}}
-											{%- if field.isListType %}
-											list
+											{%- if field.textFieldName %}
+											textFieldName="{{field.textFieldName}}"
+											{%- elsif field.isNamed %}
+											textFieldName="name"
 											{%- endif %}
-											{%- if field.inMutationArgs and field.fieldName != idName %}
-											on:save={(e) =>
-												dispatch('save', {
-													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-												})}
-											readonly={fields.{{ field.fieldName }}?.readonly}
-											disabled={fields.{{ field.fieldName }}?.disabled}
-											{%- else %}
-											readonly
-											{%- endif %}
-											errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-											{%- if field.isFile %}
-											on:upload
-											{%- endif %}
+											path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+											on:goto
+											{...fields?.{{ field.fieldName }}?.props?.(node)?.['link']}
 										/>
-									</Td>
-									{%- elsif field.isSelect %}
-									<Td {zIndex}>
-										<{{ field.fieldTypeName }}Select
-											name="{{ field.fieldName }}"
+									{:else}
+										<{{ field.fieldTypeName }}TableDialog
 											bind:value={node.{{ field.fieldName }}}
-											{%- if field.isListType %}
-											list
+											{%- if field.textFieldName %}
+											textFieldName="{{field.textFieldName}}"
+											{%- elsif field.isNamed %}
+											textFieldName="name"
 											{%- endif %}
-											errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
-											readonly={fields.{{ field.fieldName }}?.readonly}
-											disabled={fields.{{ field.fieldName }}?.disabled}
-											on:save={(e) =>
-												dispatch('save', {
-													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-												})}
+											{%- if field.isListType == false %}
+											singleChoice
+											{%- endif %}
+											class="btn-link"
+											readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
+											disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
+											on:select={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+											{...fields?.{{ field.fieldName }}?.props?.(node)?.['dialog']}
 										/>
-									</Td>
-									{%- else %}
-									<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex}>
-										{#if node.{{idName}}}
-											<ObjectLink
-												bind:value={node.{{ field.fieldName }}}
-												{%- if field.isNamed %}
-												textFieldName="name"
-												{%- endif %}
-												path={`${node.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-												name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-												on:goto
-											/>
-										{:else}
-											<{{ field.fieldTypeName }}TableDialog
-												bind:value={node.{{ field.fieldName }}}
-												class="btn-link"
-												{%- if field.isNamed %}
-												textFieldName="name"
-												{%- endif %}
-												{%- if field.isListType == false %}
-												singleChoice
-												{%- endif %}
-												readonly={fields.{{ field.fieldName }}?.readonly}
-												disabled={fields.{{ field.fieldName }}?.disabled}
-											/>
-										{/if}
-									</Td>
-									{%- endif %}
-								</tr>
-							{/if}
-						</slot>
-						{%- endfor %}
-					</tbody>
-				</Table>
-				{#if row < value.length - 1}
-					<div class="divider my-0" />
-				{/if}
+									{/if}
+								</Td>
+								{%- endif %}
+							</Tr>
+						{/if}
+					</slot>
+					{%- endfor %}
+				</tbody>
 			{/if}
 		{/each}
 	{:else}
 		<Empty />
 	{/if}
-</div>
+</Table>
+<slot name="table-bottom" />

@@ -1,0 +1,39 @@
+export const fragment_{{ name }}Fields = /* GraphQL */ `fragment {{ name }}Fields on {{ name }} {
+    {%- if fields and fields.length > 0 %}
+    {%- for field in fields %}
+    {%- if field.isLeafType and field.isAggregate == false %}
+    {{ field.fieldName }}
+    {%- elsif field.isFile and field.isAggregate == false %}
+    {{ field.fieldName }} {
+      id
+      name
+    }
+    {%- elsif isListType == false and field.isTable %}
+    {{ field.fieldName }} {
+      {%- for subField in field.fields %}
+      {%- if subField.isLeafType and subField.isAggregate == false %}
+      {{ subField.fieldName }}
+      {%- elsif subField.isFile and subField.isAggregate == false %}
+      {{ subField.fieldName }} {
+        id
+        name
+      }
+      {%- elsif subField.isNamed and subField.isAggregate == false %}
+      {{ subField.fieldName }}{% if subField.isListType and subField.isSelect == false %}(first: 3){% endif %} {
+        {{ subField.fieldTypeIdName }}
+        name
+        description
+      }
+      {%- endif %}
+      {%- endfor %}
+    }
+    {%- elsif field.isNamed and field.isAggregate == false %}
+    {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
+      {{ field.fieldTypeIdName }}
+      name
+      description
+    }
+    {%- endif %}
+    {%- endfor %}
+    {%- endif %}
+  }`;

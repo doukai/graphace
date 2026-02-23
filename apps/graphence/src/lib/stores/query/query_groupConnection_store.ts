@@ -1,5 +1,6 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+import { fragment_GroupFields } from '~/lib/stores/fragment/fragment_GroupFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryGroupConnectionArgs } from '~/lib/types/schema';
 import type { GroupConnection } from '~/lib/types/schema';
@@ -8,50 +9,13 @@ const query = /* GraphQL */ `query Query_groupConnection($id: StringExpression, 
   groupConnection(id: $id name: $name description: $description path: $path deep: $deep parentId: $parentId parent: $parent subGroups: $subGroups users: $users roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId groupUserRelation: $groupUserRelation groupRoleRelation: $groupRoleRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) {
     totalCount
     edges {
-      node {
-        id
-        name
-        description
-        path
-        deep
-        parentId
-        parent {
-          id
-          name
-          description
-        }
-        subGroups {
-          id
-          name
-          description
-        }
-        users {
-          id
-          name
-          description
-        }
-        roles {
-          id
-          name
-          description
-        }
-        realm {
-          id
-          name
-          description
-        }
-        isDeprecated
-        version
-        realmId
-        createUserId
-        createTime
-        updateUserId
-        updateTime
-        createGroupId
+      node { 
+        ...GroupFields
       }
     }
   }
-}`;
+}
+${fragment_GroupFields}`;
 
 export function createQuery_groupConnection_Store(event: LoadEvent | RequestEvent): Query_groupConnection_Store {
   return createGraphQLQueryStore<GroupConnection, QueryGroupConnectionArgs>(query, event);

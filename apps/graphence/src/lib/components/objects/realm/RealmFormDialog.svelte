@@ -3,10 +3,10 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { to, Dialog, toast, modal } from '@graphace/ui';
-	import { type Option } from '@graphace/ui-graphql';
 	import { createQuery_realm_Store } from '~/lib/stores/query/query_realm_store';
 	import { createMutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
+	import { realmFields, type RealmFields } from '~/lib/components/objects/realm/RealmOption';
 	import {
 		loadEvent,
 		validator,
@@ -28,24 +28,10 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let fields: RealmFields = realmFields;
 
 	const { validate } = validator;
 	const { auth } = permissions;
-	export let fields: {
-		name?: Option | undefined;
-		description?: Option | undefined;
-	} = {
-		name: {
-			readonly: !auth('Realm::name::WRITE'),
-			disabled: !auth('Realm::name::WRITE'),
-			hidden: !auth('Realm::name::READ')
-		},
-		description: {
-			readonly: !auth('Realm::description::WRITE'),
-			disabled: !auth('Realm::description::WRITE'),
-			hidden: !auth('Realm::description::READ')
-		}
-	};
 
 	const dispatch = createEventDispatcher<{
 		select: { value: RealmInput | null | undefined };
@@ -56,7 +42,7 @@
 	export let close: (() => void) | undefined = undefined;
 
  	$: if (textFieldName) {
-		if (value && !value?.[textFieldName]) {
+		if (value && !value?.[textFieldName] && value.id) {
 			query_realm_Store
 				.fetch({
 					id: { opr: 'EQ', val: value.id }
@@ -89,7 +75,7 @@
 				mutation_realm_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -203,7 +189,7 @@
 					}
 				});
 			}}
-			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`)}
 		/>
 	</svelte:fragment>
 </Dialog>

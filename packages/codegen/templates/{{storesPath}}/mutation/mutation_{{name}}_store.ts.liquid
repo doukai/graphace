@@ -1,5 +1,8 @@
 import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import { type GraphQLStore } from "@graphace/ui-graphql";
+{%- if isObjectType %}
+import { fragment_{{ fieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ fieldTypeName }}Fields';
+{%- endif %}
 import { createGraphQLMutationStore } from '~/utils';
 {%- if args and args.length > 0 %}
 import type { Mutation{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
@@ -11,7 +14,9 @@ import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
   {{ fieldName }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
     {%- if fields and fields.length > 0 %} {
+    ...{{ fieldTypeName }}Fields
     {%- for field in fields %}
+    {%- if field.mutationOnly %}
     {%- if field.isLeafType and field.isAggregate == false %}
     {{ field.fieldName }}
     {%- elsif field.isFile and field.isAggregate == false  %}
@@ -45,10 +50,14 @@ const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}{% if args and arg
       description
     }
     {%- endif %}
+    {%- endif %}
     {%- endfor %}
   }
   {%- endif %}
-}`;
+}
+{%- if isObjectType %}
+${fragment_{{ fieldTypeName }}Fields}
+{%- endif %}`;
 
 export function createMutation_{{ fieldName }}_Store(event: LoadEvent | RequestEvent): Mutation_{{ fieldName }}_Store {
   return createGraphQLMutationStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);

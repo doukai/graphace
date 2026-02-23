@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "spectaql": "^2.3.1"
+    "spectaql": "2.3.1",
+    "cheerio": "1.0.0"
   }
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import { ot, to, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
+	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import type { Query_realm_Store } from '~/lib/stores/query/query_realm_store';
 	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
@@ -10,7 +10,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { MutationRealmArgs } from '~/lib/types/schema';
+	import type { MutationRealmArgs, RealmInput } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -23,7 +23,7 @@
 	$: node = $query_realm_Store.response.data?.realm;
 	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
 
-	let value = {};
+	let value: RealmInput = {};
 	let errors: Record<string, Errors> = {};
 
 	$: if (node && Object.keys(node).length > 0) {
@@ -37,7 +37,7 @@
 				mutation_realm_Store.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({
@@ -58,8 +58,22 @@
 	};
 </script>
 
-<Card>
-	<CardBody>
+<Card class="max-h-full max-w-full">
+	<CardBody class="overflow-y-auto pt-0">
+		<Breadcrumbs>
+			<li>
+				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/realm`)}>
+					<span class="badge badge-outline">{$LL.graphql.objects.Realm.name()}</span>
+				</a>
+			</li>
+			<li>
+				<span class="badge badge-neutral">
+					{value?.id != null
+						? $LL.graphence.path.edit({ name: $LL.graphql.objects.Realm.name() })
+						: $LL.graphence.path.create({ name: $LL.graphql.objects.Realm.name() })}
+				</span>
+			</li>
+		</Breadcrumbs>
 		<RealmForm
 			showSaveButton={auth('Realm::*::WRITE')}
 			showRemoveButton={auth('Realm::isDeprecated::WRITE')}
@@ -68,18 +82,6 @@
 			{errors}
 			isFetching={$query_realm_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_realm_Store.isFetching}
-			fields={{
-				name: {
-					readonly: !auth('Realm::name::WRITE'),
-					disabled: !auth('Realm::name::WRITE'),
-					hidden: !auth('Realm::name::READ')
-				},
-				description: {
-					readonly: !auth('Realm::description::WRITE'),
-					disabled: !auth('Realm::description::WRITE'),
-					hidden: !auth('Realm::description::READ')
-				}
-			}}
 			on:save={(e) => {
 				if (e.detail.value) {
 					mutation(e.detail.value);
@@ -99,7 +101,7 @@
 					});
 				}
 			}}
-			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`, e.detail.name)}
+			on:goto={(e) => to(`/${$locale}/realm/${e.detail.path}`)}
 			on:back={(e) => ot()}
 		/>
 	</CardBody>
