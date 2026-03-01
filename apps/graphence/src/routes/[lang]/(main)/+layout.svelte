@@ -80,7 +80,7 @@
 			<UserMenu />
 		</NavBarEnd>
 	</NavBar>
-	<main class="flex-1 min-w-0 min-h-0 px-1 pb-1 md:px-2 md:pb-2">
+	<main class="flex-1 min-w-0 min-h-0">
 		<slot />
 		<Toasts />
 		<Modals />

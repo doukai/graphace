@@ -9,7 +9,7 @@
 </script>
 
 <div data-element="table" data-part="root" class="overflow-x-auto {contextClass} {className}">
-	<table data-part="table" class="table table-zebra table-pin-rows table-pin-cols z-[{zIndex}]">
+	<table data-part="table" class="table z-[{zIndex}]">
 		<slot />
 	</table>
 </div>

@@ -69,11 +69,6 @@
 		$open = false;
 	};
 
-	const oprChange = (): void => {
-		_value.arr = [];
-		_value.val = undefined;
-	};
-
 	const {
 		elements: { trigger, content, arrow, close, overlay },
 		states: { open }
@@ -115,7 +110,7 @@
 			class="flex items-center flex-col space-x-0 space-y-1 md:flex-row md:space-x-1 md:space-y-0"
 			transition:fade={{ duration: 100 }}
 		>
-			<TimeFilter class="w-full" {disabled} bind:value={_value} />
+			<TimeFilter {disabled} bind:value={_value} />
 			<SortSelect {disabled} bind:value={_sort} />
 			<div class="flex space-x-1">
 				<div class="tooltip flex items-center" data-tip={$LL.ui_graphql.table.th.filter()}>

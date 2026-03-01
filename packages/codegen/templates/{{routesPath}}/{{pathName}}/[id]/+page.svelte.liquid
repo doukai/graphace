@@ -2,11 +2,6 @@
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Form.svelte';
-	import type { Query_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
-	import type { Mutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
-	{%- if hasFileField %}
-	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
-	{%- endif %}
 	import {
 		validator,
 		{%- if useAuth %}
@@ -26,18 +21,18 @@
 	const { auth } = permissions;
 	{%- endif %}
 
-	$: query_{{ name | camelCase }}_Store = data.query_{{ name | camelCase }}_Store as Query_{{ name | camelCase }}_Store;
-	$: node = $query_{{ name | camelCase }}_Store.response.data?.{{ name | camelCase }};
-	$: mutation_{{ name | camelCase }}_Store = data.mutation_{{ name | camelCase }}_Store as Mutation_{{ name | camelCase }}_Store;
+	$: query_{{ name | camelCase }}_Store = data.query_{{ name | camelCase }}_Store;
+	$: {{ name | camelCase }} = $query_{{ name | camelCase }}_Store.response.data?.{{ name | camelCase }};
+	$: mutation_{{ name | camelCase }}_Store = data.mutation_{{ name | camelCase }}_Store;
 	{%- if hasFileField %}
-	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store;
 	{%- endif %}
 
 	let value: {{ name }}Input = {};
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if ({{ name | camelCase }} && Object.keys({{ name | camelCase }}).length > 0) {
+		value = {{ name | camelCase }};
 	}
 
 	const mutation = (args: {{ mutationTypeName }}{{ name }}Args) => {
@@ -68,22 +63,22 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | camelCase }}`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.{{ name }}.name()}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">
-					{value?.{{ idName }} != null
-						? $LL.{{ appName }}.path.edit({ name: $LL.graphql.objects.{{ name }}.name() })
-						: $LL.{{ appName }}.path.create({ name: $LL.graphql.objects.{{ name }}.name() })}
-				</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | paramCase }}`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.{{ name }}.name()}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">
+			{value?.{{ idName }} != null
+				? $LL.{{ appName }}.path.edit({ name: $LL.graphql.objects.{{ name }}.name() })
+				: $LL.{{ appName }}.path.create({ name: $LL.graphql.objects.{{ name }}.name() })}
+		</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<{{ name }}Form
 			showSaveButton={auth('{{ name }}::*::WRITE')}
 			showRemoveButton={auth('{{ name }}::isDeprecated::WRITE')}

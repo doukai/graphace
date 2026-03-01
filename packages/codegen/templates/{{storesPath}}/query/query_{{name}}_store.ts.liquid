@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 {%- if isObjectType %}
 import { fragment_{{ originalFieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ originalFieldTypeName }}Fields';
 {%- endif %}
@@ -86,11 +85,11 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.leng
 ${fragment_{{ originalFieldTypeName }}Fields}
 {%- endif %}`;
 
-export function createQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent): Query_{{ fieldName }}_Store {
+export function createQuery_{{ fieldName }}_Store(event: Event): Query_{{ fieldName }}_Store {
   return createGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 
-export async function fetchQuery_{{ fieldName }}_Store(event: LoadEvent | RequestEvent, variables{% if args == undefined or args.length == 0 %}?{% endif %}: {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ fieldName }}_Store> {
+export async function fetchQuery_{{ fieldName }}_Store(event: Event, variables{% if args == undefined or args.length == 0 %}?{% endif %}: {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ fieldName }}_Store> {
   return fetchGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
 }
 

@@ -12,8 +12,8 @@
 	export let disabled = false;
 	let className: string | undefined = undefined;
 	export { className as class };
-
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
+	export let placeholder: string | null | undefined = $LL.ui_graphql.table.th.filterPlaceholder();
 
 	if (value === null || value === undefined || Object.keys(value).length === 0) {
 		value = { opr: 'EQ', val: undefined, arr: undefined };
@@ -31,7 +31,7 @@
 		{id}
 		{name}
 		bind:value={value.arr}
-		placeholder={$LL.ui_graphql.table.th.filterPlaceholder()}
+		{placeholder}
 		{disabled}
 		class={className}
 		on:change={(e) => {

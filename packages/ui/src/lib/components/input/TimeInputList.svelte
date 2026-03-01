@@ -54,7 +54,7 @@
 		class="flex flex-wrap items-center textarea {errors?.errors ||
 		(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 			? 'textarea-error focus-within:outline-error'
-			: 'focus-within:outline-base-content/20'}  focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered w-full min-h-12 p-1 gap-1"
+			: 'focus-within:outline-base-content/20'}  focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered min-h-12 p-1 gap-1"
 	>
 		{#each $tags as t, index}
 			<div
@@ -89,7 +89,7 @@
 			{name}
 			type="time"
 			{placeholder}
-			class="input px-1 h-5 w-full min-w-20 shrink grow basis-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+			class="input px-1 h-5 min-w-20 shrink grow basis-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 		/>
 	</div>
 	{#if errors?.errors}

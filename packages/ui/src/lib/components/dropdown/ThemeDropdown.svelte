@@ -156,7 +156,7 @@
 				>
 					<div
 						data-theme={theme.id}
-						class="bg-base-100 text-base-content w-full cursor-pointer font-sans"
+						class="bg-base-100 text-base-content cursor-pointer font-sans"
 					>
 						<div class="grid grid-cols-5 grid-rows-3">
 							<div class="col-span-5 row-span-3 row-start-1 flex items-center gap-2 px-4 py-3">

@@ -1,4 +1,3 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 import type {
@@ -13,8 +12,9 @@ import {
     Field,
     Directive,
 } from '@graphace/graphql';
+import type { Event } from '.';
 
-export function createQueryStore<T>(event: LoadEvent | RequestEvent, url: string | URL): OperationStore<T> {
+export function createQueryStore<T>(event: Event, url: string | URL): OperationStore<T> {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -52,13 +52,13 @@ export function createQueryStore<T>(event: LoadEvent | RequestEvent, url: string
     };
 }
 
-export async function fetchQueryStore<T>(event: LoadEvent | RequestEvent, url: string | URL, params: { fields: Field[], name?: string | undefined, directives?: Directive[] | undefined }): Promise<OperationStore<T>> {
+export async function fetchQueryStore<T>(event: Event, url: string | URL, params: { fields: Field[], name?: string | undefined, directives?: Directive[] | undefined }): Promise<OperationStore<T>> {
     const queryStore = createQueryStore<T>(event, url);
     await queryStore.fetch(params);
     return queryStore;
 }
 
-export function createMutationStore<T>(event: LoadEvent | RequestEvent, url: string | URL): OperationStore<T> {
+export function createMutationStore<T>(event: Event, url: string | URL): OperationStore<T> {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -108,7 +108,7 @@ export type OperationStore<T> = {
 }
 
 
-export function createGraphQLQueryStore<T, V>(event: LoadEvent | RequestEvent, url: string | URL, query: string): GraphQLStore<T, V> {
+export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, query: string): GraphQLStore<T, V> {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -144,13 +144,13 @@ export function createGraphQLQueryStore<T, V>(event: LoadEvent | RequestEvent, u
     };
 }
 
-export async function fetchGraphQLQueryStore<T, V>(event: LoadEvent | RequestEvent, url: string | URL, query: string, variables?: V | undefined): Promise<GraphQLStore<T, V>> {
+export async function fetchGraphQLQueryStore<T, V>(event: Event, url: string | URL, query: string, variables?: V | undefined): Promise<GraphQLStore<T, V>> {
     const graphQLQueryStore = createGraphQLQueryStore<T, V>(event, url, query);
     await graphQLQueryStore.fetch(variables);
     return graphQLQueryStore;
 }
 
-export function createGraphQLMutationStore<T, V>(event: LoadEvent | RequestEvent, url: string | URL, query: string): GraphQLStore<T, V> {
+export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL, query: string): GraphQLStore<T, V> {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -232,7 +232,7 @@ export type GraphQLStore<T, V> = {
     fetch: (variables?: V | undefined) => Promise<{ data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
 }
 
-export function createNamedQueryStore(event: LoadEvent | RequestEvent, url: string | URL): NamedQueryStore {
+export function createNamedQueryStore(event: Event, url: string | URL): NamedQueryStore {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<string, NamedStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -288,7 +288,7 @@ export type NamedQueryStore = {
     fetch: (query: { fieldName: string, idName?: string | undefined, fields?: string | undefined }, variables?: NamedStructExpression & { first?: number | undefined } | undefined) => Promise<{ data?: Record<string, NamedStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
 }
 
-export function createTreeQueryStore(event: LoadEvent | RequestEvent, url: string | URL): TreeQueryStore {
+export function createTreeQueryStore(event: Event, url: string | URL): TreeQueryStore {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<string, TreeStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -344,7 +344,7 @@ export type TreeQueryStore = {
     fetch: (query: { fieldName: string, idName?: string | undefined, fields?: string | undefined }, variables?: TreeStructExpression & { first?: number | undefined } | undefined) => Promise<{ data?: Record<string, TreeStruct[] | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
 }
 
-export function createStructQueryStores(event: LoadEvent | RequestEvent, url: string | URL): StructQueryStores {
+export function createStructQueryStores(event: Event, url: string | URL): StructQueryStores {
     return {
         namedQueryStore: createNamedQueryStore(event, url),
         treeQueryStore: createTreeQueryStore(event, url)

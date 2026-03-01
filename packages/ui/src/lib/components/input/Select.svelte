@@ -27,14 +27,14 @@
 	}
 </script>
 
-<div data-element="select" data-part="root" class="{contextClass} {className}">
+<div data-element="select" data-part="root" class="grid {contextClass} {className}">
 	{#if multiple}
 		<select
 			data-part="select"
 			{id}
 			{name}
 			{placeholder}
-			class="select {errors?.errors ? 'select-error' : ''} select-bordered w-full"
+			class="select {errors?.errors ? 'select-error' : ''} select-bordered"
 			bind:value
 			on:change={() => {
 				dispatch('change', { value });
@@ -50,7 +50,7 @@
 			{id}
 			{name}
 			{placeholder}
-			class="select {errors?.errors ? 'select-error' : ''} select-bordered w-full"
+			class="select {errors?.errors ? 'select-error' : ''} select-bordered"
 			bind:value
 			on:change={() => {
 				dispatch('change', { value });

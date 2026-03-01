@@ -1,10 +1,10 @@
 import type { __TypeListQueryArguments, __TypeQueryArguments, GraphQLError } from '@graphace/graphql';
 import { __Type } from '@graphace/graphql';
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
+import type { Event } from '.';
 
-export function create__TypeListQueryStore(event: LoadEvent | RequestEvent, url: string | URL): __TypeListQueryStore {
+export function create__TypeListQueryStore(event: Event, url: string | URL): __TypeListQueryStore {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<'__typeList', __Type[] | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -59,7 +59,7 @@ export type __TypeListQueryStore = {
     fetch: (variables?: __TypeListQueryArguments & { first?: number | undefined } | undefined) => Promise<{ data?: Record<'__typeList', __Type[] | null> | undefined, errors?: GraphQLError[] | null | undefined }>;
 }
 
-export function create__TypeQueryStore(event: LoadEvent | RequestEvent, url: string | URL): __TypeQueryStore {
+export function create__TypeQueryStore(event: Event, url: string | URL): __TypeQueryStore {
     const data: Writable<{ isFetching: boolean, response: { data?: Record<'__type', __Type | null> | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}

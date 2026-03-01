@@ -66,7 +66,7 @@
 		errors = {};
 		if (value) {
 			{%- for field in fields %}
-			const {{ field.fieldName }}Errors = await fields?.{{ field.fieldName }}.validate?.(value);
+			const {{ field.fieldName }}Errors = await fields?.{{ field.fieldName }}?.validate?.(value);
 			if ({{ field.fieldName }}Errors && {{ field.fieldName }}Errors.length > 0) {
 				errors['{{ field.fieldName }}'] = { errors: {{ field.fieldName }}Errors.map((message) => ({ message })) };
 			}
@@ -89,13 +89,15 @@
 </script>
 
 <div class="flex justify-between">
-	<span class="text-xl font-semibold self-center">
-		{#if title}
-			{title}
-		{:else}
-			{$LL.graphql.objects.{{ name }}.name()}
-		{/if}
-	</span>
+	<slot name="title">
+		<span class="text-xl font-semibold self-center">
+			{#if title}
+				{title}
+			{:else}
+				{$LL.graphql.objects.{{ name }}.name()}
+			{/if}
+		</span>
+	</slot>
 	<Buttons
 		{showRemoveButton}
 		{showUnbindButton}
@@ -120,7 +122,7 @@
 		{%- for group in groups %}
 		<svelte:component this={wrapper['{{ group.name }}']} {...wrapperProps['{{ group.name }}']}>
 			{%- for field in group.fields %}
-			<slot name="{{ field.fieldName }}">
+			<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
 				{#if !fields?.{{ field.fieldName }}?.hidden?.(value)}
 					{%- if field.isTable %}
 					<div class="col-span-full">
@@ -159,7 +161,7 @@
 							errors={errors.{{ field.fieldName }}}
 							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
 							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-							on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+							on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
 							{%- if field.isListType %}
 							list
 							{%- endif %}
@@ -176,7 +178,7 @@
 							errors={errors.{{ field.fieldName }}}
 							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
 							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-							on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+							on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
 							{%- if field.isListType %}
 							list
 							{%- endif %}
@@ -209,7 +211,7 @@
 								class="btn-link"
 								readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
 								disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-								on:select={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+								on:select={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
 								{...fields?.{{ field.fieldName }}?.props?.(value)?.['dialog']}
 							/>
 						{/if}
@@ -224,7 +226,7 @@
 		{%- endfor %}
 		{%- else %}
 		{%- for field in fields %}
-		<slot name="{{ field.fieldName }}">
+		<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
 			{#if !fields?.{{ field.fieldName }}?.hidden?.(value)}
 				{%- if field.isTable %}
 				<div class="col-span-full">
@@ -263,7 +265,7 @@
 						errors={errors.{{ field.fieldName }}}
 						readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
 						disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-						on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{%- if field.isListType %}
 						list
 						{%- endif %}
@@ -280,7 +282,7 @@
 						errors={errors.{{ field.fieldName }}}
 						readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
 						disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-						on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{%- if field.isListType %}
 						list
 						{%- endif %}
@@ -313,7 +315,7 @@
 							class="btn-link"
 							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
 							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-							on:select={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, value).then((next) => value = next)}
+							on:select={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
 							{...fields?.{{ field.fieldName }}?.props?.(value)?.['dialog']}
 						/>
 					{/if}

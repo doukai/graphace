@@ -1,4 +1,3 @@
-import type { LoadEvent } from '@sveltejs/kit';
 import { fetchQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 {%- if hasFileField %}
@@ -7,17 +6,17 @@ import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/m
 {%- if useAuth %}
 import { permissions } from '~/utils';
 {%- endif %}
-import type { LayoutLoad } from './$types';
+import type { PageLoad, PageLoadEvent } from './$types';
 
-export const load: LayoutLoad = async (event: LoadEvent) => {
-    {%- if useAuth %}
-    await permissions.fetchPermissions('{{ name }}');
-    {%- endif %}
-    return {
-        {%- if hasFileField %}
-        mutation_singleUpload_Store: createMutation_singleUpload_Store(event),
-        {%- endif %}
-        query_{{ name | camelCase }}Connection_Store: await fetchQuery_{{ name | camelCase }}Connection_Store(event, { first: 10 }),
-        mutation_{{ name | camelCase }}_Store: createMutation_{{ name | camelCase }}_Store(event)
-    };
+export const load: PageLoad = async (event: PageLoadEvent) => {
+	{%- if useAuth %}
+	await permissions.fetchPermissions('{{ name }}');
+	{%- endif %}
+	return {
+		{%- if hasFileField %}
+		mutation_singleUpload_Store: createMutation_singleUpload_Store(event),
+		{%- endif %}
+		query_{{ name | camelCase }}Connection_Store: await fetchQuery_{{ name | camelCase }}Connection_Store(event, { first: 10 }),
+		mutation_{{ name | camelCase }}_Store: createMutation_{{ name | camelCase }}_Store(event)
+	};
 }

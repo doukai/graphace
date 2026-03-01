@@ -26,14 +26,14 @@
 	<div
 		data-element="tooltip"
 		data-part="root"
-		class="flex items-center {placeholder ? 'tooltip' : ''}"
+		class="grid h-12 {placeholder ? 'tooltip' : ''}"
 		data-tip={placeholder}
 	>
 		<input
 			type="checkbox"
 			{id}
 			{name}
-			class="toggle {errors?.errors ? 'toggle-error' : ''}"
+			class="toggle place-self-center {errors?.errors ? 'toggle-error' : ''}"
 			bind:checked={value}
 			on:change={() => {
 				dispatch('change', { value });

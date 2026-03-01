@@ -25,7 +25,7 @@
 	}>();
 </script>
 
-<div data-element="input" data-part="root" class="{contextClass} {className}">
+<div data-element="input" data-part="root" class="grid {contextClass} {className}">
 	{#if textarea}
 		<textarea
 			data-part="textarea"
@@ -34,7 +34,7 @@
 			{cols}
 			{rows}
 			{placeholder}
-			class="textarea {errors?.errors ? 'textarea-error' : ''} textarea-bordered w-full"
+			class="textarea {errors?.errors ? 'textarea-error' : ''} textarea-bordered"
 			bind:value
 			on:change={() => {
 				if (value === '') {
@@ -52,7 +52,7 @@
 			{id}
 			{name}
 			{placeholder}
-			class="input {errors?.errors ? 'input-error' : ''} input-bordered w-full"
+			class="input {errors?.errors ? 'input-error' : ''} input-bordered"
 			bind:value
 			on:change={() => {
 				if (value === '') {

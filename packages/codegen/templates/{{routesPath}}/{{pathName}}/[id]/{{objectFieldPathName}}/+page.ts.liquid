@@ -1,4 +1,4 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { fetchQuery_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 import { createMutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
 import { createMutation_{{ fieldObjectInfo.name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ fieldObjectInfo.name | camelCase }}_store';
@@ -8,18 +8,24 @@ import { createMutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/m
 {%- if useAuth %}
 import { permissions } from '~/utils';
 {%- endif %}
-import type { LayoutLoad } from './$types';
+import type { PageLoad, PageLoadEvent } from './$types';
 
-export const load: LayoutLoad = async (event: LoadEvent) => {
-    {%- if useAuth %}
-    await permissions.fetchPermissions('{{ fieldObjectInfo.name }}');
-    {%- endif %}
-    return {
-        {%- if hasFileField %}
-        mutation_singleUpload_Store: createMutation_singleUpload_Store(event),
-        {%- endif %}
-        query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store: await fetchQuery_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store(event, { {{ name | camelCase }}_{{ idName }}: event.params.id }),
-        mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store: createMutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store(event),
-        mutation_{{ fieldObjectInfo.name | camelCase }}_Store: createMutation_{{ fieldObjectInfo.name | camelCase }}_Store(event)
-    };
+export const load: PageLoad = async (event: PageLoadEvent) => {
+	{%- if useAuth %}
+	await permissions.fetchPermissions('{{ fieldObjectInfo.name }}');
+	{%- endif %}
+
+	if (event.params.id && event.params.id !== '_') {
+		return {
+			id: event.params.id,
+			{%- if hasFileField %}
+			mutation_singleUpload_Store: createMutation_singleUpload_Store(event),
+			{%- endif %}
+			query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store: await fetchQuery_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store(event, { {{ name | camelCase }}_{{ idName }}: event.params.id }),
+			mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store: createMutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store(event),
+			mutation_{{ fieldObjectInfo.name | camelCase }}_Store: createMutation_{{ fieldObjectInfo.name | camelCase }}_Store(event)
+		};
+	}
+	const [, lang] = event.url.pathname.split('/');
+	throw redirect(302, `/${lang}/{{ name | camelCase }}/_`);
 }

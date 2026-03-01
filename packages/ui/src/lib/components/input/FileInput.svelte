@@ -59,7 +59,7 @@
 			{id}
 			{name}
 			{placeholder}
-			class="file-input {errors?.errors ? 'file-input-error' : ''} file-input-bordered w-full"
+			class="file-input {errors?.errors ? 'file-input-error' : ''} file-input-bordered"
 			on:change={(e) => {
 				if (e.currentTarget?.files?.[0]) {
 					dispatch('upload', {

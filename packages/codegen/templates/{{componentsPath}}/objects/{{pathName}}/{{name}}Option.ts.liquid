@@ -13,8 +13,11 @@ import type {
 	{{ object }}Input
 {%- endif %}
 {%- endfor %}
+{%- for enum in enums %},
+	{{ enum }}
+{%- endfor %}
 } from '~/{{ schemaTypesPath }}';
-import { LL } from '$i18n/i18n-svelte';
+import type { TranslationFunctions } from '$i18n/i18n-types';
 {%- if useAuth %}
 import { permissions } from '~/utils';
 {%- endif %}
@@ -23,9 +26,9 @@ import { permissions } from '~/utils';
 const { auth } = permissions;
 {%- endif %}
 
-export const {{ name | camelCase }}Tabs: TabInfo[] | undefined = undefined;
+export const {{ name | camelCase }}Tabs: (($LL: TranslationFunctions, args?: Query{{ name }}ListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
-export const {{ name | camelCase }}Tab: string | undefined = undefined;
+export const {{ name | camelCase }}Tab: ((args?: Query{{ name }}ListArgs | undefined) => string | undefined) | undefined = undefined;
 
 export const {{ name | camelCase }}TabChange = async (tab: any, args: Query{{ name }}ListArgs) => {
 	return new Promise(
@@ -40,7 +43,7 @@ export const {{ name | camelCase }}TabChange = async (tab: any, args: Query{{ na
 
 export type {{ name }}Fields = {
 	{%- for field in fields %}
-	{{ field.fieldName }}: Option<{{ name }}Input, Query{{ name }}ListArgs>{% if field.isObjectType %} & { fields?: () => {{ field.fieldTypeName }}Fields }{% endif %};
+	{{ field.fieldName }}?: Option<{{ name }}Input, Query{{ name }}ListArgs>{% if field.isObjectType %} & { fields?: () => {{ field.fieldTypeName }}Fields }{% endif %} | undefined;
 	{%- endfor %}
 };
 
@@ -66,7 +69,7 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 			return [];
 		},
 		{%- if field.isListType %}
-		onChange: async (fieldValue: ({% if field.isObjectType %}{{ field.fieldTypeName }}Input{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined)[] | null | undefined, value?: {{ name }}Input | null | undefined) => {
+		onChange: async (fieldValue: ({% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined)[] | null | undefined, value?: {{ name }}Input | null | undefined) => {
 			return new Promise(
 				(
 					resolve: (data: {{ name }}Input | null | undefined) => void,
@@ -77,7 +80,7 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 			);
 		},
 		{%- else %}
-		onChange: async (fieldValue: {% if field.isObjectType %}{{ field.fieldTypeName }}Input{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined, value?: {{ name }}Input | null | undefined) => {
+		onChange: async (fieldValue: {% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined, value?: {{ name }}Input | null | undefined) => {
 			return new Promise(
 				(
 					resolve: (data: {{ name }}Input | null | undefined) => void,

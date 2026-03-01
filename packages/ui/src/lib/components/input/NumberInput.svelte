@@ -25,7 +25,7 @@
 	}>();
 </script>
 
-<div data-element="number-input" data-part="root" class="{contextClass} {className}">
+<div data-element="number-input" data-part="root" class="grid {contextClass} {className}">
 	<input
 		data-part="input"
 		type="number"
@@ -35,7 +35,7 @@
 		{max}
 		{step}
 		{placeholder}
-		class="input {errors?.errors ? 'input-error' : ''} input-bordered w-full"
+		class="input {errors?.errors ? 'input-error' : ''} input-bordered"
 		bind:value
 		on:change={() => {
 			dispatch('change', { value });

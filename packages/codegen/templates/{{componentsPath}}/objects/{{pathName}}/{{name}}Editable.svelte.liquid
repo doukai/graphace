@@ -67,10 +67,10 @@
 	export let showSearchInput: boolean = false;
 	export let title: string | undefined = undefined;
 	export let zIndex: number = 0;
-	let className: string | undefined = 'table-pin-rows table-pin-cols';
+	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
 	export { className as class };
-	export let tabs: TabInfo[] | undefined = {{ name | camelCase }}Tabs;
-	export let tab: string | undefined = {{ name | camelCase }}Tab;
+	export let tabs: (($LL: TranslationFunctions, args?: Query{{ name }}ListArgs | undefined) => TabInfo[] | undefined) | undefined = {{ name | camelCase }}Tabs;
+	export let tab: ((args?: Query{{ name }}ListArgs | undefined) => string | undefined) | undefined = {{ name | camelCase }}Tab;
 	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -95,6 +95,7 @@
 			value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined ;
 			row?: number[] | number | undefined;
 		};
+		tabChange: { tab: any; origin: any; };
 		create: {};
 		back: {};
 	}>();
@@ -132,7 +133,7 @@
 	const validateRow = async (value: {{ name }}Input) => {
 		const errors: Record<string, Errors> = {};
 		{%- for field in fields %}
-		const {{ field.fieldName }}Errors = await fields?.{{ field.fieldName }}.validate?.(value);
+		const {{ field.fieldName }}Errors = await fields?.{{ field.fieldName }}?.validate?.(value);
 		if ({{ field.fieldName }}Errors && {{ field.fieldName }}Errors.length > 0) {
 			errors['{{ field.fieldName }}'] = { errors: {{ field.fieldName }}Errors.map((message) => ({ message })) };
 		}
@@ -143,13 +144,15 @@
 
 <div class="flex justify-between">
 	<slot name="start" />
-	<span class="text-xl font-semibold self-center max-sm:hidden">
-		{#if title}
-			{title}
-		{:else}
-			{$LL.graphql.objects.{{ name }}.name()}
-		{/if}
-	</span>
+	<slot name="title">
+		<span class="text-xl font-semibold self-center max-sm:hidden">
+			{#if title}
+				{title}
+			{:else}
+				{$LL.graphql.objects.{{ name }}.name()}
+			{/if}
+		</span>
+	</slot>
 	<Buttons
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
@@ -178,9 +181,11 @@
 		on:back
 	>
 		<svelte:fragment slot="start">
-			{#if showSearchInput}
-				<SearchInput class="max-sm:w-full" on:search />
-			{/if}
+			<slot name="search">
+				{#if showSearchInput}
+					<SearchInput class="max-sm:w-full" on:search />
+				{/if}
+			</slot>
 			<div class="sm:hidden">
 				<{{ name }}Filter
 					bind:value={args}
@@ -213,11 +218,12 @@
 	</Buttons>
 </div>
 <div class="divider my-0" />
-{#if tabs}
+{#if tabs?.($LL, args)}
 	<Tabs
-		value={tab}
-		{tabs}
+		value={tab?.(args)}
+		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
+			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
 			if (e.detail.value !== e.detail.origin) {
 				{{ name | camelCase }}TabChange(e.detail.value, args).then((args) => {
 					dispatch('query', {
@@ -259,8 +265,8 @@
 				</label>
 			</th>
 			{%- for field in fields %}
-			<slot name="{{ field.fieldName }}-th">
-				{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab)}
+			<slot name="{{ field.fieldName }}-th" {args} {orderBy} {fields}>
+				{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab?.(args))}
 					{%- if field.isScalarType or field.isEnumType %}
 					<{{ field.fieldTypeName }}Th
 						name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -270,6 +276,7 @@
 						{%- endif %}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.{{ field.fieldName }}?.required?.()}
+						{zIndex}
 						{...fields?.{{ field.fieldName }}?.props?.()?.['th']}
 					/>
 					{%- elsif field.inQueryArgs %}
@@ -278,6 +285,7 @@
 						bind:value={args.{{ field.fieldName }}}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.{{ field.fieldName }}?.required?.()}
+						{zIndex}
 						{...fields?.{{ field.fieldName }}?.props?.()?.['th']}
 					/>
 					{%- else %}
@@ -320,8 +328,8 @@
 							</label>
 						</th>
 						{%- for field in fields %}
-						<slot name="{{ field.fieldName }}">
-							{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab)}
+						<slot name="{{ field.fieldName }}" {node} {errors} {fields} {row}>
+							{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab?.(args))}
 								{%- if field.isScalarType or field.isEnumType or field.isFile %}
 								<Td {zIndex} {...fields?.{{ field.fieldName }}?.props?.(node)?.['td']}>
 									<{{ field.fieldTypeName }}Input
@@ -333,7 +341,7 @@
 										{%- if field.inMutationArgs and field.fieldName != idName %}
 										readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
 										disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
-										on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+										on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, node).then((next) => node = next)}
 										{%- else %}
 										readonly
 										{%- endif %}
@@ -355,7 +363,7 @@
 										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
 										readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
 										disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
-										on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+										on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, node).then((next) => node = next)}
 										{...fields?.{{ field.fieldName }}?.props?.(node)?.['select']}
 									/>
 								</Td>
@@ -387,7 +395,7 @@
 											class="btn-link"
 											readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
 											disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
-											on:select={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+											on:select={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, node).then((next) => node = next)}
 											{...fields?.{{ field.fieldName }}?.props?.(node)?.['dialog']}
 										/>
 									{/if}
@@ -531,8 +539,8 @@
 				</thead>
 				<tbody class="border">
 					{%- for field in fields %}
-					<slot name="{{ field.fieldName }}-sm">
-						{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab)}
+					<slot name="{{ field.fieldName }}-sm" {node} {errors} {fields} {row}>
+						{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab?.(args))}
 							<Tr class="hover" let:id {...fields?.{{ field.fieldName }}?.props?.(node)?.['tr']}>
 								<td>
 									<Label
@@ -554,7 +562,7 @@
 										{%- if field.inMutationArgs and field.fieldName != idName %}
 										readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
 										disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
-										on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+										on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, node).then((next) => node = next)}
 										{%- else %}
 										readonly
 										{%- endif %}
@@ -577,7 +585,7 @@
 										errors={errors?.[row]?.iterms?.{{ field.fieldName }}}
 										readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
 										disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
-										on:change={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+										on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, node).then((next) => node = next)}
 										{...fields?.{{ field.fieldName }}?.props?.(node)?.['select']}
 									/>
 								</Td>
@@ -609,7 +617,7 @@
 											class="btn-link"
 											readonly={fields?.{{ field.fieldName }}?.readonly?.(node)}
 											disabled={fields?.{{ field.fieldName }}?.disabled?.(node)}
-											on:select={(e) => fields?.{{ field.fieldName }}.onChange?.(e.detail.value, node).then((next) => node = next)}
+											on:select={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, node).then((next) => node = next)}
 											{...fields?.{{ field.fieldName }}?.props?.(node)?.['dialog']}
 										/>
 									{/if}

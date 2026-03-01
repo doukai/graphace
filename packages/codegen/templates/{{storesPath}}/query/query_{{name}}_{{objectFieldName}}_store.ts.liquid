@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 {%- if objectFieldInfo.originalFieldTypeName != fieldTypeName %}
 import { fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields';
 {%- endif %}
@@ -91,11 +90,11 @@ ${fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields}
 {%- endif %}
 ${fragment_{{ fieldTypeName }}Fields}`;
 
-export function createQuery_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store(event: LoadEvent | RequestEvent): Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store {
+export function createQuery_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store(event: Event): Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store {
   return createGraphQLQueryStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event);
 }
 
-export async function fetchQuery_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store(event: LoadEvent | RequestEvent, variables: { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args): Promise<Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store> {
+export async function fetchQuery_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store(event: Event, variables: { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args): Promise<Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store> {
   return fetchGraphQLQueryStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event, variables);
 }
 

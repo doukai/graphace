@@ -22,14 +22,14 @@
 	}>();
 </script>
 
-<div data-element="datetime-local-input" data-part="root" class="{contextClass} {className}">
+<div data-element="datetime-local-input" data-part="root" class="grid {contextClass} {className}">
 	<input
 		data-part="input"
 		type="datetime-local"
 		{id}
 		{name}
 		{placeholder}
-		class="input {errors?.errors ? 'input-error' : ''} input-bordered w-full"
+		class="input {errors?.errors ? 'input-error' : ''} input-bordered"
 		bind:value
 		on:change={() => {
 			dispatch('change', { value });

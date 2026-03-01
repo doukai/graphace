@@ -6,9 +6,10 @@
 	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
 	export let disabled = false;
+	export let required: boolean | undefined = false;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
 </script>
 
-<StringTh {name} bind:value bind:sort {disabled} {zIndex} class={className} on:filter />
+<StringTh {name} bind:value bind:sort {disabled} {required} {zIndex} class={className} on:filter />

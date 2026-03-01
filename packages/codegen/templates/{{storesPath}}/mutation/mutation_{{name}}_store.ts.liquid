@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 {%- if isObjectType %}
 import { fragment_{{ fieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ fieldTypeName }}Fields';
 {%- endif %}
@@ -59,7 +58,7 @@ const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}{% if args and arg
 ${fragment_{{ fieldTypeName }}Fields}
 {%- endif %}`;
 
-export function createMutation_{{ fieldName }}_Store(event: LoadEvent | RequestEvent): Mutation_{{ fieldName }}_Store {
+export function createMutation_{{ fieldName }}_Store(event: Event): Mutation_{{ fieldName }}_Store {
   return createGraphQLMutationStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 

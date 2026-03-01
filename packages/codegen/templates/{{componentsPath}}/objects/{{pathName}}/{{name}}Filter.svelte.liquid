@@ -17,17 +17,17 @@
 	import {{ select }}SelectFilter from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}SelectFilter.svelte';
 	{%- endif %}
 	{%- endfor %}
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: {{ name }}Expression | null | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const contextClass = getContext<string>('ui.popover-content') || '';
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
 		filter: { value?: {{ name }}Expression | null | undefined };
@@ -42,10 +42,6 @@
 		{{ field.fieldName }}: { {{ field.fieldTypeIdName }}: undefined }{% if forloop.last == false %},{% endif %}
 		{%- endif %}
 		{%- endfor %}
-	}
-
-	if (value) {
-		_value = { ..._value, ...value };
 	}
 
 	const filter = (): void => {
@@ -75,7 +71,13 @@
 		states: { open }
 	} = createPopover({
 		forceVisible: true,
-		preventScroll: true
+		preventScroll: true,
+		onOpenChange: ({ curr, next }) => {
+			if (curr !== next && next) {
+				_value = { ..._value, ...value };
+			}
+			return next;
+		}
 	});
 </script>
 
@@ -100,10 +102,12 @@
 					<{{ field.fieldTypeName }}Filter {id} name="{{ field.fieldName }}" bind:value={_value.{{ field.fieldName }}} />
 				</div>
 				{%- elsif field.isSelect %}
-				<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<{{ field.fieldTypeName }}SelectFilter {id} name="{{ field.fieldName }}" bind:value={_value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}} />
-				</div>
+				{#if _value?.{{ field.fieldName }}?.{{ field.fieldTypeIdName }}}
+					<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
+					<div class="grid grid-cols-2 gap-1">
+						<{{ field.fieldTypeName }}SelectFilter {id} name="{{ field.fieldName }}" bind:value={_value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}} />
+					</div>
+				{/if}
 				{%- endif %}
 				{%- endfor %}
 			</FormControl>

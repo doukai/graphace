@@ -25,7 +25,7 @@
 		{name}
 		{placeholder}
 		bind:value
-		class="input join-item input-bordered w-full"
+		class="input join-item input-bordered min-w-0"
 	/>
 	<button
 		data-part="btn-search"

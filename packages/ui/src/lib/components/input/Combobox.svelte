@@ -129,76 +129,78 @@
 	<div
 		data-part="input"
 		use:melt={$root}
-		class="flex flex-row flex-wrap items-center textarea {errors?.errors ||
+		class="grid grid-cols-[1fr_auto] items-center textarea {errors?.errors ||
 		(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 			? 'textarea-error focus-within:outline-error'
-			: 'focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered w-full min-h-12 p-1 gap-1"
+			: 'focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered min-h-12 p-1 gap-1"
 	>
-		{#each $tags as t, index}
-			<div
-				data-part="tag"
-				use:melt={$tag(t)}
-				class="badge {errors?.iterms?.[index]
-					? 'badge-error'
-					: 'badge-neutral'} flex items-center [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
-			>
-				<span
-					data-part="text"
-					class="flex items-center border-r max-w-xs truncate {errors?.iterms?.[index]
-						? 'bg-error'
-						: 'bg-neutral'} border-white/10"
+		<div class="min-w-0 flex flex-wrap items-center gap-1">
+			{#each $tags as t, index}
+				<div
+					data-part="tag"
+					use:melt={$tag(t)}
+					class="badge {errors?.iterms?.[index]
+						? 'badge-error'
+						: 'badge-neutral'} flex items-center [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
+				>
+					<span
+						data-part="text"
+						class="flex items-center border-r max-w-xs truncate {errors?.iterms?.[index]
+							? 'bg-error'
+							: 'bg-neutral'} border-white/10"
+					>
+						{t.value}
+					</span>
+					<button
+						data-part="delete"
+						use:melt={$deleteTrigger(t)}
+						{disabled}
+						class="flex items-center h-full {errors?.iterms?.[index]
+							? 'enabled:hover:bg-error-focus'
+							: 'enabled:hover:bg-neutral-focus'}"
+					>
+						<Icon src={XMark} class="size-3" />
+					</button>
+				</div>
+				<div
+					data-part="edit"
+					use:melt={$edit(t)}
+					class="badge badge-outline flex items-center overflow-hidden [word-break:break-word] data-[invalid-edit]:focus:text-error"
 				>
 					{t.value}
-				</span>
-				<button
-					data-part="delete"
-					use:melt={$deleteTrigger(t)}
+				</div>
+			{/each}
+			{#if !disabled && !readonly}
+				<input
+					data-part="search"
+					use:melt={$input}
+					{id}
+					type="text"
+					class="input px-1 h-5 min-w-20 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+					on:focus={(e) => {
+						if ($touchedInput) {
+							debounce(() => {
+								dispatch('search', { searchValue: $inputValue });
+							});
+						} else {
+							debounce(() => {
+								dispatch('search', { searchValue: undefined });
+							});
+						}
+					}}
+					{name}
+					placeholder={value || (Array.isArray(value) && value.length > 0) ? '' : placeholder}
 					{disabled}
-					class="flex items-center h-full {errors?.iterms?.[index]
-						? 'enabled:hover:bg-error-focus'
-						: 'enabled:hover:bg-neutral-focus'}"
-				>
-					<Icon src={XMark} class="size-3" />
-				</button>
-			</div>
-			<div
-				data-part="edit"
-				use:melt={$edit(t)}
-				class="badge badge-outline flex items-center overflow-hidden [word-break:break-word] data-[invalid-edit]:focus:text-error"
-			>
-				{t.value}
-			</div>
-		{/each}
-		{#if !disabled && !readonly}
-			<input
-				data-part="search"
-				use:melt={$input}
-				{id}
-				type="text"
-				class="input px-1 h-5 min-w-20 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
-				on:focus={(e) => {
-					if ($touchedInput) {
-						debounce(() => {
-							dispatch('search', { searchValue: $inputValue });
-						});
-					} else {
-						debounce(() => {
-							dispatch('search', { searchValue: undefined });
-						});
-					}
-				}}
-				{name}
-				placeholder={value || (Array.isArray(value) && value.length > 0) ? '' : placeholder}
-				{disabled}
-			/>
-			<div data-part="icon" class="w-4 right-2 top-1/2 z-[{zIndex + 9}]">
-				{#if $open}
-					<Icon src={ChevronUp} data-part="icon-up" class="size-4" />
-				{:else}
-					<Icon src={ChevronDown} data-part="icon-down" class="size-4" />
-				{/if}
-			</div>
-		{/if}
+				/>
+			{/if}
+		</div>
+		<div data-part="icon" class="w-4 flex items-center justify-centerz-[{zIndex + 9}]">
+			{#if $open}
+				<Icon src={ChevronUp} data-part="icon-up" class="size-4" />
+			{:else}
+				<Icon src={ChevronDown} data-part="icon-down" class="size-4" />
+			{/if}
+		</div>
 	</div>
 </div>
 {#if $open}

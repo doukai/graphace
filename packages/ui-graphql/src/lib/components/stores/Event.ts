@@ -1,0 +1,1 @@
+export type Event = { url: URL; fetch: typeof fetch };

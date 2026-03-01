@@ -2,10 +2,6 @@
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Form from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Form.svelte';
-	import type { Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_store';
-	{%- if hasFileField %}
-	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
-	{%- endif %}
 	import {
 		validator,
 		{%- if useAuth %}
@@ -25,17 +21,17 @@
 	const { auth } = permissions;
 	{%- endif %}
 
-	$: {{ idName }} = data.{{ idName }} as string;
-	$: mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store as Mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
+	$: id = data.{{ idName }};
+	$: mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
 	{%- if hasFileField %}
-	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store;
 	{%- endif %}
 
 	let value = {};
 	let errors: Record<string, Errors> = {};
 
 	const merge = (input: {{ fieldObjectInfo.name }}Input) => {
-		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ idName }} } }, {{ fieldInfo.fieldName }}: [input] })
+		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: id } }, {{ fieldInfo.fieldName }}: [input] })
 			.then((data) => {
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({
@@ -65,28 +61,28 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | camelCase }}`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.{{ name }}.name()}</span>
-				</a>
-			</li>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | camelCase }}/${% raw %}{{% endraw %}{{ idName }}{% raw %}}{% endraw %}`)}>
-					<span class="badge badge-outline">{$LL.{{ appName }}.path.edit({ name: $LL.graphql.objects.{{ name }}.name() })}</span>
-				</a>
-			</li>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | camelCase }}/${% raw %}{{% endraw %}{{ idName }}{% raw %}}{% endraw %}/{{ fieldInfo.fieldName }}`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.{{ name }}.fields.{{ fieldInfo.fieldName }}.name()}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">{$LL.{{ appName }}.path.create({ name: $LL.graphql.objects.{{ fieldObjectInfo.name }}.name() })}</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | paramCase }}`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.{{ name }}.name()}</span>
+		</a>
+	</li>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | paramCase }}/${% raw %}{{% endraw %}{{ idName }}{% raw %}}{% endraw %}`)}>
+			<span class="badge badge-outline">{$LL.{{ appName }}.path.edit({ name: $LL.graphql.objects.{{ name }}.name() })}</span>
+		</a>
+	</li>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/{{ name | paramCase }}/${% raw %}{{% endraw %}{{ idName }}{% raw %}}{% endraw %}/{{ fieldInfo.fieldName | paramCase }}`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.{{ name }}.fields.{{ fieldInfo.fieldName }}.name()}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">{$LL.{{ appName }}.path.create({ name: $LL.graphql.objects.{{ fieldObjectInfo.name }}.name() })}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<{{ fieldObjectInfo.name }}Form
 			showSaveButton={auth('{{ fieldObjectInfo.name }}::*::WRITE')}
 			showBackButton={$canBack}

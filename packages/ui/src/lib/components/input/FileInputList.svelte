@@ -59,7 +59,7 @@
 						{placeholder}
 						class="file-input {errors?.iterms && errors.iterms[index]
 							? 'file-input-error'
-							: ''} file-input-bordered w-full"
+							: ''} file-input-bordered"
 						on:change={(e) => {
 							if (e.currentTarget?.files?.[0]) {
 								dispatch('upload', {
@@ -94,7 +94,7 @@
 		<div data-part="add" class="tooltip flex items-center" data-tip={$LL.ui.inputList.add()}>
 			<button
 				data-part="btn-add"
-				class="btn btn-xs btn-square btn-outline w-full"
+				class="btn btn-xs btn-square btn-outline"
 				on:click|preventDefault={(e) => {
 					addItem(value?.length || 0);
 				}}
