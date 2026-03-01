@@ -2,8 +2,6 @@
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
-	import type { Query_realm_Store } from '~/lib/stores/query/query_realm_store';
-	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import {
 		validator,
 		permissions,
@@ -19,15 +17,15 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_realm_Store = data.query_realm_Store as Query_realm_Store;
-	$: node = $query_realm_Store.response.data?.realm;
-	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
+	$: query_realm_Store = data.query_realm_Store;
+	$: realm = $query_realm_Store.response.data?.realm;
+	$: mutation_realm_Store = data.mutation_realm_Store;
 
 	let value: RealmInput = {};
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if (realm && Object.keys(realm).length > 0) {
+		value = realm;
 	}
 
 	const mutation = (args: MutationRealmArgs) => {
@@ -58,22 +56,22 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/realm`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.Realm.name()}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">
-					{value?.id != null
-						? $LL.graphence.path.edit({ name: $LL.graphql.objects.Realm.name() })
-						: $LL.graphence.path.create({ name: $LL.graphql.objects.Realm.name() })}
-				</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/realm`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.Realm.name()}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">
+			{value?.id != null
+				? $LL.graphence.path.edit({ name: $LL.graphql.objects.Realm.name() })
+				: $LL.graphence.path.create({ name: $LL.graphql.objects.Realm.name() })}
+		</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<RealmForm
 			showSaveButton={auth('Realm::*::WRITE')}
 			showRemoveButton={auth('Realm::isDeprecated::WRITE')}

@@ -24,6 +24,7 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
+	$: id = data.id as string;
 	$: query_user_groupsConnection_Store = data.query_user_groupsConnection_Store as Query_user_groupsConnection_Store;
 	$: user = $query_user_groupsConnection_Store.response.data?.user;
 	$: nodes = $query_user_groupsConnection_Store.response.data?.user?.groupsConnection?.edges?.map((edge) => edge?.node);
@@ -40,14 +41,16 @@
 		args.orderBy = orderBy;
 		args.first = pageSize;
 		args.offset = ((to || pageNumber) - 1) * pageSize;
-		query_user_groupsConnection_Store.fetch({ user_id: user?.id, ...buildArguments(args) }).then((result) => {
-			if (result.errors) {
-				console.error(errors);
-				toast.error($LL.graphence.message.requestFailed());
-			} else {
-				errors = {};
-			}
-		});
+		query_user_groupsConnection_Store
+			.fetch({ user_id: id, ...buildArguments(args) })
+			.then((result) => {
+				if (result.errors) {
+					console.error(errors);
+					toast.error($LL.graphence.message.requestFailed());
+				} else {
+					errors = {};
+				}
+			});
 	};
 
 	const mutation = (args: MutationGroupArgs) => {
@@ -82,7 +85,7 @@
 			.then((data) => {
 				errors = {};
 				mutation_user_groups_Store.fetch({
-					user_id: user?.id,
+					user_id: id,
 					user_groups: input
 				}).then((result) => {
 					if (result.errors) {
@@ -108,23 +111,23 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/user`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.User.name()}</span>
-				</a>
-			</li>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/user/${user?.id}`)}>
-					<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.User.name() })}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.User.fields.groups.name()}</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/user`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.User.name()}</span>
+		</a>
+	</li>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/user/${user?.id}`)}>
+			<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.User.name() })}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.User.fields.groups.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<GroupTable
 			showUnbindButton={auth('Group::isDeprecated::WRITE')}
 			showEditButton
@@ -178,11 +181,6 @@
 									where: { id: { opr: 'IN', arr: e.detail.value.map((node) => node?.id) } },
 									isDeprecated: true
 								});
-							} else {
-								mutation({
-									where: { id: { val: e.detail.value?.id } },
-									isDeprecated: true
-								});
 							}
 							return true;
 						}
@@ -200,13 +198,6 @@
 									isDeprecated: true
 								}))
 							);
-						} else {
-							merge([
-								{
-									where: { id: { val: e.detail.value?.id } },
-									isDeprecated: true
-								}
-							]);
 						}
 						return true;
 					}
@@ -222,9 +213,7 @@
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {
-							merge(e.detail.value);
-						} else {
-							merge([e.detail.value]);
+							merge(e.detail.value.filter((item) => item != null));
 						}
 					}}
 				>

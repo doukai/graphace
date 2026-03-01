@@ -1,5 +1,6 @@
 import RealmForm from "./RealmForm.svelte";
 import RealmTable from "./RealmTable.svelte";
+import RealmEditable from "./RealmEditable.svelte";
 import RealmFormDialog from "./RealmFormDialog.svelte";
 import RealmTableDialog from "./RealmTableDialog.svelte";
 import RealmFilter from "./RealmFilter.svelte";
@@ -11,6 +12,7 @@ import RealmSelectTd from "./RealmSelectTd.svelte";
 export {
   RealmForm,
   RealmTable,
+  RealmEditable,
   RealmFormDialog,
   RealmTableDialog,
   RealmFilter,

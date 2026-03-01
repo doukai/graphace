@@ -36,11 +36,11 @@
 	const validate = async () => {
 		errors = {};
 		if (value) {
-			const nameErrors = await fields?.name.validate?.(value);
+			const nameErrors = await fields?.name?.validate?.(value);
 			if (nameErrors && nameErrors.length > 0) {
 				errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
 			}
-			const descriptionErrors = await fields?.description.validate?.(value);
+			const descriptionErrors = await fields?.description?.validate?.(value);
 			if (descriptionErrors && descriptionErrors.length > 0) {
 				errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
 			}
@@ -62,13 +62,15 @@
 </script>
 
 <div class="flex justify-between">
-	<span class="text-xl font-semibold self-center">
-		{#if title}
-			{title}
-		{:else}
-			{$LL.graphql.objects.Realm.name()}
-		{/if}
-	</span>
+	<slot name="title">
+		<span class="text-xl font-semibold self-center">
+			{#if title}
+				{title}
+			{:else}
+				{$LL.graphql.objects.Realm.name()}
+			{/if}
+		</span>
+	</slot>
 	<Buttons
 		{showRemoveButton}
 		{showUnbindButton}
@@ -89,7 +91,7 @@
 	{#if isFetching}
 		<Loading />
 	{:else if value}
-		<slot name="name">
+		<slot name="name" {value} {errors} {fields}>
 			{#if !fields?.name?.hidden?.(value)}
 				<FormControl let:id {...fields?.name?.props?.(value)?.['control']}>
 					<Label
@@ -104,13 +106,13 @@
 						errors={errors.name}
 						readonly={fields?.name?.readonly?.(value)}
 						disabled={fields?.name?.disabled?.(value)}
-						on:change={(e) => fields?.name.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.name?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.name?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="description">
+		<slot name="description" {value} {errors} {fields}>
 			{#if !fields?.description?.hidden?.(value)}
 				<FormControl let:id {...fields?.description?.props?.(value)?.['control']}>
 					<Label
@@ -125,7 +127,7 @@
 						errors={errors.description}
 						readonly={fields?.description?.readonly?.(value)}
 						disabled={fields?.description?.disabled?.(value)}
-						on:change={(e) => fields?.description.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.description?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.description?.props?.(value)?.['input']}
 					/>
 				</FormControl>

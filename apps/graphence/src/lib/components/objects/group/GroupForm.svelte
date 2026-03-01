@@ -40,43 +40,43 @@
 	const validate = async () => {
 		errors = {};
 		if (value) {
-			const nameErrors = await fields?.name.validate?.(value);
+			const nameErrors = await fields?.name?.validate?.(value);
 			if (nameErrors && nameErrors.length > 0) {
 				errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
 			}
-			const descriptionErrors = await fields?.description.validate?.(value);
+			const descriptionErrors = await fields?.description?.validate?.(value);
 			if (descriptionErrors && descriptionErrors.length > 0) {
 				errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
 			}
-			const pathErrors = await fields?.path.validate?.(value);
+			const pathErrors = await fields?.path?.validate?.(value);
 			if (pathErrors && pathErrors.length > 0) {
 				errors['path'] = { errors: pathErrors.map((message) => ({ message })) };
 			}
-			const deepErrors = await fields?.deep.validate?.(value);
+			const deepErrors = await fields?.deep?.validate?.(value);
 			if (deepErrors && deepErrors.length > 0) {
 				errors['deep'] = { errors: deepErrors.map((message) => ({ message })) };
 			}
-			const parentIdErrors = await fields?.parentId.validate?.(value);
+			const parentIdErrors = await fields?.parentId?.validate?.(value);
 			if (parentIdErrors && parentIdErrors.length > 0) {
 				errors['parentId'] = { errors: parentIdErrors.map((message) => ({ message })) };
 			}
-			const parentErrors = await fields?.parent.validate?.(value);
+			const parentErrors = await fields?.parent?.validate?.(value);
 			if (parentErrors && parentErrors.length > 0) {
 				errors['parent'] = { errors: parentErrors.map((message) => ({ message })) };
 			}
-			const subGroupsErrors = await fields?.subGroups.validate?.(value);
+			const subGroupsErrors = await fields?.subGroups?.validate?.(value);
 			if (subGroupsErrors && subGroupsErrors.length > 0) {
 				errors['subGroups'] = { errors: subGroupsErrors.map((message) => ({ message })) };
 			}
-			const usersErrors = await fields?.users.validate?.(value);
+			const usersErrors = await fields?.users?.validate?.(value);
 			if (usersErrors && usersErrors.length > 0) {
 				errors['users'] = { errors: usersErrors.map((message) => ({ message })) };
 			}
-			const rolesErrors = await fields?.roles.validate?.(value);
+			const rolesErrors = await fields?.roles?.validate?.(value);
 			if (rolesErrors && rolesErrors.length > 0) {
 				errors['roles'] = { errors: rolesErrors.map((message) => ({ message })) };
 			}
-			const realmErrors = await fields?.realm.validate?.(value);
+			const realmErrors = await fields?.realm?.validate?.(value);
 			if (realmErrors && realmErrors.length > 0) {
 				errors['realm'] = { errors: realmErrors.map((message) => ({ message })) };
 			}
@@ -98,13 +98,15 @@
 </script>
 
 <div class="flex justify-between">
-	<span class="text-xl font-semibold self-center">
-		{#if title}
-			{title}
-		{:else}
-			{$LL.graphql.objects.Group.name()}
-		{/if}
-	</span>
+	<slot name="title">
+		<span class="text-xl font-semibold self-center">
+			{#if title}
+				{title}
+			{:else}
+				{$LL.graphql.objects.Group.name()}
+			{/if}
+		</span>
+	</slot>
 	<Buttons
 		{showRemoveButton}
 		{showUnbindButton}
@@ -125,7 +127,7 @@
 	{#if isFetching}
 		<Loading />
 	{:else if value}
-		<slot name="name">
+		<slot name="name" {value} {errors} {fields}>
 			{#if !fields?.name?.hidden?.(value)}
 				<FormControl let:id {...fields?.name?.props?.(value)?.['control']}>
 					<Label
@@ -140,13 +142,13 @@
 						errors={errors.name}
 						readonly={fields?.name?.readonly?.(value)}
 						disabled={fields?.name?.disabled?.(value)}
-						on:change={(e) => fields?.name.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.name?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.name?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="description">
+		<slot name="description" {value} {errors} {fields}>
 			{#if !fields?.description?.hidden?.(value)}
 				<FormControl let:id {...fields?.description?.props?.(value)?.['control']}>
 					<Label
@@ -161,13 +163,13 @@
 						errors={errors.description}
 						readonly={fields?.description?.readonly?.(value)}
 						disabled={fields?.description?.disabled?.(value)}
-						on:change={(e) => fields?.description.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.description?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.description?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="path">
+		<slot name="path" {value} {errors} {fields}>
 			{#if !fields?.path?.hidden?.(value)}
 				<FormControl let:id {...fields?.path?.props?.(value)?.['control']}>
 					<Label
@@ -182,13 +184,13 @@
 						errors={errors.path}
 						readonly={fields?.path?.readonly?.(value)}
 						disabled={fields?.path?.disabled?.(value)}
-						on:change={(e) => fields?.path.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.path?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.path?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="deep">
+		<slot name="deep" {value} {errors} {fields}>
 			{#if !fields?.deep?.hidden?.(value)}
 				<FormControl let:id {...fields?.deep?.props?.(value)?.['control']}>
 					<Label
@@ -203,13 +205,13 @@
 						errors={errors.deep}
 						readonly={fields?.deep?.readonly?.(value)}
 						disabled={fields?.deep?.disabled?.(value)}
-						on:change={(e) => fields?.deep.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.deep?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.deep?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="parentId">
+		<slot name="parentId" {value} {errors} {fields}>
 			{#if !fields?.parentId?.hidden?.(value)}
 				<FormControl let:id {...fields?.parentId?.props?.(value)?.['control']}>
 					<Label
@@ -224,13 +226,13 @@
 						errors={errors.parentId}
 						readonly={fields?.parentId?.readonly?.(value)}
 						disabled={fields?.parentId?.disabled?.(value)}
-						on:change={(e) => fields?.parentId.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.parentId?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.parentId?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="parent">
+		<slot name="parent" {value} {errors} {fields}>
 			{#if !fields?.parent?.hidden?.(value)}
 				<FormControl let:id {...fields?.parent?.props?.(value)?.['control']}>
 					<Label
@@ -245,13 +247,13 @@
 						errors={errors.parent}
 						readonly={fields?.parent?.readonly?.(value)}
 						disabled={fields?.parent?.disabled?.(value)}
-						on:change={(e) => fields?.parent.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.parent?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.parent?.props?.(value)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="subGroups">
+		<slot name="subGroups" {value} {errors} {fields}>
 			{#if !fields?.subGroups?.hidden?.(value)}
 				<FormControl let:id {...fields?.subGroups?.props?.(value)?.['control']}>
 					<Label
@@ -266,14 +268,14 @@
 						errors={errors.subGroups}
 						readonly={fields?.subGroups?.readonly?.(value)}
 						disabled={fields?.subGroups?.disabled?.(value)}
-						on:change={(e) => fields?.subGroups.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.subGroups?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						list
 						{...fields?.subGroups?.props?.(value)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="users">
+		<slot name="users" {value} {errors} {fields}>
 			{#if !fields?.users?.hidden?.(value)}
 				<FormControl let:id {...fields?.users?.props?.(value)?.['control']}>
 					<Label
@@ -288,14 +290,14 @@
 						errors={errors.users}
 						readonly={fields?.users?.readonly?.(value)}
 						disabled={fields?.users?.disabled?.(value)}
-						on:change={(e) => fields?.users.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.users?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						list
 						{...fields?.users?.props?.(value)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="roles">
+		<slot name="roles" {value} {errors} {fields}>
 			{#if !fields?.roles?.hidden?.(value)}
 				<FormControl let:id {...fields?.roles?.props?.(value)?.['control']}>
 					<Label
@@ -310,14 +312,14 @@
 						errors={errors.roles}
 						readonly={fields?.roles?.readonly?.(value)}
 						disabled={fields?.roles?.disabled?.(value)}
-						on:change={(e) => fields?.roles.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.roles?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						list
 						{...fields?.roles?.props?.(value)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="realm">
+		<slot name="realm" {value} {errors} {fields}>
 			{#if !fields?.realm?.hidden?.(value)}
 				<FormControl let:id {...fields?.realm?.props?.(value)?.['control']}>
 					<Label
@@ -341,7 +343,7 @@
 							class="btn-link"
 							readonly={fields?.realm?.readonly?.(value)}
 							disabled={fields?.realm?.disabled?.(value)}
-							on:select={(e) => fields?.realm.onChange?.(e.detail.value, value).then((next) => value = next)}
+							on:select={(e) => fields?.realm?.onChange?.(e.detail.value, value).then((next) => value = next)}
 							{...fields?.realm?.props?.(value)?.['dialog']}
 						/>
 					{/if}

@@ -7,17 +7,17 @@
 	import { Form, FormControl, Label } from '@graphace/ui';
 	import { StringFilter } from '@graphace/ui-graphql';
 	import RealmSelectFilter from '~/lib/components/objects/realm/RealmSelectFilter.svelte';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RealmExpression } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: RealmExpression | null | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const contextClass = getContext<string>('ui.popover-content') || '';
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
 		filter: { value?: RealmExpression | null | undefined };
@@ -27,10 +27,6 @@
 		id: undefined,
 		name: undefined,
 		description: undefined
-	}
-
-	if (value) {
-		_value = { ..._value, ...value };
 	}
 
 	const filter = (): void => {
@@ -55,7 +51,13 @@
 		states: { open }
 	} = createPopover({
 		forceVisible: true,
-		preventScroll: true
+		preventScroll: true,
+		onOpenChange: ({ curr, next }) => {
+			if (curr !== next && next) {
+				_value = { ..._value, ...value };
+			}
+			return next;
+		}
 	});
 </script>
 
@@ -68,15 +70,15 @@
 		<Form class="max-h-60 overflow-y-auto">
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.Realm.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<RealmSelectFilter {id} name="id" bind:value={_value.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Realm.fields.name.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Realm.fields.description.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 			</FormControl>

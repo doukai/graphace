@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_PermissionFields } from '~/lib/stores/fragment/fragment_PermissionFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationPermissionArgs } from '~/lib/types/schema';
@@ -13,7 +12,7 @@ const query = /* GraphQL */ `mutation Mutation_permission($id: ID, $name: String
 }
 ${fragment_PermissionFields}`;
 
-export function createMutation_permission_Store(event: LoadEvent | RequestEvent): Mutation_permission_Store {
+export function createMutation_permission_Store(event: Event): Mutation_permission_Store {
   return createGraphQLMutationStore<Permission, MutationPermissionArgs>(query, event);
 }
 

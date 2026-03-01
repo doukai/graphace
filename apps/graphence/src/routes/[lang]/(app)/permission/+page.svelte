@@ -3,8 +3,6 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
-	import type { Query_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
-	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import {
 		validator,
 		permissions,
@@ -20,10 +18,10 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_permissionConnection_Store = data.query_permissionConnection_Store as Query_permissionConnection_Store;
+	$: query_permissionConnection_Store = data.query_permissionConnection_Store;
 	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
-	$: mutation_permission_Store = data.mutation_permission_Store as Mutation_permission_Store;
+	$: mutation_permission_Store = data.mutation_permission_Store;
 	let args: QueryPermissionConnectionArgs = {};
 	let orderBy: PermissionOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,13 +82,14 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.Permission.name()}</span>
-			</li>
-		</Breadcrumbs>
+
+<Breadcrumbs>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.Permission.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<PermissionTable
 			showRemoveButton={auth('Permission::isDeprecated::WRITE')}
 			showEditButton

@@ -1,10 +1,11 @@
-import { type ServerLoadEvent, fail, redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
+import type { Errors } from '@graphace/commons';
 import { createMutation_login_Store } from '~/lib/stores/mutation/mutation_login_store';
 import { validator } from '~/utils';
-import type { Actions } from './$types';
+import type { Actions, RequestEvent } from './$types';
 
 export const actions = {
-    default: async (event: ServerLoadEvent) => {
+    default: async (event: RequestEvent) => {
         const { cookies } = event;
         const data = await event.request.formData();
         const login = data.get('login')?.toString() || undefined;
@@ -25,7 +26,7 @@ export const actions = {
                 { login, password }
             );
         } catch (errors) {
-            return fail(400, { errors, logining: false });
+            return fail(400, { errors: errors as Record<string, Errors>, logining: false });
         }
 
         if (login && password) {

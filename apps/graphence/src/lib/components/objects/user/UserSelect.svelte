@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import type { Option } from '@graphace/ui';
 	import { ObjectSelect } from '@graphace/ui-graphql';
@@ -10,8 +10,6 @@
 	export let name: string | undefined = undefined;
 	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined = undefined;
 	export let selected: Option | Option[] | undefined = undefined;
-	export let val: string | null | undefined = undefined;
-	export let arr: (string | null | undefined)[] | null | undefined = [];
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
 	export let disabled = false;
@@ -23,8 +21,6 @@
 	const dispatch = createEventDispatcher<{
 		change: {
 			value: UserInput | (UserInput | null | undefined)[] | null | undefined;
-			val: string | null | undefined;
-			arr: (string | null | undefined)[] | null | undefined;
 		};
 	}>();
 
@@ -71,24 +67,6 @@
 		} else {
 			selected = { label: value?.name, value: value.id, node: value  };
 		}
-	} else if (val) {
-		namedQueryStore.fetch(query, { id: { opr: 'EQ', val } }).then(
-			(response) =>
-				(selected = response.data?.userList?.map((item) => ({
-					label: item?.name,
-					value: item?.id,
-					node: item
-				}))?.[0])
-		);
-	} else if (arr && arr.length > 0) {
-		namedQueryStore.fetch(query, { id: { opr: 'IN', arr } }).then(
-			(response) =>
-				(selected = response.data?.userList?.map((item) => ({
-					label: item?.name,
-					value: item?.id,
-					node: item
-				})))
-		);
 	}
 </script>
 
@@ -111,18 +89,12 @@
 				name: item.label,
 				...item.node
 			}));
-			arr = e.detail.value.map((item) => item.value);
-			val = undefined;
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
 			value = { id: e.detail.value.value, name: e.detail.value.label, ...e.detail.value.node };
-			val = e.detail.value.value;
-			arr = [];
 		} else {
 			value = null;
-			val = undefined;
-			arr = [];
 		}
-		dispatch('change', { value, val, arr });
+		dispatch('change', { value });
 	}}
 	on:search={(e) => {
 		if (e.detail.searchValue) {

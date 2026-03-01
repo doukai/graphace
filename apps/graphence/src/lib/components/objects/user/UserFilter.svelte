@@ -9,17 +9,17 @@
 	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
 	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { UserExpression } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: UserExpression | null | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const contextClass = getContext<string>('ui.popover-content') || '';
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
 		filter: { value?: UserExpression | null | undefined };
@@ -36,10 +36,6 @@
 		disable: undefined,
 		groups: { id: undefined },
 		roles: { id: undefined },
-	}
-
-	if (value) {
-		_value = { ..._value, ...value };
 	}
 
 	const filter = (): void => {
@@ -71,7 +67,13 @@
 		states: { open }
 	} = createPopover({
 		forceVisible: true,
-		preventScroll: true
+		preventScroll: true,
+		onOpenChange: ({ curr, next }) => {
+			if (curr !== next && next) {
+				_value = { ..._value, ...value };
+			}
+			return next;
+		}
 	});
 </script>
 
@@ -84,45 +86,49 @@
 		<Form class="max-h-60 overflow-y-auto">
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.User.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<UserSelectFilter {id} name="id" bind:value={_value.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.name.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.description.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.lastName.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="lastName" bind:value={_value.lastName} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.login.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="login" bind:value={_value.login} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.email.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="email" bind:value={_value.email} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.phones.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="phones" bind:value={_value.phones} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.User.fields.disable.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<BooleanFilter {id} name="disable" bind:value={_value.disable} />
 				</div>
-				<Label {id} text={$LL.graphql.objects.User.fields.groups.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="groups" bind:value={_value.groups.id} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.User.fields.roles.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
-				</div>
+				{#if _value?.groups?.id}
+					<Label {id} text={$LL.graphql.objects.User.fields.groups.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<GroupSelectFilter {id} name="groups" bind:value={_value.groups.id} />
+					</div>
+				{/if}
+				{#if _value?.roles?.id}
+					<Label {id} text={$LL.graphql.objects.User.fields.roles.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
+					</div>
+				{/if}
 			</FormControl>
 		</Form>
 		<div class="flex justify-center space-x-1 pt-1">

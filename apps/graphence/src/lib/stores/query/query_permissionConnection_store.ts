@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_PermissionFields } from '~/lib/stores/fragment/fragment_PermissionFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryPermissionConnectionArgs } from '~/lib/types/schema';
@@ -17,11 +16,11 @@ const query = /* GraphQL */ `query Query_permissionConnection($id: StringExpress
 }
 ${fragment_PermissionFields}`;
 
-export function createQuery_permissionConnection_Store(event: LoadEvent | RequestEvent): Query_permissionConnection_Store {
+export function createQuery_permissionConnection_Store(event: Event): Query_permissionConnection_Store {
   return createGraphQLQueryStore<PermissionConnection, QueryPermissionConnectionArgs>(query, event);
 }
 
-export async function fetchQuery_permissionConnection_Store(event: LoadEvent | RequestEvent, variables: QueryPermissionConnectionArgs): Promise<Query_permissionConnection_Store> {
+export async function fetchQuery_permissionConnection_Store(event: Event, variables: QueryPermissionConnectionArgs): Promise<Query_permissionConnection_Store> {
   return fetchGraphQLQueryStore<PermissionConnection, QueryPermissionConnectionArgs>(query, event, variables);
 }
 

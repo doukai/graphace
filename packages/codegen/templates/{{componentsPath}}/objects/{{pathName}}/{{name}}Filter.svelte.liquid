@@ -91,20 +91,20 @@
 			<FormControl let:id>
 				{%- if isNamed %}
 				<Label {id} text={$LL.graphql.objects.{{ name }}.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<{{ name }}SelectFilter {id} name="{{ idName }}" bind:value={_value.{{ idName }}} />
 				</div>
 				{%- endif %}
 				{%- for field in fields %}
 				{%- if field.isScalarType or field.isEnumType %}
 				<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<{{ field.fieldTypeName }}Filter {id} name="{{ field.fieldName }}" bind:value={_value.{{ field.fieldName }}} />
 				</div>
 				{%- elsif field.isSelect %}
 				{#if _value?.{{ field.fieldName }}?.{{ field.fieldTypeIdName }}}
 					<Label {id} text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()} />
-					<div class="grid grid-cols-2 gap-1">
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 						<{{ field.fieldTypeName }}SelectFilter {id} name="{{ field.fieldName }}" bind:value={_value.{{ field.fieldName }}.{{ field.fieldTypeIdName }}} />
 					</div>
 				{/if}

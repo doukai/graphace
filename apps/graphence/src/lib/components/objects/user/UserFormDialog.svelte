@@ -103,30 +103,10 @@
 </script>
 
 <Dialog bind:close>
-	<svelte:fragment slot="trigger" let:trigger let:zIndex>
-		<div class="tooltip md:hidden" data-tip={text}>
-			<button
-				use:melt={trigger}
-				class="btn {className} max-sm:btn-square"
-				{disabled}
-				on:click={(e) => {
-					if (queryById && value?.id) {
-						query();
-					}
-				}}
-			>
-				<slot name="sm">
-					{#if text}
-						{text}
-					{:else}
-						{$LL.ui.button.select()}
-					{/if}
-				</slot>
-			</button>
-		</div>
+	<div class="tooltip" data-tip={text} slot="trigger" let:trigger let:zIndex>
 		<button
 			use:melt={trigger}
-			class="btn {className} max-md:hidden"
+			class="btn truncate {className} max-sm:hidden"
 			{disabled}
 			on:click={(e) => {
 				if (queryById && value?.id) {
@@ -142,7 +122,25 @@
 				{/if}
 			</slot>
 		</button>
-	</svelte:fragment>
+		<button
+			use:melt={trigger}
+			class="btn btn-square truncate {className} sm:hidden"
+			{disabled}
+			on:click={(e) => {
+				if (queryById && value?.id) {
+					query();
+				}
+			}}
+		>
+			<slot name="sm">
+				{#if text}
+					{text}
+				{:else}
+					{$LL.ui.button.select()}
+				{/if}
+			</slot>
+		</button>
+	</div>
 	<svelte:fragment let:zIndex>
 		<UserForm
 			showSaveButton={!readonly && auth('User::*::WRITE')}

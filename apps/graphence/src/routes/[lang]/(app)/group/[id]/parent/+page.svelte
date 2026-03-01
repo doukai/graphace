@@ -5,9 +5,6 @@
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
-	import type { Query_group_parent_Store } from '~/lib/stores/query/query_group_parent_store';
-	import type { Mutation_group_parent_Store } from '~/lib/stores/mutation/mutation_group_parent_store';
-	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import {
 		validator,
 		permissions,
@@ -22,19 +19,20 @@
 
 	const { validate } = validator;
 	const { auth } = permissions;
-
-	$: query_group_parent_Store = data.query_group_parent_Store as Query_group_parent_Store;
+	
+	$: id = data.id;
+	$: query_group_parent_Store = data.query_group_parent_Store;
 	$: group = $query_group_parent_Store.response.data?.group;
-	$: node = group?.parent;
-	$: mutation_group_parent_Store = data.mutation_group_parent_Store as Mutation_group_parent_Store;
-	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
+	$: group = group?.parent;
+	$: mutation_group_parent_Store = data.mutation_group_parent_Store;
+	$: mutation_group_Store = data.mutation_group_Store;
 
 	let value = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if (group && Object.keys(group).length > 0) {
+		value = group;
 		showUnbindButton = true;
 	}
 
@@ -70,7 +68,7 @@
 			.then((data) => {
 				errors = {};
 				mutation_group_parent_Store.fetch({
-					group_id: group?.id,
+					group_id: id,
 					group_parent: input
 				}).then((result) => {
 					if (result.errors) {
@@ -96,23 +94,23 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.Group.name()}</span>
-				</a>
-			</li>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group/${group?.id}`)}>
-					<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Group.name() })}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.Group.fields.parent.name()}</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.Group.name()}</span>
+		</a>
+	</li>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group/${group?.id}`)}>
+			<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Group.name() })}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.Group.fields.parent.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<GroupForm
 			showSaveButton={auth('Group::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('Group::isDeprecated::WRITE')}
@@ -158,7 +156,7 @@
 					singleChoice
 					class="btn-accent"
 					on:select={(e) => {
-						if (!Array.isArray(e.detail.value)) {
+						if (!Array.isArray(e.detail.value) && e.detail.value !== undefined) {
 							merge(e.detail.value);
 						}
 					}}

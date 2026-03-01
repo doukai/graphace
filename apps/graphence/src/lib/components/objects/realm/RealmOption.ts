@@ -4,13 +4,13 @@ import type {
 	RealmInput,
 	QueryRealmListArgs
 } from '~/lib/types/schema';
-import { LL } from '$i18n/i18n-svelte';
+import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
 
-export const realmTabs: TabInfo[] | undefined = undefined;
+export const realmTabs: (($LL: TranslationFunctions, args?: QueryRealmListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
-export const realmTab: string | undefined = undefined;
+export const realmTab: ((args?: QueryRealmListArgs | undefined) => string | undefined) | undefined = undefined;
 
 export const realmTabChange = async (tab: any, args: QueryRealmListArgs) => {
 	return new Promise(
@@ -24,8 +24,8 @@ export const realmTabChange = async (tab: any, args: QueryRealmListArgs) => {
 }
 
 export type RealmFields = {
-	name: Option<RealmInput, QueryRealmListArgs>;
-	description: Option<RealmInput, QueryRealmListArgs>;
+	name?: Option<RealmInput, QueryRealmListArgs> | undefined;
+	description?: Option<RealmInput, QueryRealmListArgs> | undefined;
 };
 
 export const realmFields: RealmFields = {

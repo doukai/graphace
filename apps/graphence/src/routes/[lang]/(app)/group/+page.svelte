@@ -3,8 +3,6 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
-	import type { Query_groupConnection_Store } from '~/lib/stores/query/query_groupConnection_store';
-	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import {
 		validator,
 		permissions,
@@ -20,10 +18,10 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_groupConnection_Store = data.query_groupConnection_Store as Query_groupConnection_Store;
+	$: query_groupConnection_Store = data.query_groupConnection_Store;
 	$: nodes = $query_groupConnection_Store.response.data?.groupConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_groupConnection_Store.response.data?.groupConnection?.totalCount || 0;
-	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
+	$: mutation_group_Store = data.mutation_group_Store;
 	let args: QueryGroupConnectionArgs = {};
 	let orderBy: GroupOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,13 +82,14 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.Group.name()}</span>
-			</li>
-		</Breadcrumbs>
+
+<Breadcrumbs>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.Group.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<GroupTable
 			showRemoveButton={auth('Group::isDeprecated::WRITE')}
 			showEditButton

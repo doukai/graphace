@@ -3,8 +3,6 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
-	import type { Query_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
-	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import {
 		validator,
 		permissions,
@@ -20,10 +18,10 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_userConnection_Store = data.query_userConnection_Store as Query_userConnection_Store;
+	$: query_userConnection_Store = data.query_userConnection_Store;
 	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_userConnection_Store.response.data?.userConnection?.totalCount || 0;
-	$: mutation_user_Store = data.mutation_user_Store as Mutation_user_Store;
+	$: mutation_user_Store = data.mutation_user_Store;
 	let args: QueryUserConnectionArgs = {};
 	let orderBy: UserOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,13 +82,14 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.User.name()}</span>
-			</li>
-		</Breadcrumbs>
+
+<Breadcrumbs>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.User.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<UserTable
 			showRemoveButton={auth('User::isDeprecated::WRITE')}
 			showEditButton

@@ -2,8 +2,6 @@
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
-	import type { Query_group_Store } from '~/lib/stores/query/query_group_store';
-	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import {
 		validator,
 		permissions,
@@ -19,15 +17,15 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_group_Store = data.query_group_Store as Query_group_Store;
-	$: node = $query_group_Store.response.data?.group;
-	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
+	$: query_group_Store = data.query_group_Store;
+	$: group = $query_group_Store.response.data?.group;
+	$: mutation_group_Store = data.mutation_group_Store;
 
 	let value: GroupInput = {};
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if (group && Object.keys(group).length > 0) {
+		value = group;
 	}
 
 	const mutation = (args: MutationGroupArgs) => {
@@ -58,22 +56,22 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.Group.name()}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">
-					{value?.id != null
-						? $LL.graphence.path.edit({ name: $LL.graphql.objects.Group.name() })
-						: $LL.graphence.path.create({ name: $LL.graphql.objects.Group.name() })}
-				</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.Group.name()}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">
+			{value?.id != null
+				? $LL.graphence.path.edit({ name: $LL.graphql.objects.Group.name() })
+				: $LL.graphence.path.create({ name: $LL.graphql.objects.Group.name() })}
+		</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<GroupForm
 			showSaveButton={auth('Group::*::WRITE')}
 			showRemoveButton={auth('Group::isDeprecated::WRITE')}

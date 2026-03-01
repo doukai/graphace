@@ -6,12 +6,12 @@
 	import type { NamespaceErrorsTranslation, TranslationFunctions } from '$i18n/i18n-types';
 
 	export let errors: Record<string, Errors> = {};
-	export let authErrorCodes: number[] = [];
+	export let authErrorCodes: (number | null | undefined)[] | undefined = undefined;
 	export let logining: boolean = false;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
-	$: authErrorMessageKeys = authErrorCodes.map(
+	$: authErrorMessageKeys = authErrorCodes?.map(
 		(code) => ('' + code) as keyof NamespaceErrorsTranslation['code']
 	);
 
@@ -78,11 +78,13 @@
 								>{$LL.graphence.login.forgot()}</a
 							>
 						</div>
-						{#each authErrorMessageKeys as messageKey}
-							<p class="text-error text-center text-sm font-semibold">
-								{$LL.errors.code[messageKey]()}
-							</p>
-						{/each}
+						{#if authErrorMessageKeys}
+							{#each authErrorMessageKeys as messageKey}
+								<p class="text-error text-center text-sm font-semibold">
+									{$LL.errors.code[messageKey]()}
+								</p>
+							{/each}
+						{/if}
 					</div>
 					<div class="form-control mt-6">
 						<button class="btn btn-primary" disabled={logining}>

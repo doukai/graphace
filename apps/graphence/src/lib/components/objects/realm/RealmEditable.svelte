@@ -54,10 +54,10 @@
 	export let showSearchInput: boolean = false;
 	export let title: string | undefined = undefined;
 	export let zIndex: number = 0;
-	let className: string | undefined = 'table-pin-rows table-pin-cols';
+	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
 	export { className as class };
-	export let tabs: TabInfo[] | undefined = realmTabs;
-	export let tab: string | undefined = realmTab;
+	export let tabs: (($LL: TranslationFunctions, args?: QueryRealmListArgs | undefined) => TabInfo[] | undefined) | undefined = realmTabs;
+	export let tab: ((args?: QueryRealmListArgs | undefined) => string | undefined) | undefined = realmTab;
 	export let fields: RealmFields | undefined = realmFields;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -82,6 +82,7 @@
 			value: RealmInput | (RealmInput | null | undefined)[] | null | undefined ;
 			row?: number[] | number | undefined;
 		};
+		tabChange: { tab: any; origin: any; };
 		create: {};
 		back: {};
 	}>();
@@ -118,11 +119,11 @@
 
 	const validateRow = async (value: RealmInput) => {
 		const errors: Record<string, Errors> = {};
-		const nameErrors = await fields?.name.validate?.(value);
+		const nameErrors = await fields?.name?.validate?.(value);
 		if (nameErrors && nameErrors.length > 0) {
 			errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
 		}
-		const descriptionErrors = await fields?.description.validate?.(value);
+		const descriptionErrors = await fields?.description?.validate?.(value);
 		if (descriptionErrors && descriptionErrors.length > 0) {
 			errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
 		}
@@ -132,13 +133,15 @@
 
 <div class="flex justify-between">
 	<slot name="start" />
-	<span class="text-xl font-semibold self-center max-sm:hidden">
-		{#if title}
-			{title}
-		{:else}
-			{$LL.graphql.objects.Realm.name()}
-		{/if}
-	</span>
+	<slot name="title">
+		<span class="text-xl font-semibold self-center max-sm:hidden">
+			{#if title}
+				{title}
+			{:else}
+				{$LL.graphql.objects.Realm.name()}
+			{/if}
+		</span>
+	</slot>
 	<Buttons
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
@@ -167,9 +170,11 @@
 		on:back
 	>
 		<svelte:fragment slot="start">
-			{#if showSearchInput}
-				<SearchInput class="max-sm:w-full" on:search />
-			{/if}
+			<slot name="search">
+				{#if showSearchInput}
+					<SearchInput class="max-sm:w-full" on:search />
+				{/if}
+			</slot>
 			<div class="sm:hidden">
 				<RealmFilter
 					bind:value={args}
@@ -202,11 +207,12 @@
 	</Buttons>
 </div>
 <div class="divider my-0" />
-{#if tabs}
+{#if tabs?.($LL, args)}
 	<Tabs
-		value={tab}
-		{tabs}
+		value={tab?.(args)}
+		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
+			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
 			if (e.detail.value !== e.detail.origin) {
 				realmTabChange(e.detail.value, args).then((args) => {
 					dispatch('query', {
@@ -247,26 +253,28 @@
 					/>
 				</label>
 			</th>
-			<slot name="name-th">
-				{#if !fields?.name?.hiddenCol?.(args, tab)}
+			<slot name="name-th" {args} {orderBy} {fields}>
+				{#if !fields?.name?.hiddenCol?.(args, tab?.(args))}
 					<StringTh
 						name={$LL.graphql.objects.Realm.fields.name.name()}
 						bind:value={args.name}
 						bind:sort={orderBy.name}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.name?.required?.()}
+						{zIndex}
 						{...fields?.name?.props?.()?.['th']}
 					/>
 				{/if}
 			</slot>
-			<slot name="description-th">
-				{#if !fields?.description?.hiddenCol?.(args, tab)}
+			<slot name="description-th" {args} {orderBy} {fields}>
+				{#if !fields?.description?.hiddenCol?.(args, tab?.(args))}
 					<StringTh
 						name={$LL.graphql.objects.Realm.fields.description.name()}
 						bind:value={args.description}
 						bind:sort={orderBy.description}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.description?.required?.()}
+						{zIndex}
 						{...fields?.description?.props?.()?.['th']}
 					/>
 				{/if}
@@ -304,30 +312,30 @@
 								/>
 							</label>
 						</th>
-						<slot name="name">
-							{#if !fields?.name?.hiddenCol?.(args, tab)}
+						<slot name="name" {node} {errors} {fields} {row}>
+							{#if !fields?.name?.hiddenCol?.(args, tab?.(args))}
 								<Td {zIndex} {...fields?.name?.props?.(node)?.['td']}>
 									<StringInput
 										name="name"
 										bind:value={node.name}
 										readonly={fields?.name?.readonly?.(node)}
 										disabled={fields?.name?.disabled?.(node)}
-										on:change={(e) => fields?.name.onChange?.(e.detail.value, node).then((next) => node = next)}
+										on:change={(e) => fields?.name?.onChange?.(e.detail.value, node).then((next) => node = next)}
 										errors={errors?.[row]?.iterms?.name}
 										{...fields?.name?.props?.(node)?.['input']}
 									/>
 								</Td>
 							{/if}
 						</slot>
-						<slot name="description">
-							{#if !fields?.description?.hiddenCol?.(args, tab)}
+						<slot name="description" {node} {errors} {fields} {row}>
+							{#if !fields?.description?.hiddenCol?.(args, tab?.(args))}
 								<Td {zIndex} {...fields?.description?.props?.(node)?.['td']}>
 									<StringInput
 										name="description"
 										bind:value={node.description}
 										readonly={fields?.description?.readonly?.(node)}
 										disabled={fields?.description?.disabled?.(node)}
-										on:change={(e) => fields?.description.onChange?.(e.detail.value, node).then((next) => node = next)}
+										on:change={(e) => fields?.description?.onChange?.(e.detail.value, node).then((next) => node = next)}
 										errors={errors?.[row]?.iterms?.description}
 										{...fields?.description?.props?.(node)?.['input']}
 									/>
@@ -468,8 +476,8 @@
 					</tr>
 				</thead>
 				<tbody class="border">
-					<slot name="name-sm">
-						{#if !fields?.name?.hiddenCol?.(args, tab)}
+					<slot name="name-sm" {node} {errors} {fields} {row}>
+						{#if !fields?.name?.hiddenCol?.(args, tab?.(args))}
 							<Tr class="hover" let:id {...fields?.name?.props?.(node)?.['tr']}>
 								<td>
 									<Label
@@ -486,7 +494,7 @@
 										bind:value={node.name}
 										readonly={fields?.name?.readonly?.(node)}
 										disabled={fields?.name?.disabled?.(node)}
-										on:change={(e) => fields?.name.onChange?.(e.detail.value, node).then((next) => node = next)}
+										on:change={(e) => fields?.name?.onChange?.(e.detail.value, node).then((next) => node = next)}
 										errors={errors?.[row]?.iterms?.name}
 										{...fields?.name?.props?.(node)?.['input']}
 									/>
@@ -494,8 +502,8 @@
 							</Tr>
 						{/if}
 					</slot>
-					<slot name="description-sm">
-						{#if !fields?.description?.hiddenCol?.(args, tab)}
+					<slot name="description-sm" {node} {errors} {fields} {row}>
+						{#if !fields?.description?.hiddenCol?.(args, tab?.(args))}
 							<Tr class="hover" let:id {...fields?.description?.props?.(node)?.['tr']}>
 								<td>
 									<Label
@@ -512,7 +520,7 @@
 										bind:value={node.description}
 										readonly={fields?.description?.readonly?.(node)}
 										disabled={fields?.description?.disabled?.(node)}
-										on:change={(e) => fields?.description.onChange?.(e.detail.value, node).then((next) => node = next)}
+										on:change={(e) => fields?.description?.onChange?.(e.detail.value, node).then((next) => node = next)}
 										errors={errors?.[row]?.iterms?.description}
 										{...fields?.description?.props?.(node)?.['input']}
 									/>

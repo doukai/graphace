@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_RealmFields } from '~/lib/stores/fragment/fragment_RealmFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationRealmListArgs } from '~/lib/types/schema';
@@ -12,7 +11,7 @@ const query = /* GraphQL */ `mutation Mutation_realmList($id: ID, $name: String,
 }
 ${fragment_RealmFields}`;
 
-export function createMutation_realmList_Store(event: LoadEvent | RequestEvent): Mutation_realmList_Store {
+export function createMutation_realmList_Store(event: Event): Mutation_realmList_Store {
   return createGraphQLMutationStore<Realm[], MutationRealmListArgs>(query, event);
 }
 

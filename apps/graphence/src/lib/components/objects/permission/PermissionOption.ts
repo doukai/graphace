@@ -6,15 +6,16 @@ import type {
 	PermissionInput,
 	QueryPermissionListArgs,
 	RoleInput,
-	RealmInput
+	RealmInput,
+	PermissionType
 } from '~/lib/types/schema';
-import { LL } from '$i18n/i18n-svelte';
+import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
 
-export const permissionTabs: TabInfo[] | undefined = undefined;
+export const permissionTabs: (($LL: TranslationFunctions, args?: QueryPermissionListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
-export const permissionTab: string | undefined = undefined;
+export const permissionTab: ((args?: QueryPermissionListArgs | undefined) => string | undefined) | undefined = undefined;
 
 export const permissionTabChange = async (tab: any, args: QueryPermissionListArgs) => {
 	return new Promise(
@@ -28,13 +29,13 @@ export const permissionTabChange = async (tab: any, args: QueryPermissionListArg
 }
 
 export type PermissionFields = {
-	name: Option<PermissionInput, QueryPermissionListArgs>;
-	description: Option<PermissionInput, QueryPermissionListArgs>;
-	field: Option<PermissionInput, QueryPermissionListArgs>;
-	type: Option<PermissionInput, QueryPermissionListArgs>;
-	permissionType: Option<PermissionInput, QueryPermissionListArgs>;
-	roles: Option<PermissionInput, QueryPermissionListArgs> & { fields?: () => RoleFields };
-	realm: Option<PermissionInput, QueryPermissionListArgs> & { fields?: () => RealmFields };
+	name?: Option<PermissionInput, QueryPermissionListArgs> | undefined;
+	description?: Option<PermissionInput, QueryPermissionListArgs> | undefined;
+	field?: Option<PermissionInput, QueryPermissionListArgs> | undefined;
+	type?: Option<PermissionInput, QueryPermissionListArgs> | undefined;
+	permissionType?: Option<PermissionInput, QueryPermissionListArgs> | undefined;
+	roles?: Option<PermissionInput, QueryPermissionListArgs> & { fields?: () => RoleFields } | undefined;
+	realm?: Option<PermissionInput, QueryPermissionListArgs> & { fields?: () => RealmFields } | undefined;
 };
 
 export const permissionFields: PermissionFields = {

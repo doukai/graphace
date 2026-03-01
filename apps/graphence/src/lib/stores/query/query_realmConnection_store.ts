@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_RealmFields } from '~/lib/stores/fragment/fragment_RealmFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRealmConnectionArgs } from '~/lib/types/schema';
@@ -17,11 +16,11 @@ const query = /* GraphQL */ `query Query_realmConnection($id: StringExpression, 
 }
 ${fragment_RealmFields}`;
 
-export function createQuery_realmConnection_Store(event: LoadEvent | RequestEvent): Query_realmConnection_Store {
+export function createQuery_realmConnection_Store(event: Event): Query_realmConnection_Store {
   return createGraphQLQueryStore<RealmConnection, QueryRealmConnectionArgs>(query, event);
 }
 
-export async function fetchQuery_realmConnection_Store(event: LoadEvent | RequestEvent, variables: QueryRealmConnectionArgs): Promise<Query_realmConnection_Store> {
+export async function fetchQuery_realmConnection_Store(event: Event, variables: QueryRealmConnectionArgs): Promise<Query_realmConnection_Store> {
   return fetchGraphQLQueryStore<RealmConnection, QueryRealmConnectionArgs>(query, event, variables);
 }
 

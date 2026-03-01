@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_PermissionFields } from '~/lib/stores/fragment/fragment_PermissionFields';
 import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
@@ -21,11 +20,11 @@ const query = /* GraphQL */ `query Query_role_permissionsConnection($role_id: St
 ${fragment_PermissionFields}
 ${fragment_RoleFields}`;
 
-export function createQuery_role_permissionsConnection_Store(event: LoadEvent | RequestEvent): Query_role_permissionsConnection_Store {
+export function createQuery_role_permissionsConnection_Store(event: Event): Query_role_permissionsConnection_Store {
   return createGraphQLQueryStore<Role, { role_id: string } & QueryPermissionConnectionArgs>(query, event);
 }
 
-export async function fetchQuery_role_permissionsConnection_Store(event: LoadEvent | RequestEvent, variables: { role_id: string } & QueryPermissionConnectionArgs): Promise<Query_role_permissionsConnection_Store> {
+export async function fetchQuery_role_permissionsConnection_Store(event: Event, variables: { role_id: string } & QueryPermissionConnectionArgs): Promise<Query_role_permissionsConnection_Store> {
   return fetchGraphQLQueryStore<Role, { role_id: string } & QueryPermissionConnectionArgs>(query, event, variables);
 }
 

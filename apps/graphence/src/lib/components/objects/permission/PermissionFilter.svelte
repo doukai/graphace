@@ -8,17 +8,17 @@
 	import { StringFilter } from '@graphace/ui-graphql';
 	import PermissionTypeFilter from '~/lib/components/enums/permission-type/PermissionTypeFilter.svelte';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { PermissionExpression } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: PermissionExpression | null | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const contextClass = getContext<string>('ui.popover-content') || '';
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
 		filter: { value?: PermissionExpression | null | undefined };
@@ -32,10 +32,6 @@
 		type: undefined,
 		permissionType: undefined,
 		roles: { id: undefined },
-	}
-
-	if (value) {
-		_value = { ..._value, ...value };
 	}
 
 	const filter = (): void => {
@@ -64,7 +60,13 @@
 		states: { open }
 	} = createPopover({
 		forceVisible: true,
-		preventScroll: true
+		preventScroll: true,
+		onOpenChange: ({ curr, next }) => {
+			if (curr !== next && next) {
+				_value = { ..._value, ...value };
+			}
+			return next;
+		}
 	});
 </script>
 
@@ -77,29 +79,31 @@
 		<Form class="max-h-60 overflow-y-auto">
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.name.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.description.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.field.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="field" bind:value={_value.field} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.type.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="type" bind:value={_value.type} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Permission.fields.permissionType.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<PermissionTypeFilter {id} name="permissionType" bind:value={_value.permissionType} />
 				</div>
-				<Label {id} text={$LL.graphql.objects.Permission.fields.roles.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
-				</div>
+				{#if _value?.roles?.id}
+					<Label {id} text={$LL.graphql.objects.Permission.fields.roles.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
+					</div>
+				{/if}
 			</FormControl>
 		</Form>
 		<div class="flex justify-center space-x-1 pt-1">

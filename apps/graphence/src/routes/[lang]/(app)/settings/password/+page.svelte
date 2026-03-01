@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import { ot, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
-	import type { Mutation_currentUserResetPassword_Store } from '~/lib/stores/mutation/mutation_currentUserResetPassword_store';
 	import ResetPasswordForm from '~/lib/components/settings/ResetPasswordForm.svelte';
 	import { validator, buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import { LL } from '$i18n/i18n-svelte';
@@ -11,8 +10,7 @@
 
 	const { validate } = validator;
 
-	$: mutation_currentUserResetPassword =
-		data.mutation_currentUserResetPassword_Store as Mutation_currentUserResetPassword_Store;
+	$: mutation_currentUserResetPassword = data.mutation_currentUserResetPassword_Store;
 	let errors: Record<string, Errors> = {};
 
 	const mutation = (args: { password: string; newPassword: string }) => {
@@ -22,7 +20,7 @@
 				mutation_currentUserResetPassword.fetch(args).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({

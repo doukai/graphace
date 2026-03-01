@@ -8,6 +8,9 @@
 	export let name: string;
 	export let value: StringExpression | null | undefined = undefined;
 	export let sort: Sort | null | undefined = undefined;
+	export let disabled = false;
+	export let required: boolean | undefined = false;
+	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -19,4 +22,4 @@
 	];
 </script>
 
-<EnumTh {name} bind:value bind:sort {enums} class={className} on:filter />
+<EnumTh {name} bind:value bind:sort {enums} {disabled} {required} {zIndex} class={className} on:filter />

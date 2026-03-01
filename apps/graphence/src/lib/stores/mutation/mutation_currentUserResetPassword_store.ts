@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_UserFields } from '~/lib/stores/fragment/fragment_UserFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationCurrentUserResetPasswordArgs } from '~/lib/types/schema';
@@ -13,7 +12,7 @@ const query = /* GraphQL */ `mutation Mutation_currentUserResetPassword($passwor
 }
 ${fragment_UserFields}`;
 
-export function createMutation_currentUserResetPassword_Store(event: LoadEvent | RequestEvent): Mutation_currentUserResetPassword_Store {
+export function createMutation_currentUserResetPassword_Store(event: Event): Mutation_currentUserResetPassword_Store {
   return createGraphQLMutationStore<User, MutationCurrentUserResetPasswordArgs>(query, event);
 }
 

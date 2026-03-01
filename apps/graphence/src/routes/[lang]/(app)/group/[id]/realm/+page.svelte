@@ -5,9 +5,6 @@
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
-	import type { Query_group_realm_Store } from '~/lib/stores/query/query_group_realm_store';
-	import type { Mutation_group_realm_Store } from '~/lib/stores/mutation/mutation_group_realm_store';
-	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import {
 		validator,
 		permissions,
@@ -22,19 +19,20 @@
 
 	const { validate } = validator;
 	const { auth } = permissions;
-
-	$: query_group_realm_Store = data.query_group_realm_Store as Query_group_realm_Store;
+	
+	$: id = data.id;
+	$: query_group_realm_Store = data.query_group_realm_Store;
 	$: group = $query_group_realm_Store.response.data?.group;
-	$: node = group?.realm;
-	$: mutation_group_realm_Store = data.mutation_group_realm_Store as Mutation_group_realm_Store;
-	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
+	$: realm = group?.realm;
+	$: mutation_group_realm_Store = data.mutation_group_realm_Store;
+	$: mutation_realm_Store = data.mutation_realm_Store;
 
 	let value = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if (realm && Object.keys(realm).length > 0) {
+		value = realm;
 		showUnbindButton = true;
 	}
 
@@ -70,7 +68,7 @@
 			.then((data) => {
 				errors = {};
 				mutation_group_realm_Store.fetch({
-					group_id: group?.id,
+					group_id: id,
 					group_realm: input
 				}).then((result) => {
 					if (result.errors) {
@@ -96,23 +94,23 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.Group.name()}</span>
-				</a>
-			</li>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group/${group?.id}`)}>
-					<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Group.name() })}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.Group.fields.realm.name()}</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.Group.name()}</span>
+		</a>
+	</li>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/group/${group?.id}`)}>
+			<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Group.name() })}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.Group.fields.realm.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<RealmForm
 			showSaveButton={auth('Realm::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('Realm::isDeprecated::WRITE')}
@@ -157,7 +155,7 @@
 					singleChoice
 					class="btn-accent"
 					on:select={(e) => {
-						if (!Array.isArray(e.detail.value)) {
+						if (!Array.isArray(e.detail.value) && e.detail.value !== undefined) {
 							merge(e.detail.value);
 						}
 					}}

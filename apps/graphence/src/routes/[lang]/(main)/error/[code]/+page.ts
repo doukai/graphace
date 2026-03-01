@@ -1,7 +1,6 @@
-import type { LoadEvent } from '@sveltejs/kit';
-import type { LayoutLoad } from './$types';
+import type { PageLoad, PageLoadEvent } from './$types';
 
-export const load: LayoutLoad = async (event: LoadEvent) => {
+export const load: PageLoad = async (event: PageLoadEvent) => {
     return {
         code: event.params.code
     };

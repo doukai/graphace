@@ -3,8 +3,6 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RealmTable from '~/lib/components/objects/realm/RealmTable.svelte';
-	import type { Query_realmConnection_Store } from '~/lib/stores/query/query_realmConnection_store';
-	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import {
 		validator,
 		permissions,
@@ -20,10 +18,10 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_realmConnection_Store = data.query_realmConnection_Store as Query_realmConnection_Store;
+	$: query_realmConnection_Store = data.query_realmConnection_Store;
 	$: nodes = $query_realmConnection_Store.response.data?.realmConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_realmConnection_Store.response.data?.realmConnection?.totalCount || 0;
-	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
+	$: mutation_realm_Store = data.mutation_realm_Store;
 	let args: QueryRealmConnectionArgs = {};
 	let orderBy: RealmOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,13 +82,14 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.Realm.name()}</span>
-			</li>
-		</Breadcrumbs>
+
+<Breadcrumbs>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.Realm.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<RealmTable
 			showRemoveButton={auth('Realm::isDeprecated::WRITE')}
 			showEditButton

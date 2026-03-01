@@ -8,14 +8,16 @@
 
 	export let name: string;
 	export let value: PermissionExpression | null | undefined = undefined;
+	export let disabled = false;
 	export let required: boolean | undefined = false;
+	export let zIndex: number = 0;
 	let className: string | undefined = '';
 	export { className as class };
 
 	$: filtered = value && hasArguments(value);
 </script>
 
-<PermissionFilter bind:value let:trigger on:filter>
+<PermissionFilter bind:value {disabled} {zIndex} let:trigger on:filter>
 	<td class={className}>
 		<a class="link group inline-flex truncate" href={null} use:melt={trigger}>
 			{#if required}

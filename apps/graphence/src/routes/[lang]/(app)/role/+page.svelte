@@ -3,8 +3,6 @@
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
-	import type { Query_roleConnection_Store } from '~/lib/stores/query/query_roleConnection_store';
-	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import {
 		validator,
 		permissions,
@@ -20,10 +18,10 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_roleConnection_Store = data.query_roleConnection_Store as Query_roleConnection_Store;
+	$: query_roleConnection_Store = data.query_roleConnection_Store;
 	$: nodes = $query_roleConnection_Store.response.data?.roleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_roleConnection_Store.response.data?.roleConnection?.totalCount || 0;
-	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
+	$: mutation_role_Store = data.mutation_role_Store;
 	let args: QueryRoleConnectionArgs = {};
 	let orderBy: RoleOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,13 +82,14 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.Role.name()}</span>
-			</li>
-		</Breadcrumbs>
+
+<Breadcrumbs>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.Role.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<RoleTable
 			showRemoveButton={auth('Role::isDeprecated::WRITE')}
 			showEditButton

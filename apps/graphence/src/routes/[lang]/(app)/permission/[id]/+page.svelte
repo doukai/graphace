@@ -2,8 +2,6 @@
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
-	import type { Query_permission_Store } from '~/lib/stores/query/query_permission_store';
-	import type { Mutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import {
 		validator,
 		permissions,
@@ -19,15 +17,15 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_permission_Store = data.query_permission_Store as Query_permission_Store;
-	$: node = $query_permission_Store.response.data?.permission;
-	$: mutation_permission_Store = data.mutation_permission_Store as Mutation_permission_Store;
+	$: query_permission_Store = data.query_permission_Store;
+	$: permission = $query_permission_Store.response.data?.permission;
+	$: mutation_permission_Store = data.mutation_permission_Store;
 
 	let value: PermissionInput = {};
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if (permission && Object.keys(permission).length > 0) {
+		value = permission;
 	}
 
 	const mutation = (args: MutationPermissionArgs) => {
@@ -58,22 +56,22 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.Permission.name()}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">
-					{value?.id != null
-						? $LL.graphence.path.edit({ name: $LL.graphql.objects.Permission.name() })
-						: $LL.graphence.path.create({ name: $LL.graphql.objects.Permission.name() })}
-				</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.Permission.name()}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">
+			{value?.id != null
+				? $LL.graphence.path.edit({ name: $LL.graphql.objects.Permission.name() })
+				: $LL.graphence.path.create({ name: $LL.graphql.objects.Permission.name() })}
+		</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<PermissionForm
 			showSaveButton={auth('Permission::*::WRITE')}
 			showRemoveButton={auth('Permission::isDeprecated::WRITE')}

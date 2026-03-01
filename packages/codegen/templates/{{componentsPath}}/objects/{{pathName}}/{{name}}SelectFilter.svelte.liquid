@@ -60,7 +60,7 @@
 	) {
 		namedQueryStore.fetch(query, { id: { opr: 'IN', arr: value?.arr } }).then(
 			(response) =>
-				(selectedList = response.data?.groupList?.map((item) => ({
+				(selectedList = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
 					value: item?.id,
 					node: item
@@ -69,7 +69,7 @@
 	} else if (value?.val != null && (selected === undefined || selected.value !== value.val)) {
 		namedQueryStore.fetch(query, { id: { opr: 'EQ', val: value?.val } }).then(
 			(response) =>
-				(selected = response.data?.groupList?.map((item) => ({
+				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
 					value: item?.id,
 					node: item

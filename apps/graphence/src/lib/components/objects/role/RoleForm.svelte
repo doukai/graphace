@@ -41,31 +41,31 @@
 	const validate = async () => {
 		errors = {};
 		if (value) {
-			const nameErrors = await fields?.name.validate?.(value);
+			const nameErrors = await fields?.name?.validate?.(value);
 			if (nameErrors && nameErrors.length > 0) {
 				errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
 			}
-			const descriptionErrors = await fields?.description.validate?.(value);
+			const descriptionErrors = await fields?.description?.validate?.(value);
 			if (descriptionErrors && descriptionErrors.length > 0) {
 				errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
 			}
-			const usersErrors = await fields?.users.validate?.(value);
+			const usersErrors = await fields?.users?.validate?.(value);
 			if (usersErrors && usersErrors.length > 0) {
 				errors['users'] = { errors: usersErrors.map((message) => ({ message })) };
 			}
-			const groupsErrors = await fields?.groups.validate?.(value);
+			const groupsErrors = await fields?.groups?.validate?.(value);
 			if (groupsErrors && groupsErrors.length > 0) {
 				errors['groups'] = { errors: groupsErrors.map((message) => ({ message })) };
 			}
-			const compositesErrors = await fields?.composites.validate?.(value);
+			const compositesErrors = await fields?.composites?.validate?.(value);
 			if (compositesErrors && compositesErrors.length > 0) {
 				errors['composites'] = { errors: compositesErrors.map((message) => ({ message })) };
 			}
-			const permissionsErrors = await fields?.permissions.validate?.(value);
+			const permissionsErrors = await fields?.permissions?.validate?.(value);
 			if (permissionsErrors && permissionsErrors.length > 0) {
 				errors['permissions'] = { errors: permissionsErrors.map((message) => ({ message })) };
 			}
-			const realmErrors = await fields?.realm.validate?.(value);
+			const realmErrors = await fields?.realm?.validate?.(value);
 			if (realmErrors && realmErrors.length > 0) {
 				errors['realm'] = { errors: realmErrors.map((message) => ({ message })) };
 			}
@@ -87,13 +87,15 @@
 </script>
 
 <div class="flex justify-between">
-	<span class="text-xl font-semibold self-center">
-		{#if title}
-			{title}
-		{:else}
-			{$LL.graphql.objects.Role.name()}
-		{/if}
-	</span>
+	<slot name="title">
+		<span class="text-xl font-semibold self-center">
+			{#if title}
+				{title}
+			{:else}
+				{$LL.graphql.objects.Role.name()}
+			{/if}
+		</span>
+	</slot>
 	<Buttons
 		{showRemoveButton}
 		{showUnbindButton}
@@ -114,7 +116,7 @@
 	{#if isFetching}
 		<Loading />
 	{:else if value}
-		<slot name="name">
+		<slot name="name" {value} {errors} {fields}>
 			{#if !fields?.name?.hidden?.(value)}
 				<FormControl let:id {...fields?.name?.props?.(value)?.['control']}>
 					<Label
@@ -129,13 +131,13 @@
 						errors={errors.name}
 						readonly={fields?.name?.readonly?.(value)}
 						disabled={fields?.name?.disabled?.(value)}
-						on:change={(e) => fields?.name.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.name?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.name?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="description">
+		<slot name="description" {value} {errors} {fields}>
 			{#if !fields?.description?.hidden?.(value)}
 				<FormControl let:id {...fields?.description?.props?.(value)?.['control']}>
 					<Label
@@ -150,13 +152,13 @@
 						errors={errors.description}
 						readonly={fields?.description?.readonly?.(value)}
 						disabled={fields?.description?.disabled?.(value)}
-						on:change={(e) => fields?.description.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.description?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						{...fields?.description?.props?.(value)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="users">
+		<slot name="users" {value} {errors} {fields}>
 			{#if !fields?.users?.hidden?.(value)}
 				<FormControl let:id {...fields?.users?.props?.(value)?.['control']}>
 					<Label
@@ -179,7 +181,7 @@
 							class="btn-link"
 							readonly={fields?.users?.readonly?.(value)}
 							disabled={fields?.users?.disabled?.(value)}
-							on:select={(e) => fields?.users.onChange?.(e.detail.value, value).then((next) => value = next)}
+							on:select={(e) => fields?.users?.onChange?.(e.detail.value, value).then((next) => value = next)}
 							{...fields?.users?.props?.(value)?.['dialog']}
 						/>
 					{/if}
@@ -187,7 +189,7 @@
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="groups">
+		<slot name="groups" {value} {errors} {fields}>
 			{#if !fields?.groups?.hidden?.(value)}
 				<FormControl let:id {...fields?.groups?.props?.(value)?.['control']}>
 					<Label
@@ -202,14 +204,14 @@
 						errors={errors.groups}
 						readonly={fields?.groups?.readonly?.(value)}
 						disabled={fields?.groups?.disabled?.(value)}
-						on:change={(e) => fields?.groups.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.groups?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						list
 						{...fields?.groups?.props?.(value)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="composites">
+		<slot name="composites" {value} {errors} {fields}>
 			{#if !fields?.composites?.hidden?.(value)}
 				<FormControl let:id {...fields?.composites?.props?.(value)?.['control']}>
 					<Label
@@ -224,14 +226,14 @@
 						errors={errors.composites}
 						readonly={fields?.composites?.readonly?.(value)}
 						disabled={fields?.composites?.disabled?.(value)}
-						on:change={(e) => fields?.composites.onChange?.(e.detail.value, value).then((next) => value = next)}
+						on:change={(e) => fields?.composites?.onChange?.(e.detail.value, value).then((next) => value = next)}
 						list
 						{...fields?.composites?.props?.(value)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="permissions">
+		<slot name="permissions" {value} {errors} {fields}>
 			{#if !fields?.permissions?.hidden?.(value)}
 				<FormControl let:id {...fields?.permissions?.props?.(value)?.['control']}>
 					<Label
@@ -252,7 +254,7 @@
 							class="btn-link"
 							readonly={fields?.permissions?.readonly?.(value)}
 							disabled={fields?.permissions?.disabled?.(value)}
-							on:select={(e) => fields?.permissions.onChange?.(e.detail.value, value).then((next) => value = next)}
+							on:select={(e) => fields?.permissions?.onChange?.(e.detail.value, value).then((next) => value = next)}
 							{...fields?.permissions?.props?.(value)?.['dialog']}
 						/>
 					{/if}
@@ -260,7 +262,7 @@
 				</FormControl>
 			{/if}
 		</slot>
-		<slot name="realm">
+		<slot name="realm" {value} {errors} {fields}>
 			{#if !fields?.realm?.hidden?.(value)}
 				<FormControl let:id {...fields?.realm?.props?.(value)?.['control']}>
 					<Label
@@ -284,7 +286,7 @@
 							class="btn-link"
 							readonly={fields?.realm?.readonly?.(value)}
 							disabled={fields?.realm?.disabled?.(value)}
-							on:select={(e) => fields?.realm.onChange?.(e.detail.value, value).then((next) => value = next)}
+							on:select={(e) => fields?.realm?.onChange?.(e.detail.value, value).then((next) => value = next)}
 							{...fields?.realm?.props?.(value)?.['dialog']}
 						/>
 					{/if}

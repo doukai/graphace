@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryRoleListArgs } from '~/lib/types/schema';
@@ -12,11 +11,11 @@ const query = /* GraphQL */ `query Query_roleList($id: StringExpression, $name: 
 }
 ${fragment_RoleFields}`;
 
-export function createQuery_roleList_Store(event: LoadEvent | RequestEvent): Query_roleList_Store {
+export function createQuery_roleList_Store(event: Event): Query_roleList_Store {
   return createGraphQLQueryStore<Role[], QueryRoleListArgs>(query, event);
 }
 
-export async function fetchQuery_roleList_Store(event: LoadEvent | RequestEvent, variables: QueryRoleListArgs): Promise<Query_roleList_Store> {
+export async function fetchQuery_roleList_Store(event: Event, variables: QueryRoleListArgs): Promise<Query_roleList_Store> {
   return fetchGraphQLQueryStore<Role[], QueryRoleListArgs>(query, event, variables);
 }
 

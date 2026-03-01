@@ -2,8 +2,6 @@
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
-	import type { Query_user_Store } from '~/lib/stores/query/query_user_store';
-	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import {
 		validator,
 		permissions,
@@ -19,15 +17,15 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_user_Store = data.query_user_Store as Query_user_Store;
-	$: node = $query_user_Store.response.data?.user;
-	$: mutation_user_Store = data.mutation_user_Store as Mutation_user_Store;
+	$: query_user_Store = data.query_user_Store;
+	$: user = $query_user_Store.response.data?.user;
+	$: mutation_user_Store = data.mutation_user_Store;
 
 	let value: UserInput = {};
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if (user && Object.keys(user).length > 0) {
+		value = user;
 	}
 
 	const mutation = (args: MutationUserArgs) => {
@@ -58,22 +56,22 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/user`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.User.name()}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">
-					{value?.id != null
-						? $LL.graphence.path.edit({ name: $LL.graphql.objects.User.name() })
-						: $LL.graphence.path.create({ name: $LL.graphql.objects.User.name() })}
-				</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/user`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.User.name()}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">
+			{value?.id != null
+				? $LL.graphence.path.edit({ name: $LL.graphql.objects.User.name() })
+				: $LL.graphence.path.create({ name: $LL.graphql.objects.User.name() })}
+		</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<UserForm
 			showSaveButton={auth('User::*::WRITE')}
 			showRemoveButton={auth('User::isDeprecated::WRITE')}

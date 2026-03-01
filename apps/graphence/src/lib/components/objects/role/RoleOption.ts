@@ -12,13 +12,13 @@ import type {
 	PermissionInput,
 	RealmInput
 } from '~/lib/types/schema';
-import { LL } from '$i18n/i18n-svelte';
+import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
 
-export const roleTabs: TabInfo[] | undefined = undefined;
+export const roleTabs: (($LL: TranslationFunctions, args?: QueryRoleListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
-export const roleTab: string | undefined = undefined;
+export const roleTab: ((args?: QueryRoleListArgs | undefined) => string | undefined) | undefined = undefined;
 
 export const roleTabChange = async (tab: any, args: QueryRoleListArgs) => {
 	return new Promise(
@@ -32,13 +32,13 @@ export const roleTabChange = async (tab: any, args: QueryRoleListArgs) => {
 }
 
 export type RoleFields = {
-	name: Option<RoleInput, QueryRoleListArgs>;
-	description: Option<RoleInput, QueryRoleListArgs>;
-	users: Option<RoleInput, QueryRoleListArgs> & { fields?: () => UserFields };
-	groups: Option<RoleInput, QueryRoleListArgs> & { fields?: () => GroupFields };
-	composites: Option<RoleInput, QueryRoleListArgs> & { fields?: () => RoleFields };
-	permissions: Option<RoleInput, QueryRoleListArgs> & { fields?: () => PermissionFields };
-	realm: Option<RoleInput, QueryRoleListArgs> & { fields?: () => RealmFields };
+	name?: Option<RoleInput, QueryRoleListArgs> | undefined;
+	description?: Option<RoleInput, QueryRoleListArgs> | undefined;
+	users?: Option<RoleInput, QueryRoleListArgs> & { fields?: () => UserFields } | undefined;
+	groups?: Option<RoleInput, QueryRoleListArgs> & { fields?: () => GroupFields } | undefined;
+	composites?: Option<RoleInput, QueryRoleListArgs> & { fields?: () => RoleFields } | undefined;
+	permissions?: Option<RoleInput, QueryRoleListArgs> & { fields?: () => PermissionFields } | undefined;
+	realm?: Option<RoleInput, QueryRoleListArgs> & { fields?: () => RealmFields } | undefined;
 };
 
 export const roleFields: RoleFields = {

@@ -8,17 +8,17 @@
 	import { StringFilter } from '@graphace/ui-graphql';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
 	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { RoleExpression } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: RoleExpression | null | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const contextClass = getContext<string>('ui.popover-content') || '';
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
 		filter: { value?: RoleExpression | null | undefined };
@@ -30,10 +30,6 @@
 		description: undefined,
 		groups: { id: undefined },
 		composites: { id: undefined },
-	}
-
-	if (value) {
-		_value = { ..._value, ...value };
 	}
 
 	const filter = (): void => {
@@ -60,7 +56,13 @@
 		states: { open }
 	} = createPopover({
 		forceVisible: true,
-		preventScroll: true
+		preventScroll: true,
+		onOpenChange: ({ curr, next }) => {
+			if (curr !== next && next) {
+				_value = { ..._value, ...value };
+			}
+			return next;
+		}
 	});
 </script>
 
@@ -73,25 +75,29 @@
 		<Form class="max-h-60 overflow-y-auto">
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.Role.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<RoleSelectFilter {id} name="id" bind:value={_value.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Role.fields.name.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Role.fields.description.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
-				<Label {id} text={$LL.graphql.objects.Role.fields.groups.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="groups" bind:value={_value.groups.id} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.Role.fields.composites.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="composites" bind:value={_value.composites.id} />
-				</div>
+				{#if _value?.groups?.id}
+					<Label {id} text={$LL.graphql.objects.Role.fields.groups.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<GroupSelectFilter {id} name="groups" bind:value={_value.groups.id} />
+					</div>
+				{/if}
+				{#if _value?.composites?.id}
+					<Label {id} text={$LL.graphql.objects.Role.fields.composites.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<RoleSelectFilter {id} name="composites" bind:value={_value.composites.id} />
+					</div>
+				{/if}
 			</FormControl>
 		</Form>
 		<div class="flex justify-center space-x-1 pt-1">

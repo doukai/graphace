@@ -9,17 +9,17 @@
 	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
 	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
-	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type { GroupExpression } from '~/lib/types/schema';
+	import type { TranslationFunctions } from '$i18n/i18n-types';
 
 	export let value: GroupExpression | null | undefined = undefined;
 	export let disabled = false;
 	export let zIndex: number = 0;
 	let className: string | undefined = undefined;
 	export { className as class };
+	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const contextClass = getContext<string>('ui.popover-content') || '';
-	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	
 	const dispatch = createEventDispatcher<{
 		filter: { value?: GroupExpression | null | undefined };
@@ -36,10 +36,6 @@
 		subGroups: { id: undefined },
 		users: { id: undefined },
 		roles: { id: undefined },
-	}
-
-	if (value) {
-		_value = { ..._value, ...value };
 	}
 
 	const filter = (): void => {
@@ -71,7 +67,13 @@
 		states: { open }
 	} = createPopover({
 		forceVisible: true,
-		preventScroll: true
+		preventScroll: true,
+		onOpenChange: ({ curr, next }) => {
+			if (curr !== next && next) {
+				_value = { ..._value, ...value };
+			}
+			return next;
+		}
 	});
 </script>
 
@@ -84,45 +86,53 @@
 		<Form class="max-h-60 overflow-y-auto">
 			<FormControl let:id>
 				<Label {id} text={$LL.graphql.objects.Group.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<GroupSelectFilter {id} name="id" bind:value={_value.id} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.name.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="name" bind:value={_value.name} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.description.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="description" bind:value={_value.description} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.path.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="path" bind:value={_value.path} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.deep.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<IntFilter {id} name="deep" bind:value={_value.deep} />
 				</div>
 				<Label {id} text={$LL.graphql.objects.Group.fields.parentId.name()} />
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
 					<StringFilter {id} name="parentId" bind:value={_value.parentId} />
 				</div>
-				<Label {id} text={$LL.graphql.objects.Group.fields.parent.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="parent" bind:value={_value.parent.id} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.Group.fields.subGroups.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<GroupSelectFilter {id} name="subGroups" bind:value={_value.subGroups.id} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.Group.fields.users.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<UserSelectFilter {id} name="users" bind:value={_value.users.id} />
-				</div>
-				<Label {id} text={$LL.graphql.objects.Group.fields.roles.name()} />
-				<div class="grid grid-cols-2 gap-1">
-					<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
-				</div>
+				{#if _value?.parent?.id}
+					<Label {id} text={$LL.graphql.objects.Group.fields.parent.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<GroupSelectFilter {id} name="parent" bind:value={_value.parent.id} />
+					</div>
+				{/if}
+				{#if _value?.subGroups?.id}
+					<Label {id} text={$LL.graphql.objects.Group.fields.subGroups.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<GroupSelectFilter {id} name="subGroups" bind:value={_value.subGroups.id} />
+					</div>
+				{/if}
+				{#if _value?.users?.id}
+					<Label {id} text={$LL.graphql.objects.Group.fields.users.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<UserSelectFilter {id} name="users" bind:value={_value.users.id} />
+					</div>
+				{/if}
+				{#if _value?.roles?.id}
+					<Label {id} text={$LL.graphql.objects.Group.fields.roles.name()} />
+					<div class="grid gap-1 [grid-template-columns:10rem_minmax(0,1fr)]">
+						<RoleSelectFilter {id} name="roles" bind:value={_value.roles.id} />
+					</div>
+				{/if}
 			</FormControl>
 		</Form>
 		<div class="flex justify-center space-x-1 pt-1">

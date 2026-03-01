@@ -1,12 +1,17 @@
-import type { LoadEvent } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { createMutation_group_roles_Store } from '~/lib/stores/mutation/mutation_group_roles_store';
 import { permissions } from '~/utils';
-import type { LayoutLoad } from './$types';
+import type { PageLoad, PageLoadEvent } from './$types';
 
-export const load: LayoutLoad = async (event: LoadEvent) => {
-    await permissions.fetchPermissions('Role');
-    return {
-        id: event.params.id,
-        mutation_group_roles_Store: createMutation_group_roles_Store(event)
-    };
+export const load: PageLoad = async (event: PageLoadEvent) => {
+	await permissions.fetchPermissions('Role');
+
+	if (event.params.id && event.params.id !== '_') {
+		return {
+			id: event.params.id,
+			mutation_group_roles_Store: createMutation_group_roles_Store(event)
+		};
+	}
+	const [, lang] = event.url.pathname.split('/');
+	throw redirect(302, `/${lang}/group/_`);
 }

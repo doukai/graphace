@@ -10,13 +10,13 @@ import type {
 	RoleInput,
 	RealmInput
 } from '~/lib/types/schema';
-import { LL } from '$i18n/i18n-svelte';
+import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
 
-export const groupTabs: TabInfo[] | undefined = undefined;
+export const groupTabs: (($LL: TranslationFunctions, args?: QueryGroupListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
-export const groupTab: string | undefined = undefined;
+export const groupTab: ((args?: QueryGroupListArgs | undefined) => string | undefined) | undefined = undefined;
 
 export const groupTabChange = async (tab: any, args: QueryGroupListArgs) => {
 	return new Promise(
@@ -30,16 +30,16 @@ export const groupTabChange = async (tab: any, args: QueryGroupListArgs) => {
 }
 
 export type GroupFields = {
-	name: Option<GroupInput, QueryGroupListArgs>;
-	description: Option<GroupInput, QueryGroupListArgs>;
-	path: Option<GroupInput, QueryGroupListArgs>;
-	deep: Option<GroupInput, QueryGroupListArgs>;
-	parentId: Option<GroupInput, QueryGroupListArgs>;
-	parent: Option<GroupInput, QueryGroupListArgs> & { fields?: () => GroupFields };
-	subGroups: Option<GroupInput, QueryGroupListArgs> & { fields?: () => GroupFields };
-	users: Option<GroupInput, QueryGroupListArgs> & { fields?: () => UserFields };
-	roles: Option<GroupInput, QueryGroupListArgs> & { fields?: () => RoleFields };
-	realm: Option<GroupInput, QueryGroupListArgs> & { fields?: () => RealmFields };
+	name?: Option<GroupInput, QueryGroupListArgs> | undefined;
+	description?: Option<GroupInput, QueryGroupListArgs> | undefined;
+	path?: Option<GroupInput, QueryGroupListArgs> | undefined;
+	deep?: Option<GroupInput, QueryGroupListArgs> | undefined;
+	parentId?: Option<GroupInput, QueryGroupListArgs> | undefined;
+	parent?: Option<GroupInput, QueryGroupListArgs> & { fields?: () => GroupFields } | undefined;
+	subGroups?: Option<GroupInput, QueryGroupListArgs> & { fields?: () => GroupFields } | undefined;
+	users?: Option<GroupInput, QueryGroupListArgs> & { fields?: () => UserFields } | undefined;
+	roles?: Option<GroupInput, QueryGroupListArgs> & { fields?: () => RoleFields } | undefined;
+	realm?: Option<GroupInput, QueryGroupListArgs> & { fields?: () => RealmFields } | undefined;
 };
 
 export const groupFields: GroupFields = {

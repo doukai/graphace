@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_GroupFields } from '~/lib/stores/fragment/fragment_GroupFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationGroupArgs } from '~/lib/types/schema';
@@ -13,7 +12,7 @@ const query = /* GraphQL */ `mutation Mutation_group($id: ID, $name: String, $de
 }
 ${fragment_GroupFields}`;
 
-export function createMutation_group_Store(event: LoadEvent | RequestEvent): Mutation_group_Store {
+export function createMutation_group_Store(event: Event): Mutation_group_Store {
   return createGraphQLMutationStore<Group, MutationGroupArgs>(query, event);
 }
 

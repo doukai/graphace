@@ -5,9 +5,6 @@
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
-	import type { Query_permission_realm_Store } from '~/lib/stores/query/query_permission_realm_store';
-	import type { Mutation_permission_realm_Store } from '~/lib/stores/mutation/mutation_permission_realm_store';
-	import type { Mutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import {
 		validator,
 		permissions,
@@ -22,19 +19,20 @@
 
 	const { validate } = validator;
 	const { auth } = permissions;
-
-	$: query_permission_realm_Store = data.query_permission_realm_Store as Query_permission_realm_Store;
+	
+	$: id = data.id;
+	$: query_permission_realm_Store = data.query_permission_realm_Store;
 	$: permission = $query_permission_realm_Store.response.data?.permission;
-	$: node = permission?.realm;
-	$: mutation_permission_realm_Store = data.mutation_permission_realm_Store as Mutation_permission_realm_Store;
-	$: mutation_realm_Store = data.mutation_realm_Store as Mutation_realm_Store;
+	$: realm = permission?.realm;
+	$: mutation_permission_realm_Store = data.mutation_permission_realm_Store;
+	$: mutation_realm_Store = data.mutation_realm_Store;
 
 	let value = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if (realm && Object.keys(realm).length > 0) {
+		value = realm;
 		showUnbindButton = true;
 	}
 
@@ -70,7 +68,7 @@
 			.then((data) => {
 				errors = {};
 				mutation_permission_realm_Store.fetch({
-					permission_id: permission?.id,
+					permission_id: id,
 					permission_realm: input
 				}).then((result) => {
 					if (result.errors) {
@@ -96,23 +94,23 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.Permission.name()}</span>
-				</a>
-			</li>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission/${permission?.id}`)}>
-					<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Permission.name() })}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">{$LL.graphql.objects.Permission.fields.realm.name()}</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.Permission.name()}</span>
+		</a>
+	</li>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/permission/${permission?.id}`)}>
+			<span class="badge badge-outline">{$LL.graphence.path.edit({ name: $LL.graphql.objects.Permission.name() })}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">{$LL.graphql.objects.Permission.fields.realm.name()}</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<RealmForm
 			showSaveButton={auth('Realm::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('Realm::isDeprecated::WRITE')}
@@ -157,7 +155,7 @@
 					singleChoice
 					class="btn-accent"
 					on:select={(e) => {
-						if (!Array.isArray(e.detail.value)) {
+						if (!Array.isArray(e.detail.value) && e.detail.value !== undefined) {
 							merge(e.detail.value);
 						}
 					}}

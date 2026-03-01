@@ -1,7 +1,6 @@
-import type { ServerLoadEvent } from '@sveltejs/kit';
-import type { LayoutServerLoad } from './$types';
+import type { LayoutServerLoad, LayoutServerLoadEvent } from './$types';
 
-export const load: LayoutServerLoad = async (event: ServerLoadEvent) => {
+export const load: LayoutServerLoad = async (event: LayoutServerLoadEvent) => {
 	const { locals: { locale, jwt } } = event;
 	return { locale, jwt };
 }

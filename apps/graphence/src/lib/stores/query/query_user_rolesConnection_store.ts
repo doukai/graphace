@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { fragment_UserFields } from '~/lib/stores/fragment/fragment_UserFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
@@ -21,11 +20,11 @@ const query = /* GraphQL */ `query Query_user_rolesConnection($user_id: String, 
 ${fragment_RoleFields}
 ${fragment_UserFields}`;
 
-export function createQuery_user_rolesConnection_Store(event: LoadEvent | RequestEvent): Query_user_rolesConnection_Store {
+export function createQuery_user_rolesConnection_Store(event: Event): Query_user_rolesConnection_Store {
   return createGraphQLQueryStore<User, { user_id: string } & QueryRoleConnectionArgs>(query, event);
 }
 
-export async function fetchQuery_user_rolesConnection_Store(event: LoadEvent | RequestEvent, variables: { user_id: string } & QueryRoleConnectionArgs): Promise<Query_user_rolesConnection_Store> {
+export async function fetchQuery_user_rolesConnection_Store(event: Event, variables: { user_id: string } & QueryRoleConnectionArgs): Promise<Query_user_rolesConnection_Store> {
   return fetchGraphQLQueryStore<User, { user_id: string } & QueryRoleConnectionArgs>(query, event, variables);
 }
 

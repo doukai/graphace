@@ -2,8 +2,6 @@
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
-	import type { Query_role_Store } from '~/lib/stores/query/query_role_store';
-	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import {
 		validator,
 		permissions,
@@ -19,15 +17,15 @@
 	const { validate } = validator;
 	const { auth } = permissions;
 
-	$: query_role_Store = data.query_role_Store as Query_role_Store;
-	$: node = $query_role_Store.response.data?.role;
-	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
+	$: query_role_Store = data.query_role_Store;
+	$: role = $query_role_Store.response.data?.role;
+	$: mutation_role_Store = data.mutation_role_Store;
 
 	let value: RoleInput = {};
 	let errors: Record<string, Errors> = {};
 
-	$: if (node && Object.keys(node).length > 0) {
-		value = node;
+	$: if (role && Object.keys(role).length > 0) {
+		value = role;
 	}
 
 	const mutation = (args: MutationRoleArgs) => {
@@ -58,22 +56,22 @@
 	};
 </script>
 
-<Card class="max-h-full max-w-full">
-	<CardBody class="overflow-y-auto pt-0">
-		<Breadcrumbs>
-			<li>
-				<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/role`)}>
-					<span class="badge badge-outline">{$LL.graphql.objects.Role.name()}</span>
-				</a>
-			</li>
-			<li>
-				<span class="badge badge-neutral">
-					{value?.id != null
-						? $LL.graphence.path.edit({ name: $LL.graphql.objects.Role.name() })
-						: $LL.graphence.path.create({ name: $LL.graphql.objects.Role.name() })}
-				</span>
-			</li>
-		</Breadcrumbs>
+<Breadcrumbs>
+	<li>
+		<a href={undefined} on:click|preventDefault={(e) => to(`/${$locale}/role`)}>
+			<span class="badge badge-outline">{$LL.graphql.objects.Role.name()}</span>
+		</a>
+	</li>
+	<li>
+		<span class="badge badge-neutral">
+			{value?.id != null
+				? $LL.graphence.path.edit({ name: $LL.graphql.objects.Role.name() })
+				: $LL.graphence.path.create({ name: $LL.graphql.objects.Role.name() })}
+		</span>
+	</li>
+</Breadcrumbs>
+<Card class="flex flex-col max-w-full min-h-0">
+	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<RoleForm
 			showSaveButton={auth('Role::*::WRITE')}
 			showRemoveButton={auth('Role::isDeprecated::WRITE')}

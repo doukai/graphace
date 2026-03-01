@@ -1,8 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import { ot, canBack, Card, CardBody, toast, modal } from '@graphace/ui';
-	import type { Query_currentUser_Store } from '~/lib/stores/query/query_currentUser_store';
-	import type { Mutation_currentUserUpdate_Store } from '~/lib/stores/mutation/mutation_currentUserUpdate_store';
 	import CurrentUserForm from '~/lib/components/settings/CurrentUserForm.svelte';
 	import { validator, buildGlobalGraphQLErrorMessage, buildGraphQLErrors } from '~/utils';
 	import { LL } from '$i18n/i18n-svelte';
@@ -13,10 +11,9 @@
 
 	const { validate } = validator;
 
-	$: query_currentUser_Store = data.query_currentUser_Store as Query_currentUser_Store;
+	$: query_currentUser_Store = data.query_currentUser_Store;
 	$: node = $query_currentUser_Store.response.data?.currentUser;
-	$: mutation_currentUserUpdate_Store =
-		data.mutation_currentUserUpdate_Store as Mutation_currentUserUpdate_Store;
+	$: mutation_currentUserUpdate_Store = data.mutation_currentUserUpdate_Store;
 	let errors: Record<string, Errors> = {};
 
 	const mutation = (args: UserInput) => {
@@ -26,7 +23,7 @@
 				mutation_currentUserUpdate_Store.fetch({ userInput: args }).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
 						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
 						if (globalError) {
 							modal.open({

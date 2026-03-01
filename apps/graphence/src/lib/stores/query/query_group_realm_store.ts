@@ -1,5 +1,4 @@
-import type { LoadEvent, RequestEvent } from '@sveltejs/kit';
-import { type GraphQLStore } from "@graphace/ui-graphql";
+import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_RealmFields } from '~/lib/stores/fragment/fragment_RealmFields';
 import { fragment_GroupFields } from '~/lib/stores/fragment/fragment_GroupFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
@@ -16,11 +15,11 @@ const query = /* GraphQL */ `query Query_group_realm($group_id: String, $id: Str
 ${fragment_RealmFields}
 ${fragment_GroupFields}`;
 
-export function createQuery_group_realm_Store(event: LoadEvent | RequestEvent): Query_group_realm_Store {
+export function createQuery_group_realm_Store(event: Event): Query_group_realm_Store {
   return createGraphQLQueryStore<Group, { group_id: string } & QueryRealmArgs>(query, event);
 }
 
-export async function fetchQuery_group_realm_Store(event: LoadEvent | RequestEvent, variables: { group_id: string } & QueryRealmArgs): Promise<Query_group_realm_Store> {
+export async function fetchQuery_group_realm_Store(event: Event, variables: { group_id: string } & QueryRealmArgs): Promise<Query_group_realm_Store> {
   return fetchGraphQLQueryStore<Group, { group_id: string } & QueryRealmArgs>(query, event, variables);
 }
 

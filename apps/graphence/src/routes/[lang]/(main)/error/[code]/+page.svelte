@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { init } from '@graphace/ui';
+	import type { NamespaceErrorsTranslation } from '$i18n/i18n-types';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	$: code = data.code as keyof NamespaceErrorsTranslation['http'];
 </script>
 
 <div class="grid place-content-center bg-base-200 h-full">
 	<div class="text-center space-y-4">
 		<h1 class="text-9xl font-black text-neutral-content">{data.code}</h1>
 		<p class="text-2xl font-bold tracking-tight text-neutral">
-			{$LL.errors.http[data.code]() || $LL.errors.http.unknown()}
+			{$LL.errors.http[code]() || $LL.errors.http.unknown()}
 		</p>
 		<button
 			on:click|preventDefault={(e) => {

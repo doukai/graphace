@@ -10,13 +10,13 @@ import type {
 	RoleInput,
 	RealmInput
 } from '~/lib/types/schema';
-import { LL } from '$i18n/i18n-svelte';
+import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
 
-export const userTabs: TabInfo[] | undefined = undefined;
+export const userTabs: (($LL: TranslationFunctions, args?: QueryUserListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
-export const userTab: string | undefined = undefined;
+export const userTab: ((args?: QueryUserListArgs | undefined) => string | undefined) | undefined = undefined;
 
 export const userTabChange = async (tab: any, args: QueryUserListArgs) => {
 	return new Promise(
@@ -30,16 +30,16 @@ export const userTabChange = async (tab: any, args: QueryUserListArgs) => {
 }
 
 export type UserFields = {
-	name: Option<UserInput, QueryUserListArgs>;
-	description: Option<UserInput, QueryUserListArgs>;
-	lastName: Option<UserInput, QueryUserListArgs>;
-	login: Option<UserInput, QueryUserListArgs>;
-	email: Option<UserInput, QueryUserListArgs>;
-	phones: Option<UserInput, QueryUserListArgs>;
-	disable: Option<UserInput, QueryUserListArgs>;
-	groups: Option<UserInput, QueryUserListArgs> & { fields?: () => GroupFields };
-	roles: Option<UserInput, QueryUserListArgs> & { fields?: () => RoleFields };
-	realm: Option<UserInput, QueryUserListArgs> & { fields?: () => RealmFields };
+	name?: Option<UserInput, QueryUserListArgs> | undefined;
+	description?: Option<UserInput, QueryUserListArgs> | undefined;
+	lastName?: Option<UserInput, QueryUserListArgs> | undefined;
+	login?: Option<UserInput, QueryUserListArgs> | undefined;
+	email?: Option<UserInput, QueryUserListArgs> | undefined;
+	phones?: Option<UserInput, QueryUserListArgs> | undefined;
+	disable?: Option<UserInput, QueryUserListArgs> | undefined;
+	groups?: Option<UserInput, QueryUserListArgs> & { fields?: () => GroupFields } | undefined;
+	roles?: Option<UserInput, QueryUserListArgs> & { fields?: () => RoleFields } | undefined;
+	realm?: Option<UserInput, QueryUserListArgs> & { fields?: () => RealmFields } | undefined;
 };
 
 export const userFields: UserFields = {

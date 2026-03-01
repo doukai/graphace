@@ -109,7 +109,7 @@
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
-		{:else if selected}
+		{:else if !Array.isArray(selected) && selected}
 			{selected.label}
 		{:else}
 			<Icon src={Minus} class="h-5 w-5" />
