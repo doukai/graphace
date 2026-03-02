@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
+	import { buildArguments } from '@graphace/graphql';
 	import type { Option } from '@graphace/ui';
 	import { ObjectSelect } from '@graphace/ui-graphql';
 	import { namedQueryStore } from '~/utils';
-	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}Input, Query{{ name }}ListArgs } from '~/{{ schemaTypesPath }}';
 
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	export let fields: string | undefined = undefined;
+	export let args: Query{{ name }}ListArgs | undefined = undefined;
+	export let first: number | undefined = 10;
 	export let selected: Option | Option[] | undefined = undefined;
 	export let errors: Errors | undefined = undefined;
 	export let list: boolean | undefined = false;
@@ -38,7 +42,7 @@
 	$: if (Array.isArray(value)) {
 		if (value.some((item) => !item?.name && item?.{{ idName }})){
 			namedQueryStore
-				.fetch(query, {
+				.fetch({ ...query, fields }, {
 					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }}) }
 				})
 				.then((response) => {
@@ -59,7 +63,7 @@
 	} else if (value) {
 		if (!value.name && value.{{ idName }}) {
 			namedQueryStore
-				.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} } })
+				.fetch({ ...query, fields }, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} } })
 				.then((response) => {
 					value = response.data?.{{ name | camelCase }}List?.[0];
 					selected = { label: value?.name, value: value?.{{ idName }}, node: value  };
@@ -98,9 +102,12 @@
 	{% raw %}}}{% endraw %}
 	on:search={(e) => {
 		if (e.detail.searchValue) {
-			namedQueryStore.fetch(query, { name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
+			namedQueryStore.fetch(
+				{ ...query, fields },
+				{ ...buildArguments(args), name: { opr: 'LK', val: `%${e.detail.searchValue}%` }, first }
+			);
 		} else {
-			namedQueryStore.fetch(query, { name: undefined, first: 10 });
+			namedQueryStore.fetch({ ...query, fields }, { ...buildArguments(args), first });
 		}
 	{% raw %}}}{% endraw %}
 />

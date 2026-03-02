@@ -7,7 +7,7 @@
 	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
-	import { {{ name | camelCase }}Fields, type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
+	import { type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import {
 		loadEvent,
 		validator,
@@ -30,7 +30,8 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
-	export let fields: {{ name }}Fields = {{ name | camelCase }}Fields;
+	export let optionVariables: Record<string, any> | undefined = undefined;
+	export let fields: {{ name }}Fields | undefined = undefined;
 
 	const { validate } = validator;
 	{%- if useAuth %}
@@ -214,9 +215,8 @@
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 			{zIndex}
-			{%- if useAuth %}
 			{fields}
-			{%- endif %}
+			{optionVariables}
 			on:select={(e) => {
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {

@@ -134,7 +134,7 @@
 			? 'textarea-error focus-within:outline-error'
 			: 'focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered min-h-12 p-1 gap-1"
 	>
-		<div class="min-w-0 flex flex-wrap items-center gap-1">
+		<div class="flex flex-wrap items-center gap-1">
 			{#each $tags as t, index}
 				<div
 					data-part="tag"
@@ -176,7 +176,7 @@
 					use:melt={$input}
 					{id}
 					type="text"
-					class="input px-1 h-5 min-w-20 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+					class="input px-1 h-5 min-w-10 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 					on:focus={(e) => {
 						if ($touchedInput) {
 							debounce(() => {

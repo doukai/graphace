@@ -6,7 +6,7 @@
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Form.svelte';
-	import { {{ name | camelCase }}Fields, type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
+	import { type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import {
 		loadEvent,
 		validator,
@@ -30,7 +30,8 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
-	export let fields: {{ name }}Fields = {{ name | camelCase }}Fields;
+	export let optionVariables: Record<string, any> | undefined = undefined;
+	export let fields: {{ name }}Fields | undefined = undefined;
 
 	const { validate } = validator;
 	{%- if useAuth %}
@@ -153,9 +154,8 @@
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_Store.isFetching}
 			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
-			{%- if useAuth %}
 			{fields}
-			{%- endif %}
+			{optionVariables}
 			on:save={(e) => {
 				if (select) {
 					dispatch('select', { value });

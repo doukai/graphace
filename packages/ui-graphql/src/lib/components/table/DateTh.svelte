@@ -28,21 +28,6 @@
 		filter: { value: StringExpression | null | undefined; sort: Sort | null | undefined };
 	}>();
 
-	if (value) {
-		_value = value;
-		if (!value.opr) {
-			if (value.arr) {
-				_value.opr = 'IN';
-			} else {
-				_value.opr = 'EQ';
-			}
-		}
-	}
-
-	if (sort) {
-		_sort = sort;
-	}
-
 	const filter = (): void => {
 		if (_value.val) {
 			value = { opr: _value.opr, val: _value.val, arr: undefined };
@@ -74,7 +59,21 @@
 		states: { open }
 	} = createPopover({
 		forceVisible: true,
-		preventScroll: true
+		preventScroll: true,
+		onOpenChange: ({ curr, next }) => {
+			if (curr !== next && next) {
+				_value = value;
+				if (!value.opr) {
+					if (value.arr) {
+						_value.opr = 'IN';
+					} else {
+						_value.opr = 'EQ';
+					}
+				}
+				_sort = sort;
+			}
+			return next;
+		}
 	});
 </script>
 
