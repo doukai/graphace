@@ -30,8 +30,8 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
-	export let optionVariables: Record<string, any> | undefined = undefined;
 	export let fields: {{ name }}Fields | undefined = undefined;
+	export let fieldsArgs: Record<string, any> | undefined = undefined;
 
 	const { validate } = validator;
 	{%- if useAuth %}
@@ -155,7 +155,7 @@
 			isFetching={$query_{{ name | camelCase }}_Store.isFetching}
 			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
 			{fields}
-			{optionVariables}
+			{fieldsArgs}
 			on:save={(e) => {
 				if (select) {
 					dispatch('select', { value });

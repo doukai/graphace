@@ -16,7 +16,11 @@
 	{%- for dialog in nonSelects %}
 	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
 	{%- endfor %}
-	import { {{ name | camelCase }}Fields, type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
+	import {
+		{{ name | camelCase }}Fields,
+		type {{ name }}Fields,
+		validate
+	} from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	{%- if tables and tables.length > 0 %}
@@ -37,6 +41,7 @@
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
 	export { className as class };
 	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
+	export let fieldsArgs: Record<string, any> | undefined = undefined;
 	{%- if groups != undefined and groups.length > 0 %}
 	export let wrapper: Record<string, ComponentType> = {
 		{%- for group in groups %}
@@ -61,31 +66,6 @@
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
-
-	const validate = async () => {
-		errors = {};
-		if (value) {
-			{%- for field in fields %}
-			const {{ field.fieldName }}Errors = await fields?.{{ field.fieldName }}?.validate?.(value);
-			if ({{ field.fieldName }}Errors && {{ field.fieldName }}Errors.length > 0) {
-				errors['{{ field.fieldName }}'] = { errors: {{ field.fieldName }}Errors.map((message) => ({ message })) };
-			}
-			{%- endfor %}
-		}
-
-		return new Promise(
-			(
-				resolve: (data: {{ name }}Input | null | undefined) => void,
-				reject: (errors: Record<string, Errors>) => void
-			) => {
-				if (Object.keys(errors).length === 0) {
-					resolve(value);
-				} else {
-					reject(errors);
-				}
-			}
-		);
-	};
 </script>
 
 <div class="flex justify-between">
@@ -105,7 +85,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) => validate($LL, value).then(() => dispatch('save', { value }))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back
@@ -123,12 +103,12 @@
 		<svelte:component this={wrapper['{{ group.name }}']} {...wrapperProps['{{ group.name }}']}>
 			{%- for field in group.fields %}
 			<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
-				{#if !fields?.{{ field.fieldName }}?.hidden?.(value)}
+				{#if !fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }})}
 					{%- if field.isTable %}
 					<div class="col-span-full">
 						<{{ field.fieldTypeName }}Editable
 							title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-							fields={fields?.{{ field.fieldName }}?.fields?.()}
+							fields={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
 							showCreateDialog
 							showEditDialog
 							showRemoveButton
@@ -142,12 +122,12 @@
 								}
 							{% raw %}}}{% endraw %}
 							on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
-							{...fields?.{{ field.fieldName }}?.props?.(value)?.['table']}
+							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
 						/>
 						<ErrorLabels errors={errors.{{ field.fieldName }}} />
 					</div>
 					{%- else %}
-					<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.(value)?.['control']}>
+					<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['control']}>
 						<Label
 							{id}
 							text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -159,16 +139,32 @@
 							name="{{ field.fieldName }}"
 							bind:value={value.{{ field.fieldName }}}
 							errors={errors.{{ field.fieldName }}}
-							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
-							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-							on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
+							readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
+							disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
+							on:change={(e) => {
+								{%- if field.isListType %}
+								if (Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.{{ field.fieldName }}
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+								}
+								{%- else %}
+								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.{{ field.fieldName }}
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+								}
+								{%- endif %}
+							}}
 							{%- if field.isListType %}
 							list
 							{%- endif %}
 							{%- if field.fieldTypeName == 'File' %}
 							on:upload
 							{%- endif %}
-							{...fields?.{{ field.fieldName }}?.props?.(value)?.['input']}
+							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['input']}
 						/>
 						{%- elsif field.isSelect %}
 						<{{ field.fieldTypeName }}Select
@@ -176,13 +172,29 @@
 							name="{{ field.fieldName }}"
 							bind:value={value.{{ field.fieldName }}}
 							errors={errors.{{ field.fieldName }}}
-							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
-							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-							on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
+							readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
+							disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
+							on:change={(e) => {
+								{%- if field.isListType %}
+								if (Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.{{ field.fieldName }}
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+								}
+								{%- else %}
+								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.{{ field.fieldName }}
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+								}
+								{%- endif %}
+							}}
 							{%- if field.isListType %}
 							list
 							{%- endif %}
-							{...fields?.{{ field.fieldName }}?.props?.(value)?.['select']}
+							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
 						/>
 						{%- else %}
 						{#if value.{{idName}}}
@@ -195,7 +207,7 @@
 								{%- endif %}
 								path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 								on:goto
-								{...fields?.{{ field.fieldName }}?.props?.(value)?.['link']}
+								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['link']}
 							/>
 						{:else}
 							<{{ field.fieldTypeName }}TableDialog
@@ -209,10 +221,26 @@
 								singleChoice
 								{%- endif %}
 								class="btn-link"
-								readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
-								disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-								on:select={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
-								{...fields?.{{ field.fieldName }}?.props?.(value)?.['dialog']}
+								readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
+								disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
+							on:change={(e) => {
+								{%- if field.isListType %}
+								if (Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.{{ field.fieldName }}
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+								}
+								{%- else %}
+								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.{{ field.fieldName }}
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+								}
+								{%- endif %}
+							}}
+								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['dialog']}
 							/>
 						{/if}
 						<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
@@ -227,12 +255,12 @@
 		{%- else %}
 		{%- for field in fields %}
 		<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
-			{#if !fields?.{{ field.fieldName }}?.hidden?.(value)}
+			{#if !fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }})}
 				{%- if field.isTable %}
 				<div class="col-span-full">
 					<{{ field.fieldTypeName }}Editable
 						title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-						fields={fields?.{{ field.fieldName }}?.fields?.()}
+						fields={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
 						showCreateDialog
 						showEditDialog
 						showRemoveButton
@@ -246,12 +274,12 @@
 							}
 						{% raw %}}}{% endraw %}
 						on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
-						{...fields?.{{ field.fieldName }}?.props?.(value)?.['table']}
+						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
 					/>
 					<ErrorLabels errors={errors.{{ field.fieldName }}} />
 				</div>
 				{%- else %}
-				<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.(value)?.['control']}>
+				<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -263,16 +291,32 @@
 						name="{{ field.fieldName }}"
 						bind:value={value.{{ field.fieldName }}}
 						errors={errors.{{ field.fieldName }}}
-						readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
-						disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-						on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
+						readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
+						disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
+						on:change={(e) => {
+							{%- if field.isListType %}
+							if (Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.{{ field.fieldName }}
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+							}
+							{%- else %}
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.{{ field.fieldName }}
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+							}
+							{%- endif %}
+						}}
 						{%- if field.isListType %}
 						list
 						{%- endif %}
 						{%- if field.fieldTypeName == 'File' %}
 						on:upload
 						{%- endif %}
-						{...fields?.{{ field.fieldName }}?.props?.(value)?.['input']}
+						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['input']}
 					/>
 					{%- elsif field.isSelect %}
 					<{{ field.fieldTypeName }}Select
@@ -280,13 +324,29 @@
 						name="{{ field.fieldName }}"
 						bind:value={value.{{ field.fieldName }}}
 						errors={errors.{{ field.fieldName }}}
-						readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
-						disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-						on:change={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
+						readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
+						disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
+						on:change={(e) => {
+							{%- if field.isListType %}
+							if (Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.{{ field.fieldName }}
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+							}
+							{%- else %}
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.{{ field.fieldName }}
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+							}
+							{%- endif %}
+						}}
 						{%- if field.isListType %}
 						list
 						{%- endif %}
-						{...fields?.{{ field.fieldName }}?.props?.(value)?.['select']}
+						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
 					/>
 					{%- else %}
 					{#if value.{{idName}}}
@@ -299,7 +359,7 @@
 							{%- endif %}
 							path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
 							on:goto
-							{...fields?.{{ field.fieldName }}?.props?.(value)?.['link']}
+							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['link']}
 						/>
 					{:else}
 						<{{ field.fieldTypeName }}TableDialog
@@ -313,10 +373,26 @@
 							singleChoice
 							{%- endif %}
 							class="btn-link"
-							readonly={fields?.{{ field.fieldName }}?.readonly?.(value)}
-							disabled={fields?.{{ field.fieldName }}?.disabled?.(value)}
-							on:select={(e) => fields?.{{ field.fieldName }}?.onChange?.(e.detail.value, value).then((next) => value = next)}
-							{...fields?.{{ field.fieldName }}?.props?.(value)?.['dialog']}
+							readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
+							disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
+							on:select={(e) => {
+								{%- if field.isListType %}
+								if (Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.{{ field.fieldName }}
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+								}
+								{%- else %}
+								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.{{ field.fieldName }}
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+								}
+								{%- endif %}
+							}}
+							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['dialog']}
 						/>
 					{/if}
 					<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
@@ -342,7 +418,7 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) => validate($LL, value).then(() => dispatch('save', { value }))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back

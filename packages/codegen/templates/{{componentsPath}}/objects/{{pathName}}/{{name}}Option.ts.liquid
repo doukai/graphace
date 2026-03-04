@@ -1,3 +1,4 @@
+import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
 import type { Option } from '@graphace/ui-graphql';
 {%- for object in objects %}
@@ -30,72 +31,151 @@ export const {{ name | camelCase }}Tabs: (($LL: TranslationFunctions, args?: Que
 
 export const {{ name | camelCase }}Tab: ((args?: Query{{ name }}ListArgs | undefined) => string | undefined) | undefined = undefined;
 
-export const {{ name | camelCase }}TabChange = async (tab: any, args: Query{{ name }}ListArgs) => {
+export const {{ name | camelCase }}TabChange = async (tab: string, args: Query{{ name }}ListArgs, value?: ({{ name }}Input | null | undefined)[] | null | undefined) => {
 	return new Promise(
 		(
 			resolve: (data: Query{{ name }}ListArgs) => void,
-			reject: (errors: any) => void
+			reject: (errors: Record<number, Errors>) => void
 		) => {
 			resolve(args);
 		}
 	);
-}
+};
+
+export type {{ name }}FieldsArgs = {
+	{%- for field in fields %}
+	{{ field.fieldName }}?: unknown;
+	{%- endfor %}
+};
 
 export type {{ name }}Fields = {
 	{%- for field in fields %}
-	{{ field.fieldName }}?: Option<{{ name }}Input, Query{{ name }}ListArgs>{% if field.isObjectType %} & { fields?: () => {{ field.fieldTypeName }}Fields }{% endif %} | undefined;
+	{%- if field.isListType %}
+	{{ field.fieldName }}?: Option<TranslationFunctions, {{ name }}Input, Query{{ name }}ListArgs, ({% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined)[] | null | undefined, {{ name }}FieldsArgs['{{ field.fieldName }}'], unknown>{% if field.isObjectType %} & { fields?: (value?: {{ name }}Input | undefined, fieldArg?: {{ name }}FieldsArgs['{{ field.fieldName }}']) => {{ field.fieldTypeName }}Fields }{% endif %} | undefined;
+	{%- else %}
+	{{ field.fieldName }}?: Option<TranslationFunctions, {{ name }}Input, Query{{ name }}ListArgs, {% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined, {{ name }}FieldsArgs['{{ field.fieldName }}'], unknown>{% if field.isObjectType %} & { fields?: (value?: {{ name }}Input | undefined, fieldArg?: {{ name }}FieldsArgs['{{ field.fieldName }}']) => {{ field.fieldTypeName }}Fields }{% endif %} | undefined;
+	{%- endif %}
 	{%- endfor %}
 };
 
 export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 	{%- for field in fields %}
 	{{ field.fieldName }}: {
-		readonly: (value?: {{ name }}Input | undefined) => {
+		readonly: (value, fieldArg) => {
 			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::WRITE'){% else %}false{% endif %};
 		},
-		disabled: (value?: {{ name }}Input | undefined) => {
+		disabled: (value, fieldArg) => {
 			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::WRITE'){% else %}false{% endif %};
 		},
-		hidden: (value?: {{ name }}Input | undefined) => {
+		hidden: (value, fieldArg) => {
 			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::READ'){% else %}false{% endif %};
 		},
-		hiddenCol: (args: Query{{ name }}ListArgs, tab: any) => {
+		hiddenCol: (args, tab, fieldArg) => {
 			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::READ'){% else %}false{% endif %};
 		},
-		required: (value?: {{ name }}Input | undefined) => {
+		required: (value) => {
 			return {% if field.isNonNullType %}true{% else %}false{% endif %};
 		},
-		validate: async (value: {{ name }}Input) => {
+		validate: async ($LL, value) => {
 			return [];
 		},
-		{%- if field.isListType %}
-		onChange: async (fieldValue: ({% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined)[] | null | undefined, value?: {{ name }}Input | null | undefined) => {
+		onChange: async ($LL, fieldValue, value, fieldArg) => {
 			return new Promise(
 				(
 					resolve: (data: {{ name }}Input | null | undefined) => void,
-					reject: (errors: any) => void
+					reject: (errors: Errors) => void
 				) => {
 					resolve(value);
 				}
 			);
 		},
-		{%- else %}
-		onChange: async (fieldValue: {% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined, value?: {{ name }}Input | null | undefined) => {
-			return new Promise(
-				(
-					resolve: (data: {{ name }}Input | null | undefined) => void,
-					reject: (errors: any) => void
-				) => {
-					resolve(value);
-				}
-			);
-		},
-		{%- endif %}
-		props: (value?: {{ name }}Input | undefined) => {
+		props: ($LL, value, fieldArg) => {
 			return {};
 		}{%- if field.isObjectType%},
-		fields: () => {{ field.fieldTypeName | camelCase }}Fields
+		fields: (value, fieldArg) => {{ field.fieldTypeName | camelCase }}Fields
 		{%- endif %}
 	}{% if forloop.last == false %},{% endif %}
 	{%- endfor %}
+};
+
+export const validateRequired = async ($LL: TranslationFunctions, value: {{ name }}Input | null | undefined) => {
+	const errors: Record<string, Errors> = {};
+	if (value) {
+		{%- for field in fields %}
+		if ({{ name | camelCase }}Fields?.{{ field.fieldName }}?.required?.(value) && value.{{ field.fieldName }} == null) {
+			errors['{{ field.fieldName }}'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+		}
+		{%- endfor %}
+	}
+	return errors;
+};
+
+export const validateErrors = async ($LL: TranslationFunctions, value: {{ name }}Input | null | undefined) => {
+	const errors: Record<string, Errors> = {};
+	if (value) {
+		{%- for field in fields %}
+		const {{ field.fieldName }}Errors = await {{ name | camelCase }}Fields?.{{ field.fieldName }}?.validate?.($LL, value);
+		if ({{ field.fieldName }}Errors && {{ field.fieldName }}Errors.length > 0) {
+			errors['{{ field.fieldName }}'] = { errors: {{ field.fieldName }}Errors.map((message) => ({ message })) };
+		}
+		{%- endfor %}
+	}
+	return errors;
+};
+
+export const validate = async ($LL: TranslationFunctions, value: {{ name }}Input | null | undefined) => {
+	let errors = await validateRequired($LL, value);
+	if (Object.keys(errors).length === 0) {
+		errors = await validateErrors($LL, value);
+	}
+	return new Promise(
+		(
+			resolve: (data: {{ name }}Input | null | undefined) => void,
+			reject: (errors: Record<string, Errors>) => void
+		) => {
+			if (Object.keys(errors).length === 0) {
+				resolve(value);
+			} else {
+				reject(errors);
+			}
+		}
+	);
+};
+
+export const validateAll = async ($LL: TranslationFunctions, value: ({{ name }}Input | null | undefined)[] | null | undefined) => {
+	let errors: Record<number, Errors> = {};
+	if (value) {
+		for (let row = 0; row < value.length; row++) {
+			const node = value[row];
+			if (node) {
+				const rowErrors = await validateRequired($LL, node);
+				if (Object.keys(rowErrors).length > 0) {
+					errors[row] = { iterms: rowErrors };
+				}
+			}
+		}
+		if (Object.keys(errors).length === 0) {
+			for (let row = 0; row < value.length; row++) {
+				const node = value[row];
+				if (node) {
+					const rowErrors = await validateErrors($LL, node);
+					if (Object.keys(rowErrors).length > 0) {
+						errors[row] = { iterms: rowErrors };
+					}
+				}
+			}
+		}
+	}
+	return new Promise(
+		(
+			resolve: (data: ({{ name }}Input | null | undefined)[] | null | undefined) => void,
+			reject: (errors: Record<number, Errors>) => void
+		) => {
+			if (Object.keys(errors).length === 0) {
+				resolve(value);
+			} else {
+				reject(errors);
+			}
+		}
+	);
 };
