@@ -73,6 +73,10 @@
 	export let tabs: (($LL: TranslationFunctions, args?: Query{{ name }}ListArgs | undefined) => TabInfo[] | undefined) | undefined = {{ name | camelCase }}Tabs;
 	export let tab: ((args?: Query{{ name }}ListArgs | undefined) => string | undefined) | undefined = {{ name | camelCase }}Tab;
 	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
+	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
+	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
+		fields = { ...fields, ...fieldsPatch };
+	}
 	export let fieldsArgs: Record<string, any> | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
@@ -416,6 +420,7 @@
 										/>
 									{:else}
 										<{{ field.fieldTypeName }}TableDialog
+											fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(node, fieldsArgs?.{{ field.fieldName }})}
 											bind:value={node.{{ field.fieldName }}}
 											{%- if field.textFieldName %}
 											textFieldName="{{field.textFieldName}}"
@@ -745,6 +750,7 @@
 										/>
 									{:else}
 										<{{ field.fieldTypeName }}TableDialog
+											fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(node, fieldsArgs?.{{ field.fieldName }})}
 											bind:value={node.{{ field.fieldName }}}
 											{%- if field.textFieldName %}
 											textFieldName="{{field.textFieldName}}"

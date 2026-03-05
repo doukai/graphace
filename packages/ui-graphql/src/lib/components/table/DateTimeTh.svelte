@@ -65,15 +65,20 @@
 		preventScroll: true,
 		onOpenChange: ({ curr, next }) => {
 			if (curr !== next && next) {
-				_value = value;
-				if (!value.opr) {
-					if (value.arr) {
-						_value.opr = 'IN';
-					} else {
-						_value.opr = 'EQ';
+				if (value) {
+					_value = value;
+					if (!value.opr) {
+						if (value.arr) {
+							_value.opr = 'IN';
+						} else {
+							_value.opr = 'EQ';
+						}
 					}
 				}
-				_sort = sort;
+
+				if (sort) {
+					_sort = sort;
+				}
 			}
 			return next;
 		}

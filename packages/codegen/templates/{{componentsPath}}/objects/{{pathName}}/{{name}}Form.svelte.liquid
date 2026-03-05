@@ -41,6 +41,10 @@
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
 	export { className as class };
 	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
+	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
+	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
+		fields = { ...fields, ...fieldsPatch };
+	}
 	export let fieldsArgs: Record<string, any> | undefined = undefined;
 	{%- if groups != undefined and groups.length > 0 %}
 	export let wrapper: Record<string, ComponentType> = {
@@ -108,7 +112,7 @@
 					<div class="col-span-full">
 						<{{ field.fieldTypeName }}Editable
 							title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-							fields={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
+							fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
 							showCreateDialog
 							showEditDialog
 							showRemoveButton
@@ -215,6 +219,7 @@
 							/>
 						{:else}
 							<{{ field.fieldTypeName }}TableDialog
+								fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
 								bind:value={value.{{ field.fieldName }}}
 								{%- if field.textFieldName %}
 								textFieldName="{{field.textFieldName}}"
@@ -264,7 +269,7 @@
 				<div class="col-span-full">
 					<{{ field.fieldTypeName }}Editable
 						title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-						fields={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
+						fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
 						showCreateDialog
 						showEditDialog
 						showRemoveButton
@@ -371,6 +376,7 @@
 						/>
 					{:else}
 						<{{ field.fieldTypeName }}TableDialog
+							fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
 							bind:value={value.{{ field.fieldName }}}
 							{%- if field.textFieldName %}
 							textFieldName="{{field.textFieldName}}"

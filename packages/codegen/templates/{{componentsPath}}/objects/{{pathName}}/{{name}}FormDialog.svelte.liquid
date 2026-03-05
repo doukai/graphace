@@ -31,6 +31,7 @@
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
 	export let fields: {{ name }}Fields | undefined = undefined;
+	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
 	export let fieldsArgs: Record<string, any> | undefined = undefined;
 
 	const { validate } = validator;
@@ -155,6 +156,7 @@
 			isFetching={$query_{{ name | camelCase }}_Store.isFetching}
 			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
 			{fields}
+			{fieldsPatch}
 			{fieldsArgs}
 			on:save={(e) => {
 				if (select) {
