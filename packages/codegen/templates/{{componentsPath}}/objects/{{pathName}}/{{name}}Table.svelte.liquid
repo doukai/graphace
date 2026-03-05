@@ -340,7 +340,11 @@
 									on:upload
 									{%- endif %}
 									{zIndex}
-									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['td']}
+									{%- if field.isScalarType %}
+									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['input']}
+									{%- else %}
+									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['select']}
+									{%- endif %}
 								/>
 								{%- elsif field.isSelect %}
 								<{{ field.fieldTypeName }}SelectTd
@@ -394,7 +398,7 @@
 										{%- endif %}
 									}}
 									{zIndex}
-									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['td']}
+									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['combobox']}
 								/>
 								{%- else %}
 								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex} {...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['td']}>
@@ -664,7 +668,11 @@
 									on:upload
 									{%- endif %}
 									{zIndex}
-									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['td']}
+									{%- if field.isScalarType %}
+									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['input']}
+									{%- else %}
+									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['select']}
+									{%- endif %}
 								/>
 								{%- elsif field.isSelect %}
 								<{{ field.fieldTypeName }}SelectTd
@@ -719,7 +727,7 @@
 										{%- endif %}
 									}}
 									{zIndex}
-									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['td']}
+									{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['combobox']}
 								/>
 								{%- else %}
 								<Td errors={errors?.[row]?.iterms?.{{ field.fieldName }}} {zIndex} {...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['td']}>

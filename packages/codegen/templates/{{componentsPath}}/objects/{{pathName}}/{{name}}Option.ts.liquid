@@ -44,16 +44,37 @@ export const {{ name | camelCase }}TabChange = async (tab: string, args: Query{{
 
 export type {{ name }}FieldsArgs = {
 	{%- for field in fields %}
-	{{ field.fieldName }}?: unknown;
+	{{ field.fieldName }}?: {} | undefined;
+	{%- endfor %}
+};
+
+export type {{ name }}FieldsProps = {
+	{%- for field in fields %}
+	{{ field.fieldName }}?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		{%- if field.isObjectType %}
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+		{%- else %}
+		'input'?: {} | undefined;
+		'select'?: {} | undefined;
+		{%- endif %}
+	} | undefined;
 	{%- endfor %}
 };
 
 export type {{ name }}Fields = {
 	{%- for field in fields %}
 	{%- if field.isListType %}
-	{{ field.fieldName }}?: Option<TranslationFunctions, {{ name }}Input, Query{{ name }}ListArgs, ({% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined)[] | null | undefined, {{ name }}FieldsArgs['{{ field.fieldName }}'], unknown>{% if field.isObjectType %} & { fields?: (value?: {{ name }}Input | undefined, fieldArg?: {{ name }}FieldsArgs['{{ field.fieldName }}']) => {{ field.fieldTypeName }}Fields }{% endif %} | undefined;
+	{{ field.fieldName }}?: Option<TranslationFunctions, {{ name }}Input, Query{{ name }}ListArgs, ({% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined)[] | null | undefined, {{ name }}FieldsArgs['{{ field.fieldName }}'], {{ name }}FieldsProps['{{ field.fieldName }}']>{% if field.isObjectType %} & { fields?: (value?: {{ name }}Input | undefined, fieldArg?: {{ name }}FieldsArgs['{{ field.fieldName }}']) => {{ field.fieldTypeName }}Fields }{% endif %} | undefined;
 	{%- else %}
-	{{ field.fieldName }}?: Option<TranslationFunctions, {{ name }}Input, Query{{ name }}ListArgs, {% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined, {{ name }}FieldsArgs['{{ field.fieldName }}'], unknown>{% if field.isObjectType %} & { fields?: (value?: {{ name }}Input | undefined, fieldArg?: {{ name }}FieldsArgs['{{ field.fieldName }}']) => {{ field.fieldTypeName }}Fields }{% endif %} | undefined;
+	{{ field.fieldName }}?: Option<TranslationFunctions, {{ name }}Input, Query{{ name }}ListArgs, {% if field.isObjectType %}{{ field.fieldTypeName }}Input{% elsif field.isEnumType %}{{ field.fieldTypeName }}{% else %}{{ field.tsTypeName }}{% endif %} | null | undefined, {{ name }}FieldsArgs['{{ field.fieldName }}'], {{ name }}FieldsProps['{{ field.fieldName }}']>{% if field.isObjectType %} & { fields?: (value?: {{ name }}Input | undefined, fieldArg?: {{ name }}FieldsArgs['{{ field.fieldName }}']) => {{ field.fieldTypeName }}Fields }{% endif %} | undefined;
 	{%- endif %}
 	{%- endfor %}
 };

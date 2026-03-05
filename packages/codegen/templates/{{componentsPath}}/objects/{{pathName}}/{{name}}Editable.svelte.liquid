@@ -348,7 +348,11 @@
 										{%- if field.isFile %}
 										on:upload
 										{%- endif %}
+										{%- if field.isScalarType %}
 										{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['input']}
+										{%- else %}
+										{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['select']}
+										{%- endif %}
 									/>
 								</Td>
 								{%- elsif field.isSelect %}
@@ -397,7 +401,7 @@
 											}
 											{%- endif %}
 										}}
-										{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['select']}
+										{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['combobox']}
 									/>
 								</Td>
 								{%- else %}
@@ -671,7 +675,11 @@
 										{%- if field.isFile %}
 										on:upload
 										{%- endif %}
+										{%- if field.isScalarType %}
 										{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['input']}
+										{%- else %}
+										{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['select']}
+										{%- endif %}
 									/>
 								</Td>
 								{%- elsif field.isSelect %}
@@ -721,7 +729,7 @@
 											}
 											{%- endif %}
 										}}
-										{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['select']}
+										{...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['combobox']}
 									/>
 								</Td>
 								{%- else %}

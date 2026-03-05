@@ -129,6 +129,7 @@
 	<div
 		data-part="input"
 		use:melt={$root}
+		use:melt={$input}
 		class="grid grid-cols-[1fr_auto] items-center textarea {errors?.errors ||
 		(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 			? 'textarea-error focus-within:outline-error'
@@ -141,11 +142,11 @@
 					use:melt={$tag(t)}
 					class="badge {errors?.iterms?.[index]
 						? 'badge-error'
-						: 'badge-neutral'} flex items-center [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
+						: 'badge-neutral'} flex items-center px-0 [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 				>
 					<span
 						data-part="text"
-						class="flex items-center border-r max-w-xs truncate {errors?.iterms?.[index]
+						class="flex items-center px-1 border-r max-w-xs truncate {errors?.iterms?.[index]
 							? 'bg-error'
 							: 'bg-neutral'} border-white/10"
 					>
@@ -155,7 +156,7 @@
 						data-part="delete"
 						use:melt={$deleteTrigger(t)}
 						{disabled}
-						class="flex items-center h-full {errors?.iterms?.[index]
+						class="flex items-center h-full px-1 {errors?.iterms?.[index]
 							? 'enabled:hover:bg-error-focus'
 							: 'enabled:hover:bg-neutral-focus'}"
 					>
@@ -173,10 +174,9 @@
 			{#if !disabled && !readonly}
 				<input
 					data-part="search"
-					use:melt={$input}
 					{id}
 					type="text"
-					class="input px-1 h-5 min-w-10 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+					class="input px-1 h-5 min-w-5 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 					on:focus={(e) => {
 						if ($touchedInput) {
 							debounce(() => {
@@ -194,7 +194,7 @@
 				/>
 			{/if}
 		</div>
-		<div data-part="icon" class="w-4 flex items-center justify-centerz-[{zIndex + 9}]">
+		<div data-part="icon" class="w-4 flex items-center justify-center z-[{zIndex + 9}]">
 			{#if $open}
 				<Icon src={ChevronUp} data-part="icon-up" class="size-4" />
 			{:else}
@@ -207,7 +207,7 @@
 	<ul
 		data-part="menu"
 		class="menu rounded shadow bg-base-100 z-[{zIndex +
-			9}] max-h-80 mt-4 flex-nowrap overflow-y-auto"
+			9}] w-full max-h-80 mt-4 flex-nowrap overflow-y-auto"
 		use:melt={$menu}
 		transition:fade={{ duration: 100 }}
 	>

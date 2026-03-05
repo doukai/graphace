@@ -6,5 +6,5 @@ export type Option<L, V, R, F, A, P> = {
     required?: ((value?: V | undefined) => boolean) | undefined;
     validate?: (($LL: L, value: V) => Promise<string[]>) | undefined;
     onChange?: (($LL: L, fieldValue: F, value?: V | null | undefined, fieldArg?: A) => Promise<V | null | undefined>) | undefined;
-    props?: (($LL: L, value?: V | undefined, fieldArg?: A) => Record<string, Record<string, P>>) | undefined;
+    props?: (($LL: L, value?: V | undefined, fieldArg?: A) => P) | undefined;
 };

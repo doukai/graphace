@@ -127,7 +127,7 @@
 						<ErrorLabels errors={errors.{{ field.fieldName }}} />
 					</div>
 					{%- else %}
-					<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['control']}>
+					<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['form-control']}>
 						<Label
 							{id}
 							text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -164,7 +164,11 @@
 							{%- if field.fieldTypeName == 'File' %}
 							on:upload
 							{%- endif %}
+							{%- if field.isScalarType %}
 							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['input']}
+							{%- else %}
+							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
+							{%- endif %}
 						/>
 						{%- elsif field.isSelect %}
 						<{{ field.fieldTypeName }}Select
@@ -194,7 +198,7 @@
 							{%- if field.isListType %}
 							list
 							{%- endif %}
-							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
+							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['combobox']}
 						/>
 						{%- else %}
 						{#if value.{{idName}}}
@@ -279,7 +283,7 @@
 					<ErrorLabels errors={errors.{{ field.fieldName }}} />
 				</div>
 				{%- else %}
-				<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['control']}>
+				<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -316,7 +320,11 @@
 						{%- if field.fieldTypeName == 'File' %}
 						on:upload
 						{%- endif %}
+						{%- if field.isScalarType %}
 						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['input']}
+						{%- else %}
+						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
+						{%- endif %}
 					/>
 					{%- elsif field.isSelect %}
 					<{{ field.fieldTypeName }}Select
@@ -346,7 +354,7 @@
 						{%- if field.isListType %}
 						list
 						{%- endif %}
-						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
+						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['combobox']}
 					/>
 					{%- else %}
 					{#if value.{{idName}}}
