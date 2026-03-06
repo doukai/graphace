@@ -19,6 +19,7 @@
 	import {
 		{{ name | camelCase }}Fields,
 		type {{ name }}Fields,
+		type {{ name }}FieldsArgs,
 		validate
 	} from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
@@ -45,7 +46,7 @@
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
 		fields = { ...fields, ...fieldsPatch };
 	}
-	export let fieldsArgs: Record<string, any> | undefined = undefined;
+	export let fieldsArgs: {{ name }}FieldsArgs | undefined = undefined;
 	{%- if groups != undefined and groups.length > 0 %}
 	export let wrapper: Record<string, ComponentType> = {
 		{%- for group in groups %}

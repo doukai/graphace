@@ -38,6 +38,7 @@
 		{{ name | camelCase }}Tab,
 		{{ name | camelCase }}TabChange,
 		{{ name | camelCase }}Fields,
+		type {{ name }}FieldsArgs,
 		type {{ name }}Fields,
 		validate,
 		validateAll
@@ -77,7 +78,7 @@
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
 		fields = { ...fields, ...fieldsPatch };
 	}
-	export let fieldsArgs: Record<string, any> | undefined = undefined;
+	export let fieldsArgs: {{ name }}FieldsArgs | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 

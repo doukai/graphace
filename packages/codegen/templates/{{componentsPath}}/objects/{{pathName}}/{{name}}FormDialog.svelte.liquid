@@ -6,7 +6,7 @@
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Form.svelte';
-	import { type {{ name }}Fields } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
+	import type { {{ name }}Fields, {{ name }}FieldsArgs } from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
 	import {
 		loadEvent,
 		validator,
@@ -32,7 +32,7 @@
 	export { className as class };
 	export let fields: {{ name }}Fields | undefined = undefined;
 	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
-	export let fieldsArgs: Record<string, any> | undefined = undefined;
+	export let fieldsArgs: {{ name }}FieldsArgs | undefined = undefined;
 
 	const { validate } = validator;
 	{%- if useAuth %}
