@@ -108,12 +108,6 @@
 		}
 	}
 
-	$: if (Array.isArray(value) && value.length) {
-		selectedIdList = value.map((node) => node?.id);
-	} else if (value && !Array.isArray(value)) {
-		selectedIdList = [value.id];
-	}
-
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;

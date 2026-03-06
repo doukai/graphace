@@ -43,10 +43,6 @@
 				})
 				.then((response) => {
 					value = response.data?.{{ name | camelCase }}List;
-					selected = value?.map((item) => ({
-						label: item?.name,
-						value: item?.{{ idName }}
-					}));
 				});
 		} else {
 			selected = value?.map((item) => ({
@@ -60,7 +56,6 @@
 				.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} } })
 				.then((response) => {
 					value = response.data?.{{ name | camelCase }}List?.[0];
-					selected = { label: value?.name, value: value?.{{ idName }} };
 				});
 		} else {
 			selected = { label: value?.name, value: value.{{ idName }} };
