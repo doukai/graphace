@@ -11,7 +11,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
+	import type { {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -29,6 +29,11 @@
 	{%- if hasFileField %}
 	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store;
 	{%- endif %}
+
+	let value: ({{ name }}Input | null | undefined)[] = [];
+	$: if (nodes && Object.keys(nodes).length > 0) {
+		value = nodes;
+	}
 	let args: Query{{ name }}ConnectionArgs = {};
 	let orderBy: {{ name }}OrderBy = {};
 	let pageNumber: number = 1;
@@ -50,7 +55,7 @@
 	};
 
 	const mutation = (args: {{ mutationTypeName }}{{ name }}Args) => {
-		const row = nodes
+		const row = value
 			?.map((node) => node?.{{ idName }})
 			?.indexOf(args.{{ idName }} || args.where?.{{ idName }}?.val || undefined);
 			
@@ -103,7 +108,7 @@
 			showCreateButton={auth('{{ name }}::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			bind:value
 			bind:args
 			bind:orderBy
 			{errors}

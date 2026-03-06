@@ -10,7 +10,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { {{ mutationTypeName }}{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}Input, {{ mutationTypeName }}{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 

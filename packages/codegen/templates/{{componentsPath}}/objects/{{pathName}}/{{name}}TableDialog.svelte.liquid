@@ -49,6 +49,11 @@
 		(edge) => edge?.node
 	);
 	$: totalCount = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.totalCount || 0;
+
+	let _value: ({{ name }}Input | null | undefined)[] = [];
+	$: if (nodes && Object.keys(nodes).length > 0) {
+		_value = nodes;
+	}
 	export let args: Query{{ name }}ConnectionArgs = {};
 	export let orderBy: {{ name }}OrderBy = {};
 	export let pageNumber: number = 1;
@@ -103,6 +108,12 @@
 		}
 	}
 
+	$: if (Array.isArray(value) && value.length) {
+		selectedIdList = value.map((node) => node?.id);
+	} else if (value && !Array.isArray(value)) {
+		selectedIdList = [value.id];
+	}
+
 	const query = (to?: number | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;
@@ -116,7 +127,7 @@
 	};
 
 	const mutation = (args: Mutation{{ name }}Args) => {
-		const row = nodes
+		const row = _value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -206,7 +217,7 @@
 	</div>
 	<svelte:fragment let:zIndex>
 		<{{ name }}Table
-			value={nodes}
+			bind:value={_value}
 			bind:selectedIdList
 			bind:args
 			bind:orderBy

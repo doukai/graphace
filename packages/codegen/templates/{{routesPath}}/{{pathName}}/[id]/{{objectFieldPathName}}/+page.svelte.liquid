@@ -34,7 +34,7 @@
 	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store;
 	{%- endif %}
 
-	let value = {};
+	let value: {{ fieldObjectInfo.name }}Input = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
 
@@ -74,25 +74,27 @@
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ fieldInfo.fieldName }}: input })
 			.then((data) => {
 				errors = {};
-				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.fetch({
-					{{ name | camelCase }}_{{ idName }}: id,
-					{{ name | camelCase }}_{{ fieldInfo.fieldName }}: input
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.{{ appName }}.message.requestFailed(),
-								description: globalError
-							});
+				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store
+					.fetch({
+						{{ name | camelCase }}_{{ idName }}: id,
+						{{ name | camelCase }}_{{ fieldInfo.fieldName }}: input
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.{{ appName }}.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.{{ appName }}.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.{{ appName }}.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
