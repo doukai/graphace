@@ -129,7 +129,10 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validateAll($LL, value).then(() => dispatch('save', { value }))}
+		on:save={(e) =>
+			validateAll($LL, value)
+				.then((value) => dispatch('save', { value }))
+				.catch((e) => (errors = e))}
 		on:remove={(e) =>
 			dispatch('remove', {
 				value: value?.filter((node) => selectedIdList.includes(node?.{{ idName }}))
@@ -295,11 +298,13 @@
 									{%- endif %}
 									{%- if field.inMutationArgs and field.fieldName != idName %}
 									on:save={(e) =>
-										validate($LL, node).then(() =>
-											dispatch('save', {
-												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-											})
-										)}
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+												})
+											)
+											.catch((e) => (errors = e))}
 									readonly={fields?.{{ field.fieldName }}?.readonly?.(node, fieldsArgs?.{{ field.fieldName }})}
 									disabled={fields?.{{ field.fieldName }}?.disabled?.(node, fieldsArgs?.{{ field.fieldName }})}
 									on:change={(e) => {
@@ -362,11 +367,13 @@
 									readonly={fields?.{{ field.fieldName }}?.readonly?.(node, fieldsArgs?.{{ field.fieldName }})}
 									disabled={fields?.{{ field.fieldName }}?.disabled?.(node, fieldsArgs?.{{ field.fieldName }})}
 									on:save={(e) =>
-										validate($LL, node).then(() =>
-											dispatch('save', {
-												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-											})
-										)}
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+												})
+											)
+											.catch((e) => (errors = e))}
 									on:change={(e) => {
 										{%- if field.isListType %}
 										if (Array.isArray(e.detail.value) || e.detail.value == null) {
@@ -624,11 +631,13 @@
 									{%- endif %}
 									{%- if field.inMutationArgs and field.fieldName != idName %}
 									on:save={(e) =>
-										validate($LL, node).then(() =>
-											dispatch('save', {
-												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-											})
-										)}
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+												})
+											)
+											.catch((e) => (errors = e))}
 									on:change={(e) => {
 										{%- if field.isListType %}
 										if (Array.isArray(e.detail.value) || e.detail.value == null) {
@@ -692,11 +701,13 @@
 									readonly={fields?.{{ field.fieldName }}?.readonly?.(node, fieldsArgs?.{{ field.fieldName }})}
 									disabled={fields?.{{ field.fieldName }}?.disabled?.(node, fieldsArgs?.{{ field.fieldName }})}
 									on:save={(e) =>
-										validate($LL, node).then(() =>
-											dispatch('save', {
-												value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
-											})
-										)}
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { {{ field.fieldName }}: node?.{{ field.fieldName }}, where: { {{ idName }}: { val: node?.{{ idName }} } } }
+												})
+											)
+											.catch((e) => (errors = e))}
 									on:change={(e) => {
 										{%- if field.isListType %}
 										if (Array.isArray(e.detail.value) || e.detail.value == null) {
