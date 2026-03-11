@@ -2,7 +2,19 @@
 	import { createEventDispatcher, getContext{% if groups != undefined and groups.length > 0 %}, type ComponentType{% endif %} } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading{% if groups != undefined and groups.length > 0 %}, Wrapper{% endif %}, to } from '@graphace/ui';
+	import {
+		Buttons,
+		Empty,
+		Form,
+		ErrorLabels,
+		FormControl,
+		Label,
+		Loading{% if groups != undefined and groups.length > 0 %},
+		Wrapper{% endif %},
+		type TabInfo,
+		Tabs,
+		to
+	} from '@graphace/ui';
 	import { {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
 	{%- for enum in enums %}
 	import {{ enum }}Input from '~/{{ componentsPath }}/enums/{{ enum | paramCase }}/{{ enum }}Input.svelte';
@@ -20,15 +32,19 @@
 		{{ name | camelCase }}Fields,
 		type {{ name }}Fields,
 		type {{ name }}FieldsArgs,
+		{{ name | camelCase }}FormTab,
+		{{ name | camelCase }}FormTabs,
+		{{ name | camelCase }}FormTabChange,
 		validate
 	} from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Option';
-	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}Input, Query{{ name }}Args } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	{%- if tables and tables.length > 0 %}
 	import { locale } from '~/lib/i18n/i18n-svelte';
 	{%- endif %}
 	
 	export let value: {{ name }}Input | null | undefined = undefined;
+	export let args: Query{{ name }}Args = {};
 	export let isFetching: boolean = false;
 	export let isMutating: boolean = false;
 	export let errors: Record<string, Errors> = {};
@@ -39,8 +55,10 @@
 	export let showBackButton: boolean = false;
 	export let title: string | undefined = undefined;
 	let className: string | undefined =
-		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
 	export { className as class };
+	export let tabs: (($LL: TranslationFunctions, args?: Query{{ name }}Args | undefined) => TabInfo[] | undefined) | undefined = {{ name | camelCase }}FormTabs;
+	export let tab: ((args?: Query{{ name }}Args | undefined) => string | undefined) | undefined = {{ name | camelCase }}FormTab;
 	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
 	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -65,17 +83,20 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
+		query: { args: Query{{ name }}Args; };
 		remove: { value: {{ name }}Input | null | undefined };
 		unbind: { value: {{ name }}Input | null | undefined };
 		save: { value: {{ name }}Input | null | undefined };
+		tabChange: { tab: string; origin: string; };
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
 </script>
 
 <div class="flex justify-between">
+	<slot name="start" />
 	<slot name="title">
-		<span class="text-xl font-semibold self-center">
+		<span class="text-xl font-semibold self-center max-sm:hidden">
 			{#if title}
 				{title}
 			{:else}
@@ -102,190 +123,218 @@
 	</Buttons>
 </div>
 <div class="divider my-0" />
+{#if tabs?.($LL, args)}
+	<Tabs
+		value={tab?.(args)}
+		tabs={tabs?.($LL, args)}
+		on:change={(e) => {
+			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+			if (e.detail.value !== e.detail.origin) {
+				{{ name | camelCase }}FormTabChange(e.detail.value, args, value)
+					.then((args) => {
+						dispatch('query', {
+							args
+						});
+					})
+					.catch((e) => (errors = e));
+			}
+		}}
+	/>
+{/if}
 <Form class={className}>
 	{#if isFetching}
-		<Loading />
+		<Loading class="col-span-full" />
 	{:else if value}
 		{%- if groups != undefined and groups.length > 0 %}
 		{%- for group in groups %}
-		<svelte:component this={wrapper['{{ group.name }}']} {...wrapperProps['{{ group.name }}']}>
-			{%- for field in group.fields %}
-			<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
-				{#if !fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }})}
-					{%- if field.isTable %}
-					<div class="col-span-full">
-						<{{ field.fieldTypeName }}Editable
-							title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-							fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
-							showCreateDialog
-							showEditDialog
-							showRemoveButton
-							bind:value={value.{{ field.fieldName }}}
-							errors={errors.{{ field.fieldName }}?.iterms}
-							{isFetching}
-							{isMutating}
-							on:remove={(e) => {
-								if (e.detail.row !== undefined) {
-									value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
-								}
-							{% raw %}}}{% endraw %}
-							on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
-							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
-						/>
-						<ErrorLabels errors={errors.{{ field.fieldName }}} />
-					</div>
-					{%- else %}
-					<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['form-control']}>
-						<Label
-							{id}
-							text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-							required={fields?.{{ field.fieldName }}?.required?.(value)}
-						/>
-						{%- if field.isScalarType or field.isEnumType or field.isFile %}
-						<{{ field.fieldTypeName }}Input
-							{id}
-							name="{{ field.fieldName }}"
-							bind:value={value.{{ field.fieldName }}}
-							errors={errors.{{ field.fieldName }}}
-							readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
-							disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
-							on:change={(e) => {
-								{%- if field.isListType %}
-								if (Array.isArray(e.detail.value) || e.detail.value == null) {
-									fields?.{{ field.fieldName }}
-										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
-										.then((next) => (value = next))
-										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
-								}
-								{%- else %}
-								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
-									fields?.{{ field.fieldName }}
-										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
-										.then((next) => (value = next))
-										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
-								}
-								{%- endif %}
-							}}
-							{%- if field.isListType %}
-							list
-							{%- endif %}
-							{%- if field.fieldTypeName == 'File' %}
-							on:upload
-							{%- endif %}
-							{%- if field.isScalarType %}
-							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['input']}
-							{%- else %}
-							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
-							{%- endif %}
-						/>
-						{%- elsif field.isSelect %}
-						<{{ field.fieldTypeName }}Select
-							{id}
-							name="{{ field.fieldName }}"
-							bind:value={value.{{ field.fieldName }}}
-							errors={errors.{{ field.fieldName }}}
-							readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
-							disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
-							on:change={(e) => {
-								{%- if field.isListType %}
-								if (Array.isArray(e.detail.value) || e.detail.value == null) {
-									fields?.{{ field.fieldName }}
-										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
-										.then((next) => (value = next))
-										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
-								}
-								{%- else %}
-								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
-									fields?.{{ field.fieldName }}
-										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
-										.then((next) => (value = next))
-										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
-								}
-								{%- endif %}
-							}}
-							{%- if field.isListType %}
-							list
-							{%- endif %}
-							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['combobox']}
-						/>
-						{%- else %}
-						{#if value.{{idName}}}
-							<ObjectLink
-								bind:value={value.{{ field.fieldName }}}
-								{%- if field.textFieldName %}
-								textFieldName="{{field.textFieldName}}"
-								{%- elsif field.isNamed %}
-								textFieldName="name"
-								{%- endif %}
-								path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
-								on:goto
-								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['link']}
-							/>
-						{:else}
-							<{{ field.fieldTypeName }}TableDialog
+		{#if {% for field in group.fields %}!fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }}){% if forloop.last == false %} && {% endif %}{% endfor %}}
+			<svelte:component this={wrapper['{{ group.name }}']} {...wrapperProps['{{ group.name }}']}>
+				{%- for field in group.fields %}
+				<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
+					{#if !fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }})}
+						{%- if field.isTable %}
+						<div class="col-span-full border p-1">
+							<{{ field.fieldTypeName }}Editable
+								title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 								fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
+								showCreateButton
+								showRemoveButton
 								bind:value={value.{{ field.fieldName }}}
-								{%- if field.textFieldName %}
-								textFieldName="{{field.textFieldName}}"
-								{%- elsif field.isNamed %}
-								textFieldName="name"
-								{%- endif %}
-								{%- if field.isListType == false %}
-								singleChoice
-								{%- endif %}
-								class="btn-link"
+								errors={errors.{{ field.fieldName }}?.iterms}
+								{isFetching}
+								{isMutating}
+								on:remove={(e) => {
+									if (value && e.detail.row != null && !Array.isArray(e.detail.row)) {
+										value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
+									}
+								{% raw %}}}{% endraw %}
+								on:create={(e) => {
+									if (value) {
+										value.{{ field.fieldName }}  = [...(value.{{ field.fieldName }}  || []), {}];
+									}
+								}}
+								on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
+								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
+							/>
+							<ErrorLabels errors={errors.{{ field.fieldName }}} />
+						</div>
+						{%- else %}
+						<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['form-control']}>
+							<Label
+								{id}
+								text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+								required={fields?.{{ field.fieldName }}?.required?.(value)}
+							/>
+							{%- if field.isScalarType or field.isEnumType or field.isFile %}
+							<{{ field.fieldTypeName }}Input
+								{id}
+								name="{{ field.fieldName }}"
+								bind:value={value.{{ field.fieldName }}}
+								errors={errors.{{ field.fieldName }}}
 								readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
 								disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
-							on:change={(e) => {
+								on:change={(e) => {
+									{%- if field.isListType %}
+									if (Array.isArray(e.detail.value) || e.detail.value == null) {
+										fields?.{{ field.fieldName }}
+											?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+											.then((next) => (value = next))
+											.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+									}
+									{%- else %}
+									if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+										fields?.{{ field.fieldName }}
+											?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+											.then((next) => (value = next))
+											.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+									}
+									{%- endif %}
+								}}
 								{%- if field.isListType %}
-								if (Array.isArray(e.detail.value) || e.detail.value == null) {
-									fields?.{{ field.fieldName }}
-										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
-										.then((next) => (value = next))
-										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
-								}
-								{%- else %}
-								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
-									fields?.{{ field.fieldName }}
-										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
-										.then((next) => (value = next))
-										.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
-								}
+								list
 								{%- endif %}
-							}}
-								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['dialog']}
+								{%- if field.fieldTypeName == 'File' %}
+								on:upload
+								{%- endif %}
+								{%- if field.isScalarType %}
+								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['input']}
+								{%- else %}
+								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
+								{%- endif %}
 							/>
-						{/if}
-						<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
+							{%- elsif field.isSelect %}
+							<{{ field.fieldTypeName }}Select
+								{id}
+								name="{{ field.fieldName }}"
+								bind:value={value.{{ field.fieldName }}}
+								errors={errors.{{ field.fieldName }}}
+								readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
+								disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
+								on:change={(e) => {
+									{%- if field.isListType %}
+									if (Array.isArray(e.detail.value) || e.detail.value == null) {
+										fields?.{{ field.fieldName }}
+											?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+											.then((next) => (value = next))
+											.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+									}
+									{%- else %}
+									if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+										fields?.{{ field.fieldName }}
+											?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+											.then((next) => (value = next))
+											.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+									}
+									{%- endif %}
+								}}
+								{%- if field.isListType %}
+								list
+								{%- endif %}
+								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['combobox']}
+							/>
+							{%- else %}
+							{#if value.{{idName}}}
+								<ObjectLink
+									bind:value={value.{{ field.fieldName }}}
+									{%- if field.textFieldName %}
+									textFieldName="{{field.textFieldName}}"
+									{%- elsif field.isNamed %}
+									textFieldName="name"
+									{%- endif %}
+									path={`${value.{{ idName }}}/{{ field.fieldName | paramCase }}`}
+									on:goto
+									{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['link']}
+								/>
+							{:else}
+								<{{ field.fieldTypeName }}TableDialog
+									fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
+									bind:value={value.{{ field.fieldName }}}
+									{%- if field.textFieldName %}
+									textFieldName="{{field.textFieldName}}"
+									{%- elsif field.isNamed %}
+									textFieldName="name"
+									{%- endif %}
+									{%- if field.isListType == false %}
+									singleChoice
+									{%- endif %}
+									class="btn-link"
+									readonly={fields?.{{ field.fieldName }}?.readonly?.(value, fieldsArgs?.{{ field.fieldName }})}
+									disabled={fields?.{{ field.fieldName }}?.disabled?.(value, fieldsArgs?.{{ field.fieldName }})}
+								on:change={(e) => {
+									{%- if field.isListType %}
+									if (Array.isArray(e.detail.value) || e.detail.value == null) {
+										fields?.{{ field.fieldName }}
+											?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+											.then((next) => (value = next))
+											.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+									}
+									{%- else %}
+									if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+										fields?.{{ field.fieldName }}
+											?.onChange?.($LL, e.detail.value, value, fieldsArgs?.{{ field.fieldName }})
+											.then((next) => (value = next))
+											.catch((e) => (errors = { ...errors, {{ field.fieldName }}: e }));
+									}
+									{%- endif %}
+								}}
+									{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['dialog']}
+								/>
+							{/if}
+							<ErrorLabels {id} errors={errors.{{ field.fieldName }}} />
+							{%- endif %}
+						</FormControl>
 						{%- endif %}
-					</FormControl>
-					{%- endif %}
-				{/if}
-			</slot>
-			{%- endfor %}
-		</svelte:component>
+					{/if}
+				</slot>
+				{%- endfor %}
+			</svelte:component>
+		{/if}
 		{%- endfor %}
 		{%- else %}
 		{%- for field in fields %}
 		<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
 			{#if !fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }})}
 				{%- if field.isTable %}
-				<div class="col-span-full">
+				<div class="col-span-full border p-1">
 					<{{ field.fieldTypeName }}Editable
 						title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 						fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
-						showCreateDialog
-						showEditDialog
+						showCreateButton
 						showRemoveButton
 						bind:value={value.{{ field.fieldName }}}
 						errors={errors.{{ field.fieldName }}?.iterms}
 						{isFetching}
 						{isMutating}
 						on:remove={(e) => {
-							if (e.detail.row !== undefined) {
+							if (value && e.detail.row != null && !Array.isArray(e.detail.row)) {
 								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
 							}
 						{% raw %}}}{% endraw %}
+						on:create={(e) => {
+							if (value) {
+								value.{{ field.fieldName }}  = [...(value.{{ field.fieldName }}  || []), {}];
+							}
+						}}
 						on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
 						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
 					/>

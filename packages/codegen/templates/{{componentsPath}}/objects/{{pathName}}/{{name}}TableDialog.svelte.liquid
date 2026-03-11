@@ -3,7 +3,7 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
+	import { to, Pagination, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
 	import { createQuery_{{ name | camelCase }}Connection_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}Connection_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Table from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Table.svelte';
@@ -17,7 +17,14 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { {{ name }}, {{ queryTypeName }}{{ name }}ConnectionArgs, {{ name }}OrderBy, {{ name }}Input, Mutation{{ name }}Args } from '~/{{ schemaTypesPath }}';
+	import type {
+		{{ name }},
+		{{ queryTypeName }}{{ name }}ListArgs,
+		{{ queryTypeName }}{{ name }}ConnectionArgs,
+		{{ name }}OrderBy,
+		{{ name }}Input,
+		Mutation{{ name }}Args
+	} from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined =
@@ -30,6 +37,8 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let tabs: (($LL: TranslationFunctions, args?: Query{{ name }}ListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: ((args?: Query{{ name }}ListArgs | undefined) => string | undefined) | undefined = undefined;
 	export let fields: {{ name }}Fields | undefined = undefined;
 	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
 	export let fieldsArgs: {{ name }}FieldsArgs | undefined = undefined;
@@ -51,8 +60,10 @@
 	$: totalCount = $query_{{ name | camelCase }}Connection_Store.response.data?.{{ name | camelCase }}Connection?.totalCount || 0;
 
 	let _value: ({{ name }}Input | null | undefined)[] = [];
-	$: if (nodes && Object.keys(nodes).length > 0) {
+	$: if (nodes && nodes.length > 0) {
 		_value = nodes;
+	} else {
+		_value = [];
 	}
 	export let args: Query{{ name }}ConnectionArgs = {};
 	export let orderBy: {{ name }}OrderBy = {};
@@ -105,6 +116,8 @@
 			} else {
 				text = value[textFieldName] + '';
 			}
+		} else {
+			text = undefined;
 		}
 	}
 
@@ -211,7 +224,7 @@
 	</div>
 	<svelte:fragment let:zIndex>
 		<{{ name }}Table
-			bind:value={_value}
+			value={_value}
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
@@ -221,6 +234,8 @@
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_{{ name | camelCase }}Connection_Store.isFetching}
 			{zIndex}
+			{tabs}
+			{tab}
 			{fields}
 			{fieldsPatch}
 			{fieldsArgs}

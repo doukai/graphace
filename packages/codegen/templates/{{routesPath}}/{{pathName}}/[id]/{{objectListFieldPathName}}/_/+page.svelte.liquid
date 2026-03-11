@@ -88,7 +88,7 @@
 		<{{ fieldObjectInfo.name }}Form
 			showSaveButton={auth('{{ fieldObjectInfo.name }}::*::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isMutating={$validator.isValidating || $mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
 			on:save={(e) => {

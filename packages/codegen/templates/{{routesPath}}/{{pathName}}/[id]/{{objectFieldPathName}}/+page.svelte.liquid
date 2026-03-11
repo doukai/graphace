@@ -41,6 +41,9 @@
 	$: if ({{ fieldObjectInfo.name | camelCase }} && Object.keys({{ fieldObjectInfo.name | camelCase }}).length > 0) {
 		value = {{ fieldObjectInfo.name | camelCase }};
 		showUnbindButton = true;
+	} else {
+		value = {};
+		showUnbindButton = false;
 	}
 
 	const mutation = (args: {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args) => {
@@ -124,7 +127,7 @@
 			showSaveButton={auth('{{ fieldObjectInfo.name }}::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('{{ fieldObjectInfo.name }}::isDeprecated::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching || $mutation_{{ fieldObjectInfo.name | camelCase }}_Store.isFetching}

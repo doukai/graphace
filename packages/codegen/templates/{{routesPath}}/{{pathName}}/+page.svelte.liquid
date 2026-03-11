@@ -31,8 +31,10 @@
 	{%- endif %}
 
 	let value: ({{ name }}Input | null | undefined)[] = [];
-	$: if (nodes && Object.keys(nodes).length > 0) {
+	$: if (nodes && nodes.length > 0) {
 		value = nodes;
+	} else {
+		value = [];
 	}
 	let args: Query{{ name }}ConnectionArgs = {};
 	let orderBy: {{ name }}OrderBy = {};
@@ -108,7 +110,7 @@
 			showCreateButton={auth('{{ name }}::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			bind:value
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

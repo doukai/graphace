@@ -135,18 +135,18 @@
 			? 'textarea-error focus-within:outline-error'
 			: 'focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered min-h-12 p-1 gap-1"
 	>
-		<div class="flex flex-wrap items-center gap-1">
+		<div class="flex flex-wrap items-center gap-1 min-w-0">
 			{#each $tags as t, index}
 				<div
 					data-part="tag"
 					use:melt={$tag(t)}
 					class="badge {errors?.iterms?.[index]
 						? 'badge-error'
-						: 'badge-neutral'} flex items-center px-0 [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
+						: 'badge-neutral'} flex items-center px-0 max-w-full [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 				>
 					<span
 						data-part="text"
-						class="flex items-center px-1 border-r max-w-xs truncate {errors?.iterms?.[index]
+						class="flex items-center px-1 border-r min-w-0 max-w-full truncate {errors?.iterms?.[index]
 							? 'bg-error'
 							: 'bg-neutral'} border-white/10"
 					>

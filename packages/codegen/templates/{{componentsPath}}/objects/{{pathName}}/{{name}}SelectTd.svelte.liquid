@@ -60,6 +60,8 @@
 		} else {
 			selected = { label: value?.name, value: value.{{ idName }} };
 		}
+	} else {
+		selected = undefined;
 	}
 
 	let mutation = (): void => {

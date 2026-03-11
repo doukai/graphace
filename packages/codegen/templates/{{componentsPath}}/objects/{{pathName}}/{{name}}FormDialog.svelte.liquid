@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
-	import { to, Dialog, toast, modal } from '@graphace/ui';
+	import { to, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
 	import { createQuery_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}_store';
 	import { createMutation_{{ name | camelCase }}_Store } from '~/{{ storesPath }}/mutation/mutation_{{ name | camelCase }}_store';
 	import {{ name }}Form from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Form.svelte';
@@ -16,7 +16,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { {{ name }}, Mutation{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import type { {{ name }}, Query{{ name }}Args, Mutation{{ name }}Args, {{ name }}Input } from '~/{{ schemaTypesPath }}';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: {{ name }}Input | null | undefined = {};
@@ -30,6 +30,8 @@
 	export let disabled = false;
 	let className: string | undefined = 'btn-link p-0 truncate';
 	export { className as class };
+	export let tabs: (($LL: TranslationFunctions, args?: Query{{ name }}Args | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: ((args?: Query{{ name }}Args | undefined) => string | undefined) | undefined = undefined;
 	export let fields: {{ name }}Fields | undefined = undefined;
 	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
 	export let fieldsArgs: {{ name }}FieldsArgs | undefined = undefined;
@@ -61,6 +63,8 @@
 				});
 		} else if (value) {
 			text = value[textFieldName] + '';
+		} else {
+			text = undefined;
 		}
 	}
 
@@ -151,10 +155,12 @@
 		<{{ name }}Form
 			showSaveButton={!readonly && auth('{{ name }}::*::WRITE')}
 			showRemoveButton={!readonly && auth('{{ name }}::isDeprecated::WRITE')}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_{{ name | camelCase }}_Store.isFetching}
 			isMutating={$mutation_{{ name | camelCase }}_Store.isFetching}
+			{tabs}
+			{tab}
 			{fields}
 			{fieldsPatch}
 			{fieldsArgs}

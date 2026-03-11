@@ -8,6 +8,7 @@ import { {{ object | camelCase }}Fields, type {{ object }}Fields } from '~/{{ co
 {%- endfor %}
 import type {
 	{{ name }}Input,
+	Query{{ name }}Args,
 	Query{{ name }}ListArgs
 {%- for object in objects %}
 {%- if object != name %},
@@ -36,6 +37,21 @@ export const {{ name | camelCase }}TabChange = async (tab: string, args: Query{{
 		(
 			resolve: (data: Query{{ name }}ListArgs) => void,
 			reject: (errors: Record<number, Errors>) => void
+		) => {
+			resolve(args);
+		}
+	);
+};
+
+export const {{ name | camelCase }}FormTabs: (($LL: TranslationFunctions, args?: Query{{ name }}Args | undefined) => TabInfo[] | undefined) | undefined = undefined;
+
+export const {{ name | camelCase }}FormTab: ((args?: Query{{ name }}Args | undefined) => string | undefined) | undefined = undefined;
+
+export const {{ name | camelCase }}FormTabChange = async (tab: string, args: Query{{ name }}Args, value?: {{ name }}Input | null | undefined) => {
+	return new Promise(
+		(
+			resolve: (data: Query{{ name }}Args) => void,
+			reject: (errors: Record<string, Errors>) => void
 		) => {
 			resolve(args);
 		}
