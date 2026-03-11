@@ -29,7 +29,7 @@
 	}>();
 </script>
 
-<div data-element="buttons" data-part="root" class="{contextClass} {className}">
+<div data-element="buttons" data-part="root" class="min-w-0 {contextClass} {className}">
 	<slot name="start" />
 	{#if showRemoveButton}
 		<Button

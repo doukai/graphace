@@ -83,7 +83,7 @@
 </script>
 
 <td class={className}>
-	<a class="link inline-flex truncate" href={null} use:melt={$trigger}>
+	<a class="link inline-flex sm:truncate" href={null} use:melt={$trigger}>
 		{#if required}
 			<span data-part="label-required" class="text-error">*</span>
 		{/if}

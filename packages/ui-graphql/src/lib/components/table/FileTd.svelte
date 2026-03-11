@@ -53,7 +53,7 @@
 </script>
 
 <Td {errors} {zIndex} class={className}>
-	<a class="link inline-flex truncate" href={null} use:melt={$trigger}>
+	<a class="link inline-flex sm:truncate" href={null} use:melt={$trigger}>
 		{#if list}
 			{#if Array.isArray(value)}
 				{#if value.length > 3}
@@ -74,7 +74,7 @@
 			{:else}
 				<Icon src={Minus} class="h-5 w-5" />
 			{/if}
-		{:else if value}
+		{:else if value && !Array.isArray(value)}
 			{value?.name}
 		{:else}
 			<Icon src={Minus} class="h-5 w-5" />

@@ -146,7 +146,7 @@
 				>
 					<span
 						data-part="text"
-						class="flex items-center px-1 border-r min-w-0 max-w-full truncate {errors?.iterms?.[index]
+						class="flex items-center px-1 border-r min-w-0 max-w-full sm:truncate {errors?.iterms?.[index]
 							? 'bg-error'
 							: 'bg-neutral'} border-white/10"
 					>
@@ -235,7 +235,7 @@
 								})}
 							>
 								<!-- svelte-ignore a11y-missing-attribute -->
-								<a data-part="option-link" class="flex truncate">
+								<a data-part="option-link" class="flex sm:truncate">
 									{#if $isSelected({ ...children, parent: op })}
 										<Icon data-part="icon-selected" src={Check} class="size-4" />
 									{:else}

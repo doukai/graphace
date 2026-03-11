@@ -17,7 +17,7 @@
 	}>();
 </script>
 
-<div data-element="search-input" data-part="root" class="join {contextClass} {className}">
+<div data-element="search-input" data-part="root" class="join min-w-0 {contextClass} {className}">
 	<input
 		data-part="input"
 		type="search"
