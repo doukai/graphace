@@ -72,7 +72,7 @@
 	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: Query{{ name }}ListArgs | undefined) => TabInfo[] | undefined) | undefined = {{ name | camelCase }}Tabs;
-	export let tab: ((args?: Query{{ name }}ListArgs | undefined) => string | undefined) | undefined = {{ name | camelCase }}Tab;
+	export let tab: string | undefined = {{ name | camelCase }}Tab?.(args);
 	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
 	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -191,7 +191,7 @@
 <div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
-		value={tab?.(args)}
+		bind:value={tab}
 		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
@@ -239,7 +239,7 @@
 			</th>
 			{%- for field in fields %}
 			<slot name="{{ field.fieldName }}-th" {args} {orderBy} {fields}>
-				{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab?.(args), fieldsArgs?.{{ field.fieldName }})}
+				{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab, fieldsArgs?.{{ field.fieldName }})}
 					{%- if field.isScalarType or field.isEnumType %}
 					<{{ field.fieldTypeName }}Th
 						name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
@@ -302,7 +302,7 @@
 						</th>
 						{%- for field in fields %}
 						<slot name="{{ field.fieldName }}" {node} {errors} {fields} {row}>
-							{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab?.(args), fieldsArgs?.{{ field.fieldName }})}
+							{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab, fieldsArgs?.{{ field.fieldName }})}
 								{%- if field.isScalarType or field.isEnumType or field.isFile %}
 								<Td {zIndex} {...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['td']}>
 									<{{ field.fieldTypeName }}Input
@@ -620,7 +620,7 @@
 				<tbody class="border">
 					{%- for field in fields %}
 					<slot name="{{ field.fieldName }}-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab?.(args), fieldsArgs?.{{ field.fieldName }})}
+						{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab, fieldsArgs?.{{ field.fieldName }})}
 							<Tr class="hover" let:id {...fields?.{{ field.fieldName }}?.props?.($LL, node, fieldsArgs?.{{ field.fieldName }})?.['tr']}>
 								<td>
 									<Label

@@ -8,7 +8,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { MutationRealmArgs, RealmInput } from '~/lib/types/schema';
+	import type { RealmInput, MutationRealmArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -26,6 +26,8 @@
 
 	$: if (realm && Object.keys(realm).length > 0) {
 		value = realm;
+	} else {
+		value = {};
 	}
 
 	const mutation = (args: MutationRealmArgs) => {
@@ -76,7 +78,7 @@
 			showSaveButton={auth('Realm::*::WRITE')}
 			showRemoveButton={auth('Realm::isDeprecated::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_realm_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_realm_Store.isFetching}

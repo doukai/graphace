@@ -8,7 +8,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { MutationUserArgs, UserInput } from '~/lib/types/schema';
+	import type { UserInput, MutationUserArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -26,6 +26,8 @@
 
 	$: if (user && Object.keys(user).length > 0) {
 		value = user;
+	} else {
+		value = {};
 	}
 
 	const mutation = (args: MutationUserArgs) => {
@@ -76,7 +78,7 @@
 			showSaveButton={auth('User::*::WRITE')}
 			showRemoveButton={auth('User::isDeprecated::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_user_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_user_Store.isFetching}

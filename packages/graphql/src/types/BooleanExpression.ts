@@ -1,4 +1,4 @@
-import type { Operator } from ".";
+import type { Operator } from "./index.js";
 
 export type BooleanExpression = {
     val?: boolean | null | undefined;

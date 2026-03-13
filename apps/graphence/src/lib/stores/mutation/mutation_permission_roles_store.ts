@@ -18,7 +18,7 @@ ${fragment_RoleFields}
 ${fragment_PermissionFields}`;
 
 export function createMutation_permission_roles_Store(event: Event): Mutation_permission_roles_Store {
-  return createGraphQLMutationStore<Permission, { permission_id: string, permission_roles: RoleInput[] | null }>(query, event);
+  return createGraphQLMutationStore<{ permission: Permission }, { permission_id: string, permission_roles: RoleInput[] | null }>(query, event);
 }
 
-export type Mutation_permission_roles_Store = GraphQLStore<Permission, { permission_id: string, permission_roles: RoleInput[] | null }>;
+export type Mutation_permission_roles_Store = GraphQLStore<{ permission: Permission }, { permission_id: string, permission_roles: RoleInput[] | null }>;

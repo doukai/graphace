@@ -17,7 +17,7 @@ ${fragment_RealmFields}
 ${fragment_PermissionFields}`;
 
 export function createMutation_permission_realm_Store(event: Event): Mutation_permission_realm_Store {
-  return createGraphQLMutationStore<Permission, { permission_id: string, permission_realm: RealmInput | null }>(query, event);
+  return createGraphQLMutationStore<{ permission: Permission }, { permission_id: string, permission_realm: RealmInput | null }>(query, event);
 }
 
-export type Mutation_permission_realm_Store = GraphQLStore<Permission, { permission_id: string, permission_realm: RealmInput | null }>;
+export type Mutation_permission_realm_Store = GraphQLStore<{ permission: Permission }, { permission_id: string, permission_realm: RealmInput | null }>;

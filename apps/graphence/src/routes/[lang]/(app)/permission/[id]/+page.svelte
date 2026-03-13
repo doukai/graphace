@@ -8,7 +8,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { MutationPermissionArgs, PermissionInput } from '~/lib/types/schema';
+	import type { PermissionInput, MutationPermissionArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -26,6 +26,8 @@
 
 	$: if (permission && Object.keys(permission).length > 0) {
 		value = permission;
+	} else {
+		value = {};
 	}
 
 	const mutation = (args: MutationPermissionArgs) => {
@@ -76,7 +78,7 @@
 			showSaveButton={auth('Permission::*::WRITE')}
 			showRemoveButton={auth('Permission::isDeprecated::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_permission_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_permission_Store.isFetching}

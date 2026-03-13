@@ -2,17 +2,37 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
+	import {
+		Buttons,
+		Empty,
+		Form,
+		ErrorLabels,
+		FormControl,
+		Label,
+		Loading,
+		type TabInfo,
+		Tabs,
+		to
+	} from '@graphace/ui';
 	import { StringInput, IntInput, ObjectLink } from '@graphace/ui-graphql';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import UserSelect from '~/lib/components/objects/user/UserSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
-	import { groupFields, type GroupFields } from '~/lib/components/objects/group/GroupOption';
-	import type { GroupInput } from '~/lib/types/schema';
+	import {
+		groupFields,
+		type GroupFields,
+		type GroupFieldsArgs,
+		groupFormTab,
+		groupFormTabs,
+		groupFormTabChange,
+		validate
+	} from '~/lib/components/objects/group/GroupOption';
+	import type { GroupInput, QueryGroupArgs } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	
 	export let value: GroupInput | null | undefined = undefined;
+	export let args: QueryGroupArgs = {};
 	export let isFetching: boolean = false;
 	export let isMutating: boolean = false;
 	export let errors: Record<string, Errors> = {};
@@ -23,83 +43,34 @@
 	export let showBackButton: boolean = false;
 	export let title: string | undefined = undefined;
 	let className: string | undefined =
-		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
 	export { className as class };
+	export let tabs: (($LL: TranslationFunctions, args?: QueryGroupArgs | undefined) => TabInfo[] | undefined) | undefined = groupFormTabs;
+	export let tab: ((args?: QueryGroupArgs | undefined) => string | undefined) | undefined = groupFormTab;
 	export let fields: GroupFields | undefined = groupFields;
+	export let fieldsPatch: GroupFields | undefined = undefined;
+	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
+		fields = { ...fields, ...fieldsPatch };
+	}
+	export let fieldsArgs: GroupFieldsArgs | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
+		query: { args: QueryGroupArgs; };
 		remove: { value: GroupInput | null | undefined };
 		unbind: { value: GroupInput | null | undefined };
 		save: { value: GroupInput | null | undefined };
+		tabChange: { tab: string; origin: string; };
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
-
-	const validate = async () => {
-		errors = {};
-		if (value) {
-			const nameErrors = await fields?.name?.validate?.(value);
-			if (nameErrors && nameErrors.length > 0) {
-				errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
-			}
-			const descriptionErrors = await fields?.description?.validate?.(value);
-			if (descriptionErrors && descriptionErrors.length > 0) {
-				errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
-			}
-			const pathErrors = await fields?.path?.validate?.(value);
-			if (pathErrors && pathErrors.length > 0) {
-				errors['path'] = { errors: pathErrors.map((message) => ({ message })) };
-			}
-			const deepErrors = await fields?.deep?.validate?.(value);
-			if (deepErrors && deepErrors.length > 0) {
-				errors['deep'] = { errors: deepErrors.map((message) => ({ message })) };
-			}
-			const parentIdErrors = await fields?.parentId?.validate?.(value);
-			if (parentIdErrors && parentIdErrors.length > 0) {
-				errors['parentId'] = { errors: parentIdErrors.map((message) => ({ message })) };
-			}
-			const parentErrors = await fields?.parent?.validate?.(value);
-			if (parentErrors && parentErrors.length > 0) {
-				errors['parent'] = { errors: parentErrors.map((message) => ({ message })) };
-			}
-			const subGroupsErrors = await fields?.subGroups?.validate?.(value);
-			if (subGroupsErrors && subGroupsErrors.length > 0) {
-				errors['subGroups'] = { errors: subGroupsErrors.map((message) => ({ message })) };
-			}
-			const usersErrors = await fields?.users?.validate?.(value);
-			if (usersErrors && usersErrors.length > 0) {
-				errors['users'] = { errors: usersErrors.map((message) => ({ message })) };
-			}
-			const rolesErrors = await fields?.roles?.validate?.(value);
-			if (rolesErrors && rolesErrors.length > 0) {
-				errors['roles'] = { errors: rolesErrors.map((message) => ({ message })) };
-			}
-			const realmErrors = await fields?.realm?.validate?.(value);
-			if (realmErrors && realmErrors.length > 0) {
-				errors['realm'] = { errors: realmErrors.map((message) => ({ message })) };
-			}
-		}
-
-		return new Promise(
-			(
-				resolve: (data: GroupInput | null | undefined) => void,
-				reject: (errors: Record<string, Errors>) => void
-			) => {
-				if (Object.keys(errors).length === 0) {
-					resolve(value);
-				} else {
-					reject(errors);
-				}
-			}
-		);
-	};
 </script>
 
 <div class="flex justify-between">
+	<slot name="start" />
 	<slot name="title">
-		<span class="text-xl font-semibold self-center">
+		<span class="text-xl font-semibold self-center max-sm:hidden">
 			{#if title}
 				{title}
 			{:else}
@@ -114,7 +85,10 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) =>
+			validate($LL, value)
+				.then((value) => dispatch('save', { value }))
+				.catch((e) => (errors = e))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back
@@ -123,13 +97,31 @@
 	</Buttons>
 </div>
 <div class="divider my-0" />
+{#if tabs?.($LL, args)}
+	<Tabs
+		value={tab?.(args)}
+		tabs={tabs?.($LL, args)}
+		on:change={(e) => {
+			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+			if (e.detail.value !== e.detail.origin) {
+				groupFormTabChange(e.detail.value, args, value)
+					.then((args) => {
+						dispatch('query', {
+							args
+						});
+					})
+					.catch((e) => (errors = e));
+			}
+		}}
+	/>
+{/if}
 <Form class={className}>
 	{#if isFetching}
-		<Loading />
+		<Loading class="col-span-full" />
 	{:else if value}
 		<slot name="name" {value} {errors} {fields}>
-			{#if !fields?.name?.hidden?.(value)}
-				<FormControl let:id {...fields?.name?.props?.(value)?.['control']}>
+			{#if !fields?.name?.hidden?.(value, fieldsArgs?.name)}
+				<FormControl let:id {...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.name.name()}
@@ -140,17 +132,24 @@
 						name="name"
 						bind:value={value.name}
 						errors={errors.name}
-						readonly={fields?.name?.readonly?.(value)}
-						disabled={fields?.name?.disabled?.(value)}
-						on:change={(e) => fields?.name?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.name?.props?.(value)?.['input']}
+						readonly={fields?.name?.readonly?.(value, fieldsArgs?.name)}
+						disabled={fields?.name?.disabled?.(value, fieldsArgs?.name)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.name
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.name)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, name: e }));
+							}
+						}}
+						{...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="description" {value} {errors} {fields}>
-			{#if !fields?.description?.hidden?.(value)}
-				<FormControl let:id {...fields?.description?.props?.(value)?.['control']}>
+			{#if !fields?.description?.hidden?.(value, fieldsArgs?.description)}
+				<FormControl let:id {...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.description.name()}
@@ -161,17 +160,24 @@
 						name="description"
 						bind:value={value.description}
 						errors={errors.description}
-						readonly={fields?.description?.readonly?.(value)}
-						disabled={fields?.description?.disabled?.(value)}
-						on:change={(e) => fields?.description?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.description?.props?.(value)?.['input']}
+						readonly={fields?.description?.readonly?.(value, fieldsArgs?.description)}
+						disabled={fields?.description?.disabled?.(value, fieldsArgs?.description)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.description
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.description)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, description: e }));
+							}
+						}}
+						{...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="path" {value} {errors} {fields}>
-			{#if !fields?.path?.hidden?.(value)}
-				<FormControl let:id {...fields?.path?.props?.(value)?.['control']}>
+			{#if !fields?.path?.hidden?.(value, fieldsArgs?.path)}
+				<FormControl let:id {...fields?.path?.props?.($LL, value, fieldsArgs?.path)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.path.name()}
@@ -182,17 +188,24 @@
 						name="path"
 						bind:value={value.path}
 						errors={errors.path}
-						readonly={fields?.path?.readonly?.(value)}
-						disabled={fields?.path?.disabled?.(value)}
-						on:change={(e) => fields?.path?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.path?.props?.(value)?.['input']}
+						readonly={fields?.path?.readonly?.(value, fieldsArgs?.path)}
+						disabled={fields?.path?.disabled?.(value, fieldsArgs?.path)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.path
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.path)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, path: e }));
+							}
+						}}
+						{...fields?.path?.props?.($LL, value, fieldsArgs?.path)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="deep" {value} {errors} {fields}>
-			{#if !fields?.deep?.hidden?.(value)}
-				<FormControl let:id {...fields?.deep?.props?.(value)?.['control']}>
+			{#if !fields?.deep?.hidden?.(value, fieldsArgs?.deep)}
+				<FormControl let:id {...fields?.deep?.props?.($LL, value, fieldsArgs?.deep)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.deep.name()}
@@ -203,17 +216,24 @@
 						name="deep"
 						bind:value={value.deep}
 						errors={errors.deep}
-						readonly={fields?.deep?.readonly?.(value)}
-						disabled={fields?.deep?.disabled?.(value)}
-						on:change={(e) => fields?.deep?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.deep?.props?.(value)?.['input']}
+						readonly={fields?.deep?.readonly?.(value, fieldsArgs?.deep)}
+						disabled={fields?.deep?.disabled?.(value, fieldsArgs?.deep)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.deep
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.deep)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, deep: e }));
+							}
+						}}
+						{...fields?.deep?.props?.($LL, value, fieldsArgs?.deep)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="parentId" {value} {errors} {fields}>
-			{#if !fields?.parentId?.hidden?.(value)}
-				<FormControl let:id {...fields?.parentId?.props?.(value)?.['control']}>
+			{#if !fields?.parentId?.hidden?.(value, fieldsArgs?.parentId)}
+				<FormControl let:id {...fields?.parentId?.props?.($LL, value, fieldsArgs?.parentId)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.parentId.name()}
@@ -224,17 +244,24 @@
 						name="parentId"
 						bind:value={value.parentId}
 						errors={errors.parentId}
-						readonly={fields?.parentId?.readonly?.(value)}
-						disabled={fields?.parentId?.disabled?.(value)}
-						on:change={(e) => fields?.parentId?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.parentId?.props?.(value)?.['input']}
+						readonly={fields?.parentId?.readonly?.(value, fieldsArgs?.parentId)}
+						disabled={fields?.parentId?.disabled?.(value, fieldsArgs?.parentId)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.parentId
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.parentId)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, parentId: e }));
+							}
+						}}
+						{...fields?.parentId?.props?.($LL, value, fieldsArgs?.parentId)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="parent" {value} {errors} {fields}>
-			{#if !fields?.parent?.hidden?.(value)}
-				<FormControl let:id {...fields?.parent?.props?.(value)?.['control']}>
+			{#if !fields?.parent?.hidden?.(value, fieldsArgs?.parent)}
+				<FormControl let:id {...fields?.parent?.props?.($LL, value, fieldsArgs?.parent)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.parent.name()}
@@ -245,17 +272,24 @@
 						name="parent"
 						bind:value={value.parent}
 						errors={errors.parent}
-						readonly={fields?.parent?.readonly?.(value)}
-						disabled={fields?.parent?.disabled?.(value)}
-						on:change={(e) => fields?.parent?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.parent?.props?.(value)?.['select']}
+						readonly={fields?.parent?.readonly?.(value, fieldsArgs?.parent)}
+						disabled={fields?.parent?.disabled?.(value, fieldsArgs?.parent)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.parent
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.parent)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, parent: e }));
+							}
+						}}
+						{...fields?.parent?.props?.($LL, value, fieldsArgs?.parent)?.['combobox']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="subGroups" {value} {errors} {fields}>
-			{#if !fields?.subGroups?.hidden?.(value)}
-				<FormControl let:id {...fields?.subGroups?.props?.(value)?.['control']}>
+			{#if !fields?.subGroups?.hidden?.(value, fieldsArgs?.subGroups)}
+				<FormControl let:id {...fields?.subGroups?.props?.($LL, value, fieldsArgs?.subGroups)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.subGroups.name()}
@@ -266,18 +300,25 @@
 						name="subGroups"
 						bind:value={value.subGroups}
 						errors={errors.subGroups}
-						readonly={fields?.subGroups?.readonly?.(value)}
-						disabled={fields?.subGroups?.disabled?.(value)}
-						on:change={(e) => fields?.subGroups?.onChange?.(e.detail.value, value).then((next) => value = next)}
+						readonly={fields?.subGroups?.readonly?.(value, fieldsArgs?.subGroups)}
+						disabled={fields?.subGroups?.disabled?.(value, fieldsArgs?.subGroups)}
+						on:change={(e) => {
+							if (Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.subGroups
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.subGroups)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, subGroups: e }));
+							}
+						}}
 						list
-						{...fields?.subGroups?.props?.(value)?.['select']}
+						{...fields?.subGroups?.props?.($LL, value, fieldsArgs?.subGroups)?.['combobox']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="users" {value} {errors} {fields}>
-			{#if !fields?.users?.hidden?.(value)}
-				<FormControl let:id {...fields?.users?.props?.(value)?.['control']}>
+			{#if !fields?.users?.hidden?.(value, fieldsArgs?.users)}
+				<FormControl let:id {...fields?.users?.props?.($LL, value, fieldsArgs?.users)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.users.name()}
@@ -288,18 +329,25 @@
 						name="users"
 						bind:value={value.users}
 						errors={errors.users}
-						readonly={fields?.users?.readonly?.(value)}
-						disabled={fields?.users?.disabled?.(value)}
-						on:change={(e) => fields?.users?.onChange?.(e.detail.value, value).then((next) => value = next)}
+						readonly={fields?.users?.readonly?.(value, fieldsArgs?.users)}
+						disabled={fields?.users?.disabled?.(value, fieldsArgs?.users)}
+						on:change={(e) => {
+							if (Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.users
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.users)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, users: e }));
+							}
+						}}
 						list
-						{...fields?.users?.props?.(value)?.['select']}
+						{...fields?.users?.props?.($LL, value, fieldsArgs?.users)?.['combobox']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="roles" {value} {errors} {fields}>
-			{#if !fields?.roles?.hidden?.(value)}
-				<FormControl let:id {...fields?.roles?.props?.(value)?.['control']}>
+			{#if !fields?.roles?.hidden?.(value, fieldsArgs?.roles)}
+				<FormControl let:id {...fields?.roles?.props?.($LL, value, fieldsArgs?.roles)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.roles.name()}
@@ -310,18 +358,25 @@
 						name="roles"
 						bind:value={value.roles}
 						errors={errors.roles}
-						readonly={fields?.roles?.readonly?.(value)}
-						disabled={fields?.roles?.disabled?.(value)}
-						on:change={(e) => fields?.roles?.onChange?.(e.detail.value, value).then((next) => value = next)}
+						readonly={fields?.roles?.readonly?.(value, fieldsArgs?.roles)}
+						disabled={fields?.roles?.disabled?.(value, fieldsArgs?.roles)}
+						on:change={(e) => {
+							if (Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.roles
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.roles)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, roles: e }));
+							}
+						}}
 						list
-						{...fields?.roles?.props?.(value)?.['select']}
+						{...fields?.roles?.props?.($LL, value, fieldsArgs?.roles)?.['combobox']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="realm" {value} {errors} {fields}>
-			{#if !fields?.realm?.hidden?.(value)}
-				<FormControl let:id {...fields?.realm?.props?.(value)?.['control']}>
+			{#if !fields?.realm?.hidden?.(value, fieldsArgs?.realm)}
+				<FormControl let:id {...fields?.realm?.props?.($LL, value, fieldsArgs?.realm)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Group.fields.realm.name()}
@@ -333,18 +388,26 @@
 							textFieldName="name"
 							path={`${value.id}/realm`}
 							on:goto
-							{...fields?.realm?.props?.(value)?.['link']}
+							{...fields?.realm?.props?.($LL, value, fieldsArgs?.realm)?.['link']}
 						/>
 					{:else}
 						<RealmTableDialog
+							fieldsPatch={fields?.realm?.fields?.(value, fieldsArgs?.realm)}
 							bind:value={value.realm}
 							textFieldName="name"
 							singleChoice
 							class="btn-link"
-							readonly={fields?.realm?.readonly?.(value)}
-							disabled={fields?.realm?.disabled?.(value)}
-							on:select={(e) => fields?.realm?.onChange?.(e.detail.value, value).then((next) => value = next)}
-							{...fields?.realm?.props?.(value)?.['dialog']}
+							readonly={fields?.realm?.readonly?.(value, fieldsArgs?.realm)}
+							disabled={fields?.realm?.disabled?.(value, fieldsArgs?.realm)}
+							on:select={(e) => {
+								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.realm
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.realm)
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, realm: e }));
+								}
+							}}
+							{...fields?.realm?.props?.($LL, value, fieldsArgs?.realm)?.['dialog']}
 						/>
 					{/if}
 					<ErrorLabels {id} errors={errors.realm} />
@@ -366,7 +429,10 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) =>
+			validate($LL, value)
+				.then((value) => dispatch('save', { value }))
+				.catch((e) => (errors = e))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back

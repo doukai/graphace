@@ -2,16 +2,36 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
+	import {
+		Buttons,
+		Empty,
+		Form,
+		ErrorLabels,
+		FormControl,
+		Label,
+		Loading,
+		type TabInfo,
+		Tabs,
+		to
+	} from '@graphace/ui';
 	import { StringInput, ObjectLink } from '@graphace/ui-graphql';
 	import PermissionTypeInput from '~/lib/components/enums/permission-type/PermissionTypeInput.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
-	import { permissionFields, type PermissionFields } from '~/lib/components/objects/permission/PermissionOption';
-	import type { PermissionInput } from '~/lib/types/schema';
+	import {
+		permissionFields,
+		type PermissionFields,
+		type PermissionFieldsArgs,
+		permissionFormTab,
+		permissionFormTabs,
+		permissionFormTabChange,
+		validate
+	} from '~/lib/components/objects/permission/PermissionOption';
+	import type { PermissionInput, QueryPermissionArgs } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	
 	export let value: PermissionInput | null | undefined = undefined;
+	export let args: QueryPermissionArgs = {};
 	export let isFetching: boolean = false;
 	export let isMutating: boolean = false;
 	export let errors: Record<string, Errors> = {};
@@ -22,71 +42,34 @@
 	export let showBackButton: boolean = false;
 	export let title: string | undefined = undefined;
 	let className: string | undefined =
-		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
 	export { className as class };
+	export let tabs: (($LL: TranslationFunctions, args?: QueryPermissionArgs | undefined) => TabInfo[] | undefined) | undefined = permissionFormTabs;
+	export let tab: ((args?: QueryPermissionArgs | undefined) => string | undefined) | undefined = permissionFormTab;
 	export let fields: PermissionFields | undefined = permissionFields;
+	export let fieldsPatch: PermissionFields | undefined = undefined;
+	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
+		fields = { ...fields, ...fieldsPatch };
+	}
+	export let fieldsArgs: PermissionFieldsArgs | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
+		query: { args: QueryPermissionArgs; };
 		remove: { value: PermissionInput | null | undefined };
 		unbind: { value: PermissionInput | null | undefined };
 		save: { value: PermissionInput | null | undefined };
+		tabChange: { tab: string; origin: string; };
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
-
-	const validate = async () => {
-		errors = {};
-		if (value) {
-			const nameErrors = await fields?.name?.validate?.(value);
-			if (nameErrors && nameErrors.length > 0) {
-				errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
-			}
-			const descriptionErrors = await fields?.description?.validate?.(value);
-			if (descriptionErrors && descriptionErrors.length > 0) {
-				errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
-			}
-			const fieldErrors = await fields?.field?.validate?.(value);
-			if (fieldErrors && fieldErrors.length > 0) {
-				errors['field'] = { errors: fieldErrors.map((message) => ({ message })) };
-			}
-			const typeErrors = await fields?.type?.validate?.(value);
-			if (typeErrors && typeErrors.length > 0) {
-				errors['type'] = { errors: typeErrors.map((message) => ({ message })) };
-			}
-			const permissionTypeErrors = await fields?.permissionType?.validate?.(value);
-			if (permissionTypeErrors && permissionTypeErrors.length > 0) {
-				errors['permissionType'] = { errors: permissionTypeErrors.map((message) => ({ message })) };
-			}
-			const rolesErrors = await fields?.roles?.validate?.(value);
-			if (rolesErrors && rolesErrors.length > 0) {
-				errors['roles'] = { errors: rolesErrors.map((message) => ({ message })) };
-			}
-			const realmErrors = await fields?.realm?.validate?.(value);
-			if (realmErrors && realmErrors.length > 0) {
-				errors['realm'] = { errors: realmErrors.map((message) => ({ message })) };
-			}
-		}
-
-		return new Promise(
-			(
-				resolve: (data: PermissionInput | null | undefined) => void,
-				reject: (errors: Record<string, Errors>) => void
-			) => {
-				if (Object.keys(errors).length === 0) {
-					resolve(value);
-				} else {
-					reject(errors);
-				}
-			}
-		);
-	};
 </script>
 
 <div class="flex justify-between">
+	<slot name="start" />
 	<slot name="title">
-		<span class="text-xl font-semibold self-center">
+		<span class="text-xl font-semibold self-center max-sm:hidden">
 			{#if title}
 				{title}
 			{:else}
@@ -101,7 +84,10 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) =>
+			validate($LL, value)
+				.then((value) => dispatch('save', { value }))
+				.catch((e) => (errors = e))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back
@@ -110,13 +96,31 @@
 	</Buttons>
 </div>
 <div class="divider my-0" />
+{#if tabs?.($LL, args)}
+	<Tabs
+		value={tab?.(args)}
+		tabs={tabs?.($LL, args)}
+		on:change={(e) => {
+			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+			if (e.detail.value !== e.detail.origin) {
+				permissionFormTabChange(e.detail.value, args, value)
+					.then((args) => {
+						dispatch('query', {
+							args
+						});
+					})
+					.catch((e) => (errors = e));
+			}
+		}}
+	/>
+{/if}
 <Form class={className}>
 	{#if isFetching}
-		<Loading />
+		<Loading class="col-span-full" />
 	{:else if value}
 		<slot name="name" {value} {errors} {fields}>
-			{#if !fields?.name?.hidden?.(value)}
-				<FormControl let:id {...fields?.name?.props?.(value)?.['control']}>
+			{#if !fields?.name?.hidden?.(value, fieldsArgs?.name)}
+				<FormControl let:id {...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Permission.fields.name.name()}
@@ -127,17 +131,24 @@
 						name="name"
 						bind:value={value.name}
 						errors={errors.name}
-						readonly={fields?.name?.readonly?.(value)}
-						disabled={fields?.name?.disabled?.(value)}
-						on:change={(e) => fields?.name?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.name?.props?.(value)?.['input']}
+						readonly={fields?.name?.readonly?.(value, fieldsArgs?.name)}
+						disabled={fields?.name?.disabled?.(value, fieldsArgs?.name)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.name
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.name)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, name: e }));
+							}
+						}}
+						{...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="description" {value} {errors} {fields}>
-			{#if !fields?.description?.hidden?.(value)}
-				<FormControl let:id {...fields?.description?.props?.(value)?.['control']}>
+			{#if !fields?.description?.hidden?.(value, fieldsArgs?.description)}
+				<FormControl let:id {...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Permission.fields.description.name()}
@@ -148,17 +159,24 @@
 						name="description"
 						bind:value={value.description}
 						errors={errors.description}
-						readonly={fields?.description?.readonly?.(value)}
-						disabled={fields?.description?.disabled?.(value)}
-						on:change={(e) => fields?.description?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.description?.props?.(value)?.['input']}
+						readonly={fields?.description?.readonly?.(value, fieldsArgs?.description)}
+						disabled={fields?.description?.disabled?.(value, fieldsArgs?.description)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.description
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.description)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, description: e }));
+							}
+						}}
+						{...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="field" {value} {errors} {fields}>
-			{#if !fields?.field?.hidden?.(value)}
-				<FormControl let:id {...fields?.field?.props?.(value)?.['control']}>
+			{#if !fields?.field?.hidden?.(value, fieldsArgs?.field)}
+				<FormControl let:id {...fields?.field?.props?.($LL, value, fieldsArgs?.field)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Permission.fields.field.name()}
@@ -169,17 +187,24 @@
 						name="field"
 						bind:value={value.field}
 						errors={errors.field}
-						readonly={fields?.field?.readonly?.(value)}
-						disabled={fields?.field?.disabled?.(value)}
-						on:change={(e) => fields?.field?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.field?.props?.(value)?.['input']}
+						readonly={fields?.field?.readonly?.(value, fieldsArgs?.field)}
+						disabled={fields?.field?.disabled?.(value, fieldsArgs?.field)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.field
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.field)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, field: e }));
+							}
+						}}
+						{...fields?.field?.props?.($LL, value, fieldsArgs?.field)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="type" {value} {errors} {fields}>
-			{#if !fields?.type?.hidden?.(value)}
-				<FormControl let:id {...fields?.type?.props?.(value)?.['control']}>
+			{#if !fields?.type?.hidden?.(value, fieldsArgs?.type)}
+				<FormControl let:id {...fields?.type?.props?.($LL, value, fieldsArgs?.type)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Permission.fields.type.name()}
@@ -190,17 +215,24 @@
 						name="type"
 						bind:value={value.type}
 						errors={errors.type}
-						readonly={fields?.type?.readonly?.(value)}
-						disabled={fields?.type?.disabled?.(value)}
-						on:change={(e) => fields?.type?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.type?.props?.(value)?.['input']}
+						readonly={fields?.type?.readonly?.(value, fieldsArgs?.type)}
+						disabled={fields?.type?.disabled?.(value, fieldsArgs?.type)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.type
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.type)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, type: e }));
+							}
+						}}
+						{...fields?.type?.props?.($LL, value, fieldsArgs?.type)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="permissionType" {value} {errors} {fields}>
-			{#if !fields?.permissionType?.hidden?.(value)}
-				<FormControl let:id {...fields?.permissionType?.props?.(value)?.['control']}>
+			{#if !fields?.permissionType?.hidden?.(value, fieldsArgs?.permissionType)}
+				<FormControl let:id {...fields?.permissionType?.props?.($LL, value, fieldsArgs?.permissionType)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Permission.fields.permissionType.name()}
@@ -211,17 +243,24 @@
 						name="permissionType"
 						bind:value={value.permissionType}
 						errors={errors.permissionType}
-						readonly={fields?.permissionType?.readonly?.(value)}
-						disabled={fields?.permissionType?.disabled?.(value)}
-						on:change={(e) => fields?.permissionType?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.permissionType?.props?.(value)?.['input']}
+						readonly={fields?.permissionType?.readonly?.(value, fieldsArgs?.permissionType)}
+						disabled={fields?.permissionType?.disabled?.(value, fieldsArgs?.permissionType)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.permissionType
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.permissionType)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, permissionType: e }));
+							}
+						}}
+						{...fields?.permissionType?.props?.($LL, value, fieldsArgs?.permissionType)?.['select']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="roles" {value} {errors} {fields}>
-			{#if !fields?.roles?.hidden?.(value)}
-				<FormControl let:id {...fields?.roles?.props?.(value)?.['control']}>
+			{#if !fields?.roles?.hidden?.(value, fieldsArgs?.roles)}
+				<FormControl let:id {...fields?.roles?.props?.($LL, value, fieldsArgs?.roles)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Permission.fields.roles.name()}
@@ -232,18 +271,25 @@
 						name="roles"
 						bind:value={value.roles}
 						errors={errors.roles}
-						readonly={fields?.roles?.readonly?.(value)}
-						disabled={fields?.roles?.disabled?.(value)}
-						on:change={(e) => fields?.roles?.onChange?.(e.detail.value, value).then((next) => value = next)}
+						readonly={fields?.roles?.readonly?.(value, fieldsArgs?.roles)}
+						disabled={fields?.roles?.disabled?.(value, fieldsArgs?.roles)}
+						on:change={(e) => {
+							if (Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.roles
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.roles)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, roles: e }));
+							}
+						}}
 						list
-						{...fields?.roles?.props?.(value)?.['select']}
+						{...fields?.roles?.props?.($LL, value, fieldsArgs?.roles)?.['combobox']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="realm" {value} {errors} {fields}>
-			{#if !fields?.realm?.hidden?.(value)}
-				<FormControl let:id {...fields?.realm?.props?.(value)?.['control']}>
+			{#if !fields?.realm?.hidden?.(value, fieldsArgs?.realm)}
+				<FormControl let:id {...fields?.realm?.props?.($LL, value, fieldsArgs?.realm)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Permission.fields.realm.name()}
@@ -255,18 +301,26 @@
 							textFieldName="name"
 							path={`${value.id}/realm`}
 							on:goto
-							{...fields?.realm?.props?.(value)?.['link']}
+							{...fields?.realm?.props?.($LL, value, fieldsArgs?.realm)?.['link']}
 						/>
 					{:else}
 						<RealmTableDialog
+							fieldsPatch={fields?.realm?.fields?.(value, fieldsArgs?.realm)}
 							bind:value={value.realm}
 							textFieldName="name"
 							singleChoice
 							class="btn-link"
-							readonly={fields?.realm?.readonly?.(value)}
-							disabled={fields?.realm?.disabled?.(value)}
-							on:select={(e) => fields?.realm?.onChange?.(e.detail.value, value).then((next) => value = next)}
-							{...fields?.realm?.props?.(value)?.['dialog']}
+							readonly={fields?.realm?.readonly?.(value, fieldsArgs?.realm)}
+							disabled={fields?.realm?.disabled?.(value, fieldsArgs?.realm)}
+							on:select={(e) => {
+								if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+									fields?.realm
+										?.onChange?.($LL, e.detail.value, value, fieldsArgs?.realm)
+										.then((next) => (value = next))
+										.catch((e) => (errors = { ...errors, realm: e }));
+								}
+							}}
+							{...fields?.realm?.props?.($LL, value, fieldsArgs?.realm)?.['dialog']}
 						/>
 					{/if}
 					<ErrorLabels {id} errors={errors.realm} />
@@ -288,7 +342,10 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) =>
+			validate($LL, value)
+				.then((value) => dispatch('save', { value }))
+				.catch((e) => (errors = e))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back

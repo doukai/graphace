@@ -21,11 +21,11 @@ ${fragment_RoleFields}
 ${fragment_PermissionFields}`;
 
 export function createQuery_permission_rolesConnection_Store(event: Event): Query_permission_rolesConnection_Store {
-  return createGraphQLQueryStore<Permission, { permission_id: string } & QueryRoleConnectionArgs>(query, event);
+  return createGraphQLQueryStore<{ permission: Permission }, { permission_id: string } & QueryRoleConnectionArgs>(query, event);
 }
 
 export async function fetchQuery_permission_rolesConnection_Store(event: Event, variables: { permission_id: string } & QueryRoleConnectionArgs): Promise<Query_permission_rolesConnection_Store> {
-  return fetchGraphQLQueryStore<Permission, { permission_id: string } & QueryRoleConnectionArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ permission: Permission }, { permission_id: string } & QueryRoleConnectionArgs>(query, event, variables);
 }
 
-export type Query_permission_rolesConnection_Store = GraphQLStore<Permission, { permission_id: string } & QueryRoleConnectionArgs>;
+export type Query_permission_rolesConnection_Store = GraphQLStore<{ permission: Permission }, { permission_id: string } & QueryRoleConnectionArgs>;

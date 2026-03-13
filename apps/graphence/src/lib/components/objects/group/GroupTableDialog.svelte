@@ -3,11 +3,11 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
+	import { to, Pagination, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
 	import { createQuery_groupConnection_Store } from '~/lib/stores/query/query_groupConnection_store';
 	import { createMutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
-	import { groupFields, type GroupFields } from '~/lib/components/objects/group/GroupOption';
+	import type { GroupFields, GroupFieldsArgs } from '~/lib/components/objects/group/GroupOption';
 	import {
 		loadEvent,
 		validator,
@@ -15,7 +15,14 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { Group, QueryGroupConnectionArgs, GroupOrderBy, GroupInput, MutationGroupArgs } from '~/lib/types/schema';
+	import type {
+		Group,
+		QueryGroupListArgs,
+		QueryGroupConnectionArgs,
+		GroupOrderBy,
+		GroupInput,
+		MutationGroupArgs
+	} from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined =
@@ -26,9 +33,13 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0 truncate';
+	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
-	export let fields: GroupFields = groupFields;
+	export let tabs: (($LL: TranslationFunctions, args?: QueryGroupListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: ((args?: QueryGroupListArgs | undefined) => string | undefined) | undefined = undefined;
+	export let fields: GroupFields | undefined = undefined;
+	export let fieldsPatch: GroupFields | undefined = undefined;
+	export let fieldsArgs: GroupFieldsArgs | undefined = undefined;
 
 	const { validate } = validator;
 	const { auth } = permissions;
@@ -43,6 +54,13 @@
 		(edge) => edge?.node
 	);
 	$: totalCount = $query_groupConnection_Store.response.data?.groupConnection?.totalCount || 0;
+
+	let _value: (GroupInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		_value = nodes;
+	} else {
+		_value = [];
+	}
 	export let args: QueryGroupConnectionArgs = {};
 	export let orderBy: GroupOrderBy = {};
 	export let pageNumber: number = 1;
@@ -94,6 +112,8 @@
 			} else {
 				text = value[textFieldName] + '';
 			}
+		} else {
+			text = undefined;
 		}
 	}
 
@@ -110,7 +130,7 @@
 	};
 
 	const mutation = (args: MutationGroupArgs) => {
-		const row = nodes
+		const row = _value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -176,7 +196,7 @@
 		</button>
 		<button
 			use:melt={trigger}
-			class="btn btn-square truncate {className} sm:hidden"
+			class="btn btn-square {className} sm:hidden"
 			{disabled}
 			on:click={(e) => {
 				query(1);
@@ -200,7 +220,7 @@
 	</div>
 	<svelte:fragment let:zIndex>
 		<GroupTable
-			value={nodes}
+			value={_value}
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
@@ -210,7 +230,11 @@
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_groupConnection_Store.isFetching}
 			{zIndex}
+			{tabs}
+			{tab}
 			{fields}
+			{fieldsPatch}
+			{fieldsArgs}
 			on:select={(e) => {
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {

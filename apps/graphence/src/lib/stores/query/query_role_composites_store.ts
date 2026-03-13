@@ -14,11 +14,11 @@ const query = /* GraphQL */ `query Query_role_composites($role_id: String, $id: 
 ${fragment_RoleFields}`;
 
 export function createQuery_role_composites_Store(event: Event): Query_role_composites_Store {
-  return createGraphQLQueryStore<Role, { role_id: string } & QueryRoleListArgs>(query, event);
+  return createGraphQLQueryStore<{ role: Role }, { role_id: string } & QueryRoleListArgs>(query, event);
 }
 
 export async function fetchQuery_role_composites_Store(event: Event, variables: { role_id: string } & QueryRoleListArgs): Promise<Query_role_composites_Store> {
-  return fetchGraphQLQueryStore<Role, { role_id: string } & QueryRoleListArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ role: Role }, { role_id: string } & QueryRoleListArgs>(query, event, variables);
 }
 
-export type Query_role_composites_Store = GraphQLStore<Role, { role_id: string } & QueryRoleListArgs>;
+export type Query_role_composites_Store = GraphQLStore<{ role: Role }, { role_id: string } & QueryRoleListArgs>;

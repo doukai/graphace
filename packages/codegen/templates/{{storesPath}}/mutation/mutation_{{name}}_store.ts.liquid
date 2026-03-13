@@ -4,10 +4,7 @@ import { fragment_{{ fieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/
 {%- endif %}
 import { createGraphQLMutationStore } from '~/utils';
 {%- if args and args.length > 0 %}
-import type { Mutation{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
-{%- endif %}
-{%- if isScalarType == false %}
-import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+import type { Mutation{{ fieldName | pascalCase }}Args{% if isScalarType == false %}, {{ fieldTypeName }}{% endif %} } from '~/{{ schemaTypesPath }}';
 {%- endif %}
 
 const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
@@ -59,7 +56,7 @@ ${fragment_{{ fieldTypeName }}Fields}
 {%- endif %}`;
 
 export function createMutation_{{ fieldName }}_Store(event: Event): Mutation_{{ fieldName }}_Store {
-  return createGraphQLMutationStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
+  return createGraphQLMutationStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Mutation{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 
-export type Mutation_{{ fieldName }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Mutation{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>;
+export type Mutation_{{ fieldName }}_Store = GraphQLStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Mutation{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>;

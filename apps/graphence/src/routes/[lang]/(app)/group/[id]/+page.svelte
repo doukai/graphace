@@ -8,7 +8,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { MutationGroupArgs, GroupInput } from '~/lib/types/schema';
+	import type { GroupInput, MutationGroupArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -26,6 +26,8 @@
 
 	$: if (group && Object.keys(group).length > 0) {
 		value = group;
+	} else {
+		value = {};
 	}
 
 	const mutation = (args: MutationGroupArgs) => {
@@ -76,7 +78,7 @@
 			showSaveButton={auth('Group::*::WRITE')}
 			showRemoveButton={auth('Group::isDeprecated::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_group_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_group_Store.isFetching}

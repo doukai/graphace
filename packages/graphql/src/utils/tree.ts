@@ -1,4 +1,4 @@
-import type { TreeStruct, NodeTree } from '../';
+import type { TreeStruct, NodeTree } from '../index.js';
 
 export function buildTree(
     nodes: (TreeStruct | null | undefined)[] | null | undefined,
@@ -7,9 +7,7 @@ export function buildTree(
     if (nodes) {
         if (parent) {
             return nodes
-                ?.filter(
-                    (node) => node?.parentId === parent?.id
-                )
+                ?.filter((node) => node?.parentId === parent?.id)
                 .map((node) => ({ node, children: buildTree(nodes, node) }));
         } else {
             return nodes.reduce((pre, cur) => {

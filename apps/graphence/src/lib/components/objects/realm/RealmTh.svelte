@@ -19,7 +19,7 @@
 
 <RealmFilter bind:value {disabled} {zIndex} let:trigger on:filter>
 	<td class={className}>
-		<a class="link group inline-flex truncate" href={null} use:melt={trigger}>
+		<a class="link group inline-flex sm:truncate" href={null} use:melt={trigger}>
 			{#if required}
 				<span data-part="label-required" class="text-error">*</span>
 			{/if}

@@ -9,7 +9,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { QueryPermissionConnectionArgs, PermissionOrderBy, MutationPermissionArgs } from '~/lib/types/schema';
+	import type { QueryPermissionConnectionArgs, PermissionOrderBy, PermissionInput, MutationPermissionArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -22,6 +22,13 @@
 	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
 	$: mutation_permission_Store = data.mutation_permission_Store;
+
+	let value: (PermissionInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryPermissionConnectionArgs = {};
 	let orderBy: PermissionOrderBy = {};
 	let pageNumber: number = 1;
@@ -43,7 +50,7 @@
 	};
 
 	const mutation = (args: MutationPermissionArgs) => {
-		const row = nodes
+		const row = value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -96,7 +103,7 @@
 			showCreateButton={auth('Permission::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

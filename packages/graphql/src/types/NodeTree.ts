@@ -1,4 +1,4 @@
-import type { TreeStruct } from "./TreeStruct.js"
+import type { TreeStruct } from "./index.js"
 
 export interface NodeTree {
     node: TreeStruct | null | undefined

@@ -9,7 +9,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { QueryUserConnectionArgs, UserOrderBy, MutationUserArgs } from '~/lib/types/schema';
+	import type { QueryUserConnectionArgs, UserOrderBy, UserInput, MutationUserArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -22,6 +22,13 @@
 	$: nodes = $query_userConnection_Store.response.data?.userConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_userConnection_Store.response.data?.userConnection?.totalCount || 0;
 	$: mutation_user_Store = data.mutation_user_Store;
+
+	let value: (UserInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryUserConnectionArgs = {};
 	let orderBy: UserOrderBy = {};
 	let pageNumber: number = 1;
@@ -43,7 +50,7 @@
 	};
 
 	const mutation = (args: MutationUserArgs) => {
-		const row = nodes
+		const row = value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -96,7 +103,7 @@
 			showCreateButton={auth('User::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

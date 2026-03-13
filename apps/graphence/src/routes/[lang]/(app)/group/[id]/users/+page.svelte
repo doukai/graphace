@@ -6,9 +6,6 @@
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
-	import type { Query_group_usersConnection_Store } from '~/lib/stores/query/query_group_usersConnection_store';
-	import type { Mutation_group_users_Store } from '~/lib/stores/mutation/mutation_group_users_store';
-	import type { Mutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import {
 		validator,
 		permissions,
@@ -25,12 +22,19 @@
 	const { auth } = permissions;
 
 	$: id = data.id as string;
-	$: query_group_usersConnection_Store = data.query_group_usersConnection_Store as Query_group_usersConnection_Store;
+	$: query_group_usersConnection_Store = data.query_group_usersConnection_Store;
 	$: group = $query_group_usersConnection_Store.response.data?.group;
 	$: nodes = $query_group_usersConnection_Store.response.data?.group?.usersConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_group_usersConnection_Store.response.data?.group?.usersConnection?.totalCount || 0;
-	$: mutation_group_users_Store = data.mutation_group_users_Store as Mutation_group_users_Store;
-	$: mutation_user_Store = data.mutation_user_Store as Mutation_user_Store;
+	$: mutation_group_users_Store = data.mutation_group_users_Store;
+	$: mutation_user_Store = data.mutation_user_Store;
+
+	let value: (UserInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryUserConnectionArgs = {};
 	let orderBy: UserOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,25 +88,27 @@
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, users: input })
 			.then((data) => {
 				errors = {};
-				mutation_group_users_Store.fetch({
-					group_id: id,
-					group_users: input
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.graphence.message.requestFailed(),
-								description: globalError
-							});
+				mutation_group_users_Store
+					.fetch({
+						group_id: id,
+						group_users: input
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.graphence.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.graphence.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.graphence.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
@@ -134,7 +140,7 @@
 			showCreateButton={auth('User::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

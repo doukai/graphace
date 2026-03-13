@@ -17,7 +17,7 @@ ${fragment_RealmFields}
 ${fragment_RoleFields}`;
 
 export function createMutation_role_realm_Store(event: Event): Mutation_role_realm_Store {
-  return createGraphQLMutationStore<Role, { role_id: string, role_realm: RealmInput | null }>(query, event);
+  return createGraphQLMutationStore<{ role: Role }, { role_id: string, role_realm: RealmInput | null }>(query, event);
 }
 
-export type Mutation_role_realm_Store = GraphQLStore<Role, { role_id: string, role_realm: RealmInput | null }>;
+export type Mutation_role_realm_Store = GraphQLStore<{ role: Role }, { role_id: string, role_realm: RealmInput | null }>;

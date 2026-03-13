@@ -1,13 +1,10 @@
 import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 {%- if isObjectType %}
-import { fragment_{{ originalFieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ originalFieldTypeName }}Fields';
+import { fragment_{{ originalFieldTypeName }}Fields{% if isListType and isNamed %}, fragment_{{ originalFieldTypeName }}NamedFields{% endif %} } from '~/{{ storesPath }}/fragment/fragment_{{ originalFieldTypeName }}Fields';
 {%- endif %}
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 {%- if args and args.length > 0 %}
-import type { Query{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
-{%- endif %}
-{%- if isScalarType == false %}
-import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
+import type { Query{{ fieldName | pascalCase }}Args{% if isScalarType == false %}, {{ fieldTypeName }}{% endif %} } from '~/{{ schemaTypesPath }}';
 {%- endif %}
 
 const query = /* GraphQL */ `query Query_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
@@ -86,11 +83,30 @@ ${fragment_{{ originalFieldTypeName }}Fields}
 {%- endif %}`;
 
 export function createQuery_{{ fieldName }}_Store(event: Event): Query_{{ fieldName }}_Store {
-  return createGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
+  return createGraphQLQueryStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event);
 }
 
 export async function fetchQuery_{{ fieldName }}_Store(event: Event, variables{% if args == undefined or args.length == 0 %}?{% endif %}: {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}): Promise<Query_{{ fieldName }}_Store> {
-  return fetchGraphQLQueryStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
+  return fetchGraphQLQueryStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(query, event, variables);
 }
 
-export type Query_{{ fieldName }}_Store = GraphQLStore<{{ tsTypeName }}{% if isListType %}[]{% endif %}, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>;
+export type Query_{{ fieldName }}_Store = GraphQLStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>;
+{%- if isListType and isNamed %}
+
+const queryNamed = /* GraphQL */ `query QueryNamed_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
+  {{ fieldName }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %} {
+    ...{{ originalFieldTypeName }}NamedFields
+  }
+}
+${fragment_{{ originalFieldTypeName }}NamedFields}`;
+
+export function createQueryNamed_{{ fieldName }}_Store(event: Event): QueryNamed_{{ fieldName }}_Store {
+  return createGraphQLQueryStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(queryNamed, event);
+}
+
+export async function fetchQueryNamed_{{ fieldName }}_Store(event: Event, variables{% if args == undefined or args.length == 0 %}?{% endif %}: {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}): Promise<QueryNamed_{{ fieldName }}_Store> {
+  return fetchGraphQLQueryStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>(queryNamed, event, variables);
+}
+
+export type QueryNamed_{{ fieldName }}_Store = GraphQLStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>;
+{%- endif %}

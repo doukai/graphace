@@ -9,7 +9,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { QueryGroupConnectionArgs, GroupOrderBy, MutationGroupArgs } from '~/lib/types/schema';
+	import type { QueryGroupConnectionArgs, GroupOrderBy, GroupInput, MutationGroupArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -22,6 +22,13 @@
 	$: nodes = $query_groupConnection_Store.response.data?.groupConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_groupConnection_Store.response.data?.groupConnection?.totalCount || 0;
 	$: mutation_group_Store = data.mutation_group_Store;
+
+	let value: (GroupInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryGroupConnectionArgs = {};
 	let orderBy: GroupOrderBy = {};
 	let pageNumber: number = 1;
@@ -43,7 +50,7 @@
 	};
 
 	const mutation = (args: MutationGroupArgs) => {
-		const row = nodes
+		const row = value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -96,7 +103,7 @@
 			showCreateButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

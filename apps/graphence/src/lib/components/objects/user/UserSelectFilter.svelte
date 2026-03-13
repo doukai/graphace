@@ -4,7 +4,8 @@
 	import type { Errors } from '@graphace/commons';
 	import type { Option } from '@graphace/ui';
 	import { ObjectSelect, OperatorSelect } from '@graphace/ui-graphql';
-	import { namedQueryStore } from '~/utils';
+	import { createQueryNamed_userList_Store } from '~/lib/stores/query/query_userList_store';
+	import { loadEvent } from '~/utils';
 	import type { StringExpression } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
@@ -28,6 +29,8 @@
 		};
 	}>();
 
+	const queryNamed_userList_Store = createQueryNamed_userList_Store($loadEvent);
+
 	if (value == null || Object.keys(value).length === 0) {
 		value = { opr: 'EQ', val: undefined, arr: [] };
 	}
@@ -42,23 +45,21 @@
 		selectedList = undefined;
 	};
 
-	const query = { fieldName: 'userList', idName: 'id' };
-
 	$: options =
-		$namedQueryStore.response.data?.userList?.map((item) => ({
+		$queryNamed_userList_Store.response.data?.userList?.map((item) => ({
 			label: item?.name,
 			value: item?.id,
 			node: item
 		})) || [];
 
-	$: loading = $namedQueryStore.isFetching;
+	$: loading = $queryNamed_userList_Store.isFetching;
 
 	$: if (
 		value?.arr?.length &&
 		(selectedList === undefined ||
 			value?.arr?.some((item) => !selectedList?.some((option) => option.value === item)))
 	) {
-		namedQueryStore.fetch(query, { id: { opr: 'IN', arr: value?.arr } }).then(
+		queryNamed_userList_Store.fetch({ id: { opr: 'IN', arr: value?.arr } }).then(
 			(response) =>
 				(selectedList = response.data?.userList?.map((item) => ({
 					label: item?.name,
@@ -67,7 +68,7 @@
 				})))
 		);
 	} else if (value?.val != null && (selected === undefined || selected.value !== value.val)) {
-		namedQueryStore.fetch(query, { id: { opr: 'EQ', val: value?.val } }).then(
+		queryNamed_userList_Store.fetch({ id: { opr: 'EQ', val: value?.val } }).then(
 			(response) =>
 				(selected = response.data?.userList?.map((item) => ({
 					label: item?.name,
@@ -111,9 +112,9 @@
 			}}
 			on:search={(e) => {
 				if (e.detail.searchValue) {
-					namedQueryStore.fetch(query, { name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
+					queryNamed_userList_Store.fetch({ name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
 				} else {
-					namedQueryStore.fetch(query, { name: undefined, first: 10 });
+					queryNamed_userList_Store.fetch({ name: undefined, first: 10 });
 				}
 			}}
 		/>
@@ -147,9 +148,9 @@
 			}}
 			on:search={(e) => {
 				if (e.detail.searchValue) {
-					namedQueryStore.fetch(query, { name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
+					queryNamed_userList_Store.fetch({ name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
 				} else {
-					namedQueryStore.fetch(query, { name: undefined, first: 10 });
+					queryNamed_userList_Store.fetch({ name: undefined, first: 10 });
 				}
 			}}
 		/>

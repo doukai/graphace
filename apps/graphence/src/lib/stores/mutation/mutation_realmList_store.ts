@@ -1,8 +1,7 @@
 import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_RealmFields } from '~/lib/stores/fragment/fragment_RealmFields';
 import { createGraphQLMutationStore } from '~/utils';
-import type { MutationRealmListArgs } from '~/lib/types/schema';
-import type { Realm } from '~/lib/types/schema';
+import type { MutationRealmListArgs, Realm } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `mutation Mutation_realmList($id: ID, $name: String, $description: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [RealmInput], $where: RealmExpression) {
   realmList(id: $id name: $name description: $description isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where) {
@@ -12,7 +11,7 @@ const query = /* GraphQL */ `mutation Mutation_realmList($id: ID, $name: String,
 ${fragment_RealmFields}`;
 
 export function createMutation_realmList_Store(event: Event): Mutation_realmList_Store {
-  return createGraphQLMutationStore<Realm[], MutationRealmListArgs>(query, event);
+  return createGraphQLMutationStore<{ realmList: Realm[] }, MutationRealmListArgs>(query, event);
 }
 
-export type Mutation_realmList_Store = GraphQLStore<Realm[], MutationRealmListArgs>;
+export type Mutation_realmList_Store = GraphQLStore<{ realmList: Realm[] }, MutationRealmListArgs>;

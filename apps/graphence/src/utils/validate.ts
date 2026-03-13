@@ -2,7 +2,8 @@ import { get } from 'svelte/store';
 import type { ErrorObject } from 'ajv';
 import { createValidator as _createValidator, type ValidatorStore } from '@graphace/commons';
 import { createGraphQLErrorBuilder } from '@graphace/graphql';
-import type { Event } from '@graphace/ui-graphql';import { createQuery_jsonSchema_Store } from '~/lib/stores/query/query_jsonSchema_store';
+import type { Event } from '@graphace/ui-graphql';
+import { createQuery_jsonSchema_Store } from '~/lib/stores/query/query_jsonSchema_store';
 import { LL } from '$i18n/i18n-svelte';
 import type { NamespaceErrorsTranslation } from '$i18n/i18n-types';
 

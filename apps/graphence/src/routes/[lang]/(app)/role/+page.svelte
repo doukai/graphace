@@ -9,7 +9,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { QueryRoleConnectionArgs, RoleOrderBy, MutationRoleArgs } from '~/lib/types/schema';
+	import type { QueryRoleConnectionArgs, RoleOrderBy, RoleInput, MutationRoleArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -22,6 +22,13 @@
 	$: nodes = $query_roleConnection_Store.response.data?.roleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_roleConnection_Store.response.data?.roleConnection?.totalCount || 0;
 	$: mutation_role_Store = data.mutation_role_Store;
+
+	let value: (RoleInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryRoleConnectionArgs = {};
 	let orderBy: RoleOrderBy = {};
 	let pageNumber: number = 1;
@@ -43,7 +50,7 @@
 	};
 
 	const mutation = (args: MutationRoleArgs) => {
-		const row = nodes
+		const row = value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -96,7 +103,7 @@
 			showCreateButton={auth('Role::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

@@ -17,7 +17,7 @@ ${fragment_RealmFields}
 ${fragment_UserFields}`;
 
 export function createMutation_user_realm_Store(event: Event): Mutation_user_realm_Store {
-  return createGraphQLMutationStore<User, { user_id: string, user_realm: RealmInput | null }>(query, event);
+  return createGraphQLMutationStore<{ user: User }, { user_id: string, user_realm: RealmInput | null }>(query, event);
 }
 
-export type Mutation_user_realm_Store = GraphQLStore<User, { user_id: string, user_realm: RealmInput | null }>;
+export type Mutation_user_realm_Store = GraphQLStore<{ user: User }, { user_id: string, user_realm: RealmInput | null }>;

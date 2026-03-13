@@ -18,7 +18,7 @@ ${fragment_UserFields}
 ${fragment_GroupFields}`;
 
 export function createMutation_group_users_Store(event: Event): Mutation_group_users_Store {
-  return createGraphQLMutationStore<Group, { group_id: string, group_users: UserInput[] | null }>(query, event);
+  return createGraphQLMutationStore<{ group: Group }, { group_id: string, group_users: UserInput[] | null }>(query, event);
 }
 
-export type Mutation_group_users_Store = GraphQLStore<Group, { group_id: string, group_users: UserInput[] | null }>;
+export type Mutation_group_users_Store = GraphQLStore<{ group: Group }, { group_id: string, group_users: UserInput[] | null }>;

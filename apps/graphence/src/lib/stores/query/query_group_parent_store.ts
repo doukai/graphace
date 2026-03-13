@@ -14,11 +14,11 @@ const query = /* GraphQL */ `query Query_group_parent($group_id: String, $id: St
 ${fragment_GroupFields}`;
 
 export function createQuery_group_parent_Store(event: Event): Query_group_parent_Store {
-  return createGraphQLQueryStore<Group, { group_id: string } & QueryGroupArgs>(query, event);
+  return createGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryGroupArgs>(query, event);
 }
 
 export async function fetchQuery_group_parent_Store(event: Event, variables: { group_id: string } & QueryGroupArgs): Promise<Query_group_parent_Store> {
-  return fetchGraphQLQueryStore<Group, { group_id: string } & QueryGroupArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryGroupArgs>(query, event, variables);
 }
 
-export type Query_group_parent_Store = GraphQLStore<Group, { group_id: string } & QueryGroupArgs>;
+export type Query_group_parent_Store = GraphQLStore<{ group: Group }, { group_id: string } & QueryGroupArgs>;

@@ -31,3 +31,9 @@ export const fragment_UserFields = /* GraphQL */ `fragment UserFields on User {
     updateTime
     createGroupId
   }`;
+
+export const fragment_UserNamedFields = /* GraphQL */ `fragment UserNamedFields on User {
+    id
+    name
+    description
+  }`;

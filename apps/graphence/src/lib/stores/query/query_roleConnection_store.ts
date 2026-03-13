@@ -1,8 +1,7 @@
 import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
-import type { QueryRoleConnectionArgs } from '~/lib/types/schema';
-import type { RoleConnection } from '~/lib/types/schema';
+import type { QueryRoleConnectionArgs, RoleConnection } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_roleConnection($id: StringExpression, $name: StringExpression, $description: StringExpression, $users: UserExpression, $groups: GroupExpression, $composites: RoleExpression, $permissions: PermissionExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $roleUserRelation: RoleUserRelationExpression, $groupRoleRelation: GroupRoleRelationExpression, $roleCompositeRelation: RoleCompositeRelationExpression, $rolePermissionRelation: RolePermissionRelationExpression, $orderBy: RoleOrderBy, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [RoleExpression], $first: Int, $last: Int, $offset: Int, $after: ID, $before: ID) {
   roleConnection(id: $id name: $name description: $description users: $users groups: $groups composites: $composites permissions: $permissions realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId roleUserRelation: $roleUserRelation groupRoleRelation: $groupRoleRelation roleCompositeRelation: $roleCompositeRelation rolePermissionRelation: $rolePermissionRelation orderBy: $orderBy groupBy: $groupBy not: $not cond: $cond exs: $exs first: $first last: $last offset: $offset after: $after before: $before) {
@@ -17,11 +16,11 @@ const query = /* GraphQL */ `query Query_roleConnection($id: StringExpression, $
 ${fragment_RoleFields}`;
 
 export function createQuery_roleConnection_Store(event: Event): Query_roleConnection_Store {
-  return createGraphQLQueryStore<RoleConnection, QueryRoleConnectionArgs>(query, event);
+  return createGraphQLQueryStore<{ roleConnection: RoleConnection }, QueryRoleConnectionArgs>(query, event);
 }
 
 export async function fetchQuery_roleConnection_Store(event: Event, variables: QueryRoleConnectionArgs): Promise<Query_roleConnection_Store> {
-  return fetchGraphQLQueryStore<RoleConnection, QueryRoleConnectionArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ roleConnection: RoleConnection }, QueryRoleConnectionArgs>(query, event, variables);
 }
 
-export type Query_roleConnection_Store = GraphQLStore<RoleConnection, QueryRoleConnectionArgs>;
+export type Query_roleConnection_Store = GraphQLStore<{ roleConnection: RoleConnection }, QueryRoleConnectionArgs>;

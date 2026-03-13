@@ -6,11 +6,11 @@ const query = /* GraphQL */ `query Query_currentPermissionTypeList {
 }`;
 
 export function createQuery_currentPermissionTypeList_Store(event: Event): Query_currentPermissionTypeList_Store {
-  return createGraphQLQueryStore<string[], undefined>(query, event);
+  return createGraphQLQueryStore<{ currentPermissionTypeList: string[] }, undefined>(query, event);
 }
 
 export async function fetchQuery_currentPermissionTypeList_Store(event: Event, variables?: undefined): Promise<Query_currentPermissionTypeList_Store> {
-  return fetchGraphQLQueryStore<string[], undefined>(query, event, variables);
+  return fetchGraphQLQueryStore<{ currentPermissionTypeList: string[] }, undefined>(query, event, variables);
 }
 
-export type Query_currentPermissionTypeList_Store = GraphQLStore<string[], undefined>;
+export type Query_currentPermissionTypeList_Store = GraphQLStore<{ currentPermissionTypeList: string[] }, undefined>;

@@ -16,7 +16,7 @@ const query = /* GraphQL */ `mutation Mutation_role_composites($role_id: String,
 ${fragment_RoleFields}`;
 
 export function createMutation_role_composites_Store(event: Event): Mutation_role_composites_Store {
-  return createGraphQLMutationStore<Role, { role_id: string, role_composites: RoleInput[] | null }>(query, event);
+  return createGraphQLMutationStore<{ role: Role }, { role_id: string, role_composites: RoleInput[] | null }>(query, event);
 }
 
-export type Mutation_role_composites_Store = GraphQLStore<Role, { role_id: string, role_composites: RoleInput[] | null }>;
+export type Mutation_role_composites_Store = GraphQLStore<{ role: Role }, { role_id: string, role_composites: RoleInput[] | null }>;

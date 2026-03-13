@@ -91,11 +91,11 @@ ${fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields}
 ${fragment_{{ fieldTypeName }}Fields}`;
 
 export function createQuery_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store(event: Event): Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store {
-  return createGraphQLQueryStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event);
+  return createGraphQLQueryStore<{ {{ fieldName }}: {{ fieldTypeName }} }, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event);
 }
 
 export async function fetchQuery_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store(event: Event, variables: { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args): Promise<Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store> {
-  return fetchGraphQLQueryStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event, variables);
+  return fetchGraphQLQueryStore<{ {{ fieldName }}: {{ fieldTypeName }} }, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>(query, event, variables);
 }
 
-export type Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>;
+export type Query_{{ fieldName }}_{{ objectFieldInfo.fieldName }}_Store = GraphQLStore<{ {{ fieldName }}: {{ fieldTypeName }} }, { {{ fieldName }}_{{ fieldTypeIdName }}: string } & Query{{ objectFieldInfo.fieldTypeName | pascalCase }}{% if objectFieldInfo.isListType %}List{% endif %}Args>;

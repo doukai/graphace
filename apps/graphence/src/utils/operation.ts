@@ -1,22 +1,18 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
-import type { Directive, Field, GraphQLError } from '@graphace/graphql';
-import type { GraphQLStore, OperationStore, NamedQueryStore, TreeQueryStore, Event } from '@graphace/ui-graphql';
+import type { GraphQLError } from '@graphace/graphql';
+import type { GraphQLStore, Event } from '@graphace/ui-graphql';
 import {
-    createQueryStore as _createQueryStore,
-    fetchQueryStore as _fetchQueryStore,
-    createMutationStore as _createMutationStore,
     createGraphQLQueryStore as _createGraphQLQueryStore,
     fetchGraphQLQueryStore as _fetchGraphQLQueryStore,
-    createGraphQLMutationStore as _createGraphQLMutationStore,
-    createStructQueryStores as _createStructQueryStores
+    createGraphQLMutationStore as _createGraphQLMutationStore
 } from '@graphace/ui-graphql';
 
 const getUrl = (event: Event) => {
     return browser ? '/graphql' : `${event.url.origin}/graphql`;
 }
 
-const authInterceptor = <T>(event: Event, response: { data?: Record<string, T | null> | undefined, errors?: GraphQLError[] | null | undefined }): void => {
+const authInterceptor = <T>(event: Event, response: { data?: T | undefined, errors?: GraphQLError[] | null | undefined }): void => {
     if (response.errors) {
         if (response.errors?.map(error => error.extensions).some(extensions => extensions?.code == -40100)) {
             const [, lang] = event.url.pathname.split('/');
@@ -33,36 +29,6 @@ const authInterceptor = <T>(event: Event, response: { data?: Record<string, T | 
             }
         }
     }
-}
-
-export function createQueryStore<T>(event: Event): OperationStore<T> {
-    const queryStore = _createQueryStore<T>(event, getUrl(event));
-
-    queryStore.subscribe(data => {
-        authInterceptor(event, data.response);
-    })
-
-    return queryStore;
-}
-
-export async function fetchQueryStore<T>(event: Event, params: { fields: Field[], name?: string | undefined, directives?: Directive[] | undefined }): Promise<OperationStore<T>> {
-    const queryStore = await _fetchQueryStore<T>(event, getUrl(event), params);
-
-    queryStore.subscribe(data => {
-        authInterceptor(event, data.response);
-    })
-
-    return queryStore;
-}
-
-export function createMutationStore<T>(event: Event): OperationStore<T> {
-    const mutationStore = _createMutationStore<T>(event, getUrl(event));
-
-    mutationStore.subscribe(data => {
-        authInterceptor(event, data.response);
-    })
-
-    return mutationStore;
 }
 
 export function createGraphQLQueryStore<T, V>(query: string, event: Event): GraphQLStore<T, V> {
@@ -93,21 +59,4 @@ export function createGraphQLMutationStore<T, V>(query: string, event: Event): G
     })
 
     return graphQLQueryStore;
-}
-
-export let namedQueryStore: NamedQueryStore;
-export let treeQueryStore: TreeQueryStore;
-
-export const createStructQueryStores = (event: Event) => {
-    if (!namedQueryStore || !treeQueryStore) {
-        const structQueryStores = _createStructQueryStores(event, getUrl(event))
-        namedQueryStore = structQueryStores.namedQueryStore;
-        namedQueryStore.subscribe(data => {
-            authInterceptor(event, data.response);
-        });
-        treeQueryStore = structQueryStores.treeQueryStore;
-        treeQueryStore.subscribe(data => {
-            authInterceptor(event, data.response);
-        });
-    }
 }

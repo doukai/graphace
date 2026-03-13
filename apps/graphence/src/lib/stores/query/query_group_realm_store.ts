@@ -16,11 +16,11 @@ ${fragment_RealmFields}
 ${fragment_GroupFields}`;
 
 export function createQuery_group_realm_Store(event: Event): Query_group_realm_Store {
-  return createGraphQLQueryStore<Group, { group_id: string } & QueryRealmArgs>(query, event);
+  return createGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryRealmArgs>(query, event);
 }
 
 export async function fetchQuery_group_realm_Store(event: Event, variables: { group_id: string } & QueryRealmArgs): Promise<Query_group_realm_Store> {
-  return fetchGraphQLQueryStore<Group, { group_id: string } & QueryRealmArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryRealmArgs>(query, event, variables);
 }
 
-export type Query_group_realm_Store = GraphQLStore<Group, { group_id: string } & QueryRealmArgs>;
+export type Query_group_realm_Store = GraphQLStore<{ group: Group }, { group_id: string } & QueryRealmArgs>;

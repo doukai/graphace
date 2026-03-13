@@ -17,7 +17,7 @@ ${fragment_RealmFields}
 ${fragment_GroupFields}`;
 
 export function createMutation_group_realm_Store(event: Event): Mutation_group_realm_Store {
-  return createGraphQLMutationStore<Group, { group_id: string, group_realm: RealmInput | null }>(query, event);
+  return createGraphQLMutationStore<{ group: Group }, { group_id: string, group_realm: RealmInput | null }>(query, event);
 }
 
-export type Mutation_group_realm_Store = GraphQLStore<Group, { group_id: string, group_realm: RealmInput | null }>;
+export type Mutation_group_realm_Store = GraphQLStore<{ group: Group }, { group_id: string, group_realm: RealmInput | null }>;

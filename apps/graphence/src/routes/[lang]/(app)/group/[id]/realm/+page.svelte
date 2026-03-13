@@ -27,13 +27,16 @@
 	$: mutation_group_realm_Store = data.mutation_group_realm_Store;
 	$: mutation_realm_Store = data.mutation_realm_Store;
 
-	let value = {};
+	let value: RealmInput = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
 
 	$: if (realm && Object.keys(realm).length > 0) {
 		value = realm;
 		showUnbindButton = true;
+	} else {
+		value = {};
+		showUnbindButton = false;
 	}
 
 	const mutation = (args: MutationRealmArgs) => {
@@ -67,25 +70,27 @@
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, realm: input })
 			.then((data) => {
 				errors = {};
-				mutation_group_realm_Store.fetch({
-					group_id: id,
-					group_realm: input
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.graphence.message.requestFailed(),
-								description: globalError
-							});
+				mutation_group_realm_Store
+					.fetch({
+						group_id: id,
+						group_realm: input
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.graphence.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.graphence.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.graphence.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
@@ -115,7 +120,7 @@
 			showSaveButton={auth('Realm::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('Realm::isDeprecated::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_group_realm_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_group_realm_Store.isFetching || $mutation_realm_Store.isFetching}

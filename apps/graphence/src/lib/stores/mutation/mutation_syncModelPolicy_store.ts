@@ -6,7 +6,7 @@ const query = /* GraphQL */ `mutation Mutation_syncModelPolicy {
 }`;
 
 export function createMutation_syncModelPolicy_Store(event: Event): Mutation_syncModelPolicy_Store {
-  return createGraphQLMutationStore<boolean, undefined>(query, event);
+  return createGraphQLMutationStore<{ syncModelPolicy: boolean }, undefined>(query, event);
 }
 
-export type Mutation_syncModelPolicy_Store = GraphQLStore<boolean, undefined>;
+export type Mutation_syncModelPolicy_Store = GraphQLStore<{ syncModelPolicy: boolean }, undefined>;

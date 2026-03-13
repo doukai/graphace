@@ -6,9 +6,6 @@
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
-	import type { Query_permission_rolesConnection_Store } from '~/lib/stores/query/query_permission_rolesConnection_store';
-	import type { Mutation_permission_roles_Store } from '~/lib/stores/mutation/mutation_permission_roles_store';
-	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import {
 		validator,
 		permissions,
@@ -25,12 +22,19 @@
 	const { auth } = permissions;
 
 	$: id = data.id as string;
-	$: query_permission_rolesConnection_Store = data.query_permission_rolesConnection_Store as Query_permission_rolesConnection_Store;
+	$: query_permission_rolesConnection_Store = data.query_permission_rolesConnection_Store;
 	$: permission = $query_permission_rolesConnection_Store.response.data?.permission;
 	$: nodes = $query_permission_rolesConnection_Store.response.data?.permission?.rolesConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_permission_rolesConnection_Store.response.data?.permission?.rolesConnection?.totalCount || 0;
-	$: mutation_permission_roles_Store = data.mutation_permission_roles_Store as Mutation_permission_roles_Store;
-	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
+	$: mutation_permission_roles_Store = data.mutation_permission_roles_Store;
+	$: mutation_role_Store = data.mutation_role_Store;
+
+	let value: (RoleInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryRoleConnectionArgs = {};
 	let orderBy: RoleOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,25 +88,27 @@
 		validate('Mutation_permission_Arguments', { where: { id: { val: permission?.id } }, roles: input })
 			.then((data) => {
 				errors = {};
-				mutation_permission_roles_Store.fetch({
-					permission_id: id,
-					permission_roles: input
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.graphence.message.requestFailed(),
-								description: globalError
-							});
+				mutation_permission_roles_Store
+					.fetch({
+						permission_id: id,
+						permission_roles: input
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.graphence.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.graphence.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.graphence.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
@@ -134,7 +140,7 @@
 			showCreateButton={auth('Role::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

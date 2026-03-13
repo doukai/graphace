@@ -104,7 +104,7 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 		disabled: (value, fieldArg) => {
 			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::WRITE'){% else %}false{% endif %};
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::READ'){% else %}false{% endif %};
 		},
 		hiddenCol: (args, tab, fieldArg) => {

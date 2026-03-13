@@ -33,7 +33,9 @@
 		groupTab,
 		groupTabChange,
 		groupFields,
-		type GroupFields
+		type GroupFields,
+		type GroupFieldsArgs,
+		validateAll
 	} from '~/lib/components/objects/group/GroupOption';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	import type {
@@ -67,6 +69,11 @@
 	export let tabs: (($LL: TranslationFunctions, args?: QueryGroupListArgs | undefined) => TabInfo[] | undefined) | undefined = groupTabs;
 	export let tab: ((args?: QueryGroupListArgs | undefined) => string | undefined) | undefined = groupTab;
 	export let fields: GroupFields | undefined = groupFields;
+	export let fieldsPatch: GroupFields | undefined = undefined;
+	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
+		fields = { ...fields, ...fieldsPatch };
+	}
+	export let fieldsArgs: GroupFieldsArgs | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
@@ -90,85 +97,12 @@
 			value: GroupInput | (GroupInput | null | undefined)[] | null | undefined ;
 			row?: number[] | number | undefined;
 		};
-		tabChange: { tab: any; origin: any; };
+		tabChange: { tab: string; origin: string; };
 		create: {};
 		back: {};
 	}>();
 
 	let selectAll: boolean;
-
-	const validate = async () => {
-		errors = {};
-		if (value) {
-			for (let row = 0; row < value.length; row++) {
-				const node = value[row];
-				if (node) {
-					const rowErrors = await validateRow(node);
-					if (Object.keys(rowErrors).length > 0) {
-						errors[row] = { iterms: rowErrors };
-					}
-				}
-			}
-		}
-
-		return new Promise(
-			(
-				resolve: (data: (GroupInput | null | undefined)[] | null | undefined) => void,
-				reject: (errors: Record<number, Errors>) => void
-			) => {
-				if (Object.keys(errors).length === 0) {
-					resolve(value);
-				} else {
-					reject(errors);
-				}
-			}
-		);
-	};
-
-	const validateRow = async (value: GroupInput) => {
-		const errors: Record<string, Errors> = {};
-		const nameErrors = await fields?.name?.validate?.(value);
-		if (nameErrors && nameErrors.length > 0) {
-			errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
-		}
-		const descriptionErrors = await fields?.description?.validate?.(value);
-		if (descriptionErrors && descriptionErrors.length > 0) {
-			errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
-		}
-		const pathErrors = await fields?.path?.validate?.(value);
-		if (pathErrors && pathErrors.length > 0) {
-			errors['path'] = { errors: pathErrors.map((message) => ({ message })) };
-		}
-		const deepErrors = await fields?.deep?.validate?.(value);
-		if (deepErrors && deepErrors.length > 0) {
-			errors['deep'] = { errors: deepErrors.map((message) => ({ message })) };
-		}
-		const parentIdErrors = await fields?.parentId?.validate?.(value);
-		if (parentIdErrors && parentIdErrors.length > 0) {
-			errors['parentId'] = { errors: parentIdErrors.map((message) => ({ message })) };
-		}
-		const parentErrors = await fields?.parent?.validate?.(value);
-		if (parentErrors && parentErrors.length > 0) {
-			errors['parent'] = { errors: parentErrors.map((message) => ({ message })) };
-		}
-		const subGroupsErrors = await fields?.subGroups?.validate?.(value);
-		if (subGroupsErrors && subGroupsErrors.length > 0) {
-			errors['subGroups'] = { errors: subGroupsErrors.map((message) => ({ message })) };
-		}
-		const usersErrors = await fields?.users?.validate?.(value);
-		if (usersErrors && usersErrors.length > 0) {
-			errors['users'] = { errors: usersErrors.map((message) => ({ message })) };
-		}
-		const rolesErrors = await fields?.roles?.validate?.(value);
-		if (rolesErrors && rolesErrors.length > 0) {
-			errors['roles'] = { errors: rolesErrors.map((message) => ({ message })) };
-		}
-		const realmErrors = await fields?.realm?.validate?.(value);
-		if (realmErrors && realmErrors.length > 0) {
-			errors['realm'] = { errors: realmErrors.map((message) => ({ message })) };
-		}
-		return errors;
-	};
 </script>
 
 <div class="flex justify-between">
@@ -190,7 +124,10 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) =>
+			validateAll($LL, value)
+				.then((value) => dispatch('save', { value }))
+				.catch((e) => (errors = e))}
 		on:remove={(e) =>
 			dispatch('remove', {
 				value: value?.filter((node) => selectedIdList.includes(node?.id)),
@@ -254,12 +191,14 @@
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
 			if (e.detail.value !== e.detail.origin) {
-				groupTabChange(e.detail.value, args).then((args) => {
-					dispatch('query', {
-						args,
-						orderBy
-					});
-				});
+				groupTabChange(e.detail.value, args, value)
+					.then((args) => {
+						dispatch('query', {
+							args,
+							orderBy
+						});
+					})
+					.catch((e) => (errors = e));
 			}
 		}}
 	/>
@@ -294,7 +233,7 @@
 				</label>
 			</th>
 			<slot name="name-th" {args} {orderBy} {fields}>
-				{#if !fields?.name?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
 					<StringTh
 						name={$LL.graphql.objects.Group.fields.name.name()}
 						bind:value={args.name}
@@ -302,12 +241,12 @@
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.name?.required?.()}
 						{zIndex}
-						{...fields?.name?.props?.()?.['th']}
+						{...fields?.name?.props?.($LL, undefined, fieldsArgs?.name)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="description-th" {args} {orderBy} {fields}>
-				{#if !fields?.description?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
 					<StringTh
 						name={$LL.graphql.objects.Group.fields.description.name()}
 						bind:value={args.description}
@@ -315,12 +254,12 @@
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.description?.required?.()}
 						{zIndex}
-						{...fields?.description?.props?.()?.['th']}
+						{...fields?.description?.props?.($LL, undefined, fieldsArgs?.description)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="path-th" {args} {orderBy} {fields}>
-				{#if !fields?.path?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.path?.hiddenCol?.(args, tab?.(args), fieldsArgs?.path)}
 					<StringTh
 						name={$LL.graphql.objects.Group.fields.path.name()}
 						bind:value={args.path}
@@ -328,12 +267,12 @@
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.path?.required?.()}
 						{zIndex}
-						{...fields?.path?.props?.()?.['th']}
+						{...fields?.path?.props?.($LL, undefined, fieldsArgs?.path)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="deep-th" {args} {orderBy} {fields}>
-				{#if !fields?.deep?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.deep?.hiddenCol?.(args, tab?.(args), fieldsArgs?.deep)}
 					<IntTh
 						name={$LL.graphql.objects.Group.fields.deep.name()}
 						bind:value={args.deep}
@@ -341,12 +280,12 @@
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.deep?.required?.()}
 						{zIndex}
-						{...fields?.deep?.props?.()?.['th']}
+						{...fields?.deep?.props?.($LL, undefined, fieldsArgs?.deep)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="parentId-th" {args} {orderBy} {fields}>
-				{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parentId)}
 					<StringTh
 						name={$LL.graphql.objects.Group.fields.parentId.name()}
 						bind:value={args.parentId}
@@ -354,67 +293,67 @@
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.parentId?.required?.()}
 						{zIndex}
-						{...fields?.parentId?.props?.()?.['th']}
+						{...fields?.parentId?.props?.($LL, undefined, fieldsArgs?.parentId)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="parent-th" {args} {orderBy} {fields}>
-				{#if !fields?.parent?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.parent?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parent)}
 					<GroupTh
 						name={$LL.graphql.objects.Group.fields.parent.name()}
 						bind:value={args.parent}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.parent?.required?.()}
 						{zIndex}
-						{...fields?.parent?.props?.()?.['th']}
+						{...fields?.parent?.props?.($LL, undefined, fieldsArgs?.parent)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="subGroups-th" {args} {orderBy} {fields}>
-				{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.subGroups)}
 					<GroupTh
 						name={$LL.graphql.objects.Group.fields.subGroups.name()}
 						bind:value={args.subGroups}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.subGroups?.required?.()}
 						{zIndex}
-						{...fields?.subGroups?.props?.()?.['th']}
+						{...fields?.subGroups?.props?.($LL, undefined, fieldsArgs?.subGroups)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="users-th" {args} {orderBy} {fields}>
-				{#if !fields?.users?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
 					<UserTh
 						name={$LL.graphql.objects.Group.fields.users.name()}
 						bind:value={args.users}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.users?.required?.()}
 						{zIndex}
-						{...fields?.users?.props?.()?.['th']}
+						{...fields?.users?.props?.($LL, undefined, fieldsArgs?.users)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="roles-th" {args} {orderBy} {fields}>
-				{#if !fields?.roles?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
 					<RoleTh
 						name={$LL.graphql.objects.Group.fields.roles.name()}
 						bind:value={args.roles}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.roles?.required?.()}
 						{zIndex}
-						{...fields?.roles?.props?.()?.['th']}
+						{...fields?.roles?.props?.($LL, undefined, fieldsArgs?.roles)?.['th']}
 					/>
 				{/if}
 			</slot>
 			<slot name="realm-th" {args} {orderBy} {fields}>
-				{#if !fields?.realm?.hiddenCol?.(args, tab?.(args))}
+				{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
 					<RealmTh
 						name={$LL.graphql.objects.Group.fields.realm.name()}
 						bind:value={args.realm}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.realm?.required?.()}
 						{zIndex}
-						{...fields?.realm?.props?.()?.['th']}
+						{...fields?.realm?.props?.($LL, undefined, fieldsArgs?.realm)?.['th']}
 					/>
 				{/if}
 			</slot>
@@ -452,164 +391,325 @@
 							</label>
 						</th>
 						<slot name="name" {node} {errors} {fields} {row}>
-							{#if !fields?.name?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.name?.props?.(node)?.['td']}>
+							{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+								<Td {zIndex} {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['td']}>
 									<StringInput
 										name="name"
 										bind:value={node.name}
-										readonly={fields?.name?.readonly?.(node)}
-										disabled={fields?.name?.disabled?.(node)}
-										on:change={(e) => fields?.name?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.name?.readonly?.(node, fieldsArgs?.name)}
+										disabled={fields?.name?.disabled?.(node, fieldsArgs?.name)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.name
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.name)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, name: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.name}
-										{...fields?.name?.props?.(node)?.['input']}
+										{...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['input']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="description" {node} {errors} {fields} {row}>
-							{#if !fields?.description?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.description?.props?.(node)?.['td']}>
+							{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+								<Td {zIndex} {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['td']}>
 									<StringInput
 										name="description"
 										bind:value={node.description}
-										readonly={fields?.description?.readonly?.(node)}
-										disabled={fields?.description?.disabled?.(node)}
-										on:change={(e) => fields?.description?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.description?.readonly?.(node, fieldsArgs?.description)}
+										disabled={fields?.description?.disabled?.(node, fieldsArgs?.description)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.description
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.description)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, description: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.description}
-										{...fields?.description?.props?.(node)?.['input']}
+										{...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['input']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="path" {node} {errors} {fields} {row}>
-							{#if !fields?.path?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.path?.props?.(node)?.['td']}>
+							{#if !fields?.path?.hiddenCol?.(args, tab?.(args), fieldsArgs?.path)}
+								<Td {zIndex} {...fields?.path?.props?.($LL, node, fieldsArgs?.path)?.['td']}>
 									<StringInput
 										name="path"
 										bind:value={node.path}
-										readonly={fields?.path?.readonly?.(node)}
-										disabled={fields?.path?.disabled?.(node)}
-										on:change={(e) => fields?.path?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.path?.readonly?.(node, fieldsArgs?.path)}
+										disabled={fields?.path?.disabled?.(node, fieldsArgs?.path)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.path
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.path)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, path: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.path}
-										{...fields?.path?.props?.(node)?.['input']}
+										{...fields?.path?.props?.($LL, node, fieldsArgs?.path)?.['input']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="deep" {node} {errors} {fields} {row}>
-							{#if !fields?.deep?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.deep?.props?.(node)?.['td']}>
+							{#if !fields?.deep?.hiddenCol?.(args, tab?.(args), fieldsArgs?.deep)}
+								<Td {zIndex} {...fields?.deep?.props?.($LL, node, fieldsArgs?.deep)?.['td']}>
 									<IntInput
 										name="deep"
 										bind:value={node.deep}
-										readonly={fields?.deep?.readonly?.(node)}
-										disabled={fields?.deep?.disabled?.(node)}
-										on:change={(e) => fields?.deep?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.deep?.readonly?.(node, fieldsArgs?.deep)}
+										disabled={fields?.deep?.disabled?.(node, fieldsArgs?.deep)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.deep
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.deep)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, deep: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.deep}
-										{...fields?.deep?.props?.(node)?.['input']}
+										{...fields?.deep?.props?.($LL, node, fieldsArgs?.deep)?.['input']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="parentId" {node} {errors} {fields} {row}>
-							{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.parentId?.props?.(node)?.['td']}>
+							{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parentId)}
+								<Td {zIndex} {...fields?.parentId?.props?.($LL, node, fieldsArgs?.parentId)?.['td']}>
 									<StringInput
 										name="parentId"
 										bind:value={node.parentId}
-										readonly={fields?.parentId?.readonly?.(node)}
-										disabled={fields?.parentId?.disabled?.(node)}
-										on:change={(e) => fields?.parentId?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.parentId?.readonly?.(node, fieldsArgs?.parentId)}
+										disabled={fields?.parentId?.disabled?.(node, fieldsArgs?.parentId)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.parentId
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.parentId)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, parentId: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.parentId}
-										{...fields?.parentId?.props?.(node)?.['input']}
+										{...fields?.parentId?.props?.($LL, node, fieldsArgs?.parentId)?.['input']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="parent" {node} {errors} {fields} {row}>
-							{#if !fields?.parent?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.parent?.props?.(node)?.['td']}>
+							{#if !fields?.parent?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parent)}
+								<Td {zIndex} {...fields?.parent?.props?.($LL, node, fieldsArgs?.parent)?.['td']}>
 									<GroupSelect
 										name="parent"
 										bind:value={node.parent}
 										errors={errors?.[row]?.iterms?.parent}
-										readonly={fields?.parent?.readonly?.(node)}
-										disabled={fields?.parent?.disabled?.(node)}
-										on:change={(e) => fields?.parent?.onChange?.(e.detail.value, node).then((next) => node = next)}
-										{...fields?.parent?.props?.(node)?.['select']}
+										readonly={fields?.parent?.readonly?.(node, fieldsArgs?.parent)}
+										disabled={fields?.parent?.disabled?.(node, fieldsArgs?.parent)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.parent
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.parent)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, parent: e }
+																}
+															})
+													);
+											}
+										}}
+										{...fields?.parent?.props?.($LL, node, fieldsArgs?.parent)?.['combobox']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="subGroups" {node} {errors} {fields} {row}>
-							{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.subGroups?.props?.(node)?.['td']}>
+							{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.subGroups)}
+								<Td {zIndex} {...fields?.subGroups?.props?.($LL, node, fieldsArgs?.subGroups)?.['td']}>
 									<GroupSelect
 										name="subGroups"
 										bind:value={node.subGroups}
 										list
 										errors={errors?.[row]?.iterms?.subGroups}
-										readonly={fields?.subGroups?.readonly?.(node)}
-										disabled={fields?.subGroups?.disabled?.(node)}
-										on:change={(e) => fields?.subGroups?.onChange?.(e.detail.value, node).then((next) => node = next)}
-										{...fields?.subGroups?.props?.(node)?.['select']}
+										readonly={fields?.subGroups?.readonly?.(node, fieldsArgs?.subGroups)}
+										disabled={fields?.subGroups?.disabled?.(node, fieldsArgs?.subGroups)}
+										on:change={(e) => {
+											if (Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.subGroups
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.subGroups)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, subGroups: e }
+																}
+															})
+													);
+											}
+										}}
+										{...fields?.subGroups?.props?.($LL, node, fieldsArgs?.subGroups)?.['combobox']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="users" {node} {errors} {fields} {row}>
-							{#if !fields?.users?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.users?.props?.(node)?.['td']}>
+							{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
+								<Td {zIndex} {...fields?.users?.props?.($LL, node, fieldsArgs?.users)?.['td']}>
 									<UserSelect
 										name="users"
 										bind:value={node.users}
 										list
 										errors={errors?.[row]?.iterms?.users}
-										readonly={fields?.users?.readonly?.(node)}
-										disabled={fields?.users?.disabled?.(node)}
-										on:change={(e) => fields?.users?.onChange?.(e.detail.value, node).then((next) => node = next)}
-										{...fields?.users?.props?.(node)?.['select']}
+										readonly={fields?.users?.readonly?.(node, fieldsArgs?.users)}
+										disabled={fields?.users?.disabled?.(node, fieldsArgs?.users)}
+										on:change={(e) => {
+											if (Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.users
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.users)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, users: e }
+																}
+															})
+													);
+											}
+										}}
+										{...fields?.users?.props?.($LL, node, fieldsArgs?.users)?.['combobox']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="roles" {node} {errors} {fields} {row}>
-							{#if !fields?.roles?.hiddenCol?.(args, tab?.(args))}
-								<Td {zIndex} {...fields?.roles?.props?.(node)?.['td']}>
+							{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
+								<Td {zIndex} {...fields?.roles?.props?.($LL, node, fieldsArgs?.roles)?.['td']}>
 									<RoleSelect
 										name="roles"
 										bind:value={node.roles}
 										list
 										errors={errors?.[row]?.iterms?.roles}
-										readonly={fields?.roles?.readonly?.(node)}
-										disabled={fields?.roles?.disabled?.(node)}
-										on:change={(e) => fields?.roles?.onChange?.(e.detail.value, node).then((next) => node = next)}
-										{...fields?.roles?.props?.(node)?.['select']}
+										readonly={fields?.roles?.readonly?.(node, fieldsArgs?.roles)}
+										disabled={fields?.roles?.disabled?.(node, fieldsArgs?.roles)}
+										on:change={(e) => {
+											if (Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.roles
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.roles)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, roles: e }
+																}
+															})
+													);
+											}
+										}}
+										{...fields?.roles?.props?.($LL, node, fieldsArgs?.roles)?.['combobox']}
 									/>
 								</Td>
 							{/if}
 						</slot>
 						<slot name="realm" {node} {errors} {fields} {row}>
-							{#if !fields?.realm?.hiddenCol?.(args, tab?.(args))}
-								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.(node)?.['td']}>
+							{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['td']}>
 									{#if node.id}
 										<ObjectLink
 											bind:value={node.realm}
 											textFieldName="name"
 											path={`${node.id}/realm`}
 											on:goto
-											{...fields?.realm?.props?.(node)?.['link']}
+											{...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['link']}
 										/>
 									{:else}
 										<RealmTableDialog
+											fieldsPatch={fields?.realm?.fields?.(node, fieldsArgs?.realm)}
 											bind:value={node.realm}
 											textFieldName="name"
 											singleChoice
 											class="btn-link"
-											readonly={fields?.realm?.readonly?.(node)}
-											disabled={fields?.realm?.disabled?.(node)}
-											on:select={(e) => fields?.realm?.onChange?.(e.detail.value, node).then((next) => node = next)}
-											{...fields?.realm?.props?.(node)?.['dialog']}
+											readonly={fields?.realm?.readonly?.(node, fieldsArgs?.realm)}
+											disabled={fields?.realm?.disabled?.(node, fieldsArgs?.realm)}
+											on:select={(e) => {
+												if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+													fields?.realm
+														?.onChange?.($LL, e.detail.value, node, fieldsArgs?.realm)
+														.then((next) => (node = next))
+														.catch(
+															(e) =>
+																(errors = {
+																	...errors,
+																	[row]: {
+																		...errors?.[row],
+																		iterms: { ...errors?.[row]?.iterms, realm: e }
+																	}
+																})
+														);
+												}
+											}}
+											{...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['dialog']}
 										/>
 									{/if}
 								</Td>
@@ -750,8 +850,8 @@
 				</thead>
 				<tbody class="border">
 					<slot name="name-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.name?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.name?.props?.(node)?.['tr']}>
+						{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+							<Tr class="hover" let:id {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -760,24 +860,40 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.name?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['td']}>
 									<StringInput
 										{id}
 										name="name"
 										bind:value={node.name}
-										readonly={fields?.name?.readonly?.(node)}
-										disabled={fields?.name?.disabled?.(node)}
-										on:change={(e) => fields?.name?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.name?.readonly?.(node, fieldsArgs?.name)}
+										disabled={fields?.name?.disabled?.(node, fieldsArgs?.name)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.name
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.name)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, name: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.name}
-										{...fields?.name?.props?.(node)?.['input']}
+										{...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['input']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="description-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.description?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.description?.props?.(node)?.['tr']}>
+						{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+							<Tr class="hover" let:id {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -786,24 +902,40 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.description?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['td']}>
 									<StringInput
 										{id}
 										name="description"
 										bind:value={node.description}
-										readonly={fields?.description?.readonly?.(node)}
-										disabled={fields?.description?.disabled?.(node)}
-										on:change={(e) => fields?.description?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.description?.readonly?.(node, fieldsArgs?.description)}
+										disabled={fields?.description?.disabled?.(node, fieldsArgs?.description)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.description
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.description)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, description: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.description}
-										{...fields?.description?.props?.(node)?.['input']}
+										{...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['input']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="path-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.path?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.path?.props?.(node)?.['tr']}>
+						{#if !fields?.path?.hiddenCol?.(args, tab?.(args), fieldsArgs?.path)}
+							<Tr class="hover" let:id {...fields?.path?.props?.($LL, node, fieldsArgs?.path)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -812,24 +944,40 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.path?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.path?.props?.($LL, node, fieldsArgs?.path)?.['td']}>
 									<StringInput
 										{id}
 										name="path"
 										bind:value={node.path}
-										readonly={fields?.path?.readonly?.(node)}
-										disabled={fields?.path?.disabled?.(node)}
-										on:change={(e) => fields?.path?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.path?.readonly?.(node, fieldsArgs?.path)}
+										disabled={fields?.path?.disabled?.(node, fieldsArgs?.path)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.path
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.path)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, path: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.path}
-										{...fields?.path?.props?.(node)?.['input']}
+										{...fields?.path?.props?.($LL, node, fieldsArgs?.path)?.['input']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="deep-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.deep?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.deep?.props?.(node)?.['tr']}>
+						{#if !fields?.deep?.hiddenCol?.(args, tab?.(args), fieldsArgs?.deep)}
+							<Tr class="hover" let:id {...fields?.deep?.props?.($LL, node, fieldsArgs?.deep)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -838,24 +986,40 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.deep?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.deep?.props?.($LL, node, fieldsArgs?.deep)?.['td']}>
 									<IntInput
 										{id}
 										name="deep"
 										bind:value={node.deep}
-										readonly={fields?.deep?.readonly?.(node)}
-										disabled={fields?.deep?.disabled?.(node)}
-										on:change={(e) => fields?.deep?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.deep?.readonly?.(node, fieldsArgs?.deep)}
+										disabled={fields?.deep?.disabled?.(node, fieldsArgs?.deep)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.deep
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.deep)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, deep: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.deep}
-										{...fields?.deep?.props?.(node)?.['input']}
+										{...fields?.deep?.props?.($LL, node, fieldsArgs?.deep)?.['input']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="parentId-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.parentId?.props?.(node)?.['tr']}>
+						{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parentId)}
+							<Tr class="hover" let:id {...fields?.parentId?.props?.($LL, node, fieldsArgs?.parentId)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -864,24 +1028,40 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.parentId?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.parentId?.props?.($LL, node, fieldsArgs?.parentId)?.['td']}>
 									<StringInput
 										{id}
 										name="parentId"
 										bind:value={node.parentId}
-										readonly={fields?.parentId?.readonly?.(node)}
-										disabled={fields?.parentId?.disabled?.(node)}
-										on:change={(e) => fields?.parentId?.onChange?.(e.detail.value, node).then((next) => node = next)}
+										readonly={fields?.parentId?.readonly?.(node, fieldsArgs?.parentId)}
+										disabled={fields?.parentId?.disabled?.(node, fieldsArgs?.parentId)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.parentId
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.parentId)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, parentId: e }
+																}
+															})
+													);
+											}
+										}}
 										errors={errors?.[row]?.iterms?.parentId}
-										{...fields?.parentId?.props?.(node)?.['input']}
+										{...fields?.parentId?.props?.($LL, node, fieldsArgs?.parentId)?.['input']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="parent-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.parent?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.parent?.props?.(node)?.['tr']}>
+						{#if !fields?.parent?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parent)}
+							<Tr class="hover" let:id {...fields?.parent?.props?.($LL, node, fieldsArgs?.parent)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -890,24 +1070,40 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.parent?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.parent?.props?.($LL, node, fieldsArgs?.parent)?.['td']}>
 									<GroupSelect
 										{id}
 										name="parent"
 										bind:value={node.parent}
 										errors={errors?.[row]?.iterms?.parent}
-										readonly={fields?.parent?.readonly?.(node)}
-										disabled={fields?.parent?.disabled?.(node)}
-										on:change={(e) => fields?.parent?.onChange?.(e.detail.value, node).then((next) => node = next)}
-										{...fields?.parent?.props?.(node)?.['select']}
+										readonly={fields?.parent?.readonly?.(node, fieldsArgs?.parent)}
+										disabled={fields?.parent?.disabled?.(node, fieldsArgs?.parent)}
+										on:change={(e) => {
+											if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.parent
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.parent)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, parent: e }
+																}
+															})
+													);
+											}
+										}}
+										{...fields?.parent?.props?.($LL, node, fieldsArgs?.parent)?.['combobox']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="subGroups-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.subGroups?.props?.(node)?.['tr']}>
+						{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.subGroups)}
+							<Tr class="hover" let:id {...fields?.subGroups?.props?.($LL, node, fieldsArgs?.subGroups)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -916,25 +1112,41 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.subGroups?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.subGroups?.props?.($LL, node, fieldsArgs?.subGroups)?.['td']}>
 									<GroupSelect
 										{id}
 										name="subGroups"
 										bind:value={node.subGroups}
 										list
 										errors={errors?.[row]?.iterms?.subGroups}
-										readonly={fields?.subGroups?.readonly?.(node)}
-										disabled={fields?.subGroups?.disabled?.(node)}
-										on:change={(e) => fields?.subGroups?.onChange?.(e.detail.value, node).then((next) => node = next)}
-										{...fields?.subGroups?.props?.(node)?.['select']}
+										readonly={fields?.subGroups?.readonly?.(node, fieldsArgs?.subGroups)}
+										disabled={fields?.subGroups?.disabled?.(node, fieldsArgs?.subGroups)}
+										on:change={(e) => {
+											if (Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.subGroups
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.subGroups)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, subGroups: e }
+																}
+															})
+													);
+											}
+										}}
+										{...fields?.subGroups?.props?.($LL, node, fieldsArgs?.subGroups)?.['combobox']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="users-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.users?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.users?.props?.(node)?.['tr']}>
+						{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
+							<Tr class="hover" let:id {...fields?.users?.props?.($LL, node, fieldsArgs?.users)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -943,25 +1155,41 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.users?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.users?.props?.($LL, node, fieldsArgs?.users)?.['td']}>
 									<UserSelect
 										{id}
 										name="users"
 										bind:value={node.users}
 										list
 										errors={errors?.[row]?.iterms?.users}
-										readonly={fields?.users?.readonly?.(node)}
-										disabled={fields?.users?.disabled?.(node)}
-										on:change={(e) => fields?.users?.onChange?.(e.detail.value, node).then((next) => node = next)}
-										{...fields?.users?.props?.(node)?.['select']}
+										readonly={fields?.users?.readonly?.(node, fieldsArgs?.users)}
+										disabled={fields?.users?.disabled?.(node, fieldsArgs?.users)}
+										on:change={(e) => {
+											if (Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.users
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.users)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, users: e }
+																}
+															})
+													);
+											}
+										}}
+										{...fields?.users?.props?.($LL, node, fieldsArgs?.users)?.['combobox']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="roles-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.roles?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.roles?.props?.(node)?.['tr']}>
+						{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
+							<Tr class="hover" let:id {...fields?.roles?.props?.($LL, node, fieldsArgs?.roles)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -970,25 +1198,41 @@
 										class="truncate"
 									/>
 								</td>
-								<Td {zIndex} {...fields?.roles?.props?.(node)?.['td']}>
+								<Td {zIndex} {...fields?.roles?.props?.($LL, node, fieldsArgs?.roles)?.['td']}>
 									<RoleSelect
 										{id}
 										name="roles"
 										bind:value={node.roles}
 										list
 										errors={errors?.[row]?.iterms?.roles}
-										readonly={fields?.roles?.readonly?.(node)}
-										disabled={fields?.roles?.disabled?.(node)}
-										on:change={(e) => fields?.roles?.onChange?.(e.detail.value, node).then((next) => node = next)}
-										{...fields?.roles?.props?.(node)?.['select']}
+										readonly={fields?.roles?.readonly?.(node, fieldsArgs?.roles)}
+										disabled={fields?.roles?.disabled?.(node, fieldsArgs?.roles)}
+										on:change={(e) => {
+											if (Array.isArray(e.detail.value) || e.detail.value == null) {
+												fields?.roles
+													?.onChange?.($LL, e.detail.value, node, fieldsArgs?.roles)
+													.then((next) => (node = next))
+													.catch(
+														(e) =>
+															(errors = {
+																...errors,
+																[row]: {
+																	...errors?.[row],
+																	iterms: { ...errors?.[row]?.iterms, roles: e }
+																}
+															})
+													);
+											}
+										}}
+										{...fields?.roles?.props?.($LL, node, fieldsArgs?.roles)?.['combobox']}
 									/>
 								</Td>
 							</Tr>
 						{/if}
 					</slot>
 					<slot name="realm-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.realm?.hiddenCol?.(args, tab?.(args))}
-							<Tr class="hover" let:id {...fields?.realm?.props?.(node)?.['tr']}>
+						{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+							<Tr class="hover" let:id {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['tr']}>
 								<td>
 									<Label
 										{id}
@@ -997,25 +1241,42 @@
 										class="truncate"
 									/>
 								</td>
-								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.(node)?.['td']}>
+								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['td']}>
 									{#if node.id}
 										<ObjectLink
 											bind:value={node.realm}
 											textFieldName="name"
 											path={`${node.id}/realm`}
 											on:goto
-											{...fields?.realm?.props?.(node)?.['link']}
+											{...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['link']}
 										/>
 									{:else}
 										<RealmTableDialog
+											fieldsPatch={fields?.realm?.fields?.(node, fieldsArgs?.realm)}
 											bind:value={node.realm}
 											textFieldName="name"
 											singleChoice
 											class="btn-link"
-											readonly={fields?.realm?.readonly?.(node)}
-											disabled={fields?.realm?.disabled?.(node)}
-											on:select={(e) => fields?.realm?.onChange?.(e.detail.value, node).then((next) => node = next)}
-											{...fields?.realm?.props?.(node)?.['dialog']}
+											readonly={fields?.realm?.readonly?.(node, fieldsArgs?.realm)}
+											disabled={fields?.realm?.disabled?.(node, fieldsArgs?.realm)}
+											on:select={(e) => {
+												if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+													fields?.realm
+														?.onChange?.($LL, e.detail.value, node, fieldsArgs?.realm)
+														.then((next) => (node = next))
+														.catch(
+															(e) =>
+																(errors = {
+																	...errors,
+																	[row]: {
+																		...errors?.[row],
+																		iterms: { ...errors?.[row]?.iterms, realm: e }
+																	}
+																})
+														);
+												}
+											}}
+											{...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['dialog']}
 										/>
 									{/if}
 								</Td>

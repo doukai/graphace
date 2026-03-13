@@ -16,7 +16,7 @@ const query = /* GraphQL */ `mutation Mutation_group_parent($group_id: String, $
 ${fragment_GroupFields}`;
 
 export function createMutation_group_parent_Store(event: Event): Mutation_group_parent_Store {
-  return createGraphQLMutationStore<Group, { group_id: string, group_parent: GroupInput | null }>(query, event);
+  return createGraphQLMutationStore<{ group: Group }, { group_id: string, group_parent: GroupInput | null }>(query, event);
 }
 
-export type Mutation_group_parent_Store = GraphQLStore<Group, { group_id: string, group_parent: GroupInput | null }>;
+export type Mutation_group_parent_Store = GraphQLStore<{ group: Group }, { group_id: string, group_parent: GroupInput | null }>;

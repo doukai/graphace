@@ -16,11 +16,11 @@ ${fragment_UserFields}
 ${fragment_GroupFields}`;
 
 export function createQuery_group_users_Store(event: Event): Query_group_users_Store {
-  return createGraphQLQueryStore<Group, { group_id: string } & QueryUserListArgs>(query, event);
+  return createGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryUserListArgs>(query, event);
 }
 
 export async function fetchQuery_group_users_Store(event: Event, variables: { group_id: string } & QueryUserListArgs): Promise<Query_group_users_Store> {
-  return fetchGraphQLQueryStore<Group, { group_id: string } & QueryUserListArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryUserListArgs>(query, event, variables);
 }
 
-export type Query_group_users_Store = GraphQLStore<Group, { group_id: string } & QueryUserListArgs>;
+export type Query_group_users_Store = GraphQLStore<{ group: Group }, { group_id: string } & QueryUserListArgs>;

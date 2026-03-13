@@ -16,11 +16,11 @@ ${fragment_RoleFields}
 ${fragment_GroupFields}`;
 
 export function createQuery_group_roles_Store(event: Event): Query_group_roles_Store {
-  return createGraphQLQueryStore<Group, { group_id: string } & QueryRoleListArgs>(query, event);
+  return createGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryRoleListArgs>(query, event);
 }
 
 export async function fetchQuery_group_roles_Store(event: Event, variables: { group_id: string } & QueryRoleListArgs): Promise<Query_group_roles_Store> {
-  return fetchGraphQLQueryStore<Group, { group_id: string } & QueryRoleListArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryRoleListArgs>(query, event, variables);
 }
 
-export type Query_group_roles_Store = GraphQLStore<Group, { group_id: string } & QueryRoleListArgs>;
+export type Query_group_roles_Store = GraphQLStore<{ group: Group }, { group_id: string } & QueryRoleListArgs>;

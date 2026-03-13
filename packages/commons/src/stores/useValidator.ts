@@ -7,7 +7,7 @@ import addFormats from "ajv-formats";
 import type { Error, Errors } from '../index.js';
 import { buildErrorsTree } from '../index.js';
 
-const buildErrors = (errors: ErrorObject[], data: any): Record<string, Errors> => {
+const buildErrors = (errors: ErrorObject[], data: Record<string, any>): Record<string, Errors> => {
     const instancePathErrors: Record<string, Error[]> = {};
     errors.map(error => {
         if (error.keyword === "required") {
@@ -59,7 +59,7 @@ export function createValidator(options: {
                     if (validate.errors) {
                         console.error(validate.errors);
                         options.buildErrorMessages(validate.errors);
-                        const errors = buildErrors(validate.errors, data);
+                        const errors = buildErrors(validate.errors, data as Record<string, any>);
                         update(() => ({ isValidating: false, errors }));
                         reject(errors);
                     } else {

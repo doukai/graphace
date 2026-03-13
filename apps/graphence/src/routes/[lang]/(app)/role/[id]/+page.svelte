@@ -8,7 +8,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { MutationRoleArgs, RoleInput } from '~/lib/types/schema';
+	import type { RoleInput, MutationRoleArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -26,6 +26,8 @@
 
 	$: if (role && Object.keys(role).length > 0) {
 		value = role;
+	} else {
+		value = {};
 	}
 
 	const mutation = (args: MutationRoleArgs) => {
@@ -76,7 +78,7 @@
 			showSaveButton={auth('Role::*::WRITE')}
 			showRemoveButton={auth('Role::isDeprecated::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_role_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_role_Store.isFetching}

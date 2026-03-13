@@ -3,11 +3,11 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
+	import { to, Pagination, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
 	import { createQuery_userConnection_Store } from '~/lib/stores/query/query_userConnection_store';
 	import { createMutation_user_Store } from '~/lib/stores/mutation/mutation_user_store';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
-	import { userFields, type UserFields } from '~/lib/components/objects/user/UserOption';
+	import type { UserFields, UserFieldsArgs } from '~/lib/components/objects/user/UserOption';
 	import {
 		loadEvent,
 		validator,
@@ -15,7 +15,14 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { User, QueryUserConnectionArgs, UserOrderBy, UserInput, MutationUserArgs } from '~/lib/types/schema';
+	import type {
+		User,
+		QueryUserListArgs,
+		QueryUserConnectionArgs,
+		UserOrderBy,
+		UserInput,
+		MutationUserArgs
+	} from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: UserInput | (UserInput | null | undefined)[] | null | undefined =
@@ -26,9 +33,13 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0 truncate';
+	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
-	export let fields: UserFields = userFields;
+	export let tabs: (($LL: TranslationFunctions, args?: QueryUserListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: ((args?: QueryUserListArgs | undefined) => string | undefined) | undefined = undefined;
+	export let fields: UserFields | undefined = undefined;
+	export let fieldsPatch: UserFields | undefined = undefined;
+	export let fieldsArgs: UserFieldsArgs | undefined = undefined;
 
 	const { validate } = validator;
 	const { auth } = permissions;
@@ -43,6 +54,13 @@
 		(edge) => edge?.node
 	);
 	$: totalCount = $query_userConnection_Store.response.data?.userConnection?.totalCount || 0;
+
+	let _value: (UserInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		_value = nodes;
+	} else {
+		_value = [];
+	}
 	export let args: QueryUserConnectionArgs = {};
 	export let orderBy: UserOrderBy = {};
 	export let pageNumber: number = 1;
@@ -94,6 +112,8 @@
 			} else {
 				text = value[textFieldName] + '';
 			}
+		} else {
+			text = undefined;
 		}
 	}
 
@@ -110,7 +130,7 @@
 	};
 
 	const mutation = (args: MutationUserArgs) => {
-		const row = nodes
+		const row = _value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -176,7 +196,7 @@
 		</button>
 		<button
 			use:melt={trigger}
-			class="btn btn-square truncate {className} sm:hidden"
+			class="btn btn-square {className} sm:hidden"
 			{disabled}
 			on:click={(e) => {
 				query(1);
@@ -200,7 +220,7 @@
 	</div>
 	<svelte:fragment let:zIndex>
 		<UserTable
-			value={nodes}
+			value={_value}
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
@@ -210,7 +230,11 @@
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_userConnection_Store.isFetching}
 			{zIndex}
+			{tabs}
+			{tab}
 			{fields}
+			{fieldsPatch}
+			{fieldsArgs}
 			on:select={(e) => {
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {

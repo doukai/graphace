@@ -16,11 +16,11 @@ ${fragment_RealmFields}
 ${fragment_PermissionFields}`;
 
 export function createQuery_permission_realm_Store(event: Event): Query_permission_realm_Store {
-  return createGraphQLQueryStore<Permission, { permission_id: string } & QueryRealmArgs>(query, event);
+  return createGraphQLQueryStore<{ permission: Permission }, { permission_id: string } & QueryRealmArgs>(query, event);
 }
 
 export async function fetchQuery_permission_realm_Store(event: Event, variables: { permission_id: string } & QueryRealmArgs): Promise<Query_permission_realm_Store> {
-  return fetchGraphQLQueryStore<Permission, { permission_id: string } & QueryRealmArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ permission: Permission }, { permission_id: string } & QueryRealmArgs>(query, event, variables);
 }
 
-export type Query_permission_realm_Store = GraphQLStore<Permission, { permission_id: string } & QueryRealmArgs>;
+export type Query_permission_realm_Store = GraphQLStore<{ permission: Permission }, { permission_id: string } & QueryRealmArgs>;

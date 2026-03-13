@@ -20,32 +20,34 @@
 	$: id = data.id;
 	$: mutation_role_users_Store = data.mutation_role_users_Store;
 
-	let value = {};
+	let value: UserInput = {};
 	let errors: Record<string, Errors> = {};
 
 	const merge = (input: UserInput) => {
 		validate('Mutation_role_Arguments', { where: { id: { val: id } }, users: [input] })
 			.then((data) => {
 				errors = {};
-				mutation_role_users_Store.fetch({
-					role_id: id,
-					role_users: [input]
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.graphence.message.requestFailed(),
-								description: globalError
-							});
+				mutation_role_users_Store
+					.fetch({
+						role_id: id,
+						role_users: [input]
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.graphence.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.graphence.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.graphence.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
@@ -79,7 +81,7 @@
 		<UserForm
 			showSaveButton={auth('User::*::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isMutating={$validator.isValidating || $mutation_role_users_Store.isFetching}
 			on:save={(e) => {

@@ -18,7 +18,7 @@ ${fragment_GroupFields}
 ${fragment_RoleFields}`;
 
 export function createMutation_role_groups_Store(event: Event): Mutation_role_groups_Store {
-  return createGraphQLMutationStore<Role, { role_id: string, role_groups: GroupInput[] | null }>(query, event);
+  return createGraphQLMutationStore<{ role: Role }, { role_id: string, role_groups: GroupInput[] | null }>(query, event);
 }
 
-export type Mutation_role_groups_Store = GraphQLStore<Role, { role_id: string, role_groups: GroupInput[] | null }>;
+export type Mutation_role_groups_Store = GraphQLStore<{ role: Role }, { role_id: string, role_groups: GroupInput[] | null }>;

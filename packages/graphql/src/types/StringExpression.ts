@@ -1,4 +1,4 @@
-import type { Operator } from ".";
+import { Operator } from "./index.js";
 
 export type StringExpression = {
     val?: string | null | undefined;

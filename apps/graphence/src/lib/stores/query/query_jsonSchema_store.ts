@@ -7,11 +7,11 @@ const query = /* GraphQL */ `query Query_jsonSchema($name: String) {
 }`;
 
 export function createQuery_jsonSchema_Store(event: Event): Query_jsonSchema_Store {
-  return createGraphQLQueryStore<string, QueryJsonSchemaArgs>(query, event);
+  return createGraphQLQueryStore<{ jsonSchema: string }, QueryJsonSchemaArgs>(query, event);
 }
 
 export async function fetchQuery_jsonSchema_Store(event: Event, variables: QueryJsonSchemaArgs): Promise<Query_jsonSchema_Store> {
-  return fetchGraphQLQueryStore<string, QueryJsonSchemaArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ jsonSchema: string }, QueryJsonSchemaArgs>(query, event, variables);
 }
 
-export type Query_jsonSchema_Store = GraphQLStore<string, QueryJsonSchemaArgs>;
+export type Query_jsonSchema_Store = GraphQLStore<{ jsonSchema: string }, QueryJsonSchemaArgs>;

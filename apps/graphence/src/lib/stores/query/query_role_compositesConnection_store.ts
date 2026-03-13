@@ -19,11 +19,11 @@ const query = /* GraphQL */ `query Query_role_compositesConnection($role_id: Str
 ${fragment_RoleFields}`;
 
 export function createQuery_role_compositesConnection_Store(event: Event): Query_role_compositesConnection_Store {
-  return createGraphQLQueryStore<Role, { role_id: string } & QueryRoleConnectionArgs>(query, event);
+  return createGraphQLQueryStore<{ role: Role }, { role_id: string } & QueryRoleConnectionArgs>(query, event);
 }
 
 export async function fetchQuery_role_compositesConnection_Store(event: Event, variables: { role_id: string } & QueryRoleConnectionArgs): Promise<Query_role_compositesConnection_Store> {
-  return fetchGraphQLQueryStore<Role, { role_id: string } & QueryRoleConnectionArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ role: Role }, { role_id: string } & QueryRoleConnectionArgs>(query, event, variables);
 }
 
-export type Query_role_compositesConnection_Store = GraphQLStore<Role, { role_id: string } & QueryRoleConnectionArgs>;
+export type Query_role_compositesConnection_Store = GraphQLStore<{ role: Role }, { role_id: string } & QueryRoleConnectionArgs>;

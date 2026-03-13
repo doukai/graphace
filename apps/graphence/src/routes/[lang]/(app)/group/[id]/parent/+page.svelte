@@ -27,13 +27,16 @@
 	$: mutation_group_parent_Store = data.mutation_group_parent_Store;
 	$: mutation_group_Store = data.mutation_group_Store;
 
-	let value = {};
+	let value: GroupInput = {};
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
 
 	$: if (group && Object.keys(group).length > 0) {
 		value = group;
 		showUnbindButton = true;
+	} else {
+		value = {};
+		showUnbindButton = false;
 	}
 
 	const mutation = (args: MutationGroupArgs) => {
@@ -67,25 +70,27 @@
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: input })
 			.then((data) => {
 				errors = {};
-				mutation_group_parent_Store.fetch({
-					group_id: id,
-					group_parent: input
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.graphence.message.requestFailed(),
-								description: globalError
-							});
+				mutation_group_parent_Store
+					.fetch({
+						group_id: id,
+						group_parent: input
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.graphence.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.graphence.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.graphence.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
@@ -115,7 +120,7 @@
 			showSaveButton={auth('Group::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('Group::isDeprecated::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_group_parent_Store.isFetching}
 			isMutating={$validator.isValidating || $mutation_group_parent_Store.isFetching || $mutation_group_Store.isFetching}

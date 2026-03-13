@@ -7,7 +7,7 @@ const query = /* GraphQL */ `mutation Mutation_syncPermissionRoleRelationPolicy(
 }`;
 
 export function createMutation_syncPermissionRoleRelationPolicy_Store(event: Event): Mutation_syncPermissionRoleRelationPolicy_Store {
-  return createGraphQLMutationStore<boolean, MutationSyncPermissionRoleRelationPolicyArgs>(query, event);
+  return createGraphQLMutationStore<{ syncPermissionRoleRelationPolicy: boolean }, MutationSyncPermissionRoleRelationPolicyArgs>(query, event);
 }
 
-export type Mutation_syncPermissionRoleRelationPolicy_Store = GraphQLStore<boolean, MutationSyncPermissionRoleRelationPolicyArgs>;
+export type Mutation_syncPermissionRoleRelationPolicy_Store = GraphQLStore<{ syncPermissionRoleRelationPolicy: boolean }, MutationSyncPermissionRoleRelationPolicyArgs>;

@@ -9,7 +9,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { QueryRealmConnectionArgs, RealmOrderBy, MutationRealmArgs } from '~/lib/types/schema';
+	import type { QueryRealmConnectionArgs, RealmOrderBy, RealmInput, MutationRealmArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 	import type { PageData } from './$types';
 
@@ -22,6 +22,13 @@
 	$: nodes = $query_realmConnection_Store.response.data?.realmConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_realmConnection_Store.response.data?.realmConnection?.totalCount || 0;
 	$: mutation_realm_Store = data.mutation_realm_Store;
+
+	let value: (RealmInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryRealmConnectionArgs = {};
 	let orderBy: RealmOrderBy = {};
 	let pageNumber: number = 1;
@@ -43,7 +50,7 @@
 	};
 
 	const mutation = (args: MutationRealmArgs) => {
-		const row = nodes
+		const row = value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -96,7 +103,7 @@
 			showCreateButton={auth('Realm::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

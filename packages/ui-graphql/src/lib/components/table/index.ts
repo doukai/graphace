@@ -6,8 +6,6 @@ import DateTimeTh from "./DateTimeTh.svelte";
 import DateTimeTd from "./DateTimeTd.svelte";
 import EnumTh from "./EnumTh.svelte";
 import EnumTd from "./EnumTd.svelte";
-import FieldThs from "./FieldThs.svelte";
-import FieldTds from "./FieldTds.svelte";
 import FileTd from "./FileTd.svelte";
 import FloatTh from "./FloatTh.svelte";
 import FloatTd from "./FloatTd.svelte";
@@ -35,8 +33,6 @@ export {
     DateTimeTd,
     EnumTh,
     EnumTd,
-    FieldThs,
-    FieldTds,
     FileTd,
     FloatTh,
     FloatTd,

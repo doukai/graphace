@@ -3,11 +3,9 @@ import type { Locales } from '$i18n/i18n-types';
 import { namespaces } from '$i18n/i18n-util';
 import { loadLocaleAsync, loadNamespaceAsync } from '$i18n/i18n-util.async';
 import { setLocale } from '$i18n/i18n-svelte';
-import { loadEvent } from '~/utils';
 import type { LayoutLoad, LayoutLoadEvent } from './$types';
 
 export const load: LayoutLoad = async (event: LayoutLoadEvent) => {
-	loadEvent.set(event);
 	jwt.set(event.data?.jwt);
 	const locale: Locales = event.data?.locale;
 

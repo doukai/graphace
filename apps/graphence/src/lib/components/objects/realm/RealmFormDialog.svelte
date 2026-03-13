@@ -2,11 +2,11 @@
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
-	import { to, Dialog, toast, modal } from '@graphace/ui';
+	import { to, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
 	import { createQuery_realm_Store } from '~/lib/stores/query/query_realm_store';
 	import { createMutation_realm_Store } from '~/lib/stores/mutation/mutation_realm_store';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
-	import { realmFields, type RealmFields } from '~/lib/components/objects/realm/RealmOption';
+	import type { RealmFields, RealmFieldsArgs } from '~/lib/components/objects/realm/RealmOption';
 	import {
 		loadEvent,
 		validator,
@@ -14,7 +14,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { Realm, MutationRealmArgs, RealmInput } from '~/lib/types/schema';
+	import type { Realm, QueryRealmArgs, MutationRealmArgs, RealmInput } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: RealmInput | null | undefined = {};
@@ -26,9 +26,13 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0 truncate';
+	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
-	export let fields: RealmFields = realmFields;
+	export let tabs: (($LL: TranslationFunctions, args?: QueryRealmArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: ((args?: QueryRealmArgs | undefined) => string | undefined) | undefined = undefined;
+	export let fields: RealmFields | undefined = undefined;
+	export let fieldsPatch: RealmFields | undefined = undefined;
+	export let fieldsArgs: RealmFieldsArgs | undefined = undefined;
 
 	const { validate } = validator;
 	const { auth } = permissions;
@@ -55,6 +59,8 @@
 				});
 		} else if (value) {
 			text = value[textFieldName] + '';
+		} else {
+			text = undefined;
 		}
 	}
 
@@ -124,7 +130,7 @@
 		</button>
 		<button
 			use:melt={trigger}
-			class="btn btn-square truncate {className} sm:hidden"
+			class="btn btn-square {className} sm:hidden"
 			{disabled}
 			on:click={(e) => {
 				if (queryById && value?.id) {
@@ -145,11 +151,15 @@
 		<RealmForm
 			showSaveButton={!readonly && auth('Realm::*::WRITE')}
 			showRemoveButton={!readonly && auth('Realm::isDeprecated::WRITE')}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_realm_Store.isFetching}
 			isMutating={$mutation_realm_Store.isFetching}
+			{tabs}
+			{tab}
 			{fields}
+			{fieldsPatch}
+			{fieldsArgs}
 			on:save={(e) => {
 				if (select) {
 					dispatch('select', { value });

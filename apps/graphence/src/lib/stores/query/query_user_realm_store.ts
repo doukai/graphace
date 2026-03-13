@@ -16,11 +16,11 @@ ${fragment_RealmFields}
 ${fragment_UserFields}`;
 
 export function createQuery_user_realm_Store(event: Event): Query_user_realm_Store {
-  return createGraphQLQueryStore<User, { user_id: string } & QueryRealmArgs>(query, event);
+  return createGraphQLQueryStore<{ user: User }, { user_id: string } & QueryRealmArgs>(query, event);
 }
 
 export async function fetchQuery_user_realm_Store(event: Event, variables: { user_id: string } & QueryRealmArgs): Promise<Query_user_realm_Store> {
-  return fetchGraphQLQueryStore<User, { user_id: string } & QueryRealmArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ user: User }, { user_id: string } & QueryRealmArgs>(query, event, variables);
 }
 
-export type Query_user_realm_Store = GraphQLStore<User, { user_id: string } & QueryRealmArgs>;
+export type Query_user_realm_Store = GraphQLStore<{ user: User }, { user_id: string } & QueryRealmArgs>;

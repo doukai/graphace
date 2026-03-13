@@ -3,11 +3,11 @@
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
-	import { to, Pagination, Dialog, toast, modal } from '@graphace/ui';
+	import { to, Pagination, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
 	import { createQuery_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
 	import { createMutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
-	import { permissionFields, type PermissionFields } from '~/lib/components/objects/permission/PermissionOption';
+	import type { PermissionFields, PermissionFieldsArgs } from '~/lib/components/objects/permission/PermissionOption';
 	import {
 		loadEvent,
 		validator,
@@ -15,7 +15,14 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { Permission, QueryPermissionConnectionArgs, PermissionOrderBy, PermissionInput, MutationPermissionArgs } from '~/lib/types/schema';
+	import type {
+		Permission,
+		QueryPermissionListArgs,
+		QueryPermissionConnectionArgs,
+		PermissionOrderBy,
+		PermissionInput,
+		MutationPermissionArgs
+	} from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: PermissionInput | (PermissionInput | null | undefined)[] | null | undefined =
@@ -26,9 +33,13 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0 truncate';
+	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
-	export let fields: PermissionFields = permissionFields;
+	export let tabs: (($LL: TranslationFunctions, args?: QueryPermissionListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: ((args?: QueryPermissionListArgs | undefined) => string | undefined) | undefined = undefined;
+	export let fields: PermissionFields | undefined = undefined;
+	export let fieldsPatch: PermissionFields | undefined = undefined;
+	export let fieldsArgs: PermissionFieldsArgs | undefined = undefined;
 
 	const { validate } = validator;
 	const { auth } = permissions;
@@ -43,6 +54,13 @@
 		(edge) => edge?.node
 	);
 	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
+
+	let _value: (PermissionInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		_value = nodes;
+	} else {
+		_value = [];
+	}
 	export let args: QueryPermissionConnectionArgs = {};
 	export let orderBy: PermissionOrderBy = {};
 	export let pageNumber: number = 1;
@@ -94,6 +112,8 @@
 			} else {
 				text = value[textFieldName] + '';
 			}
+		} else {
+			text = undefined;
 		}
 	}
 
@@ -110,7 +130,7 @@
 	};
 
 	const mutation = (args: MutationPermissionArgs) => {
-		const row = nodes
+		const row = _value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
 			
@@ -176,7 +196,7 @@
 		</button>
 		<button
 			use:melt={trigger}
-			class="btn btn-square truncate {className} sm:hidden"
+			class="btn btn-square {className} sm:hidden"
 			{disabled}
 			on:click={(e) => {
 				query(1);
@@ -200,7 +220,7 @@
 	</div>
 	<svelte:fragment let:zIndex>
 		<PermissionTable
-			value={nodes}
+			value={_value}
 			bind:selectedIdList
 			bind:args
 			bind:orderBy
@@ -210,7 +230,11 @@
 			showSelectButton={!readonly && (!singleChoice || (selectedIdList?.length || 0) === 1)}
 			isFetching={$query_permissionConnection_Store.isFetching}
 			{zIndex}
+			{tabs}
+			{tab}
 			{fields}
+			{fieldsPatch}
+			{fieldsArgs}
 			on:select={(e) => {
 				if (Array.isArray(e.detail.value)) {
 					if (singleChoice) {

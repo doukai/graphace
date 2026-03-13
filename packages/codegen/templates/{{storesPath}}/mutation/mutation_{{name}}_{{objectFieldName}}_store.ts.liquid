@@ -64,7 +64,7 @@ ${fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields}
 ${fragment_{{ fieldTypeName }}Fields}`;
 
 export function createMutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store(event: Event): Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store {
-  return createGraphQLMutationStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {{ objectFieldInfo.fieldTypeName }}Input{% if objectFieldInfo.isListType %}[]{% endif %}{% if objectFieldInfo.isNonNullType == false %} | null{% endif %} }>(query, event);
+  return createGraphQLMutationStore<{ {{ fieldName }}: {{ fieldTypeName }} }, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {{ objectFieldInfo.fieldTypeName }}Input{% if objectFieldInfo.isListType %}[]{% endif %}{% if objectFieldInfo.isNonNullType == false %} | null{% endif %} }>(query, event);
 }
 
-export type Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store = GraphQLStore<{{ fieldTypeName }}, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {{ objectFieldInfo.fieldTypeName }}Input{% if objectFieldInfo.isListType %}[]{% endif %}{% if objectFieldInfo.isNonNullType == false %} | null{% endif %} }>;
+export type Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}_Store = GraphQLStore<{ {{ fieldName }}: {{ fieldTypeName }} }, { {{ fieldName }}_{{ fieldTypeIdName }}: string, {{ fieldName }}_{{ objectFieldInfo.fieldName}}: {{ objectFieldInfo.fieldTypeName }}Input{% if objectFieldInfo.isListType %}[]{% endif %}{% if objectFieldInfo.isNonNullType == false %} | null{% endif %} }>;

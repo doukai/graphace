@@ -11,3 +11,9 @@ export const fragment_RealmFields = /* GraphQL */ `fragment RealmFields on Realm
     updateTime
     createGroupId
   }`;
+
+export const fragment_RealmNamedFields = /* GraphQL */ `fragment RealmNamedFields on Realm {
+    id
+    name
+    description
+  }`;

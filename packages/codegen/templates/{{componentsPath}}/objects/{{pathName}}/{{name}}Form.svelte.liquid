@@ -58,7 +58,7 @@
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: Query{{ name }}Args | undefined) => TabInfo[] | undefined) | undefined = {{ name | camelCase }}FormTabs;
-	export let tab: ((args?: Query{{ name }}Args | undefined) => string | undefined) | undefined = {{ name | camelCase }}FormTab;
+	export let tab: string | undefined = {{ name | camelCase }}FormTab?.(args);
 	export let fields: {{ name }}Fields | undefined = {{ name | camelCase }}Fields;
 	export let fieldsPatch: {{ name }}Fields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -125,7 +125,7 @@
 <div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
-		value={tab?.(args)}
+		bind:value={tab}
 		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
@@ -147,11 +147,11 @@
 	{:else if value}
 		{%- if groups != undefined and groups.length > 0 %}
 		{%- for group in groups %}
-		{#if {% for field in group.fields %}!fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }}){% if forloop.last == false %} && {% endif %}{% endfor %}}
+		{#if {% for field in group.fields %}!fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }}){% if forloop.last == false %} && {% endif %}{% endfor %}}
 			<svelte:component this={wrapper['{{ group.name }}']} {...wrapperProps['{{ group.name }}']}>
 				{%- for field in group.fields %}
 				<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
-					{#if !fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }})}
+					{#if !fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }})}
 						{%- if field.isTable %}
 						<div class="col-span-full border p-1">
 							<{{ field.fieldTypeName }}Editable
@@ -313,7 +313,7 @@
 		{%- else %}
 		{%- for field in fields %}
 		<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
-			{#if !fields?.{{ field.fieldName }}?.hidden?.(value, fieldsArgs?.{{ field.fieldName }})}
+			{#if !fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }})}
 				{%- if field.isTable %}
 				<div class="col-span-full border p-1">
 					<{{ field.fieldTypeName }}Editable

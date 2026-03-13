@@ -6,9 +6,6 @@
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
 	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
-	import type { Query_group_subGroupsConnection_Store } from '~/lib/stores/query/query_group_subGroupsConnection_store';
-	import type { Mutation_group_subGroups_Store } from '~/lib/stores/mutation/mutation_group_subGroups_store';
-	import type { Mutation_group_Store } from '~/lib/stores/mutation/mutation_group_store';
 	import {
 		validator,
 		permissions,
@@ -25,12 +22,19 @@
 	const { auth } = permissions;
 
 	$: id = data.id as string;
-	$: query_group_subGroupsConnection_Store = data.query_group_subGroupsConnection_Store as Query_group_subGroupsConnection_Store;
+	$: query_group_subGroupsConnection_Store = data.query_group_subGroupsConnection_Store;
 	$: group = $query_group_subGroupsConnection_Store.response.data?.group;
 	$: nodes = $query_group_subGroupsConnection_Store.response.data?.group?.subGroupsConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_group_subGroupsConnection_Store.response.data?.group?.subGroupsConnection?.totalCount || 0;
-	$: mutation_group_subGroups_Store = data.mutation_group_subGroups_Store as Mutation_group_subGroups_Store;
-	$: mutation_group_Store = data.mutation_group_Store as Mutation_group_Store;
+	$: mutation_group_subGroups_Store = data.mutation_group_subGroups_Store;
+	$: mutation_group_Store = data.mutation_group_Store;
+
+	let value: (GroupInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryGroupConnectionArgs = {};
 	let orderBy: GroupOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,25 +88,27 @@
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, subGroups: input })
 			.then((data) => {
 				errors = {};
-				mutation_group_subGroups_Store.fetch({
-					group_id: id,
-					group_subGroups: input
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.graphence.message.requestFailed(),
-								description: globalError
-							});
+				mutation_group_subGroups_Store
+					.fetch({
+						group_id: id,
+						group_subGroups: input
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.graphence.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.graphence.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.graphence.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
@@ -134,7 +140,7 @@
 			showCreateButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

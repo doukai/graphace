@@ -20,32 +20,34 @@
 	$: id = data.id;
 	$: mutation_user_groups_Store = data.mutation_user_groups_Store;
 
-	let value = {};
+	let value: GroupInput = {};
 	let errors: Record<string, Errors> = {};
 
 	const merge = (input: GroupInput) => {
 		validate('Mutation_user_Arguments', { where: { id: { val: id } }, groups: [input] })
 			.then((data) => {
 				errors = {};
-				mutation_user_groups_Store.fetch({
-					user_id: id,
-					user_groups: [input]
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.graphence.message.requestFailed(),
-								description: globalError
-							});
+				mutation_user_groups_Store
+					.fetch({
+						user_id: id,
+						user_groups: [input]
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.graphence.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.graphence.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.graphence.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
@@ -79,7 +81,7 @@
 		<GroupForm
 			showSaveButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
-			bind:value
+			{value}
 			{errors}
 			isMutating={$validator.isValidating || $mutation_user_groups_Store.isFetching}
 			on:save={(e) => {

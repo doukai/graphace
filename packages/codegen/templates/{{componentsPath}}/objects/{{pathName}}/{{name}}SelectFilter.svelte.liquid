@@ -4,7 +4,8 @@
 	import type { Errors } from '@graphace/commons';
 	import type { Option } from '@graphace/ui';
 	import { ObjectSelect, OperatorSelect } from '@graphace/ui-graphql';
-	import { namedQueryStore } from '~/utils';
+	import { createQueryNamed_{{ name | camelCase }}List_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}List_store';
+	import { loadEvent } from '~/utils';
 	import type { StringExpression } from '~/{{ schemaTypesPath }}';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 
@@ -28,6 +29,8 @@
 		};
 	}>();
 
+	const queryNamed_{{ name | camelCase }}List_Store = createQueryNamed_{{ name | camelCase }}List_Store($loadEvent);
+
 	if (value == null || Object.keys(value).length === 0) {
 		value = { opr: 'EQ', val: undefined, arr: [] };
 	}
@@ -42,23 +45,21 @@
 		selectedList = undefined;
 	};
 
-	const query = { fieldName: '{{ name | camelCase }}List', idName: '{{ idName }}' };
-
 	$: options =
-		$namedQueryStore.response.data?.{{ name | camelCase }}List?.map((item) => ({
+		$queryNamed_{{ name | camelCase }}List_Store.response.data?.{{ name | camelCase }}List?.map((item) => ({
 			label: item?.name,
 			value: item?.{{ idName }},
 			node: item
 		})) || [];
 
-	$: loading = $namedQueryStore.isFetching;
+	$: loading = $queryNamed_{{ name | camelCase }}List_Store.isFetching;
 
 	$: if (
 		value?.arr?.length &&
 		(selectedList === undefined ||
 			value?.arr?.some((item) => !selectedList?.some((option) => option.value === item)))
 	) {
-		namedQueryStore.fetch(query, { id: { opr: 'IN', arr: value?.arr } }).then(
+		queryNamed_{{ name | camelCase }}List_Store.fetch({ id: { opr: 'IN', arr: value?.arr } }).then(
 			(response) =>
 				(selectedList = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
@@ -67,7 +68,7 @@
 				})))
 		);
 	} else if (value?.val != null && (selected === undefined || selected.value !== value.val)) {
-		namedQueryStore.fetch(query, { id: { opr: 'EQ', val: value?.val } }).then(
+		queryNamed_{{ name | camelCase }}List_Store.fetch({ id: { opr: 'EQ', val: value?.val } }).then(
 			(response) =>
 				(selected = response.data?.{{ name | camelCase }}List?.map((item) => ({
 					label: item?.name,
@@ -84,6 +85,8 @@
 		<ObjectSelect
 			{id}
 			{name}
+			bind:value={selectedList}
+			bind:options
 			list
 			{disabled}
 			{readonly}
@@ -91,8 +94,6 @@
 			{errors}
 			{loading}
 			class={className}
-			bind:options
-			bind:value={selectedList}
 			on:change={(e) => {
 				if (Array.isArray(e.detail.value)) {
 					value = {
@@ -111,9 +112,9 @@
 			{% raw %}}}{% endraw %}
 			on:search={(e) => {
 				if (e.detail.searchValue) {
-					namedQueryStore.fetch(query, { name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
+					queryNamed_{{ name | camelCase }}List_Store.fetch({ name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
 				} else {
-					namedQueryStore.fetch(query, { name: undefined, first: 10 });
+					queryNamed_{{ name | camelCase }}List_Store.fetch({ name: undefined, first: 10 });
 				}
 			{% raw %}}}{% endraw %}
 		/>
@@ -121,14 +122,14 @@
 		<ObjectSelect
 			{id}
 			{name}
+			bind:value={selected}
+			bind:options
 			{disabled}
 			{readonly}
 			{placeholder}
 			{errors}
 			{loading}
 			class={className}
-			bind:options
-			bind:value={selected}
 			on:change={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					value = {
@@ -147,9 +148,9 @@
 			{% raw %}}}{% endraw %}
 			on:search={(e) => {
 				if (e.detail.searchValue) {
-					namedQueryStore.fetch(query, { name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
+					queryNamed_{{ name | camelCase }}List_Store.fetch({ name: { opr: 'LK', val: `%${e.detail.searchValue}%` } });
 				} else {
-					namedQueryStore.fetch(query, { name: undefined, first: 10 });
+					queryNamed_{{ name | camelCase }}List_Store.fetch({ name: undefined, first: 10 });
 				}
 			{% raw %}}}{% endraw %}
 		/>

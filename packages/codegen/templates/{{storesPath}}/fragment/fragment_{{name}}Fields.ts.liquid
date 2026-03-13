@@ -37,3 +37,11 @@ export const fragment_{{ name }}Fields = /* GraphQL */ `fragment {{ name }}Field
     {%- endfor %}
     {%- endif %}
   }`;
+{%- if isNamed %}
+
+export const fragment_{{ name }}NamedFields = /* GraphQL */ `fragment {{ name }}NamedFields on {{ name }} {
+    id
+    name
+    description
+  }`;
+{%- endif %}

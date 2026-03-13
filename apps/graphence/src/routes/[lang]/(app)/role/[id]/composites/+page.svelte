@@ -6,9 +6,6 @@
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
-	import type { Query_role_compositesConnection_Store } from '~/lib/stores/query/query_role_compositesConnection_store';
-	import type { Mutation_role_composites_Store } from '~/lib/stores/mutation/mutation_role_composites_store';
-	import type { Mutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import {
 		validator,
 		permissions,
@@ -25,12 +22,19 @@
 	const { auth } = permissions;
 
 	$: id = data.id as string;
-	$: query_role_compositesConnection_Store = data.query_role_compositesConnection_Store as Query_role_compositesConnection_Store;
+	$: query_role_compositesConnection_Store = data.query_role_compositesConnection_Store;
 	$: role = $query_role_compositesConnection_Store.response.data?.role;
 	$: nodes = $query_role_compositesConnection_Store.response.data?.role?.compositesConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_role_compositesConnection_Store.response.data?.role?.compositesConnection?.totalCount || 0;
-	$: mutation_role_composites_Store = data.mutation_role_composites_Store as Mutation_role_composites_Store;
-	$: mutation_role_Store = data.mutation_role_Store as Mutation_role_Store;
+	$: mutation_role_composites_Store = data.mutation_role_composites_Store;
+	$: mutation_role_Store = data.mutation_role_Store;
+
+	let value: (RoleInput | null | undefined)[] = [];
+	$: if (nodes && nodes.length > 0) {
+		value = nodes;
+	} else {
+		value = [];
+	}
 	let args: QueryRoleConnectionArgs = {};
 	let orderBy: RoleOrderBy = {};
 	let pageNumber: number = 1;
@@ -84,25 +88,27 @@
 		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, composites: input })
 			.then((data) => {
 				errors = {};
-				mutation_role_composites_Store.fetch({
-					role_id: id,
-					role_composites: input
-				}).then((result) => {
-					if (result.errors) {
-						console.error(result.errors);
-						errors = buildGraphQLErrors(result.errors, data);
-						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-						if (globalError) {
-							modal.open({
-								title: $LL.graphence.message.requestFailed(),
-								description: globalError
-							});
+				mutation_role_composites_Store
+					.fetch({
+						role_id: id,
+						role_composites: input
+					})
+					.then((result) => {
+						if (result.errors) {
+							console.error(result.errors);
+							errors = buildGraphQLErrors(result.errors, data);
+							const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+							if (globalError) {
+								modal.open({
+									title: $LL.graphence.message.requestFailed(),
+									description: globalError
+								});
+							}
+						} else {
+							toast.success($LL.graphence.message.requestSuccess());
+							ot();
 						}
-					} else {
-						toast.success($LL.graphence.message.requestSuccess());
-						ot();
-					}
-				});
+					});
 			})
 			.catch((validErrors) => {
 				console.error(validErrors);
@@ -134,7 +140,7 @@
 			showCreateButton={auth('Role::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
-			value={nodes}
+			{value}
 			bind:args
 			bind:orderBy
 			{errors}

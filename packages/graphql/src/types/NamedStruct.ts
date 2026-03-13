@@ -1,19 +1,27 @@
-import { StringExpression } from "./StringExpression.js";
+import { Conditional, StringExpression } from "./index.js";
 
 export type NamedStruct = {
-    [key: string]: any;
-    name?: string | null | undefined;
-    description?: string | null | undefined;
-}
-
-export type NamedStructInput = {
-    [key: string]: any;
+    id?: string | null | undefined;
     name?: string | null | undefined;
     description?: string | null | undefined;
 }
 
 export type NamedStructExpression = {
-    [key: string]: any;
-    name?: StringExpression | null | undefined,
-    description?: StringExpression | null | undefined,
+    id?: StringExpression | null | undefined;
+    name?: StringExpression | null | undefined;
+    description?: StringExpression | null | undefined;
+}
+
+export type NamedStructQueryArguments = {
+    id?: StringExpression | null | undefined;
+    name?: StringExpression | null | undefined;
+    description?: StringExpression | null | undefined;
+    not?: boolean | undefined;
+    cond?: Conditional | undefined;
+    exs?: [NamedStructExpression] | undefined;
+    first?: number | undefined;
+    last?: number | undefined;
+    offset?: number | undefined;
+    after?: string | undefined;
+    before?: string | undefined;
 }

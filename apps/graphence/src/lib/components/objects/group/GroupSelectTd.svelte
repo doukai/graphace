@@ -8,15 +8,19 @@
 	import type { Errors } from '@graphace/commons';
 	import { type Option, FormControl, Td } from '@graphace/ui';
 	import GroupSelect from './GroupSelect.svelte';
+	import { createQueryNamed_groupList_Store } from '~/lib/stores/query/query_groupList_store';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { namedQueryStore } from '~/utils';
-	import type { GroupInput } from '~/lib/types/schema';
+	import { loadEvent } from '~/utils';
+	import type { GroupInput, QueryGroupListArgs } from '~/lib/types/schema';
 
 	export let id: string | undefined = undefined;
 	export let value: GroupInput | (GroupInput | null | undefined)[] | null | undefined = undefined;
+	export let args: QueryGroupListArgs | undefined = undefined;
+	export let first: number | undefined = undefined;
+	export let selected: Option | Option[] | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
-	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
@@ -31,22 +35,16 @@
 		save: {};
 	}>();
 
-	const query = { fieldName: 'groupList', idName: 'id' };
-
-	let selected: Option | Option[] | undefined;
+	const queryNamed_groupList_Store = createQueryNamed_groupList_Store($loadEvent);
 
 	$: if (Array.isArray(value)) {
 		if (value.some((item) => !item?.name && item?.id)){
-			namedQueryStore
-				.fetch(query, {
+			queryNamed_groupList_Store
+				.fetch({
 					id: { opr: 'IN', arr: value?.map((item) => item?.id) }
 				})
 				.then((response) => {
 					value = response.data?.groupList;
-					selected = value?.map((item) => ({
-						label: item?.name,
-						value: item?.id
-					}));
 				});
 		} else {
 			selected = value?.map((item) => ({
@@ -56,15 +54,16 @@
 		}
 	} else if (value) {
 		if (!value.name && value.id) {
-			namedQueryStore
-				.fetch(query, { id: { opr: 'EQ', val: value.id } })
+			queryNamed_groupList_Store
+				.fetch({ id: { opr: 'EQ', val: value.id } })
 				.then((response) => {
 					value = response.data?.groupList?.[0];
-					selected = { label: value?.name, value: value?.id };
 				});
 		} else {
 			selected = { label: value?.name, value: value.id };
 		}
+	} else {
+		selected = undefined;
 	}
 
 	let mutation = (): void => {
@@ -92,7 +91,7 @@
 </script>
 
 <Td {errors} {zIndex}>
-	<a class="link inline-flex truncate" href={null} use:melt={$trigger}>
+	<a class="link inline-flex sm:truncate" href={null} use:melt={$trigger}>
 		{#if list}
 			{#if Array.isArray(selected)}
 				{#if selected.length > 3}
@@ -126,12 +125,14 @@
 				<GroupSelect
 					{id}
 					{name}
+					bind:value
+					bind:selected
+					bind:args
+					bind:first
 					{list}
 					{disabled}
 					{readonly}
 					{placeholder}
-					bind:value
-					bind:selected
 					on:change
 				/>
 			</FormControl>

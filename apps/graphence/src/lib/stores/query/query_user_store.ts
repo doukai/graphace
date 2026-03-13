@@ -1,8 +1,7 @@
 import type { GraphQLStore, Event } from "@graphace/ui-graphql";
 import { fragment_UserFields } from '~/lib/stores/fragment/fragment_UserFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
-import type { QueryUserArgs } from '~/lib/types/schema';
-import type { User } from '~/lib/types/schema';
+import type { QueryUserArgs, User } from '~/lib/types/schema';
 
 const query = /* GraphQL */ `query Query_user($id: StringExpression, $name: StringExpression, $description: StringExpression, $lastName: StringExpression, $login: StringExpression, $salt: StringExpression, $hash: StringExpression, $email: StringExpression, $phones: StringExpression, $disable: BooleanExpression, $groups: GroupExpression, $roles: RoleExpression, $realm: RealmExpression, $includeDeprecated: Boolean, $version: IntExpression, $realmId: IntExpression, $createUserId: StringExpression, $createTime: StringExpression, $updateUserId: StringExpression, $updateTime: StringExpression, $createGroupId: StringExpression, $userPhonesRelation: UserPhonesRelationExpression, $groupUserRelation: GroupUserRelationExpression, $roleUserRelation: RoleUserRelationExpression, $groupBy: [String!], $not: Boolean, $cond: Conditional, $exs: [UserExpression]) {
   user(id: $id name: $name description: $description lastName: $lastName login: $login salt: $salt hash: $hash email: $email phones: $phones disable: $disable groups: $groups roles: $roles realm: $realm includeDeprecated: $includeDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId userPhonesRelation: $userPhonesRelation groupUserRelation: $groupUserRelation roleUserRelation: $roleUserRelation groupBy: $groupBy not: $not cond: $cond exs: $exs) {
@@ -12,11 +11,11 @@ const query = /* GraphQL */ `query Query_user($id: StringExpression, $name: Stri
 ${fragment_UserFields}`;
 
 export function createQuery_user_Store(event: Event): Query_user_Store {
-  return createGraphQLQueryStore<User, QueryUserArgs>(query, event);
+  return createGraphQLQueryStore<{ user: User }, QueryUserArgs>(query, event);
 }
 
 export async function fetchQuery_user_Store(event: Event, variables: QueryUserArgs): Promise<Query_user_Store> {
-  return fetchGraphQLQueryStore<User, QueryUserArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ user: User }, QueryUserArgs>(query, event, variables);
 }
 
-export type Query_user_Store = GraphQLStore<User, QueryUserArgs>;
+export type Query_user_Store = GraphQLStore<{ user: User }, QueryUserArgs>;

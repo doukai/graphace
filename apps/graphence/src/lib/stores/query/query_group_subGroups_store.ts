@@ -14,11 +14,11 @@ const query = /* GraphQL */ `query Query_group_subGroups($group_id: String, $id:
 ${fragment_GroupFields}`;
 
 export function createQuery_group_subGroups_Store(event: Event): Query_group_subGroups_Store {
-  return createGraphQLQueryStore<Group, { group_id: string } & QueryGroupListArgs>(query, event);
+  return createGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryGroupListArgs>(query, event);
 }
 
 export async function fetchQuery_group_subGroups_Store(event: Event, variables: { group_id: string } & QueryGroupListArgs): Promise<Query_group_subGroups_Store> {
-  return fetchGraphQLQueryStore<Group, { group_id: string } & QueryGroupListArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ group: Group }, { group_id: string } & QueryGroupListArgs>(query, event, variables);
 }
 
-export type Query_group_subGroups_Store = GraphQLStore<Group, { group_id: string } & QueryGroupListArgs>;
+export type Query_group_subGroups_Store = GraphQLStore<{ group: Group }, { group_id: string } & QueryGroupListArgs>;

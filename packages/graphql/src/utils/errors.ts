@@ -1,10 +1,10 @@
 import type { Error, Errors } from '@graphace/commons';
 import { buildErrorsTree } from '@graphace/commons';
-import type { GraphQLError } from '~/types/index.js';
+import type { GraphQLError } from '../types/index.js';
 
 export const createGraphQLErrorBuilder = (loadMessage: (code: number | null | undefined) => string | undefined) => {
 
-    const buildGraphQLErrors = (errors: GraphQLError[], data: any): Record<string, Errors> => {
+    const buildGraphQLErrors = (errors: GraphQLError[], data: Record<string, any>): Record<string, Errors> => {
         const pathErrors: Record<string, Error[]> = {};
         errors.filter(error => error.path)
             .map(error => ({ ...error, message: loadMessage(error.extensions?.code) || error.message }))

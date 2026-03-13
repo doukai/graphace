@@ -7,7 +7,7 @@ const query = /* GraphQL */ `mutation Mutation_login($login: String!, $password:
 }`;
 
 export function createMutation_login_Store(event: Event): Mutation_login_Store {
-  return createGraphQLMutationStore<string, MutationLoginArgs>(query, event);
+  return createGraphQLMutationStore<{ login: string }, MutationLoginArgs>(query, event);
 }
 
-export type Mutation_login_Store = GraphQLStore<string, MutationLoginArgs>;
+export type Mutation_login_Store = GraphQLStore<{ login: string }, MutationLoginArgs>;

@@ -2,13 +2,33 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import type { Errors } from '@graphace/commons';
-	import { Buttons, Empty, Form, ErrorLabels, FormControl, Label, Loading, to } from '@graphace/ui';
+	import {
+		Buttons,
+		Empty,
+		Form,
+		ErrorLabels,
+		FormControl,
+		Label,
+		Loading,
+		type TabInfo,
+		Tabs,
+		to
+	} from '@graphace/ui';
 	import { StringInput, ObjectLink } from '@graphace/ui-graphql';
-	import { realmFields, type RealmFields } from '~/lib/components/objects/realm/RealmOption';
-	import type { RealmInput } from '~/lib/types/schema';
+	import {
+		realmFields,
+		type RealmFields,
+		type RealmFieldsArgs,
+		realmFormTab,
+		realmFormTabs,
+		realmFormTabChange,
+		validate
+	} from '~/lib/components/objects/realm/RealmOption';
+	import type { RealmInput, QueryRealmArgs } from '~/lib/types/schema';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
 	
 	export let value: RealmInput | null | undefined = undefined;
+	export let args: QueryRealmArgs = {};
 	export let isFetching: boolean = false;
 	export let isMutating: boolean = false;
 	export let errors: Record<string, Errors> = {};
@@ -19,51 +39,34 @@
 	export let showBackButton: boolean = false;
 	export let title: string | undefined = undefined;
 	let className: string | undefined =
-		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto';
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
 	export { className as class };
+	export let tabs: (($LL: TranslationFunctions, args?: QueryRealmArgs | undefined) => TabInfo[] | undefined) | undefined = realmFormTabs;
+	export let tab: ((args?: QueryRealmArgs | undefined) => string | undefined) | undefined = realmFormTab;
 	export let fields: RealmFields | undefined = realmFields;
+	export let fieldsPatch: RealmFields | undefined = undefined;
+	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
+		fields = { ...fields, ...fieldsPatch };
+	}
+	export let fieldsArgs: RealmFieldsArgs | undefined = undefined;
 
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 
 	const dispatch = createEventDispatcher<{
+		query: { args: QueryRealmArgs; };
 		remove: { value: RealmInput | null | undefined };
 		unbind: { value: RealmInput | null | undefined };
 		save: { value: RealmInput | null | undefined };
+		tabChange: { tab: string; origin: string; };
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
-
-	const validate = async () => {
-		errors = {};
-		if (value) {
-			const nameErrors = await fields?.name?.validate?.(value);
-			if (nameErrors && nameErrors.length > 0) {
-				errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
-			}
-			const descriptionErrors = await fields?.description?.validate?.(value);
-			if (descriptionErrors && descriptionErrors.length > 0) {
-				errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
-			}
-		}
-
-		return new Promise(
-			(
-				resolve: (data: RealmInput | null | undefined) => void,
-				reject: (errors: Record<string, Errors>) => void
-			) => {
-				if (Object.keys(errors).length === 0) {
-					resolve(value);
-				} else {
-					reject(errors);
-				}
-			}
-		);
-	};
 </script>
 
 <div class="flex justify-between">
+	<slot name="start" />
 	<slot name="title">
-		<span class="text-xl font-semibold self-center">
+		<span class="text-xl font-semibold self-center max-sm:hidden">
 			{#if title}
 				{title}
 			{:else}
@@ -78,7 +81,10 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) =>
+			validate($LL, value)
+				.then((value) => dispatch('save', { value }))
+				.catch((e) => (errors = e))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back
@@ -87,13 +93,31 @@
 	</Buttons>
 </div>
 <div class="divider my-0" />
+{#if tabs?.($LL, args)}
+	<Tabs
+		value={tab?.(args)}
+		tabs={tabs?.($LL, args)}
+		on:change={(e) => {
+			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+			if (e.detail.value !== e.detail.origin) {
+				realmFormTabChange(e.detail.value, args, value)
+					.then((args) => {
+						dispatch('query', {
+							args
+						});
+					})
+					.catch((e) => (errors = e));
+			}
+		}}
+	/>
+{/if}
 <Form class={className}>
 	{#if isFetching}
-		<Loading />
+		<Loading class="col-span-full" />
 	{:else if value}
 		<slot name="name" {value} {errors} {fields}>
-			{#if !fields?.name?.hidden?.(value)}
-				<FormControl let:id {...fields?.name?.props?.(value)?.['control']}>
+			{#if !fields?.name?.hidden?.(value, fieldsArgs?.name)}
+				<FormControl let:id {...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Realm.fields.name.name()}
@@ -104,17 +128,24 @@
 						name="name"
 						bind:value={value.name}
 						errors={errors.name}
-						readonly={fields?.name?.readonly?.(value)}
-						disabled={fields?.name?.disabled?.(value)}
-						on:change={(e) => fields?.name?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.name?.props?.(value)?.['input']}
+						readonly={fields?.name?.readonly?.(value, fieldsArgs?.name)}
+						disabled={fields?.name?.disabled?.(value, fieldsArgs?.name)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.name
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.name)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, name: e }));
+							}
+						}}
+						{...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['input']}
 					/>
 				</FormControl>
 			{/if}
 		</slot>
 		<slot name="description" {value} {errors} {fields}>
-			{#if !fields?.description?.hidden?.(value)}
-				<FormControl let:id {...fields?.description?.props?.(value)?.['control']}>
+			{#if !fields?.description?.hidden?.(value, fieldsArgs?.description)}
+				<FormControl let:id {...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['form-control']}>
 					<Label
 						{id}
 						text={$LL.graphql.objects.Realm.fields.description.name()}
@@ -125,10 +156,17 @@
 						name="description"
 						bind:value={value.description}
 						errors={errors.description}
-						readonly={fields?.description?.readonly?.(value)}
-						disabled={fields?.description?.disabled?.(value)}
-						on:change={(e) => fields?.description?.onChange?.(e.detail.value, value).then((next) => value = next)}
-						{...fields?.description?.props?.(value)?.['input']}
+						readonly={fields?.description?.readonly?.(value, fieldsArgs?.description)}
+						disabled={fields?.description?.disabled?.(value, fieldsArgs?.description)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.description
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.description)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, description: e }));
+							}
+						}}
+						{...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['input']}
 					/>
 				</FormControl>
 			{/if}
@@ -148,7 +186,10 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
-		on:save={(e) => validate().then(() => dispatch('save', { value }))}
+		on:save={(e) =>
+			validate($LL, value)
+				.then((value) => dispatch('save', { value }))
+				.catch((e) => (errors = e))}
 		on:remove={(e) => dispatch('remove', { value })}
 		on:unbind={(e) => dispatch('unbind', { value })}
 		on:back

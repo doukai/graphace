@@ -8,15 +8,19 @@
 	import type { Errors } from '@graphace/commons';
 	import { type Option, FormControl, Td } from '@graphace/ui';
 	import {{ name }}Select from './{{ name }}Select.svelte';
+	import { createQueryNamed_{{ name | camelCase }}List_Store } from '~/{{ storesPath }}/query/query_{{ name | camelCase }}List_store';
 	import type { TranslationFunctions } from '$i18n/i18n-types';
-	import { namedQueryStore } from '~/utils';
-	import type { {{ name }}Input } from '~/{{ schemaTypesPath }}';
+	import { loadEvent } from '~/utils';
+	import type { {{ name }}Input, Query{{ name }}ListArgs } from '~/{{ schemaTypesPath }}';
 
 	export let id: string | undefined = undefined;
 	export let value: {{ name }}Input | ({{ name }}Input | null | undefined)[] | null | undefined = undefined;
+	export let args: Query{{ name }}ListArgs | undefined = undefined;
+	export let first: number | undefined = undefined;
+	export let selected: Option | Option[] | undefined = undefined;
+	export let errors: Errors | undefined = undefined;
 	export let list: boolean = false;
 	export let name: string;
-	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
@@ -31,14 +35,12 @@
 		save: {};
 	}>();
 
-	const query = { fieldName: '{{ name | camelCase }}List', idName: '{{ idName }}' };
-
-	let selected: Option | Option[] | undefined;
+	const queryNamed_{{ name | camelCase }}List_Store = createQueryNamed_{{ name | camelCase }}List_Store($loadEvent);
 
 	$: if (Array.isArray(value)) {
 		if (value.some((item) => !item?.name && item?.{{ idName }})){
-			namedQueryStore
-				.fetch(query, {
+			queryNamed_{{ name | camelCase }}List_Store
+				.fetch({
 					{{ idName }}: { opr: 'IN', arr: value?.map((item) => item?.{{ idName }}) }
 				})
 				.then((response) => {
@@ -52,8 +54,8 @@
 		}
 	} else if (value) {
 		if (!value.name && value.{{ idName }}) {
-			namedQueryStore
-				.fetch(query, { {{ idName }}: { opr: 'EQ', val: value.{{ idName }} } })
+			queryNamed_{{ name | camelCase }}List_Store
+				.fetch({ {{ idName }}: { opr: 'EQ', val: value.{{ idName }} } })
 				.then((response) => {
 					value = response.data?.{{ name | camelCase }}List?.[0];
 				});
@@ -123,12 +125,14 @@
 				<{{ name }}Select
 					{id}
 					{name}
+					bind:value
+					bind:selected
+					bind:args
+					bind:first
 					{list}
 					{disabled}
 					{readonly}
 					{placeholder}
-					bind:value
-					bind:selected
 					on:change
 				/>
 			</FormControl>

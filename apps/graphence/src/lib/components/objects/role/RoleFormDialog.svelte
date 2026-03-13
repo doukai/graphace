@@ -2,11 +2,11 @@
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
-	import { to, Dialog, toast, modal } from '@graphace/ui';
+	import { to, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
 	import { createQuery_role_Store } from '~/lib/stores/query/query_role_store';
 	import { createMutation_role_Store } from '~/lib/stores/mutation/mutation_role_store';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
-	import { roleFields, type RoleFields } from '~/lib/components/objects/role/RoleOption';
+	import type { RoleFields, RoleFieldsArgs } from '~/lib/components/objects/role/RoleOption';
 	import {
 		loadEvent,
 		validator,
@@ -14,7 +14,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { Role, MutationRoleArgs, RoleInput } from '~/lib/types/schema';
+	import type { Role, QueryRoleArgs, MutationRoleArgs, RoleInput } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: RoleInput | null | undefined = {};
@@ -26,9 +26,13 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0 truncate';
+	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
-	export let fields: RoleFields = roleFields;
+	export let tabs: (($LL: TranslationFunctions, args?: QueryRoleArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: ((args?: QueryRoleArgs | undefined) => string | undefined) | undefined = undefined;
+	export let fields: RoleFields | undefined = undefined;
+	export let fieldsPatch: RoleFields | undefined = undefined;
+	export let fieldsArgs: RoleFieldsArgs | undefined = undefined;
 
 	const { validate } = validator;
 	const { auth } = permissions;
@@ -55,6 +59,8 @@
 				});
 		} else if (value) {
 			text = value[textFieldName] + '';
+		} else {
+			text = undefined;
 		}
 	}
 
@@ -124,7 +130,7 @@
 		</button>
 		<button
 			use:melt={trigger}
-			class="btn btn-square truncate {className} sm:hidden"
+			class="btn btn-square {className} sm:hidden"
 			{disabled}
 			on:click={(e) => {
 				if (queryById && value?.id) {
@@ -145,11 +151,15 @@
 		<RoleForm
 			showSaveButton={!readonly && auth('Role::*::WRITE')}
 			showRemoveButton={!readonly && auth('Role::isDeprecated::WRITE')}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_role_Store.isFetching}
 			isMutating={$mutation_role_Store.isFetching}
+			{tabs}
+			{tab}
 			{fields}
+			{fieldsPatch}
+			{fieldsArgs}
 			on:save={(e) => {
 				if (select) {
 					dispatch('select', { value });

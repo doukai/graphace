@@ -2,11 +2,11 @@
 	import { createEventDispatcher } from 'svelte';
 	import { melt } from '@melt-ui/svelte';
 	import type { Errors } from '@graphace/commons';
-	import { to, Dialog, toast, modal } from '@graphace/ui';
+	import { to, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
 	import { createQuery_permission_Store } from '~/lib/stores/query/query_permission_store';
 	import { createMutation_permission_Store } from '~/lib/stores/mutation/mutation_permission_store';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
-	import { permissionFields, type PermissionFields } from '~/lib/components/objects/permission/PermissionOption';
+	import type { PermissionFields, PermissionFieldsArgs } from '~/lib/components/objects/permission/PermissionOption';
 	import {
 		loadEvent,
 		validator,
@@ -14,7 +14,7 @@
 		buildGlobalGraphQLErrorMessage,
 		buildGraphQLErrors
 	} from '~/utils';
-	import type { Permission, MutationPermissionArgs, PermissionInput } from '~/lib/types/schema';
+	import type { Permission, QueryPermissionArgs, MutationPermissionArgs, PermissionInput } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
 
 	export let value: PermissionInput | null | undefined = {};
@@ -26,9 +26,13 @@
 	export let clearAfterSelect: boolean | undefined = false;
 	export let readonly = false;
 	export let disabled = false;
-	let className: string | undefined = 'btn-link p-0 truncate';
+	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
-	export let fields: PermissionFields = permissionFields;
+	export let tabs: (($LL: TranslationFunctions, args?: QueryPermissionArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: ((args?: QueryPermissionArgs | undefined) => string | undefined) | undefined = undefined;
+	export let fields: PermissionFields | undefined = undefined;
+	export let fieldsPatch: PermissionFields | undefined = undefined;
+	export let fieldsArgs: PermissionFieldsArgs | undefined = undefined;
 
 	const { validate } = validator;
 	const { auth } = permissions;
@@ -55,6 +59,8 @@
 				});
 		} else if (value) {
 			text = value[textFieldName] + '';
+		} else {
+			text = undefined;
 		}
 	}
 
@@ -124,7 +130,7 @@
 		</button>
 		<button
 			use:melt={trigger}
-			class="btn btn-square truncate {className} sm:hidden"
+			class="btn btn-square {className} sm:hidden"
 			{disabled}
 			on:click={(e) => {
 				if (queryById && value?.id) {
@@ -145,11 +151,15 @@
 		<PermissionForm
 			showSaveButton={!readonly && auth('Permission::*::WRITE')}
 			showRemoveButton={!readonly && auth('Permission::isDeprecated::WRITE')}
-			bind:value
+			{value}
 			{errors}
 			isFetching={$query_permission_Store.isFetching}
 			isMutating={$mutation_permission_Store.isFetching}
+			{tabs}
+			{tab}
 			{fields}
+			{fieldsPatch}
+			{fieldsArgs}
 			on:save={(e) => {
 				if (select) {
 					dispatch('select', { value });

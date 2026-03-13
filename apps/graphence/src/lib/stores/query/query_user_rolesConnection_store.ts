@@ -21,11 +21,11 @@ ${fragment_RoleFields}
 ${fragment_UserFields}`;
 
 export function createQuery_user_rolesConnection_Store(event: Event): Query_user_rolesConnection_Store {
-  return createGraphQLQueryStore<User, { user_id: string } & QueryRoleConnectionArgs>(query, event);
+  return createGraphQLQueryStore<{ user: User }, { user_id: string } & QueryRoleConnectionArgs>(query, event);
 }
 
 export async function fetchQuery_user_rolesConnection_Store(event: Event, variables: { user_id: string } & QueryRoleConnectionArgs): Promise<Query_user_rolesConnection_Store> {
-  return fetchGraphQLQueryStore<User, { user_id: string } & QueryRoleConnectionArgs>(query, event, variables);
+  return fetchGraphQLQueryStore<{ user: User }, { user_id: string } & QueryRoleConnectionArgs>(query, event, variables);
 }
 
-export type Query_user_rolesConnection_Store = GraphQLStore<User, { user_id: string } & QueryRoleConnectionArgs>;
+export type Query_user_rolesConnection_Store = GraphQLStore<{ user: User }, { user_id: string } & QueryRoleConnectionArgs>;

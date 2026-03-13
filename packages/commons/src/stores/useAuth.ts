@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import type { Writable, Readable, Subscriber, Unsubscriber, Updater } from 'svelte/store';
-import type { JsonWebToken } from '~/types';
+import type { JsonWebToken } from '../types/index.js';
 
 export const jwt: Writable<JsonWebToken | undefined> = writable(undefined);
 

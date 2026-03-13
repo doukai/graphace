@@ -39,3 +39,9 @@ export const fragment_GroupFields = /* GraphQL */ `fragment GroupFields on Group
     updateTime
     createGroupId
   }`;
+
+export const fragment_GroupNamedFields = /* GraphQL */ `fragment GroupNamedFields on Group {
+    id
+    name
+    description
+  }`;
