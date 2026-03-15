@@ -147,7 +147,7 @@
 	{:else if value}
 		{%- if groups != undefined and groups.length > 0 %}
 		{%- for group in groups %}
-		{#if {% for field in group.fields %}!fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }}){% if forloop.last == false %} && {% endif %}{% endfor %}}
+		{#if {% for field in group.fields %}!fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }}){% if forloop.last == false %} || {% endif %}{% endfor %}}
 			<svelte:component this={wrapper['{{ group.name }}']} {...wrapperProps['{{ group.name }}']}>
 				{%- for field in group.fields %}
 				<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
