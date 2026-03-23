@@ -44,30 +44,28 @@
 			<span>{$LL.graphence.components.moduleMenu.export()}</span>
 		</a>
 	</li>
-	<div class="py-4">
-		{#if templates}
-			<FormControl let:id>
-				<label for={id} class="label">
-					<span class="label-text">{$LL.graphence.components.moduleMenu.template()}</span>
-				</label>
-				<select {id} class="select select-bordered" bind:value={template}>
-					{#each Object.entries(templates) as [value, label]}
-						<option {value}>{label}</option>
-					{/each}
-				</select>
-			</FormControl>
-		{/if}
+	{#if templates}
 		<FormControl let:id>
 			<label for={id} class="label">
-				<span class="label-text">{$LL.graphence.components.moduleMenu.size()}</span>
+				<span class="label-text">{$LL.graphence.components.moduleMenu.template()}</span>
 			</label>
-			<select class="select select-bordered min-w-80" bind:value={pageSize}>
-				{#each pageSizeOptions as option}
-					<option value={option}>{option}</option>
+			<select {id} class="select select-bordered" bind:value={template}>
+				{#each Object.entries(templates) as [value, label]}
+					<option {value}>{label}</option>
 				{/each}
 			</select>
 		</FormControl>
-	</div>
+	{/if}
+	<FormControl let:id>
+		<label for={id} class="label">
+			<span class="label-text">{$LL.graphence.components.moduleMenu.size()}</span>
+		</label>
+		<select class="select select-bordered min-w-80" bind:value={pageSize}>
+			{#each pageSizeOptions as option}
+				<option value={option}>{option}</option>
+			{/each}
+		</select>
+	</FormControl>
 	<ModalAction>
 		<Button
 			text={$LL.graphence.components.moduleMenu.export()}

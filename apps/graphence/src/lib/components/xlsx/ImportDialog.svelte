@@ -74,50 +74,48 @@
 			<span>{$LL.graphence.components.moduleMenu.import()}</span>
 		</a>
 	</li>
-	<div class="py-4">
-		{#if templates}
-			<FormControl let:id>
-				<label for={id} class="label">
-					<span class="label-text">{$LL.graphence.components.moduleMenu.template()}</span>
-				</label>
-				<select
-					{id}
-					class="select select-bordered"
-					bind:value={template}
-					on:change={(e) => (file = undefined)}
-				>
-					{#each Object.entries(templates) as [value, label]}
-						<option {value}>{label}</option>
-					{/each}
-				</select>
-			</FormControl>
-		{/if}
+	{#if templates}
 		<FormControl let:id>
 			<label for={id} class="label">
-				<span class="label-text">{$LL.graphence.components.moduleMenu.file()}</span>
+				<span class="label-text">{$LL.graphence.components.moduleMenu.template()}</span>
 			</label>
-			<input
+			<select
 				{id}
-				type="file"
-				class="file-input file-input-bordered min-w-80"
-				on:change={(e) => {
-					errorFileName = undefined;
-					if (e.currentTarget?.files?.[0]) {
-						file = e.currentTarget?.files?.[0];
-					}
-				}}
-			/>
-			{#if errorFileName}
-				<label data-part="label" for={id} class="label">
-					<span data-part="label-text-alt" class="label-text-alt">
-						<p data-part="label-text" class="text-error">
-							{$LL.errors.xlsx.importFailed({ file: errorFileName })}
-						</p>
-					</span>
-				</label>
-			{/if}
+				class="select select-bordered"
+				bind:value={template}
+				on:change={(e) => (file = undefined)}
+			>
+				{#each Object.entries(templates) as [value, label]}
+					<option {value}>{label}</option>
+				{/each}
+			</select>
 		</FormControl>
-	</div>
+	{/if}
+	<FormControl let:id>
+		<label for={id} class="label">
+			<span class="label-text">{$LL.graphence.components.moduleMenu.file()}</span>
+		</label>
+		<input
+			{id}
+			type="file"
+			class="file-input file-input-bordered min-w-80"
+			on:change={(e) => {
+				errorFileName = undefined;
+				if (e.currentTarget?.files?.[0]) {
+					file = e.currentTarget?.files?.[0];
+				}
+			}}
+		/>
+		{#if errorFileName}
+			<label data-part="label" for={id} class="label">
+				<span data-part="label-text-alt" class="label-text-alt">
+					<p data-part="label-text" class="text-error">
+						{$LL.errors.xlsx.importFailed({ file: errorFileName })}
+					</p>
+				</span>
+			</label>
+		{/if}
+	</FormControl>
 	<ModalAction>
 		<Button
 			text={$LL.graphence.components.moduleMenu.import()}

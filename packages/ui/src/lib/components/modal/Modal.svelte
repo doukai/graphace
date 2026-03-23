@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { getContext, createEventDispatcher } from 'svelte';
 	export let isModalOpen: boolean = false;
-	export let title: string = '';
-
+	export let title: string | undefined = undefined;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'modal-bottom sm:modal-middle';
 	export { className as class };
@@ -38,7 +37,11 @@
 		>
 			✕
 		</button>
-		<h2 data-part="modal-title" class="font-bold text-lg">{title}</h2>
-		<slot />
+		{#if title}
+			<h2 data-part="modal-title" class="font-bold text-lg">{title}</h2>
+		{/if}
+		<div class="py-4">
+			<slot />
+		</div>
 	</div>
 </div>

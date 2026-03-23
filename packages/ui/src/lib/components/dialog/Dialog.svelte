@@ -2,14 +2,13 @@
 	import { getContext } from 'svelte';
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
-	import { zIndex } from '~';
 
+	export let title: string | undefined = undefined;
+	import { zIndex } from '~';
 	let className: string | undefined = '';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.dialog') || '';
-
-	export let title: string | undefined = undefined;
 
 	let nextZIndex = 0;
 
@@ -61,7 +60,9 @@
 			{#if title}
 				<h2 use:melt={$titleEle} data-part="modal-title" class="font-bold text-lg">{title}</h2>
 			{/if}
-			<slot zIndex={nextZIndex} />
+			<div class="py-4">
+				<slot zIndex={nextZIndex} />
+			</div>
 		</div>
 	</div>
 {/if}
