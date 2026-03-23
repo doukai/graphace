@@ -85,6 +85,8 @@
 		<ObjectSelect
 			{id}
 			{name}
+			bind:value={selectedList}
+			bind:options
 			list
 			{disabled}
 			{readonly}
@@ -92,8 +94,6 @@
 			{errors}
 			{loading}
 			class={className}
-			bind:options
-			bind:value={selectedList}
 			on:change={(e) => {
 				if (Array.isArray(e.detail.value)) {
 					value = {
@@ -122,14 +122,14 @@
 		<ObjectSelect
 			{id}
 			{name}
+			bind:value={selected}
+			bind:options
 			{disabled}
 			{readonly}
 			{placeholder}
 			{errors}
 			{loading}
 			class={className}
-			bind:options
-			bind:value={selected}
 			on:change={(e) => {
 				if (e.detail.value && !Array.isArray(e.detail.value)) {
 					value = {

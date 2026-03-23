@@ -169,8 +169,8 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(@babel/core@7.29.0)(postcss-load-config@3.1.4)(postcss@8.4.39)(svelte@4.2.19)(typescript@5.1.6)
       svelte-typeahead:
-        specifier: ^4.4.1
-        version: 4.4.1
+        specifier: ^4.4.2
+        version: 4.4.2
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.4(ts-node@10.9.2)
@@ -198,6 +198,9 @@ importers:
       vite:
         specifier: ^5.4.10
         version: 5.4.10(@types/node@18.19.39)
+      xlsx:
+        specifier: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
+        version: '@cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz'
 
   apps/spectaql:
     devDependencies:
@@ -360,8 +363,8 @@ importers:
         specifier: '>=4.0.0'
         version: 4.0.2
       svelte-typeahead:
-        specifier: '>=4.4.0'
-        version: 4.4.1
+        specifier: '>=4.4.2'
+        version: 4.4.2
       theme-change:
         specifier: '>=2.5.0'
         version: 2.5.0
@@ -9704,14 +9707,14 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  /svelte-search@1.1.0:
-    resolution: {integrity: sha512-e5hci9fZPMXb3fuRZvcYJGqh448M8vV3biY4lN4Nr9fqrG/HBnTjWYstKb399aUe9tsBxRbxRAWgtKicisL23g==}
+  /svelte-search@2.1.2:
+    resolution: {integrity: sha512-NBVyj3RhWeDaE9rfwNRhm3jmMzw7gpkslLhurhD9nL3SQzfK3uo9D53IQpPAoWIt9cvPWoRGR3x1xcfolFAu4g==}
 
-  /svelte-typeahead@4.4.1:
-    resolution: {integrity: sha512-U8EYkCQ1HaDrQq1fnkVCEm8emZrdEfgfHhMulgOdoYnWV5PTvypiwCTNvqqxFHbz9ZGe5juAR9ok5tEcfnP9zw==}
+  /svelte-typeahead@4.4.2:
+    resolution: {integrity: sha512-k+M5MUK7hkgcrLkwBlUmp7X33ODH1BHw7d5vBHza/B8rSKesnZOmNIYUQ8Pn1rNashg6d7EEdtrukbtHR5XoZg==}
     dependencies:
       fuzzy: 0.1.3
-      svelte-search: 1.1.0
+      svelte-search: 2.1.2
 
   /svelte2tsx@0.7.47(svelte@4.2.19)(typescript@5.1.6):
     resolution: {integrity: sha512-1aw/MFKVPM96OBevJdC12do2an9t5Zwr3Va9amLgTLpJje36ibD1iIHpuqCYWUrdR9vw6g6btKGQPmsqE8ZYCw==}
@@ -10765,3 +10768,11 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  '@cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz':
+    resolution: {tarball: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz}
+    name: xlsx
+    version: 0.20.3
+    engines: {node: '>=0.8'}
+    hasBin: true
+    dev: true

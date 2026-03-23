@@ -57,7 +57,7 @@
 		"date-fns": ">=2.30.0",
 		"nanoid": ">=4.0.0",
 		"svelte": ">=4.0.0",
-		"svelte-typeahead": ">=4.4.0",
+		"svelte-typeahead": ">=4.4.2",
 		"theme-change": ">=2.5.0"
 	},
 	"publishConfig": {

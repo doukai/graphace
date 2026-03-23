@@ -29,7 +29,7 @@
 	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryRoleArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
-	export let tab: ((args?: QueryRoleArgs | undefined) => string | undefined) | undefined = undefined;
+	export let tab: string | undefined = undefined;
 	export let fields: RoleFields | undefined = undefined;
 	export let fieldsPatch: RoleFields | undefined = undefined;
 	export let fieldsArgs: RoleFieldsArgs | undefined = undefined;

@@ -59,7 +59,7 @@
 	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryRealmListArgs | undefined) => TabInfo[] | undefined) | undefined = realmTabs;
-	export let tab: ((args?: QueryRealmListArgs | undefined) => string | undefined) | undefined = realmTab;
+	export let tab: string | undefined = realmTab?.(args);
 	export let fields: RealmFields | undefined = realmFields;
 	export let fieldsPatch: RealmFields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -175,7 +175,7 @@
 <div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
-		value={tab?.(args)}
+		bind:value={tab}
 		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
@@ -220,7 +220,7 @@
 				</label>
 			</th>
 			<slot name="name-th" {args} {orderBy} {fields}>
-				{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+				{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 					<StringTh
 						name={$LL.graphql.objects.Realm.fields.name.name()}
 						bind:value={args.name}
@@ -233,7 +233,7 @@
 				{/if}
 			</slot>
 			<slot name="description-th" {args} {orderBy} {fields}>
-				{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+				{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 					<StringTh
 						name={$LL.graphql.objects.Realm.fields.description.name()}
 						bind:value={args.description}
@@ -270,7 +270,7 @@
 							</label>
 						</th>
 						<slot name="name" {node} {errors} {fields} {row}>
-							{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+							{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 								<StringTd
 									name="name"
 									bind:value={node.name}
@@ -308,7 +308,7 @@
 							{/if}
 						</slot>
 						<slot name="description" {node} {errors} {fields} {row}>
-							{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+							{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 								<StringTd
 									name="description"
 									bind:value={node.description}
@@ -471,7 +471,7 @@
 				</thead>
 				<tbody class="border">
 					<slot name="name-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+						{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 							<Tr class="hover" let:id {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['tr']}>
 								<td>
 									<Label
@@ -520,7 +520,7 @@
 						{/if}
 					</slot>
 					<slot name="description-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+						{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 							<Tr class="hover" let:id {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['tr']}>
 								<td>
 									<Label

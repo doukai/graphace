@@ -85,6 +85,9 @@ const en: BaseTranslation = {
 		unevaluatedProperties: 'must NOT have unevaluated properties',
 		uniqueItems: 'must NOT have duplicate items (items ## and {j:any} are {i:any} identical)',
 		default: 'must pass "{keyword:any}" keyword validation'
+	},
+	xlsx: {
+		importFailed: 'Import failed. Please check the file "{file:string}", Errors are marked in the cell comments',
 	}
 }
 

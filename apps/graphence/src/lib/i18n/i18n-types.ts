@@ -365,6 +365,13 @@ export type NamespaceErrorsTranslation = {
 		 */
 		'default': RequiredParams<'keyword'>
 	}
+	xlsx: {
+		/**
+		 * I​m​p​o​r​t​ ​f​a​i​l​e​d​.​ ​P​l​e​a​s​e​ ​c​h​e​c​k​ ​t​h​e​ ​f​i​l​e​ ​"​{​f​i​l​e​}​"​,​ ​E​r​r​o​r​s​ ​a​r​e​ ​m​a​r​k​e​d​ ​i​n​ ​t​h​e​ ​c​e​l​l​ ​c​o​m​m​e​n​t​s
+		 * @param {string} file
+		 */
+		importFailed: RequiredParams<'file'>
+	}
 }
 
 export type NamespaceGraphenceTranslation = {
@@ -458,6 +465,16 @@ export type NamespaceGraphenceTranslation = {
 		select: RequiredParams<'name'>
 	}
 	components: {
+		label: {
+			/**
+			 * Y​e​s
+			 */
+			'true': string
+			/**
+			 * N​o
+			 */
+			'false': string
+		}
 		search: {
 			/**
 			 * S​e​a​r​c​h
@@ -539,6 +556,37 @@ export type NamespaceGraphenceTranslation = {
 			 * L​o​g​o​u​t
 			 */
 			logout: string
+		}
+		moduleMenu: {
+			/**
+			 * S​y​n​c
+			 */
+			sync: string
+			/**
+			 * E​x​p​o​r​t
+			 */
+			'export': string
+			/**
+			 * I​m​p​o​r​t
+			 */
+			'import': string
+			/**
+			 * T​e​m​p​l​a​t​e
+			 */
+			template: string
+			/**
+			 * S​i​z​e
+			 */
+			size: string
+			/**
+			 * F​i​l​e
+			 */
+			file: string
+			/**
+			 * {​f​i​l​e​}​_​e​r​r​o​r​s
+			 * @param {string} file
+			 */
+			errorFileName: RequiredParams<'file'>
 		}
 		resetPassword: {
 			/**
@@ -3627,6 +3675,12 @@ export type TranslationFunctions = {
 			 */
 			'default': (arg: { keyword: any }) => LocalizedString
 		}
+		xlsx: {
+			/**
+			 * Import failed. Please check the file "{file}", Errors are marked in the cell comments
+			 */
+			importFailed: (arg: { file: string }) => LocalizedString
+		}
 	}
 	graphence: {
 		login: {
@@ -3716,6 +3770,16 @@ export type TranslationFunctions = {
 			select: (arg: { name: string }) => LocalizedString
 		}
 		components: {
+			label: {
+				/**
+				 * Yes
+				 */
+				'true': () => LocalizedString
+				/**
+				 * No
+				 */
+				'false': () => LocalizedString
+			}
 			search: {
 				/**
 				 * Search
@@ -3797,6 +3861,36 @@ export type TranslationFunctions = {
 				 * Logout
 				 */
 				logout: () => LocalizedString
+			}
+			moduleMenu: {
+				/**
+				 * Sync
+				 */
+				sync: () => LocalizedString
+				/**
+				 * Export
+				 */
+				'export': () => LocalizedString
+				/**
+				 * Import
+				 */
+				'import': () => LocalizedString
+				/**
+				 * Template
+				 */
+				template: () => LocalizedString
+				/**
+				 * Size
+				 */
+				size: () => LocalizedString
+				/**
+				 * File
+				 */
+				file: () => LocalizedString
+				/**
+				 * {file}_errors
+				 */
+				errorFileName: (arg: { file: string }) => LocalizedString
 			}
 			resetPassword: {
 				/**

@@ -67,7 +67,7 @@
 	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryGroupListArgs | undefined) => TabInfo[] | undefined) | undefined = groupTabs;
-	export let tab: ((args?: QueryGroupListArgs | undefined) => string | undefined) | undefined = groupTab;
+	export let tab: string | undefined = groupTab?.(args);
 	export let fields: GroupFields | undefined = groupFields;
 	export let fieldsPatch: GroupFields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -183,7 +183,7 @@
 <div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
-		value={tab?.(args)}
+		bind:value={tab}
 		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
@@ -228,7 +228,7 @@
 				</label>
 			</th>
 			<slot name="name-th" {args} {orderBy} {fields}>
-				{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+				{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 					<StringTh
 						name={$LL.graphql.objects.Group.fields.name.name()}
 						bind:value={args.name}
@@ -241,7 +241,7 @@
 				{/if}
 			</slot>
 			<slot name="description-th" {args} {orderBy} {fields}>
-				{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+				{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 					<StringTh
 						name={$LL.graphql.objects.Group.fields.description.name()}
 						bind:value={args.description}
@@ -254,7 +254,7 @@
 				{/if}
 			</slot>
 			<slot name="path-th" {args} {orderBy} {fields}>
-				{#if !fields?.path?.hiddenCol?.(args, tab?.(args), fieldsArgs?.path)}
+				{#if !fields?.path?.hiddenCol?.(args, tab, fieldsArgs?.path)}
 					<StringTh
 						name={$LL.graphql.objects.Group.fields.path.name()}
 						bind:value={args.path}
@@ -267,7 +267,7 @@
 				{/if}
 			</slot>
 			<slot name="deep-th" {args} {orderBy} {fields}>
-				{#if !fields?.deep?.hiddenCol?.(args, tab?.(args), fieldsArgs?.deep)}
+				{#if !fields?.deep?.hiddenCol?.(args, tab, fieldsArgs?.deep)}
 					<IntTh
 						name={$LL.graphql.objects.Group.fields.deep.name()}
 						bind:value={args.deep}
@@ -280,7 +280,7 @@
 				{/if}
 			</slot>
 			<slot name="parentId-th" {args} {orderBy} {fields}>
-				{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parentId)}
+				{#if !fields?.parentId?.hiddenCol?.(args, tab, fieldsArgs?.parentId)}
 					<StringTh
 						name={$LL.graphql.objects.Group.fields.parentId.name()}
 						bind:value={args.parentId}
@@ -293,7 +293,7 @@
 				{/if}
 			</slot>
 			<slot name="parent-th" {args} {orderBy} {fields}>
-				{#if !fields?.parent?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parent)}
+				{#if !fields?.parent?.hiddenCol?.(args, tab, fieldsArgs?.parent)}
 					<GroupTh
 						name={$LL.graphql.objects.Group.fields.parent.name()}
 						bind:value={args.parent}
@@ -305,7 +305,7 @@
 				{/if}
 			</slot>
 			<slot name="subGroups-th" {args} {orderBy} {fields}>
-				{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.subGroups)}
+				{#if !fields?.subGroups?.hiddenCol?.(args, tab, fieldsArgs?.subGroups)}
 					<GroupTh
 						name={$LL.graphql.objects.Group.fields.subGroups.name()}
 						bind:value={args.subGroups}
@@ -317,7 +317,7 @@
 				{/if}
 			</slot>
 			<slot name="users-th" {args} {orderBy} {fields}>
-				{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
+				{#if !fields?.users?.hiddenCol?.(args, tab, fieldsArgs?.users)}
 					<UserTh
 						name={$LL.graphql.objects.Group.fields.users.name()}
 						bind:value={args.users}
@@ -329,7 +329,7 @@
 				{/if}
 			</slot>
 			<slot name="roles-th" {args} {orderBy} {fields}>
-				{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
+				{#if !fields?.roles?.hiddenCol?.(args, tab, fieldsArgs?.roles)}
 					<RoleTh
 						name={$LL.graphql.objects.Group.fields.roles.name()}
 						bind:value={args.roles}
@@ -341,7 +341,7 @@
 				{/if}
 			</slot>
 			<slot name="realm-th" {args} {orderBy} {fields}>
-				{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+				{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 					<RealmTh
 						name={$LL.graphql.objects.Group.fields.realm.name()}
 						bind:value={args.realm}
@@ -377,7 +377,7 @@
 							</label>
 						</th>
 						<slot name="name" {node} {errors} {fields} {row}>
-							{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+							{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 								<StringTd
 									name="name"
 									bind:value={node.name}
@@ -415,7 +415,7 @@
 							{/if}
 						</slot>
 						<slot name="description" {node} {errors} {fields} {row}>
-							{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+							{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 								<StringTd
 									name="description"
 									bind:value={node.description}
@@ -453,7 +453,7 @@
 							{/if}
 						</slot>
 						<slot name="path" {node} {errors} {fields} {row}>
-							{#if !fields?.path?.hiddenCol?.(args, tab?.(args), fieldsArgs?.path)}
+							{#if !fields?.path?.hiddenCol?.(args, tab, fieldsArgs?.path)}
 								<StringTd
 									name="path"
 									bind:value={node.path}
@@ -491,7 +491,7 @@
 							{/if}
 						</slot>
 						<slot name="deep" {node} {errors} {fields} {row}>
-							{#if !fields?.deep?.hiddenCol?.(args, tab?.(args), fieldsArgs?.deep)}
+							{#if !fields?.deep?.hiddenCol?.(args, tab, fieldsArgs?.deep)}
 								<IntTd
 									name="deep"
 									bind:value={node.deep}
@@ -529,7 +529,7 @@
 							{/if}
 						</slot>
 						<slot name="parentId" {node} {errors} {fields} {row}>
-							{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parentId)}
+							{#if !fields?.parentId?.hiddenCol?.(args, tab, fieldsArgs?.parentId)}
 								<StringTd
 									name="parentId"
 									bind:value={node.parentId}
@@ -567,7 +567,7 @@
 							{/if}
 						</slot>
 						<slot name="parent" {node} {errors} {fields} {row}>
-							{#if !fields?.parent?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parent)}
+							{#if !fields?.parent?.hiddenCol?.(args, tab, fieldsArgs?.parent)}
 								<GroupSelectTd
 									name="parent"
 									bind:value={node.parent}
@@ -605,7 +605,7 @@
 							{/if}
 						</slot>
 						<slot name="subGroups" {node} {errors} {fields} {row}>
-							{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.subGroups)}
+							{#if !fields?.subGroups?.hiddenCol?.(args, tab, fieldsArgs?.subGroups)}
 								<GroupSelectTd
 									name="subGroups"
 									bind:value={node.subGroups}
@@ -644,7 +644,7 @@
 							{/if}
 						</slot>
 						<slot name="users" {node} {errors} {fields} {row}>
-							{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
+							{#if !fields?.users?.hiddenCol?.(args, tab, fieldsArgs?.users)}
 								<UserSelectTd
 									name="users"
 									bind:value={node.users}
@@ -683,7 +683,7 @@
 							{/if}
 						</slot>
 						<slot name="roles" {node} {errors} {fields} {row}>
-							{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
+							{#if !fields?.roles?.hiddenCol?.(args, tab, fieldsArgs?.roles)}
 								<RoleSelectTd
 									name="roles"
 									bind:value={node.roles}
@@ -722,7 +722,7 @@
 							{/if}
 						</slot>
 						<slot name="realm" {node} {errors} {fields} {row}>
-							{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+							{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['td']}>
 									{#if node.id}
 										<ObjectLink
@@ -890,7 +890,7 @@
 				</thead>
 				<tbody class="border">
 					<slot name="name-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+						{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 							<Tr class="hover" let:id {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['tr']}>
 								<td>
 									<Label
@@ -939,7 +939,7 @@
 						{/if}
 					</slot>
 					<slot name="description-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+						{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 							<Tr class="hover" let:id {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['tr']}>
 								<td>
 									<Label
@@ -988,7 +988,7 @@
 						{/if}
 					</slot>
 					<slot name="path-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.path?.hiddenCol?.(args, tab?.(args), fieldsArgs?.path)}
+						{#if !fields?.path?.hiddenCol?.(args, tab, fieldsArgs?.path)}
 							<Tr class="hover" let:id {...fields?.path?.props?.($LL, node, fieldsArgs?.path)?.['tr']}>
 								<td>
 									<Label
@@ -1037,7 +1037,7 @@
 						{/if}
 					</slot>
 					<slot name="deep-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.deep?.hiddenCol?.(args, tab?.(args), fieldsArgs?.deep)}
+						{#if !fields?.deep?.hiddenCol?.(args, tab, fieldsArgs?.deep)}
 							<Tr class="hover" let:id {...fields?.deep?.props?.($LL, node, fieldsArgs?.deep)?.['tr']}>
 								<td>
 									<Label
@@ -1086,7 +1086,7 @@
 						{/if}
 					</slot>
 					<slot name="parentId-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.parentId?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parentId)}
+						{#if !fields?.parentId?.hiddenCol?.(args, tab, fieldsArgs?.parentId)}
 							<Tr class="hover" let:id {...fields?.parentId?.props?.($LL, node, fieldsArgs?.parentId)?.['tr']}>
 								<td>
 									<Label
@@ -1135,7 +1135,7 @@
 						{/if}
 					</slot>
 					<slot name="parent-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.parent?.hiddenCol?.(args, tab?.(args), fieldsArgs?.parent)}
+						{#if !fields?.parent?.hiddenCol?.(args, tab, fieldsArgs?.parent)}
 							<Tr class="hover" let:id {...fields?.parent?.props?.($LL, node, fieldsArgs?.parent)?.['tr']}>
 								<td>
 									<Label
@@ -1184,7 +1184,7 @@
 						{/if}
 					</slot>
 					<slot name="subGroups-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.subGroups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.subGroups)}
+						{#if !fields?.subGroups?.hiddenCol?.(args, tab, fieldsArgs?.subGroups)}
 							<Tr class="hover" let:id {...fields?.subGroups?.props?.($LL, node, fieldsArgs?.subGroups)?.['tr']}>
 								<td>
 									<Label
@@ -1234,7 +1234,7 @@
 						{/if}
 					</slot>
 					<slot name="users-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
+						{#if !fields?.users?.hiddenCol?.(args, tab, fieldsArgs?.users)}
 							<Tr class="hover" let:id {...fields?.users?.props?.($LL, node, fieldsArgs?.users)?.['tr']}>
 								<td>
 									<Label
@@ -1284,7 +1284,7 @@
 						{/if}
 					</slot>
 					<slot name="roles-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
+						{#if !fields?.roles?.hiddenCol?.(args, tab, fieldsArgs?.roles)}
 							<Tr class="hover" let:id {...fields?.roles?.props?.($LL, node, fieldsArgs?.roles)?.['tr']}>
 								<td>
 									<Label
@@ -1334,7 +1334,7 @@
 						{/if}
 					</slot>
 					<slot name="realm-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+						{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 							<Tr class="hover" let:id {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['tr']}>
 								<td>
 									<Label

@@ -69,7 +69,7 @@
 	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryRoleListArgs | undefined) => TabInfo[] | undefined) | undefined = roleTabs;
-	export let tab: ((args?: QueryRoleListArgs | undefined) => string | undefined) | undefined = roleTab;
+	export let tab: string | undefined = roleTab?.(args);
 	export let fields: RoleFields | undefined = roleFields;
 	export let fieldsPatch: RoleFields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -188,7 +188,7 @@
 <div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
-		value={tab?.(args)}
+		bind:value={tab}
 		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
@@ -235,7 +235,7 @@
 				</label>
 			</th>
 			<slot name="name-th" {args} {orderBy} {fields}>
-				{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+				{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 					<StringTh
 						name={$LL.graphql.objects.Role.fields.name.name()}
 						bind:value={args.name}
@@ -248,7 +248,7 @@
 				{/if}
 			</slot>
 			<slot name="description-th" {args} {orderBy} {fields}>
-				{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+				{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 					<StringTh
 						name={$LL.graphql.objects.Role.fields.description.name()}
 						bind:value={args.description}
@@ -261,7 +261,7 @@
 				{/if}
 			</slot>
 			<slot name="users-th" {args} {orderBy} {fields}>
-				{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
+				{#if !fields?.users?.hiddenCol?.(args, tab, fieldsArgs?.users)}
 					<UserTh
 						name={$LL.graphql.objects.Role.fields.users.name()}
 						bind:value={args.users}
@@ -273,7 +273,7 @@
 				{/if}
 			</slot>
 			<slot name="groups-th" {args} {orderBy} {fields}>
-				{#if !fields?.groups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.groups)}
+				{#if !fields?.groups?.hiddenCol?.(args, tab, fieldsArgs?.groups)}
 					<GroupTh
 						name={$LL.graphql.objects.Role.fields.groups.name()}
 						bind:value={args.groups}
@@ -285,7 +285,7 @@
 				{/if}
 			</slot>
 			<slot name="composites-th" {args} {orderBy} {fields}>
-				{#if !fields?.composites?.hiddenCol?.(args, tab?.(args), fieldsArgs?.composites)}
+				{#if !fields?.composites?.hiddenCol?.(args, tab, fieldsArgs?.composites)}
 					<RoleTh
 						name={$LL.graphql.objects.Role.fields.composites.name()}
 						bind:value={args.composites}
@@ -297,7 +297,7 @@
 				{/if}
 			</slot>
 			<slot name="permissions-th" {args} {orderBy} {fields}>
-				{#if !fields?.permissions?.hiddenCol?.(args, tab?.(args), fieldsArgs?.permissions)}
+				{#if !fields?.permissions?.hiddenCol?.(args, tab, fieldsArgs?.permissions)}
 					<PermissionTh
 						name={$LL.graphql.objects.Role.fields.permissions.name()}
 						bind:value={args.permissions}
@@ -309,7 +309,7 @@
 				{/if}
 			</slot>
 			<slot name="realm-th" {args} {orderBy} {fields}>
-				{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+				{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 					<RealmTh
 						name={$LL.graphql.objects.Role.fields.realm.name()}
 						bind:value={args.realm}
@@ -354,7 +354,7 @@
 							</label>
 						</th>
 						<slot name="name" {node} {errors} {fields} {row}>
-							{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+							{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 								<Td {zIndex} {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['td']}>
 									<StringInput
 										name="name"
@@ -385,7 +385,7 @@
 							{/if}
 						</slot>
 						<slot name="description" {node} {errors} {fields} {row}>
-							{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+							{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 								<Td {zIndex} {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['td']}>
 									<StringInput
 										name="description"
@@ -416,7 +416,7 @@
 							{/if}
 						</slot>
 						<slot name="users" {node} {errors} {fields} {row}>
-							{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
+							{#if !fields?.users?.hiddenCol?.(args, tab, fieldsArgs?.users)}
 								<Td errors={errors?.[row]?.iterms?.users} {zIndex} {...fields?.users?.props?.($LL, node, fieldsArgs?.users)?.['td']}>
 									{#if node.id}
 										<ObjectLink
@@ -458,7 +458,7 @@
 							{/if}
 						</slot>
 						<slot name="groups" {node} {errors} {fields} {row}>
-							{#if !fields?.groups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.groups)}
+							{#if !fields?.groups?.hiddenCol?.(args, tab, fieldsArgs?.groups)}
 								<Td {zIndex} {...fields?.groups?.props?.($LL, node, fieldsArgs?.groups)?.['td']}>
 									<GroupSelect
 										name="groups"
@@ -490,7 +490,7 @@
 							{/if}
 						</slot>
 						<slot name="composites" {node} {errors} {fields} {row}>
-							{#if !fields?.composites?.hiddenCol?.(args, tab?.(args), fieldsArgs?.composites)}
+							{#if !fields?.composites?.hiddenCol?.(args, tab, fieldsArgs?.composites)}
 								<Td {zIndex} {...fields?.composites?.props?.($LL, node, fieldsArgs?.composites)?.['td']}>
 									<RoleSelect
 										name="composites"
@@ -522,7 +522,7 @@
 							{/if}
 						</slot>
 						<slot name="permissions" {node} {errors} {fields} {row}>
-							{#if !fields?.permissions?.hiddenCol?.(args, tab?.(args), fieldsArgs?.permissions)}
+							{#if !fields?.permissions?.hiddenCol?.(args, tab, fieldsArgs?.permissions)}
 								<Td errors={errors?.[row]?.iterms?.permissions} {zIndex} {...fields?.permissions?.props?.($LL, node, fieldsArgs?.permissions)?.['td']}>
 									{#if node.id}
 										<ObjectLink
@@ -562,7 +562,7 @@
 							{/if}
 						</slot>
 						<slot name="realm" {node} {errors} {fields} {row}>
-							{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+							{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['td']}>
 									{#if node.id}
 										<ObjectLink
@@ -739,7 +739,7 @@
 				</thead>
 				<tbody class="border">
 					<slot name="name-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+						{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 							<Tr class="hover" let:id {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['tr']}>
 								<td>
 									<Label
@@ -781,7 +781,7 @@
 						{/if}
 					</slot>
 					<slot name="description-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+						{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 							<Tr class="hover" let:id {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['tr']}>
 								<td>
 									<Label
@@ -823,7 +823,7 @@
 						{/if}
 					</slot>
 					<slot name="users-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.users?.hiddenCol?.(args, tab?.(args), fieldsArgs?.users)}
+						{#if !fields?.users?.hiddenCol?.(args, tab, fieldsArgs?.users)}
 							<Tr class="hover" let:id {...fields?.users?.props?.($LL, node, fieldsArgs?.users)?.['tr']}>
 								<td>
 									<Label
@@ -875,7 +875,7 @@
 						{/if}
 					</slot>
 					<slot name="groups-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.groups?.hiddenCol?.(args, tab?.(args), fieldsArgs?.groups)}
+						{#if !fields?.groups?.hiddenCol?.(args, tab, fieldsArgs?.groups)}
 							<Tr class="hover" let:id {...fields?.groups?.props?.($LL, node, fieldsArgs?.groups)?.['tr']}>
 								<td>
 									<Label
@@ -918,7 +918,7 @@
 						{/if}
 					</slot>
 					<slot name="composites-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.composites?.hiddenCol?.(args, tab?.(args), fieldsArgs?.composites)}
+						{#if !fields?.composites?.hiddenCol?.(args, tab, fieldsArgs?.composites)}
 							<Tr class="hover" let:id {...fields?.composites?.props?.($LL, node, fieldsArgs?.composites)?.['tr']}>
 								<td>
 									<Label
@@ -961,7 +961,7 @@
 						{/if}
 					</slot>
 					<slot name="permissions-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.permissions?.hiddenCol?.(args, tab?.(args), fieldsArgs?.permissions)}
+						{#if !fields?.permissions?.hiddenCol?.(args, tab, fieldsArgs?.permissions)}
 							<Tr class="hover" let:id {...fields?.permissions?.props?.($LL, node, fieldsArgs?.permissions)?.['tr']}>
 								<td>
 									<Label
@@ -1011,7 +1011,7 @@
 						{/if}
 					</slot>
 					<slot name="realm-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+						{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 							<Tr class="hover" let:id {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['tr']}>
 								<td>
 									<Label

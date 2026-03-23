@@ -28,6 +28,9 @@
 	import BarChart from '~icons/material-symbols/bar-chart';
 	import ShowChart from '~icons/material-symbols/show-chart';
 	import PieChartOutline from '~icons/material-symbols/pie-chart-outline';
+	import Sync from '~icons/material-symbols/sync';
+	import FileDownload from '~icons/material-symbols/file-download';
+	import FileUpload from '~icons/material-symbols/file-upload';
 
 	const icons: Record<string, any> = {
 		commute: Commute,
@@ -58,7 +61,10 @@
 		'key-vertical': KeyVertical,
 		'bar-chart': BarChart,
 		'show-chart': ShowChart,
-		'pie-chart-outline': PieChartOutline
+		'pie-chart-outline': PieChartOutline,
+		'sync': Sync,
+		'file-download': FileDownload,
+		'file-upload': FileUpload
 	};
 
 	export let icon: string;

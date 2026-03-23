@@ -29,7 +29,7 @@
 	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryRealmArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
-	export let tab: ((args?: QueryRealmArgs | undefined) => string | undefined) | undefined = undefined;
+	export let tab: string | undefined = undefined;
 	export let fields: RealmFields | undefined = undefined;
 	export let fieldsPatch: RealmFields | undefined = undefined;
 	export let fieldsArgs: RealmFieldsArgs | undefined = undefined;

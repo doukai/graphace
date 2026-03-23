@@ -23,6 +23,31 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
         node {
           ...{{ objectFieldInfo.originalFieldTypeName }}Fields
           {%- for field in objectFieldInfo.fields %}
+          {%- if field.isListType == false and field.isTable %}
+          {{ field.fieldName }} {
+            {%- for subField in field.fields %}
+            {%- if subField.isLeafType and subField.isAggregate == false %}
+            {{ subField.fieldName }}
+            {%- elsif subField.isFile and subField.isAggregate == false %}
+            {{ subField.fieldName }} {
+              id
+              name
+            }
+            {%- elsif subField.isNamed and subField.isAggregate == false %}
+            {{ subField.fieldName }}{% if subField.isListType and subField.isSelect == false %}(first: 3){% endif %} {
+              {{ subField.fieldTypeIdName }}
+              name
+              description
+            }
+            {%- elsif subField.textFieldName and subField.isAggregate == false %}
+            {{ subField.fieldName }}(first: 3) {
+              {{ subField.fieldTypeIdName }}
+              {{ subField.textFieldName }}
+            }
+            {%- endif %}
+            {%- endfor %}
+          }
+          {%- endif %}
           {%- if field.queryOnly %}
           {%- if field.isLeafType and field.isAggregate == false %}
           {{ field.fieldName }}
@@ -37,6 +62,11 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
             name
             description
           }
+          {%- elsif field.textFieldName and field.isAggregate == false %}
+          {{ field.fieldName }}(first: 3) {
+            {{ field.fieldTypeIdName }}
+            {{ field.textFieldName }}
+          }
           {%- endif %}
           {%- endif %}
           {%- endfor %}
@@ -45,15 +75,7 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
       {%- else %}
       ...{{ objectFieldInfo.originalFieldTypeName }}Fields
       {%- for field in objectFieldInfo.fields %}
-      {%- if field.queryOnly %}
-      {%- if field.isLeafType and field.isAggregate == false %}
-      {{ field.fieldName }}
-      {%- elsif field.isFile and field.isAggregate == false %}
-      {{ field.fieldName }} {
-        id
-        name
-      }
-      {%- elsif field.isListType == false and field.isTable %}
+      {%- if field.isListType == false and field.isTable %}
       {{ field.fieldName }} {
         {%- for subField in field.fields %}
         {%- if subField.isLeafType and subField.isAggregate == false %}
@@ -69,14 +91,33 @@ const query = /* GraphQL */ `query Query_{{ fieldName }}_{{ objectFieldInfo.fiel
           name
           description
         }
+        {%- elsif subField.textFieldName and subField.isAggregate == false %}
+        {{ subField.fieldName }}(first: 3) {
+          {{ subField.fieldTypeIdName }}
+          {{ subField.textFieldName }}
+        }
         {%- endif %}
         {%- endfor %}
+      }
+      {%- endif %}
+      {%- if field.queryOnly %}
+      {%- if field.isLeafType and field.isAggregate == false %}
+      {{ field.fieldName }}
+      {%- elsif field.isFile and field.isAggregate == false %}
+      {{ field.fieldName }} {
+        id
+        name
       }
       {%- elsif field.isNamed and field.isAggregate == false %}
       {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
         {{ field.fieldTypeIdName }}
         name
         description
+      }
+      {%- elsif field.textFieldName and field.isAggregate == false %}
+      {{ field.fieldName }}(first: 3) {
+        {{ field.fieldTypeIdName }}
+        {{ field.textFieldName }}
       }
       {%- endif %}
       {%- endif %}

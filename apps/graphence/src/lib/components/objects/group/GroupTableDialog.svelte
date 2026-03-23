@@ -36,7 +36,7 @@
 	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryGroupListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
-	export let tab: ((args?: QueryGroupListArgs | undefined) => string | undefined) | undefined = undefined;
+	export let tab: string | undefined = undefined;
 	export let fields: GroupFields | undefined = undefined;
 	export let fieldsPatch: GroupFields | undefined = undefined;
 	export let fieldsArgs: GroupFieldsArgs | undefined = undefined;

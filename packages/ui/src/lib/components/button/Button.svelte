@@ -3,6 +3,7 @@
 	import { modal } from '~';
 
 	export let text: string | undefined = '';
+	export let disabled: boolean | undefined = undefined;
 	export let color:
 		| 'neutral'
 		| 'primary'
@@ -42,7 +43,7 @@
 >
 	<button
 		data-part="button"
-		disabled={loading}
+		disabled={disabled || loading}
 		class="btn {color ? `btn-${color}` : ''} max-sm:hidden"
 		on:click|preventDefault={(e) => {
 			if (confirmation) {
@@ -69,7 +70,7 @@
 	</button>
 	<button
 		data-part="button-sm"
-		disabled={loading}
+		disabled={disabled || loading}
 		class="btn btn-square {color ? `btn-${color}` : ''} sm:hidden"
 		on:click|preventDefault={(e) => {
 			if (confirmation) {

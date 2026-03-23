@@ -36,7 +36,7 @@
 	let className: string | undefined = 'btn-link p-0';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryPermissionListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
-	export let tab: ((args?: QueryPermissionListArgs | undefined) => string | undefined) | undefined = undefined;
+	export let tab: string | undefined = undefined;
 	export let fields: PermissionFields | undefined = undefined;
 	export let fieldsPatch: PermissionFields | undefined = undefined;
 	export let fieldsArgs: PermissionFieldsArgs | undefined = undefined;

@@ -51,19 +51,17 @@
 			transition:fade={{ duration: 100 }}
 		/>
 		<div
-			data-part="card"
-			class="card bg-base-100 fixed max-md:w-full max-w-full left-1/2 top-1/2 z-[{nextZIndex}] -translate-x-1/2 -translate-y-1/2"
+			data-part="modal-box"
+			class="modal-box bg-base-100 fixed left-1/2 top-1/2 z-[{nextZIndex}] -translate-x-1/2 -translate-y-1/2"
 			use:melt={$content}
 		>
-			<div class="card-body max-h-[calc(100vh-5rem)] z-[{nextZIndex}]">
-				<div class="card-actions justify-end">
-					<button use:melt={$closeEle} class="btn btn-sm btn-circle btn-ghost"> ✕ </button>
-				</div>
-				{#if title}
-					<h2 use:melt={$titleEle} class="card-title">{title}</h2>
-				{/if}
-				<slot zIndex={nextZIndex} />
-			</div>
+			<button use:melt={$closeEle} class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+				✕
+			</button>
+			{#if title}
+				<h2 use:melt={$titleEle} data-part="modal-title" class="font-bold text-lg">{title}</h2>
+			{/if}
+			<slot zIndex={nextZIndex} />
 		</div>
 	</div>
 {/if}

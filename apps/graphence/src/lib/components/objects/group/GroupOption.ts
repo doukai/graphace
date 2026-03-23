@@ -158,16 +158,16 @@ export type GroupFieldsProps = {
 };
 
 export type GroupFields = {
-	name?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, string | null | undefined, GroupFieldsArgs['name'], GroupFieldsProps['name']> | undefined;
-	description?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, string | null | undefined, GroupFieldsArgs['description'], GroupFieldsProps['description']> | undefined;
-	path?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, string | null | undefined, GroupFieldsArgs['path'], GroupFieldsProps['path']> | undefined;
-	deep?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, number | null | undefined, GroupFieldsArgs['deep'], GroupFieldsProps['deep']> | undefined;
-	parentId?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, string | null | undefined, GroupFieldsArgs['parentId'], GroupFieldsProps['parentId']> | undefined;
-	parent?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, GroupInput | null | undefined, GroupFieldsArgs['parent'], GroupFieldsProps['parent']> & { fields?: (value?: GroupInput | undefined, fieldArg?: GroupFieldsArgs['parent']) => GroupFields } | undefined;
-	subGroups?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, (GroupInput | null | undefined)[] | null | undefined, GroupFieldsArgs['subGroups'], GroupFieldsProps['subGroups']> & { fields?: (value?: GroupInput | undefined, fieldArg?: GroupFieldsArgs['subGroups']) => GroupFields } | undefined;
-	users?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, (UserInput | null | undefined)[] | null | undefined, GroupFieldsArgs['users'], GroupFieldsProps['users']> & { fields?: (value?: GroupInput | undefined, fieldArg?: GroupFieldsArgs['users']) => UserFields } | undefined;
-	roles?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, (RoleInput | null | undefined)[] | null | undefined, GroupFieldsArgs['roles'], GroupFieldsProps['roles']> & { fields?: (value?: GroupInput | undefined, fieldArg?: GroupFieldsArgs['roles']) => RoleFields } | undefined;
-	realm?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, RealmInput | null | undefined, GroupFieldsArgs['realm'], GroupFieldsProps['realm']> & { fields?: (value?: GroupInput | undefined, fieldArg?: GroupFieldsArgs['realm']) => RealmFields } | undefined;
+	name?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, string | null | undefined, GroupFieldsArgs['name'], GroupFieldsProps['name'], {}> | undefined;
+	description?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, string | null | undefined, GroupFieldsArgs['description'], GroupFieldsProps['description'], {}> | undefined;
+	path?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, string | null | undefined, GroupFieldsArgs['path'], GroupFieldsProps['path'], {}> | undefined;
+	deep?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, number | null | undefined, GroupFieldsArgs['deep'], GroupFieldsProps['deep'], {}> | undefined;
+	parentId?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, string | null | undefined, GroupFieldsArgs['parentId'], GroupFieldsProps['parentId'], {}> | undefined;
+	parent?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, GroupInput | null | undefined, GroupFieldsArgs['parent'], GroupFieldsProps['parent'], GroupFields> | undefined;
+	subGroups?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, (GroupInput | null | undefined)[] | null | undefined, GroupFieldsArgs['subGroups'], GroupFieldsProps['subGroups'], GroupFields> | undefined;
+	users?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, (UserInput | null | undefined)[] | null | undefined, GroupFieldsArgs['users'], GroupFieldsProps['users'], UserFields> | undefined;
+	roles?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, (RoleInput | null | undefined)[] | null | undefined, GroupFieldsArgs['roles'], GroupFieldsProps['roles'], RoleFields> | undefined;
+	realm?: Option<TranslationFunctions, GroupInput, QueryGroupListArgs, RealmInput | null | undefined, GroupFieldsArgs['realm'], GroupFieldsProps['realm'], RealmFields> | undefined;
 };
 
 export const groupFields: GroupFields = {
@@ -178,7 +178,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::name::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::name::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -202,6 +202,20 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.name.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			const string = record?.[title];
+			if (string) {
+				return string;
+			}
+			return undefined;
+		},
+		toString: ($LL, value, fieldArg) => {
+			const fieldValue = value?.name;
+			return fieldValue ? '' + fieldValue : '';
 		}
 	},
 	description: {
@@ -211,7 +225,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::description::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::description::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -235,6 +249,20 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.description.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			const string = record?.[title];
+			if (string) {
+				return string;
+			}
+			return undefined;
+		},
+		toString: ($LL, value, fieldArg) => {
+			const fieldValue = value?.description;
+			return fieldValue ? '' + fieldValue : '';
 		}
 	},
 	path: {
@@ -244,7 +272,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::path::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::path::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -268,6 +296,20 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.path.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			const string = record?.[title];
+			if (string) {
+				return string;
+			}
+			return undefined;
+		},
+		toString: ($LL, value, fieldArg) => {
+			const fieldValue = value?.path;
+			return fieldValue ? '' + fieldValue : '';
 		}
 	},
 	deep: {
@@ -277,7 +319,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::deep::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::deep::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -301,6 +343,20 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.deep.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			const string = record?.[title];
+			if (string) {
+				return parseInt(string);
+			}
+			return undefined;
+		},
+		toString: ($LL, value, fieldArg) => {
+			const fieldValue = value?.deep;
+			return fieldValue ? '' + fieldValue : '';
 		}
 	},
 	parentId: {
@@ -310,7 +366,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::parentId::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::parentId::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -334,6 +390,20 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.parentId.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			const string = record?.[title];
+			if (string) {
+				return string;
+			}
+			return undefined;
+		},
+		toString: ($LL, value, fieldArg) => {
+			const fieldValue = value?.parentId;
+			return fieldValue ? '' + fieldValue : '';
 		}
 	},
 	parent: {
@@ -343,7 +413,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::parent::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::parent::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -367,6 +437,56 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.parent.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			if (fields) {
+				const fieldRecord = Object.fromEntries(
+					Object.entries(fields)
+						.flatMap(([fieldName, option]) => {
+							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
+							if (string) {
+								return [[fieldName, string]];
+							}
+							return [];
+						})
+				);
+
+				const value = Object.fromEntries(
+					Object.entries(fields)
+						.flatMap(([fieldName, option]) => {
+							const fields = option.toFields?.();
+							const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
+							if (value) {
+								return [[fieldName, value]];
+							}
+							return [];
+						})
+				) as GroupInput;
+
+				if (Object.keys(value).length) {
+					return value;
+				}
+			}
+			return undefined;
+		},
+		toFields: (fieldArg) => {
+			const { name } = groupFields;
+			return { name };
+		},
+		toRecord: ($LL, fields, title, value, fieldArg) => {
+			const fieldValue = value?.parent;
+			return Object.fromEntries(
+				Object.entries(fields)
+					.map(([fieldName, option]) =>
+						[
+							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
+							option?.toString?.($LL, fieldValue, fieldArg) || ''
+						]
+					)
+			);
 		},
 		fields: (value, fieldArg) => groupFields
 	},
@@ -377,7 +497,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::subGroups::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::subGroups::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -401,6 +521,70 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.subGroups.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			if (fields) {
+				const fieldStringArray = Object.fromEntries(
+					Object.entries(fields)
+						.flatMap(([fieldName, option]) => {
+							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
+							if (string?.includes('|')) {
+								return [[fieldName, string?.split('|')]];
+							} else if (string) {
+								return [[fieldName, [string]]];
+							}
+							return [];
+						})
+				);
+
+				const fieldRecords = Array.from({ length: Object.values(fieldStringArray)[0]?.length || 0 })
+					.map((_, row) =>
+						Object.fromEntries(
+							Object.entries(fieldStringArray)
+								.map(([fieldName, stringArray]) =>
+									[fieldName, stringArray[row]]
+								)
+						)
+					);
+
+				const value = fieldRecords.map(fieldRecord =>
+					Object.fromEntries(
+						Object.entries(fields)
+							.flatMap(([fieldName, option]) => {
+								const fields = option.toFields?.();
+								const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
+								if (value) {
+									return [[fieldName, value]];
+								}
+								return [];
+							})
+					) as GroupInput | null | undefined
+				);
+
+				if (value.length) {
+					return value;
+				}
+			}
+			return undefined;
+		},
+		toFields: (fieldArg) => {
+			const { name } = groupFields;
+			return { name };
+		},
+		toRecord: ($LL, fields, title, value, fieldArg) => {
+			const fieldValue = value?.subGroups;
+			return Object.fromEntries(
+				Object.entries(fields)
+					.map(([fieldName, option]) =>
+						[
+							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
+							fieldValue?.map(item => option?.toString?.($LL, item, fieldArg) || '').join('|') || ''
+						]
+					)
+			);
 		},
 		fields: (value, fieldArg) => groupFields
 	},
@@ -411,7 +595,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::users::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::users::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -435,6 +619,70 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.users.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			if (fields) {
+				const fieldStringArray = Object.fromEntries(
+					Object.entries(fields)
+						.flatMap(([fieldName, option]) => {
+							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
+							if (string?.includes('|')) {
+								return [[fieldName, string?.split('|')]];
+							} else if (string) {
+								return [[fieldName, [string]]];
+							}
+							return [];
+						})
+				);
+
+				const fieldRecords = Array.from({ length: Object.values(fieldStringArray)[0]?.length || 0 })
+					.map((_, row) =>
+						Object.fromEntries(
+							Object.entries(fieldStringArray)
+								.map(([fieldName, stringArray]) =>
+									[fieldName, stringArray[row]]
+								)
+						)
+					);
+
+				const value = fieldRecords.map(fieldRecord =>
+					Object.fromEntries(
+						Object.entries(fields)
+							.flatMap(([fieldName, option]) => {
+								const fields = option.toFields?.();
+								const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
+								if (value) {
+									return [[fieldName, value]];
+								}
+								return [];
+							})
+					) as UserInput | null | undefined
+				);
+
+				if (value.length) {
+					return value;
+				}
+			}
+			return undefined;
+		},
+		toFields: (fieldArg) => {
+			const { name } = userFields;
+			return { name };
+		},
+		toRecord: ($LL, fields, title, value, fieldArg) => {
+			const fieldValue = value?.users;
+			return Object.fromEntries(
+				Object.entries(fields)
+					.map(([fieldName, option]) =>
+						[
+							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
+							fieldValue?.map(item => option?.toString?.($LL, item, fieldArg) || '').join('|') || ''
+						]
+					)
+			);
 		},
 		fields: (value, fieldArg) => userFields
 	},
@@ -445,7 +693,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::roles::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::roles::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -469,6 +717,70 @@ export const groupFields: GroupFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.roles.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			if (fields) {
+				const fieldStringArray = Object.fromEntries(
+					Object.entries(fields)
+						.flatMap(([fieldName, option]) => {
+							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
+							if (string?.includes('|')) {
+								return [[fieldName, string?.split('|')]];
+							} else if (string) {
+								return [[fieldName, [string]]];
+							}
+							return [];
+						})
+				);
+
+				const fieldRecords = Array.from({ length: Object.values(fieldStringArray)[0]?.length || 0 })
+					.map((_, row) =>
+						Object.fromEntries(
+							Object.entries(fieldStringArray)
+								.map(([fieldName, stringArray]) =>
+									[fieldName, stringArray[row]]
+								)
+						)
+					);
+
+				const value = fieldRecords.map(fieldRecord =>
+					Object.fromEntries(
+						Object.entries(fields)
+							.flatMap(([fieldName, option]) => {
+								const fields = option.toFields?.();
+								const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
+								if (value) {
+									return [[fieldName, value]];
+								}
+								return [];
+							})
+					) as RoleInput | null | undefined
+				);
+
+				if (value.length) {
+					return value;
+				}
+			}
+			return undefined;
+		},
+		toFields: (fieldArg) => {
+			const { name } = roleFields;
+			return { name };
+		},
+		toRecord: ($LL, fields, title, value, fieldArg) => {
+			const fieldValue = value?.roles;
+			return Object.fromEntries(
+				Object.entries(fields)
+					.map(([fieldName, option]) =>
+						[
+							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
+							fieldValue?.map(item => option?.toString?.($LL, item, fieldArg) || '').join('|') || ''
+						]
+					)
+			);
 		},
 		fields: (value, fieldArg) => roleFields
 	},
@@ -479,7 +791,7 @@ export const groupFields: GroupFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Group::realm::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Group::realm::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -504,6 +816,56 @@ export const groupFields: GroupFields = {
 		props: ($LL, value, fieldArg) => {
 			return {};
 		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Group.fields.realm.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			if (fields) {
+				const fieldRecord = Object.fromEntries(
+					Object.entries(fields)
+						.flatMap(([fieldName, option]) => {
+							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
+							if (string) {
+								return [[fieldName, string]];
+							}
+							return [];
+						})
+				);
+
+				const value = Object.fromEntries(
+					Object.entries(fields)
+						.flatMap(([fieldName, option]) => {
+							const fields = option.toFields?.();
+							const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
+							if (value) {
+								return [[fieldName, value]];
+							}
+							return [];
+						})
+				) as RealmInput;
+
+				if (Object.keys(value).length) {
+					return value;
+				}
+			}
+			return undefined;
+		},
+		toFields: (fieldArg) => {
+			const { name } = realmFields;
+			return { name };
+		},
+		toRecord: ($LL, fields, title, value, fieldArg) => {
+			const fieldValue = value?.realm;
+			return Object.fromEntries(
+				Object.entries(fields)
+					.map(([fieldName, option]) =>
+						[
+							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
+							option?.toString?.($LL, fieldValue, fieldArg) || ''
+						]
+					)
+			);
+		},
 		fields: (value, fieldArg) => realmFields
 	}
 };
@@ -511,35 +873,10 @@ export const groupFields: GroupFields = {
 export const validateRequired = async ($LL: TranslationFunctions, value: GroupInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		if (groupFields?.name?.required?.(value) && value.name == null) {
-			errors['name'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.description?.required?.(value) && value.description == null) {
-			errors['description'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.path?.required?.(value) && value.path == null) {
-			errors['path'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.deep?.required?.(value) && value.deep == null) {
-			errors['deep'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.parentId?.required?.(value) && value.parentId == null) {
-			errors['parentId'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.parent?.required?.(value) && value.parent == null) {
-			errors['parent'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.subGroups?.required?.(value) && value.subGroups == null) {
-			errors['subGroups'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.users?.required?.(value) && value.users == null) {
-			errors['users'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.roles?.required?.(value) && value.roles == null) {
-			errors['roles'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (groupFields?.realm?.required?.(value) && value.realm == null) {
-			errors['realm'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+		for (const [fieldName, options] of Object.entries(groupFields)) {
+			if (options?.required?.(value) && value[fieldName as keyof GroupInput] == null) {
+				errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+			}
 		}
 	}
 	return errors;
@@ -548,45 +885,11 @@ export const validateRequired = async ($LL: TranslationFunctions, value: GroupIn
 export const validateErrors = async ($LL: TranslationFunctions, value: GroupInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		const nameErrors = await groupFields?.name?.validate?.($LL, value);
-		if (nameErrors && nameErrors.length > 0) {
-			errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
-		}
-		const descriptionErrors = await groupFields?.description?.validate?.($LL, value);
-		if (descriptionErrors && descriptionErrors.length > 0) {
-			errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
-		}
-		const pathErrors = await groupFields?.path?.validate?.($LL, value);
-		if (pathErrors && pathErrors.length > 0) {
-			errors['path'] = { errors: pathErrors.map((message) => ({ message })) };
-		}
-		const deepErrors = await groupFields?.deep?.validate?.($LL, value);
-		if (deepErrors && deepErrors.length > 0) {
-			errors['deep'] = { errors: deepErrors.map((message) => ({ message })) };
-		}
-		const parentIdErrors = await groupFields?.parentId?.validate?.($LL, value);
-		if (parentIdErrors && parentIdErrors.length > 0) {
-			errors['parentId'] = { errors: parentIdErrors.map((message) => ({ message })) };
-		}
-		const parentErrors = await groupFields?.parent?.validate?.($LL, value);
-		if (parentErrors && parentErrors.length > 0) {
-			errors['parent'] = { errors: parentErrors.map((message) => ({ message })) };
-		}
-		const subGroupsErrors = await groupFields?.subGroups?.validate?.($LL, value);
-		if (subGroupsErrors && subGroupsErrors.length > 0) {
-			errors['subGroups'] = { errors: subGroupsErrors.map((message) => ({ message })) };
-		}
-		const usersErrors = await groupFields?.users?.validate?.($LL, value);
-		if (usersErrors && usersErrors.length > 0) {
-			errors['users'] = { errors: usersErrors.map((message) => ({ message })) };
-		}
-		const rolesErrors = await groupFields?.roles?.validate?.($LL, value);
-		if (rolesErrors && rolesErrors.length > 0) {
-			errors['roles'] = { errors: rolesErrors.map((message) => ({ message })) };
-		}
-		const realmErrors = await groupFields?.realm?.validate?.($LL, value);
-		if (realmErrors && realmErrors.length > 0) {
-			errors['realm'] = { errors: realmErrors.map((message) => ({ message })) };
+		for (const [fieldName, options] of Object.entries(groupFields)) {
+			const fieldErrors = await options?.validate?.($LL, value);
+			if (fieldErrors && fieldErrors.length > 0) {
+				errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+			}
 		}
 	}
 	return errors;
@@ -648,3 +951,78 @@ export const validateAll = async ($LL: TranslationFunctions, value: (GroupInput 
 		}
 	);
 };
+
+export const toRecords = ($LL: TranslationFunctions, value: (GroupInput | null | undefined)[] | null | undefined, fieldArgs?: GroupFieldsArgs | undefined, fieldsPatch?: GroupFields | undefined) => {
+	if (fieldsPatch) {
+		return value?.map(item =>
+			Object.fromEntries(
+				Object.entries(fieldsPatch)
+					.flatMap(([fieldName, optionPatch]) => {
+						const option = { ...groupFields?.[fieldName as keyof GroupFields], ...optionPatch };
+						const fieldArg = fieldArgs?.[fieldName as keyof GroupFieldsArgs];
+						const title = option.title?.($LL, fieldArg) || fieldName;
+						const fields = option.toFields?.();
+						if (fields && option.toRecord) {
+							return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
+						}
+						const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
+						return [entry];
+					})
+			)
+		);
+	}
+	return value?.map(item =>
+		Object.fromEntries(
+			Object.entries(groupFields)
+				.flatMap(([fieldName, option]) => {
+					const fieldArg = fieldArgs?.[fieldName as keyof GroupFieldsArgs];
+					const title = option.title?.($LL, fieldArg) || fieldName;
+					const fields = option.toFields?.();
+					if (fields && option.toRecord) {
+						return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
+					}
+					const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
+					return [entry];
+				})
+		)
+	);
+}
+
+export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: GroupFields | undefined) => {
+	return Object.fromEntries(
+		Object.entries(errors)
+			.map(([row, errors]) =>
+				[
+					row,
+					Object.entries(groupFields)
+						.flatMap(([fieldName, option]) => {
+							const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof GroupFields] };
+							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
+							const fields = mergedOption.toFields?.();
+							if (fields) {
+								return Object.keys(fields)
+									.map((subFieldName) =>
+										[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
+									);
+							}
+							return [fieldMessages];
+						})
+				]
+			)
+	);
+}
+
+export const fromRecords = ($LL: TranslationFunctions, records: Record<string, string | null | undefined>[] | undefined, fieldArgs?: GroupFieldsArgs | undefined, fieldsPatch?: GroupFields | undefined) => {
+	return records?.map(reocrd =>
+		Object.fromEntries(
+			Object.entries(groupFields)
+				.map(([fieldName, option]) => {
+					const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof GroupFields] };
+					const fieldArg = fieldArgs?.[fieldName as keyof GroupFieldsArgs];
+					const title = mergedOption.title?.($LL, fieldArg) || fieldName;
+					const fields = option.toFields?.();
+					return [fieldName, mergedOption.fromRecord?.($LL, fields, title, reocrd, fieldArg)];
+				})
+		) as GroupInput
+	);
+}

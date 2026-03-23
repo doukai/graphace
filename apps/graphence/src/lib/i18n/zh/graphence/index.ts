@@ -28,6 +28,10 @@ const zh: NamespaceGraphenceTranslation = {
         select: "选择 {name}"
     },
     components: {
+        label: {
+            true: "是",
+            false: "否"
+        },
         search: {
             label: "搜索"
         },
@@ -55,6 +59,15 @@ const zh: NamespaceGraphenceTranslation = {
             profile: "个人资料",
             password: "修改密码",
             logout: "退出"
+        },
+        moduleMenu: {
+            sync: "同步",
+            export: "导出",
+            import: "导入",
+            template: "模版",
+            size: "条数",
+            file: "文件",
+            errorFileName: "{file}_错误"
         },
         resetPassword: {
             password: "密码",

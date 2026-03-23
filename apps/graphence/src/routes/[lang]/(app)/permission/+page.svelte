@@ -2,12 +2,23 @@
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import {
+		toRecords,
+		fromRecords,
+		toErrors
+	} from '~/lib/components/objects/permission/PermissionOption';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
+	import ModuleMenu from '~/lib/components/menu/ModuleMenu.svelte';
+	import ExportDialog from '~/lib/components/xlsx/ExportDialog.svelte';
+	import ImportDialog from '~/lib/components/xlsx/ImportDialog.svelte';
+	import { createQuery_permissionConnection_Store } from '~/lib/stores/query/query_permissionConnection_store';
+	import { createMutation_permissionList_Store } from '~/lib/stores/mutation/mutation_permissionList_store';
 	import {
 		validator,
 		permissions,
 		buildGlobalGraphQLErrorMessage,
-		buildGraphQLErrors
+		buildGraphQLErrors,
+		loadEvent
 	} from '~/utils';
 	import type { QueryPermissionConnectionArgs, PermissionOrderBy, PermissionInput, MutationPermissionArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -22,6 +33,9 @@
 	$: nodes = $query_permissionConnection_Store.response.data?.permissionConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_permissionConnection_Store.response.data?.permissionConnection?.totalCount || 0;
 	$: mutation_permission_Store = data.mutation_permission_Store;
+
+	const export_permissionConnection_Store = createQuery_permissionConnection_Store($loadEvent);
+	const import_permissionList_Store = createMutation_permissionList_Store($loadEvent);
 
 	let value: (PermissionInput | null | undefined)[] = [];
 	$: if (nodes && nodes.length > 0) {
@@ -89,12 +103,83 @@
 	};
 </script>
 
-
-<Breadcrumbs>
-	<li>
-		<span class="badge badge-neutral">{$LL.graphql.objects.Permission.name()}</span>
-	</li>
-</Breadcrumbs>
+<div class="flex justify-between items-center">
+	<Breadcrumbs>
+		<li>
+			<span class="badge badge-neutral">{$LL.graphql.objects.Permission.name()}</span>
+		</li>
+	</Breadcrumbs>
+	<ModuleMenu>
+		<ExportDialog
+			on:export={(e) => {
+				export_permissionConnection_Store
+					.fetch(buildArguments({ ...args, first: e.detail.pageSize }))
+					.then((result) => {
+						if (result.errors) {
+							console.error(errors);
+							toast.error($LL.graphence.message.requestFailed());
+						} else {
+							const nodes = result.data?.permissionConnection?.edges?.map((edge) => edge?.node);
+							const json = toRecords($LL, nodes);
+							if (json) {
+								e.detail.writeFile($LL.graphql.objects.Permission.name(), json);
+							}
+						}
+					});
+			}}
+			on:template={(e) => {
+				const json = toRecords($LL, [{}]);
+				if (json) {
+					e.detail.writeFile($LL.graphql.objects.Permission.name(), json);
+				}
+			}}
+		/>
+		<ImportDialog
+			on:import={(e) => {
+				const list = fromRecords($LL, e.detail.json);
+				if (list) {
+					validate('Mutation_permissionList_Arguments', { list })
+						.then((data) => {
+							import_permissionList_Store.fetch({ list }).then((result) => {
+								if (result.errors) {
+									console.error(result.errors);
+									const errors = buildGraphQLErrors(result.errors, data);
+									if (errors.list?.iterms) {
+										e.detail.writeErrorsFile(
+											$LL.graphql.objects.Permission.name(),
+											e.detail.json,
+											toErrors(errors.list?.iterms)
+										);
+									}
+									const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+									if (globalError) {
+										modal.open({
+											title: $LL.graphence.message.requestFailed(),
+											description: globalError,
+											confirm: () => {
+												query();
+												return true;
+											}
+										});
+									}
+								} else {
+									toast.success($LL.graphence.message.requestSuccess());
+								}
+							});
+						})
+						.catch((validErrors) => {
+							console.error(validErrors);
+							e.detail.writeErrorsFile(
+								$LL.graphql.objects.Permission.name(),
+								e.detail.json,
+								toErrors(validErrors.list?.iterms)
+							);
+						});
+				}
+			}}
+		/>
+	</ModuleMenu>
+</div>
 <Card class="flex flex-col max-w-full min-h-0">
 	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<PermissionTable

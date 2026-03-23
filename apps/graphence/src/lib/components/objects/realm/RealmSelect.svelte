@@ -73,6 +73,8 @@
 <ObjectSelect
 	{id}
 	{name}
+	bind:value={selected}
+	bind:options
 	{list}
 	{disabled}
 	{readonly}
@@ -80,8 +82,6 @@
 	{errors}
 	{loading}
 	class={className}
-	bind:options
-	bind:value={selected}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
 			value = e.detail.value.map((item) => ({

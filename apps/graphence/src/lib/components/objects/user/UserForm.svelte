@@ -45,7 +45,7 @@
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryUserArgs | undefined) => TabInfo[] | undefined) | undefined = userFormTabs;
-	export let tab: ((args?: QueryUserArgs | undefined) => string | undefined) | undefined = userFormTab;
+	export let tab: string | undefined = userFormTab?.(args);
 	export let fields: UserFields | undefined = userFields;
 	export let fieldsPatch: UserFields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -98,7 +98,7 @@
 <div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
-		value={tab?.(args)}
+		bind:value={tab}
 		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
@@ -119,7 +119,7 @@
 		<Loading class="col-span-full" />
 	{:else if value}
 		<slot name="name" {value} {errors} {fields}>
-			{#if !fields?.name?.hidden?.(value, fieldsArgs?.name)}
+			{#if !fields?.name?.hidden?.(value, tab, fieldsArgs?.name)}
 				<FormControl let:id {...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['form-control']}>
 					<Label
 						{id}
@@ -147,7 +147,7 @@
 			{/if}
 		</slot>
 		<slot name="description" {value} {errors} {fields}>
-			{#if !fields?.description?.hidden?.(value, fieldsArgs?.description)}
+			{#if !fields?.description?.hidden?.(value, tab, fieldsArgs?.description)}
 				<FormControl let:id {...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['form-control']}>
 					<Label
 						{id}
@@ -175,7 +175,7 @@
 			{/if}
 		</slot>
 		<slot name="lastName" {value} {errors} {fields}>
-			{#if !fields?.lastName?.hidden?.(value, fieldsArgs?.lastName)}
+			{#if !fields?.lastName?.hidden?.(value, tab, fieldsArgs?.lastName)}
 				<FormControl let:id {...fields?.lastName?.props?.($LL, value, fieldsArgs?.lastName)?.['form-control']}>
 					<Label
 						{id}
@@ -203,7 +203,7 @@
 			{/if}
 		</slot>
 		<slot name="login" {value} {errors} {fields}>
-			{#if !fields?.login?.hidden?.(value, fieldsArgs?.login)}
+			{#if !fields?.login?.hidden?.(value, tab, fieldsArgs?.login)}
 				<FormControl let:id {...fields?.login?.props?.($LL, value, fieldsArgs?.login)?.['form-control']}>
 					<Label
 						{id}
@@ -231,7 +231,7 @@
 			{/if}
 		</slot>
 		<slot name="email" {value} {errors} {fields}>
-			{#if !fields?.email?.hidden?.(value, fieldsArgs?.email)}
+			{#if !fields?.email?.hidden?.(value, tab, fieldsArgs?.email)}
 				<FormControl let:id {...fields?.email?.props?.($LL, value, fieldsArgs?.email)?.['form-control']}>
 					<Label
 						{id}
@@ -259,7 +259,7 @@
 			{/if}
 		</slot>
 		<slot name="phones" {value} {errors} {fields}>
-			{#if !fields?.phones?.hidden?.(value, fieldsArgs?.phones)}
+			{#if !fields?.phones?.hidden?.(value, tab, fieldsArgs?.phones)}
 				<FormControl let:id {...fields?.phones?.props?.($LL, value, fieldsArgs?.phones)?.['form-control']}>
 					<Label
 						{id}
@@ -288,7 +288,7 @@
 			{/if}
 		</slot>
 		<slot name="disable" {value} {errors} {fields}>
-			{#if !fields?.disable?.hidden?.(value, fieldsArgs?.disable)}
+			{#if !fields?.disable?.hidden?.(value, tab, fieldsArgs?.disable)}
 				<FormControl let:id {...fields?.disable?.props?.($LL, value, fieldsArgs?.disable)?.['form-control']}>
 					<Label
 						{id}
@@ -316,7 +316,7 @@
 			{/if}
 		</slot>
 		<slot name="groups" {value} {errors} {fields}>
-			{#if !fields?.groups?.hidden?.(value, fieldsArgs?.groups)}
+			{#if !fields?.groups?.hidden?.(value, tab, fieldsArgs?.groups)}
 				<FormControl let:id {...fields?.groups?.props?.($LL, value, fieldsArgs?.groups)?.['form-control']}>
 					<Label
 						{id}
@@ -345,7 +345,7 @@
 			{/if}
 		</slot>
 		<slot name="roles" {value} {errors} {fields}>
-			{#if !fields?.roles?.hidden?.(value, fieldsArgs?.roles)}
+			{#if !fields?.roles?.hidden?.(value, tab, fieldsArgs?.roles)}
 				<FormControl let:id {...fields?.roles?.props?.($LL, value, fieldsArgs?.roles)?.['form-control']}>
 					<Label
 						{id}
@@ -374,7 +374,7 @@
 			{/if}
 		</slot>
 		<slot name="realm" {value} {errors} {fields}>
-			{#if !fields?.realm?.hidden?.(value, fieldsArgs?.realm)}
+			{#if !fields?.realm?.hidden?.(value, tab, fieldsArgs?.realm)}
 				<FormControl let:id {...fields?.realm?.props?.($LL, value, fieldsArgs?.realm)?.['form-control']}>
 					<Label
 						{id}

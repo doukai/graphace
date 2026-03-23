@@ -142,11 +142,11 @@
 					use:melt={$tag(t)}
 					class="badge {errors?.iterms?.[index]
 						? 'badge-error'
-						: 'badge-neutral'} flex items-center px-0 max-w-full [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
+						: 'badge-neutral'} flex items-center max-w-full [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 				>
 					<span
 						data-part="text"
-						class="flex items-center px-1 border-r min-w-0 max-w-full sm:truncate {errors?.iterms?.[index]
+						class="flex items-center border-r min-w-0 max-w-full sm:truncate {errors?.iterms?.[index]
 							? 'bg-error'
 							: 'bg-neutral'} border-white/10"
 					>
@@ -156,7 +156,7 @@
 						data-part="delete"
 						use:melt={$deleteTrigger(t)}
 						{disabled}
-						class="flex items-center h-full px-1 {errors?.iterms?.[index]
+						class="flex items-center h-full {errors?.iterms?.[index]
 							? 'enabled:hover:bg-error-focus'
 							: 'enabled:hover:bg-neutral-focus'}"
 					>
@@ -176,7 +176,7 @@
 					data-part="search"
 					{id}
 					type="text"
-					class="input px-1 h-5 min-w-5 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+					class="input h-5 min-w-5 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 					on:focus={(e) => {
 						if ($touchedInput) {
 							debounce(() => {

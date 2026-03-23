@@ -65,7 +65,7 @@
 	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryPermissionListArgs | undefined) => TabInfo[] | undefined) | undefined = permissionTabs;
-	export let tab: ((args?: QueryPermissionListArgs | undefined) => string | undefined) | undefined = permissionTab;
+	export let tab: string | undefined = permissionTab?.(args);
 	export let fields: PermissionFields | undefined = permissionFields;
 	export let fieldsPatch: PermissionFields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -184,7 +184,7 @@
 <div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
-		value={tab?.(args)}
+		bind:value={tab}
 		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
@@ -231,7 +231,7 @@
 				</label>
 			</th>
 			<slot name="name-th" {args} {orderBy} {fields}>
-				{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+				{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 					<StringTh
 						name={$LL.graphql.objects.Permission.fields.name.name()}
 						bind:value={args.name}
@@ -244,7 +244,7 @@
 				{/if}
 			</slot>
 			<slot name="description-th" {args} {orderBy} {fields}>
-				{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+				{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 					<StringTh
 						name={$LL.graphql.objects.Permission.fields.description.name()}
 						bind:value={args.description}
@@ -257,7 +257,7 @@
 				{/if}
 			</slot>
 			<slot name="field-th" {args} {orderBy} {fields}>
-				{#if !fields?.field?.hiddenCol?.(args, tab?.(args), fieldsArgs?.field)}
+				{#if !fields?.field?.hiddenCol?.(args, tab, fieldsArgs?.field)}
 					<StringTh
 						name={$LL.graphql.objects.Permission.fields.field.name()}
 						bind:value={args.field}
@@ -270,7 +270,7 @@
 				{/if}
 			</slot>
 			<slot name="type-th" {args} {orderBy} {fields}>
-				{#if !fields?.type?.hiddenCol?.(args, tab?.(args), fieldsArgs?.type)}
+				{#if !fields?.type?.hiddenCol?.(args, tab, fieldsArgs?.type)}
 					<StringTh
 						name={$LL.graphql.objects.Permission.fields.type.name()}
 						bind:value={args.type}
@@ -283,7 +283,7 @@
 				{/if}
 			</slot>
 			<slot name="permissionType-th" {args} {orderBy} {fields}>
-				{#if !fields?.permissionType?.hiddenCol?.(args, tab?.(args), fieldsArgs?.permissionType)}
+				{#if !fields?.permissionType?.hiddenCol?.(args, tab, fieldsArgs?.permissionType)}
 					<PermissionTypeTh
 						name={$LL.graphql.objects.Permission.fields.permissionType.name()}
 						bind:value={args.permissionType}
@@ -296,7 +296,7 @@
 				{/if}
 			</slot>
 			<slot name="roles-th" {args} {orderBy} {fields}>
-				{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
+				{#if !fields?.roles?.hiddenCol?.(args, tab, fieldsArgs?.roles)}
 					<RoleTh
 						name={$LL.graphql.objects.Permission.fields.roles.name()}
 						bind:value={args.roles}
@@ -308,7 +308,7 @@
 				{/if}
 			</slot>
 			<slot name="realm-th" {args} {orderBy} {fields}>
-				{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+				{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 					<RealmTh
 						name={$LL.graphql.objects.Permission.fields.realm.name()}
 						bind:value={args.realm}
@@ -353,7 +353,7 @@
 							</label>
 						</th>
 						<slot name="name" {node} {errors} {fields} {row}>
-							{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+							{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 								<Td {zIndex} {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['td']}>
 									<StringInput
 										name="name"
@@ -384,7 +384,7 @@
 							{/if}
 						</slot>
 						<slot name="description" {node} {errors} {fields} {row}>
-							{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+							{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 								<Td {zIndex} {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['td']}>
 									<StringInput
 										name="description"
@@ -415,7 +415,7 @@
 							{/if}
 						</slot>
 						<slot name="field" {node} {errors} {fields} {row}>
-							{#if !fields?.field?.hiddenCol?.(args, tab?.(args), fieldsArgs?.field)}
+							{#if !fields?.field?.hiddenCol?.(args, tab, fieldsArgs?.field)}
 								<Td {zIndex} {...fields?.field?.props?.($LL, node, fieldsArgs?.field)?.['td']}>
 									<StringInput
 										name="field"
@@ -446,7 +446,7 @@
 							{/if}
 						</slot>
 						<slot name="type" {node} {errors} {fields} {row}>
-							{#if !fields?.type?.hiddenCol?.(args, tab?.(args), fieldsArgs?.type)}
+							{#if !fields?.type?.hiddenCol?.(args, tab, fieldsArgs?.type)}
 								<Td {zIndex} {...fields?.type?.props?.($LL, node, fieldsArgs?.type)?.['td']}>
 									<StringInput
 										name="type"
@@ -477,7 +477,7 @@
 							{/if}
 						</slot>
 						<slot name="permissionType" {node} {errors} {fields} {row}>
-							{#if !fields?.permissionType?.hiddenCol?.(args, tab?.(args), fieldsArgs?.permissionType)}
+							{#if !fields?.permissionType?.hiddenCol?.(args, tab, fieldsArgs?.permissionType)}
 								<Td {zIndex} {...fields?.permissionType?.props?.($LL, node, fieldsArgs?.permissionType)?.['td']}>
 									<PermissionTypeInput
 										name="permissionType"
@@ -508,7 +508,7 @@
 							{/if}
 						</slot>
 						<slot name="roles" {node} {errors} {fields} {row}>
-							{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
+							{#if !fields?.roles?.hiddenCol?.(args, tab, fieldsArgs?.roles)}
 								<Td {zIndex} {...fields?.roles?.props?.($LL, node, fieldsArgs?.roles)?.['td']}>
 									<RoleSelect
 										name="roles"
@@ -540,7 +540,7 @@
 							{/if}
 						</slot>
 						<slot name="realm" {node} {errors} {fields} {row}>
-							{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+							{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 								<Td errors={errors?.[row]?.iterms?.realm} {zIndex} {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['td']}>
 									{#if node.id}
 										<ObjectLink
@@ -717,7 +717,7 @@
 				</thead>
 				<tbody class="border">
 					<slot name="name-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.name?.hiddenCol?.(args, tab?.(args), fieldsArgs?.name)}
+						{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 							<Tr class="hover" let:id {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['tr']}>
 								<td>
 									<Label
@@ -759,7 +759,7 @@
 						{/if}
 					</slot>
 					<slot name="description-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.description?.hiddenCol?.(args, tab?.(args), fieldsArgs?.description)}
+						{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 							<Tr class="hover" let:id {...fields?.description?.props?.($LL, node, fieldsArgs?.description)?.['tr']}>
 								<td>
 									<Label
@@ -801,7 +801,7 @@
 						{/if}
 					</slot>
 					<slot name="field-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.field?.hiddenCol?.(args, tab?.(args), fieldsArgs?.field)}
+						{#if !fields?.field?.hiddenCol?.(args, tab, fieldsArgs?.field)}
 							<Tr class="hover" let:id {...fields?.field?.props?.($LL, node, fieldsArgs?.field)?.['tr']}>
 								<td>
 									<Label
@@ -843,7 +843,7 @@
 						{/if}
 					</slot>
 					<slot name="type-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.type?.hiddenCol?.(args, tab?.(args), fieldsArgs?.type)}
+						{#if !fields?.type?.hiddenCol?.(args, tab, fieldsArgs?.type)}
 							<Tr class="hover" let:id {...fields?.type?.props?.($LL, node, fieldsArgs?.type)?.['tr']}>
 								<td>
 									<Label
@@ -885,7 +885,7 @@
 						{/if}
 					</slot>
 					<slot name="permissionType-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.permissionType?.hiddenCol?.(args, tab?.(args), fieldsArgs?.permissionType)}
+						{#if !fields?.permissionType?.hiddenCol?.(args, tab, fieldsArgs?.permissionType)}
 							<Tr class="hover" let:id {...fields?.permissionType?.props?.($LL, node, fieldsArgs?.permissionType)?.['tr']}>
 								<td>
 									<Label
@@ -927,7 +927,7 @@
 						{/if}
 					</slot>
 					<slot name="roles-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.roles?.hiddenCol?.(args, tab?.(args), fieldsArgs?.roles)}
+						{#if !fields?.roles?.hiddenCol?.(args, tab, fieldsArgs?.roles)}
 							<Tr class="hover" let:id {...fields?.roles?.props?.($LL, node, fieldsArgs?.roles)?.['tr']}>
 								<td>
 									<Label
@@ -970,7 +970,7 @@
 						{/if}
 					</slot>
 					<slot name="realm-sm" {node} {errors} {fields} {row}>
-						{#if !fields?.realm?.hiddenCol?.(args, tab?.(args), fieldsArgs?.realm)}
+						{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 							<Tr class="hover" let:id {...fields?.realm?.props?.($LL, node, fieldsArgs?.realm)?.['tr']}>
 								<td>
 									<Label

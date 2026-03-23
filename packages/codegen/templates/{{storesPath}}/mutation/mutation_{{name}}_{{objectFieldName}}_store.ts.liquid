@@ -19,15 +19,7 @@ const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInf
     {{ objectFieldInfo.fieldName}} {
       ...{{ objectFieldInfo.originalFieldTypeName }}Fields
       {%- for field in objectFieldInfo.fields %}
-      {%- if field.mutationOnly %}
-      {%- if field.isLeafType and field.isAggregate == false %}
-      {{ field.fieldName }}
-      {%- elsif field.isFile and field.isAggregate == false %}
-      {{ field.fieldName }} {
-        id
-        name
-      }
-      {%- elsif field.isListType == false and field.isTable %}
+      {%- if field.isListType == false and field.isTable %}
       {{ field.fieldName }} {
         {%- for subField in field.fields %}
         {%- if subField.isLeafType and subField.isAggregate == false %}
@@ -43,14 +35,33 @@ const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInf
           name
           description
         }
+        {%- elsif subField.textFieldName and subField.isAggregate == false %}
+        {{ subField.fieldName }}(first: 3) {
+          {{ subField.fieldTypeIdName }}
+          {{ subField.textFieldName }}
+        }
         {%- endif %}
         {%- endfor %}
+      }
+      {%- endif %}
+      {%- if field.mutationOnly %}
+      {%- if field.isLeafType and field.isAggregate == false %}
+      {{ field.fieldName }}
+      {%- elsif field.isFile and field.isAggregate == false %}
+      {{ field.fieldName }} {
+        id
+        name
       }
       {%- elsif field.isNamed and field.isAggregate == false %}
       {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
         {{ field.fieldTypeIdName }}
         name
         description
+      }
+      {%- elsif field.textFieldName and field.isAggregate == false %}
+      {{ field.fieldName }}(first: 3) {
+        {{ field.fieldTypeIdName }}
+        {{ field.textFieldName }}
       }
       {%- endif %}
       {%- endif %}

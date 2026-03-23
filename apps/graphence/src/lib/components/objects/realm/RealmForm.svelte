@@ -42,7 +42,7 @@
 		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryRealmArgs | undefined) => TabInfo[] | undefined) | undefined = realmFormTabs;
-	export let tab: ((args?: QueryRealmArgs | undefined) => string | undefined) | undefined = realmFormTab;
+	export let tab: string | undefined = realmFormTab?.(args);
 	export let fields: RealmFields | undefined = realmFields;
 	export let fieldsPatch: RealmFields | undefined = undefined;
 	$: if (fieldsPatch && Object.keys(fieldsPatch).length > 0) {
@@ -95,7 +95,7 @@
 <div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
-		value={tab?.(args)}
+		bind:value={tab}
 		tabs={tabs?.($LL, args)}
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
@@ -116,7 +116,7 @@
 		<Loading class="col-span-full" />
 	{:else if value}
 		<slot name="name" {value} {errors} {fields}>
-			{#if !fields?.name?.hidden?.(value, fieldsArgs?.name)}
+			{#if !fields?.name?.hidden?.(value, tab, fieldsArgs?.name)}
 				<FormControl let:id {...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['form-control']}>
 					<Label
 						{id}
@@ -144,7 +144,7 @@
 			{/if}
 		</slot>
 		<slot name="description" {value} {errors} {fields}>
-			{#if !fields?.description?.hidden?.(value, fieldsArgs?.description)}
+			{#if !fields?.description?.hidden?.(value, tab, fieldsArgs?.description)}
 				<FormControl let:id {...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['form-control']}>
 					<Label
 						{id}

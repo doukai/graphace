@@ -65,8 +65,8 @@ export type RealmFieldsProps = {
 };
 
 export type RealmFields = {
-	name?: Option<TranslationFunctions, RealmInput, QueryRealmListArgs, string | null | undefined, RealmFieldsArgs['name'], RealmFieldsProps['name']> | undefined;
-	description?: Option<TranslationFunctions, RealmInput, QueryRealmListArgs, string | null | undefined, RealmFieldsArgs['description'], RealmFieldsProps['description']> | undefined;
+	name?: Option<TranslationFunctions, RealmInput, QueryRealmListArgs, string | null | undefined, RealmFieldsArgs['name'], RealmFieldsProps['name'], {}> | undefined;
+	description?: Option<TranslationFunctions, RealmInput, QueryRealmListArgs, string | null | undefined, RealmFieldsArgs['description'], RealmFieldsProps['description'], {}> | undefined;
 };
 
 export const realmFields: RealmFields = {
@@ -77,7 +77,7 @@ export const realmFields: RealmFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Realm::name::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Realm::name::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -101,6 +101,20 @@ export const realmFields: RealmFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Realm.fields.name.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			const string = record?.[title];
+			if (string) {
+				return string;
+			}
+			return undefined;
+		},
+		toString: ($LL, value, fieldArg) => {
+			const fieldValue = value?.name;
+			return fieldValue ? '' + fieldValue : '';
 		}
 	},
 	description: {
@@ -110,7 +124,7 @@ export const realmFields: RealmFields = {
 		disabled: (value, fieldArg) => {
 			return !auth('Realm::description::WRITE');
 		},
-		hidden: (value, fieldArg) => {
+		hidden: (value, tab, fieldArg) => {
 			return !auth('Realm::description::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
@@ -134,6 +148,20 @@ export const realmFields: RealmFields = {
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.Realm.fields.description.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			const string = record?.[title];
+			if (string) {
+				return string;
+			}
+			return undefined;
+		},
+		toString: ($LL, value, fieldArg) => {
+			const fieldValue = value?.description;
+			return fieldValue ? '' + fieldValue : '';
 		}
 	}
 };
@@ -141,11 +169,10 @@ export const realmFields: RealmFields = {
 export const validateRequired = async ($LL: TranslationFunctions, value: RealmInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		if (realmFields?.name?.required?.(value) && value.name == null) {
-			errors['name'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-		}
-		if (realmFields?.description?.required?.(value) && value.description == null) {
-			errors['description'] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+		for (const [fieldName, options] of Object.entries(realmFields)) {
+			if (options?.required?.(value) && value[fieldName as keyof RealmInput] == null) {
+				errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+			}
 		}
 	}
 	return errors;
@@ -154,13 +181,11 @@ export const validateRequired = async ($LL: TranslationFunctions, value: RealmIn
 export const validateErrors = async ($LL: TranslationFunctions, value: RealmInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		const nameErrors = await realmFields?.name?.validate?.($LL, value);
-		if (nameErrors && nameErrors.length > 0) {
-			errors['name'] = { errors: nameErrors.map((message) => ({ message })) };
-		}
-		const descriptionErrors = await realmFields?.description?.validate?.($LL, value);
-		if (descriptionErrors && descriptionErrors.length > 0) {
-			errors['description'] = { errors: descriptionErrors.map((message) => ({ message })) };
+		for (const [fieldName, options] of Object.entries(realmFields)) {
+			const fieldErrors = await options?.validate?.($LL, value);
+			if (fieldErrors && fieldErrors.length > 0) {
+				errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+			}
 		}
 	}
 	return errors;
@@ -222,3 +247,78 @@ export const validateAll = async ($LL: TranslationFunctions, value: (RealmInput 
 		}
 	);
 };
+
+export const toRecords = ($LL: TranslationFunctions, value: (RealmInput | null | undefined)[] | null | undefined, fieldArgs?: RealmFieldsArgs | undefined, fieldsPatch?: RealmFields | undefined) => {
+	if (fieldsPatch) {
+		return value?.map(item =>
+			Object.fromEntries(
+				Object.entries(fieldsPatch)
+					.flatMap(([fieldName, optionPatch]) => {
+						const option = { ...realmFields?.[fieldName as keyof RealmFields], ...optionPatch };
+						const fieldArg = fieldArgs?.[fieldName as keyof RealmFieldsArgs];
+						const title = option.title?.($LL, fieldArg) || fieldName;
+						const fields = option.toFields?.();
+						if (fields && option.toRecord) {
+							return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
+						}
+						const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
+						return [entry];
+					})
+			)
+		);
+	}
+	return value?.map(item =>
+		Object.fromEntries(
+			Object.entries(realmFields)
+				.flatMap(([fieldName, option]) => {
+					const fieldArg = fieldArgs?.[fieldName as keyof RealmFieldsArgs];
+					const title = option.title?.($LL, fieldArg) || fieldName;
+					const fields = option.toFields?.();
+					if (fields && option.toRecord) {
+						return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
+					}
+					const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
+					return [entry];
+				})
+		)
+	);
+}
+
+export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: RealmFields | undefined) => {
+	return Object.fromEntries(
+		Object.entries(errors)
+			.map(([row, errors]) =>
+				[
+					row,
+					Object.entries(realmFields)
+						.flatMap(([fieldName, option]) => {
+							const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof RealmFields] };
+							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
+							const fields = mergedOption.toFields?.();
+							if (fields) {
+								return Object.keys(fields)
+									.map((subFieldName) =>
+										[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
+									);
+							}
+							return [fieldMessages];
+						})
+				]
+			)
+	);
+}
+
+export const fromRecords = ($LL: TranslationFunctions, records: Record<string, string | null | undefined>[] | undefined, fieldArgs?: RealmFieldsArgs | undefined, fieldsPatch?: RealmFields | undefined) => {
+	return records?.map(reocrd =>
+		Object.fromEntries(
+			Object.entries(realmFields)
+				.map(([fieldName, option]) => {
+					const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof RealmFields] };
+					const fieldArg = fieldArgs?.[fieldName as keyof RealmFieldsArgs];
+					const title = mergedOption.title?.($LL, fieldArg) || fieldName;
+					const fields = option.toFields?.();
+					return [fieldName, mergedOption.fromRecord?.($LL, fields, title, reocrd, fieldArg)];
+				})
+		) as RealmInput
+	);
+}

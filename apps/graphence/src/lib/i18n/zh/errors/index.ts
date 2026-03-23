@@ -85,6 +85,9 @@ const zh: NamespaceErrorsTranslation = {
         unevaluatedProperties: '不允许存在未定义的属性',
         uniqueItems: '项目不能重复（第 {i} 项与第 {j} 项重复）',
         default: '必须通过 "{keyword}" 关键字校验'
+    },
+    xlsx: {
+        importFailed: '导入失败，请查看文件 "{file}", 错误已标注在对应单元格的批注中',
     }
 }
 

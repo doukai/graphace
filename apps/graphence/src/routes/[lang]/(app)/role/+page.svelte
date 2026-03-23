@@ -2,12 +2,23 @@
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import {
+		toRecords,
+		fromRecords,
+		toErrors
+	} from '~/lib/components/objects/role/RoleOption';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
+	import ModuleMenu from '~/lib/components/menu/ModuleMenu.svelte';
+	import ExportDialog from '~/lib/components/xlsx/ExportDialog.svelte';
+	import ImportDialog from '~/lib/components/xlsx/ImportDialog.svelte';
+	import { createQuery_roleConnection_Store } from '~/lib/stores/query/query_roleConnection_store';
+	import { createMutation_roleList_Store } from '~/lib/stores/mutation/mutation_roleList_store';
 	import {
 		validator,
 		permissions,
 		buildGlobalGraphQLErrorMessage,
-		buildGraphQLErrors
+		buildGraphQLErrors,
+		loadEvent
 	} from '~/utils';
 	import type { QueryRoleConnectionArgs, RoleOrderBy, RoleInput, MutationRoleArgs } from '~/lib/types/schema';
 	import { LL, locale } from '$i18n/i18n-svelte';
@@ -22,6 +33,9 @@
 	$: nodes = $query_roleConnection_Store.response.data?.roleConnection?.edges?.map((edge) => edge?.node);
 	$: totalCount = $query_roleConnection_Store.response.data?.roleConnection?.totalCount || 0;
 	$: mutation_role_Store = data.mutation_role_Store;
+
+	const export_roleConnection_Store = createQuery_roleConnection_Store($loadEvent);
+	const import_roleList_Store = createMutation_roleList_Store($loadEvent);
 
 	let value: (RoleInput | null | undefined)[] = [];
 	$: if (nodes && nodes.length > 0) {
@@ -89,12 +103,83 @@
 	};
 </script>
 
-
-<Breadcrumbs>
-	<li>
-		<span class="badge badge-neutral">{$LL.graphql.objects.Role.name()}</span>
-	</li>
-</Breadcrumbs>
+<div class="flex justify-between items-center">
+	<Breadcrumbs>
+		<li>
+			<span class="badge badge-neutral">{$LL.graphql.objects.Role.name()}</span>
+		</li>
+	</Breadcrumbs>
+	<ModuleMenu>
+		<ExportDialog
+			on:export={(e) => {
+				export_roleConnection_Store
+					.fetch(buildArguments({ ...args, first: e.detail.pageSize }))
+					.then((result) => {
+						if (result.errors) {
+							console.error(errors);
+							toast.error($LL.graphence.message.requestFailed());
+						} else {
+							const nodes = result.data?.roleConnection?.edges?.map((edge) => edge?.node);
+							const json = toRecords($LL, nodes);
+							if (json) {
+								e.detail.writeFile($LL.graphql.objects.Role.name(), json);
+							}
+						}
+					});
+			}}
+			on:template={(e) => {
+				const json = toRecords($LL, [{}]);
+				if (json) {
+					e.detail.writeFile($LL.graphql.objects.Role.name(), json);
+				}
+			}}
+		/>
+		<ImportDialog
+			on:import={(e) => {
+				const list = fromRecords($LL, e.detail.json);
+				if (list) {
+					validate('Mutation_roleList_Arguments', { list })
+						.then((data) => {
+							import_roleList_Store.fetch({ list }).then((result) => {
+								if (result.errors) {
+									console.error(result.errors);
+									const errors = buildGraphQLErrors(result.errors, data);
+									if (errors.list?.iterms) {
+										e.detail.writeErrorsFile(
+											$LL.graphql.objects.Role.name(),
+											e.detail.json,
+											toErrors(errors.list?.iterms)
+										);
+									}
+									const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+									if (globalError) {
+										modal.open({
+											title: $LL.graphence.message.requestFailed(),
+											description: globalError,
+											confirm: () => {
+												query();
+												return true;
+											}
+										});
+									}
+								} else {
+									toast.success($LL.graphence.message.requestSuccess());
+								}
+							});
+						})
+						.catch((validErrors) => {
+							console.error(validErrors);
+							e.detail.writeErrorsFile(
+								$LL.graphql.objects.Role.name(),
+								e.detail.json,
+								toErrors(validErrors.list?.iterms)
+							);
+						});
+				}
+			}}
+		/>
+	</ModuleMenu>
+</div>
 <Card class="flex flex-col max-w-full min-h-0">
 	<CardBody class="flex-1 min-h-0 overflow-auto">
 		<RoleTable

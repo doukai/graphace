@@ -28,6 +28,10 @@ const en: BaseTranslation = {
         select: "Select {name:string}"
     },
     components: {
+        label: {
+            true: "Yes",
+            false: "No"
+        },
         search: {
             label: "Search"
         },
@@ -55,6 +59,15 @@ const en: BaseTranslation = {
             profile: "Profile",
             password: "Reset password",
             logout: "Logout"
+        },
+        moduleMenu: {
+            sync: "Sync",
+            export: "Export",
+            import: "Import",
+            template: "Template",
+            size: "Size",
+            file: "File",
+            errorFileName: "{file:string}_errors"
         },
         resetPassword: {
             password: "Original password",
