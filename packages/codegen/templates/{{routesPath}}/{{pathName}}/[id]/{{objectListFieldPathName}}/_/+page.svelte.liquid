@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
+	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Form from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Form.svelte';
 	import {
@@ -30,15 +31,18 @@
 	let value: {{ fieldObjectInfo.name }}Input = {};
 	let errors: Record<string, Errors> = {};
 
-	const merge = (input: {{ fieldObjectInfo.name }}Input) => {
+	const mutation_{{ fieldInfo.fieldName }} = (input: {{ fieldObjectInfo.name }}Input) => {
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: id } }, {{ fieldInfo.fieldName }}: [input] })
 			.then((data) => {
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store
-					.fetch({
-						{{ name | camelCase }}_{{ idName }}: {{ idName }},
-						{{ name | camelCase }}_{{ fieldInfo.fieldName }}: [input]
-					})
+					.fetch(
+						{
+							{{ name | camelCase }}_{{ idName }}: {{ idName }},
+							{{ name | camelCase }}_{{ fieldInfo.fieldName }}: [input]
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -93,7 +97,7 @@
 			isMutating={$validator.isValidating || $mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge(e.detail.value);
+					mutation_{{ fieldInfo.fieldName }}(e.detail.value);
 				}
 			{% raw %}}}{% endraw %}
 			on:back={(e) => ot()}

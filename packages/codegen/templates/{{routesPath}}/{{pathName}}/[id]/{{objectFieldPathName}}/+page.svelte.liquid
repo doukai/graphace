@@ -2,6 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
+	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Form from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Form.svelte';
 	import {{ fieldObjectInfo.name }}TableDialog from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}TableDialog.svelte';
@@ -27,7 +28,7 @@
 	$: id = data.id;
 	$: query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
 	$: {{ name | camelCase }} = $query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.response.data?.{{ name | camelCase }};
-	$: {{ fieldObjectInfo.name | camelCase }} = {{ name | camelCase }}?.{{ fieldInfo.fieldName }};
+	$: {{ fieldInfo.fieldName }} = {{ name | camelCase }}?.{{ fieldInfo.fieldName }};
 	$: mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
 	$: mutation_{{ fieldObjectInfo.name | camelCase }}_Store = data.mutation_{{ fieldObjectInfo.name | camelCase }}_Store;
 	{%- if hasFileField %}
@@ -38,8 +39,8 @@
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
 
-	$: if ({{ fieldObjectInfo.name | camelCase }} && Object.keys({{ fieldObjectInfo.name | camelCase }}).length > 0) {
-		value = {{ fieldObjectInfo.name | camelCase }};
+	$: if ({{ fieldInfo.fieldName }} && Object.keys({{ fieldInfo.fieldName }}).length > 0) {
+		value = {{ fieldInfo.fieldName }};
 		showUnbindButton = true;
 	} else {
 		value = {};
@@ -73,15 +74,18 @@
 			});
 	};
 
-	const merge = (input: {{ fieldObjectInfo.name }}Input | null) => {
+	const mutation_{{ fieldInfo.fieldName }} = (input: {{ fieldObjectInfo.name }}Input | null) => {
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ fieldInfo.fieldName }}: input })
 			.then((data) => {
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store
-					.fetch({
-						{{ name | camelCase }}_{{ idName }}: id,
-						{{ name | camelCase }}_{{ fieldInfo.fieldName }}: input
-					})
+					.fetch(
+						{
+							{{ name | camelCase }}_{{ idName }}: id,
+							{{ name | camelCase }}_{{ fieldInfo.fieldName }}: input
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -133,7 +137,7 @@
 			isMutating={$validator.isValidating || $mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store.isFetching || $mutation_{{ fieldObjectInfo.name | camelCase }}_Store.isFetching}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge(e.detail.value);
+					mutation_{{ fieldInfo.fieldName }}(e.detail.value);
 				}
 			{% raw %}}}{% endraw %}
 			on:remove={(e) => {
@@ -154,7 +158,7 @@
 				modal.open({
 					title: $LL.{{ appName }}.components.modal.unbindModalTitle(),
 					confirm: () => {
-						merge(null);
+						mutation_{{ fieldInfo.fieldName }}(null);
 						return true;
 					}
 				});
@@ -178,7 +182,7 @@
 					class="btn-accent"
 					on:select={(e) => {
 						if (!Array.isArray(e.detail.value) && e.detail.value !== undefined) {
-							merge(e.detail.value);
+							mutation_{{ fieldInfo.fieldName }}(e.detail.value);
 						}
 					{% raw %}}}{% endraw %}
 				>

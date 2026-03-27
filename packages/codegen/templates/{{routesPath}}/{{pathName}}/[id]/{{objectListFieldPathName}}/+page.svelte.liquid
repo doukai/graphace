@@ -2,7 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { buildArguments } from '@graphace/graphql';
+	import { buildArguments, merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Table from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Table.svelte';
 	import {{ fieldObjectInfo.name }}TableDialog from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}TableDialog.svelte';
@@ -94,15 +94,18 @@
 			});
 	};
 
-	const merge = (input: {{ fieldObjectInfo.name }}Input[]) => {
+	const mutation_{{ fieldInfo.fieldName }} = (input: {{ fieldObjectInfo.name }}Input[]) => {
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ fieldInfo.fieldName }}: input })
 			.then((data) => {
 				errors = {};
 				mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store
-					.fetch({
-						{{ name | camelCase }}_{{ idName }}: id,
-						{{ name | camelCase }}_{{ fieldInfo.fieldName }}: input
-					})
+					.fetch(
+						{
+							{{ name | camelCase }}_{{ idName }}: id,
+							{{ name | camelCase }}_{{ fieldInfo.fieldName }}: input
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -209,7 +212,7 @@
 					title: $LL.{{ appName }}.components.modal.unbindModalTitle(),
 					confirm: () => {
 						if (Array.isArray(e.detail.value)) {
-							merge(
+							mutation_{{ fieldInfo.fieldName }}(
 								e.detail.value.map((node) => ({
 									where: { {{ fieldObjectInfo.idName }}: { val: node?.{{ fieldObjectInfo.idName }} } },
 									isDeprecated: true
@@ -239,7 +242,7 @@
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {
-							merge(e.detail.value.filter((item) => item != null));
+							mutation_{{ fieldInfo.fieldName }}(e.detail.value.filter((item) => item != null));
 						}
 					{% raw %}}}{% endraw %}
 				>

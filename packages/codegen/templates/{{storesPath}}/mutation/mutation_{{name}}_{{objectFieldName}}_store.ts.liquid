@@ -1,4 +1,4 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 {%- if objectFieldInfo.originalFieldTypeName != fieldTypeName %}
 import { fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/fragment_{{ objectFieldInfo.originalFieldTypeName }}Fields';
 {%- endif %}
@@ -6,12 +6,12 @@ import { fragment_{{ fieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/
 import { createGraphQLMutationStore } from '~/utils';
 import type { {{ objectFieldInfo.fieldTypeName }}Input, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
-const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}) {
-  {{ fieldName }}(where: { {{ fieldTypeIdName }}: { val: ${{ fieldName }}_{{ fieldTypeIdName }} } }, {{ objectFieldInfo.fieldName}}: ${{ fieldName }}_{{ objectFieldInfo.fieldName}}) @merge {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}) {
+  {{ fieldName }}(where: { {{ fieldTypeIdName }}: { val: ${{ fieldName }}_{{ fieldTypeIdName }} } }, {{ objectFieldInfo.fieldName}}: ${{ fieldName }}_{{ objectFieldInfo.fieldName}}) ${directives}{
     ...{{ fieldTypeName }}Fields
     {%- for field in fields %}
     {%- if field.mutationOnly %}
-    {%- if field.isLeafType and field.isAggregate == false %}
+    {%- if field.isLeafType %}
     {{ field.fieldName }}
     {%- endif %}
     {%- endif %}
@@ -19,50 +19,67 @@ const query = /* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInf
     {{ objectFieldInfo.fieldName}} {
       ...{{ objectFieldInfo.originalFieldTypeName }}Fields
       {%- for field in objectFieldInfo.fields %}
-      {%- if field.isListType == false and field.isTable %}
-      {{ field.fieldName }} {
-        {%- for subField in field.fields %}
-        {%- if subField.isLeafType and subField.isAggregate == false %}
-        {{ subField.fieldName }}
-        {%- elsif subField.isFile and subField.isAggregate == false %}
-        {{ subField.fieldName }} {
-          id
-          name
-        }
-        {%- elsif subField.isNamed and subField.isAggregate == false %}
-        {{ subField.fieldName }}{% if subField.isListType and subField.isSelect == false %}(first: 3){% endif %} {
-          {{ subField.fieldTypeIdName }}
-          name
-          description
-        }
-        {%- elsif subField.textFieldName and subField.isAggregate == false %}
-        {{ subField.fieldName }}(first: 3) {
-          {{ subField.fieldTypeIdName }}
-          {{ subField.textFieldName }}
-        }
-        {%- endif %}
-        {%- endfor %}
-      }
-      {%- endif %}
-      {%- if field.mutationOnly %}
-      {%- if field.isLeafType and field.isAggregate == false %}
-      {{ field.fieldName }}
-      {%- elsif field.isFile and field.isAggregate == false %}
-      {{ field.fieldName }} {
-        id
-        name
-      }
-      {%- elsif field.isNamed and field.isAggregate == false %}
+      {%- if field.isTable %}
+      {%- if isListType %}
+      {%- if field.isNamed %}
       {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
         {{ field.fieldTypeIdName }}
         name
         description
       }
-      {%- elsif field.textFieldName and field.isAggregate == false %}
+      {%- elsif field.textFieldName %}
       {{ field.fieldName }}(first: 3) {
         {{ field.fieldTypeIdName }}
         {{ field.textFieldName }}
       }
+      {%- endif %}
+      {%- else %}
+      {{ field.fieldName }} {
+        {%- for subField in field.fields %}
+        {%- if subField.isAggregate == false %}
+        {%- if subField.isLeafType %}
+        {{ subField.fieldName }}
+        {%- elsif subField.isFile %}
+        {{ subField.fieldName }} {
+          id
+          name
+        }
+        {%- elsif subField.isNamed %}
+        {{ subField.fieldName }}{% if subField.isListType and subField.isSelect == false %}(first: 3){% endif %} {
+          {{ subField.fieldTypeIdName }}
+          name
+          description
+        }
+        {%- elsif subField.textFieldName %}
+        {{ subField.fieldName }}(first: 3) {
+          {{ subField.fieldTypeIdName }}
+          {{ subField.textFieldName }}
+        }
+        {%- endif %}
+        {%- endif %}
+        {%- endfor %}
+      }
+      {%- endif %}
+      {%- if field.mutationOnly %}
+      {%- if field.isLeafType %}
+      {{ field.fieldName }}
+      {%- elsif field.isFile %}
+      {{ field.fieldName }} {
+        id
+        name
+      }
+      {%- elsif field.isNamed %}
+      {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
+        {{ field.fieldTypeIdName }}
+        name
+        description
+      }
+      {%- elsif field.textFieldName %}
+      {{ field.fieldName }}(first: 3) {
+        {{ field.fieldTypeIdName }}
+        {{ field.textFieldName }}
+      }
+      {%- endif %}
       {%- endif %}
       {%- endif %}
       {%- endfor %}

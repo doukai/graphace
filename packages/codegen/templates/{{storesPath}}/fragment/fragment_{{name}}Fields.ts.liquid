@@ -1,24 +1,28 @@
 export const fragment_{{ name }}Fields = /* GraphQL */ `fragment {{ name }}Fields on {{ name }} {
     {%- if fields and fields.length > 0 %}
     {%- for field in fields %}
-    {%- if field.isLeafType and field.isAggregate == false %}
+    {%- if field.isAggregate == false %}
+    {%- if field.isLeafType %}
     {{ field.fieldName }}
-    {%- elsif field.isFile and field.isAggregate == false %}
+    {%- elsif field.isFile %}
     {{ field.fieldName }} {
       id
       name
     }
-    {%- elsif field.isNamed and field.isAggregate == false %}
+    {%- elsif field.isTable == false %}
+    {%- if field.isNamed %}
     {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
       {{ field.fieldTypeIdName }}
       name
       description
     }
-    {%- elsif field.textFieldName and field.isAggregate == false %}
+    {%- elsif field.textFieldName %}
     {{ field.fieldName }}(first: 3) {
       {{ field.fieldTypeIdName }}
       {{ field.textFieldName }}
     }
+    {%- endif %}
+    {%- endif %}
     {%- endif %}
     {%- endfor %}
     {%- endif %}

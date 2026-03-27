@@ -28,6 +28,8 @@ import { permissions } from '~/utils';
 const { auth } = permissions;
 {%- endif %}
 
+export const {{ name | camelCase }}Init: ((value: {{ name }}Input | null | undefined) => {{ name }}Input | null | undefined) | undefined = undefined;
+
 export const {{ name | camelCase }}Tabs: (($LL: TranslationFunctions, args?: Query{{ name }}ListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
 export const {{ name | camelCase }}Tab: ((args?: Query{{ name }}ListArgs | undefined) => string | undefined) | undefined = undefined;
@@ -308,7 +310,7 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 			{%- if field.fieldTypeName == 'Boolean' %}
 			return fieldValue ? $LL.{{ appName }}.components.label.true() : $LL.{{ appName }}.components.label.false();
 			{%- elsif field.isScalarType %}
-			return fieldValue ? '' + fieldValue : '';
+			return fieldValue?.toString() ?? '';
 			{%- elsif field.isEnumType %}
 			return fieldValue ? $LL.graphql.enums.{{ field.fieldTypeName }}.values[fieldValue].name() : '';
 			{%- endif %}
@@ -438,6 +440,29 @@ export const toRecords = ($LL: TranslationFunctions, value: ({{ name }}Input | n
 }
 
 export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: {{ name }}Fields | undefined) => {
+	if (fieldsPatch) {
+		return Object.fromEntries(
+			Object.entries(errors)
+				.map(([row, errors]) =>
+					[
+						row,
+						Object.entries(fieldsPatch)
+							.flatMap(([fieldName, optionPatch]) => {
+								const option = { ...{{ name | camelCase }}Fields?.[fieldName as keyof {{ name }}Fields], ...optionPatch };
+								const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
+								const fields = option.toFields?.();
+								if (fields) {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
+										);
+								}
+								return [fieldMessages];
+							})
+					]
+				)
+		);
+	}
 	return Object.fromEntries(
 		Object.entries(errors)
 			.map(([row, errors]) =>
@@ -445,9 +470,8 @@ export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: {{ name }
 					row,
 					Object.entries({{ name | camelCase }}Fields)
 						.flatMap(([fieldName, option]) => {
-							const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof {{ name }}Fields] };
 							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
-							const fields = mergedOption.toFields?.();
+							const fields = option.toFields?.();
 							if (fields) {
 								return Object.keys(fields)
 									.map((subFieldName) =>

@@ -1,15 +1,11 @@
 export const buildArguments = <T>(args: T): T | undefined => {
     if (Array.isArray(args)) {
-        const arr = args.map(arg => buildArguments(arg)).filter(arg => arg != null);
-        if (arr.length) {
-            return <T>arr;
-        }
-        return undefined;
+        return <T>args.map(arg => buildArguments(arg)).filter(arg => arg != null);
     } else if (args != null && typeof args === 'object') {
         if ('opr' in args && args.opr &&
             !(
                 'val' in args && args.val != null ||
-                'arr' in args && Array.isArray(args.arr) && args.arr.length ||
+                'arr' in args && Array.isArray(args.arr) ||
                 args.opr === 'NIL' ||
                 args.opr === 'NNIL'
             )
@@ -38,7 +34,7 @@ export const hasArguments = (args: unknown): boolean => args != null &&
                 (typeof v === 'object' &&
                     (
                         'val' in v && v.val != null ||
-                        'arr' in v && Array.isArray(v.arr) && v.arr.length ||
+                        'arr' in v && Array.isArray(v.arr) ||
                         'opr' in v && v.opr === 'NIL' ||
                         'opr' in v && v.opr === 'NNIL' ||
                         Object.values(v).some((v) => hasArguments(v))

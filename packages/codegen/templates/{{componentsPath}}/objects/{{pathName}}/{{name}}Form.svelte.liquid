@@ -23,12 +23,16 @@
 	import {{ select }}Select from '~/{{ componentsPath }}/objects/{{ select | paramCase }}/{{ select }}Select.svelte';
 	{%- endfor %}
 	{%- for table in tables %}
+	{%- if table != name %}
+	import { {{ table | camelCase }}Init } from '~/{{ componentsPath }}/objects/{{ table | paramCase }}/{{ table }}Option';
+	{%- endif %}
 	import {{ table }}Editable from '~/{{ componentsPath }}/objects/{{ table | paramCase }}/{{ table }}Editable.svelte';
 	{%- endfor %}
 	{%- for dialog in nonSelects %}
 	import {{ dialog }}TableDialog from '~/{{ componentsPath }}/objects/{{ dialog | paramCase }}/{{ dialog }}TableDialog.svelte';
 	{%- endfor %}
 	import {
+		{{ name | camelCase }}Init,
 		{{ name | camelCase }}Fields,
 		type {{ name }}Fields,
 		type {{ name }}FieldsArgs,
@@ -55,7 +59,7 @@
 	export let showBackButton: boolean = false;
 	export let title: string | undefined = undefined;
 	let className: string | undefined =
-		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0 p-1';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: Query{{ name }}Args | undefined) => TabInfo[] | undefined) | undefined = {{ name | camelCase }}FormTabs;
 	export let tab: string | undefined = {{ name | camelCase }}FormTab?.(args);
@@ -91,9 +95,13 @@
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
+
+	if ({{ name | camelCase }}Init) {
+		value = {{ name | camelCase }}Init(value);
+	}
 </script>
 
-<div class="flex justify-between">
+<div class="flex justify-end sm:justify-between">
 	<slot name="start" />
 	<slot name="title">
 		<span class="text-xl font-semibold self-center max-sm:hidden">
@@ -153,36 +161,46 @@
 				<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
 					{#if !fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }})}
 						{%- if field.isTable %}
-						<div class="col-span-full border p-1">
-							<{{ field.fieldTypeName }}Editable
-								title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-								fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
-								showCreateButton
-								showRemoveButton
-								bind:value={value.{{ field.fieldName }}}
-								errors={errors.{{ field.fieldName }}?.iterms}
-								{isFetching}
-								{isMutating}
-								on:remove={(e) => {
-									if (value && e.detail.row != null && !Array.isArray(e.detail.row)) {
-										value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
-									}
-								{% raw %}}}{% endraw %}
-								on:create={(e) => {
-									if (value) {
-										value.{{ field.fieldName }}  = [...(value.{{ field.fieldName }}  || []), {}];
-									}
-								}}
-								on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
-								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
-							/>
-							<ErrorLabels errors={errors.{{ field.fieldName }}} />
+						<div class="card col-span-full border{errors.{{ field.fieldName }} ? ' border-error' : ''}">
+							<div class="card-body">
+								<{{ field.fieldTypeName }}Editable
+									title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+									fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
+									showCreateButton
+									showRemoveButton
+									bind:value={value.{{ field.fieldName }}}
+									errors={errors.{{ field.fieldName }}?.iterms}
+									{isFetching}
+									{isMutating}
+									on:create={(e) => {
+										if (value) {
+											value.{{ field.fieldName }} = [
+												...(value.{{ field.fieldName }} || []),
+												{{ field.fieldTypeName | camelCase }}Init?.() || {}
+											];
+										}
+									{% raw %}}}{% endraw %}
+									on:edit={(e) => {
+										if (e.detail.value && !Array.isArray(e.detail.value)) {
+											to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.value.{{ field.fieldTypeIdName }}}`);
+										}
+									{% raw %}}}{% endraw %}
+									on:remove={(e) => {
+										if (value && e.detail.row != null && !Array.isArray(e.detail.row)) {
+											value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
+										}
+									{% raw %}}}{% endraw %}
+									on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
+									{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
+								/>
+								<ErrorLabels errors={errors.{{ field.fieldName }}} />
+							</div>
 						</div>
 						{%- else %}
 						<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['form-control']}>
 							<Label
 								{id}
-								text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+								text={fields?.{{ field.fieldName }}?.title?.($LL, fieldsArgs?.{{ field.fieldName }}) || $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 								required={fields?.{{ field.fieldName }}?.required?.(value)}
 							/>
 							{%- if field.isScalarType or field.isEnumType or field.isFile %}
@@ -315,36 +333,46 @@
 		<slot name="{{ field.fieldName }}" {value} {errors} {fields}>
 			{#if !fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }})}
 				{%- if field.isTable %}
-				<div class="col-span-full border p-1">
-					<{{ field.fieldTypeName }}Editable
-						title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
-						fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
-						showCreateButton
-						showRemoveButton
-						bind:value={value.{{ field.fieldName }}}
-						errors={errors.{{ field.fieldName }}?.iterms}
-						{isFetching}
-						{isMutating}
-						on:remove={(e) => {
-							if (value && e.detail.row != null && !Array.isArray(e.detail.row)) {
-								value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
-							}
-						{% raw %}}}{% endraw %}
-						on:create={(e) => {
-							if (value) {
-								value.{{ field.fieldName }}  = [...(value.{{ field.fieldName }}  || []), {}];
-							}
-						}}
-						on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
-						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
-					/>
-					<ErrorLabels errors={errors.{{ field.fieldName }}} />
+				<div class="card col-span-full border{errors.{{ field.fieldName }} ? ' border-error' : ''}">
+					<div class="card-body">
+						<{{ field.fieldTypeName }}Editable
+							title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+							fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
+							showCreateButton
+							showRemoveButton
+							bind:value={value.{{ field.fieldName }}}
+							errors={errors.{{ field.fieldName }}?.iterms}
+							{isFetching}
+							{isMutating}
+							on:create={(e) => {
+								if (value) {
+									value.{{ field.fieldName }} = [
+										...(value.{{ field.fieldName }} || []),
+										{{ field.fieldTypeName | camelCase }}Init?.() || {}
+									];
+								}
+							{% raw %}}}{% endraw %}
+							on:edit={(e) => {
+								if (e.detail.value && !Array.isArray(e.detail.value)) {
+									to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.value.{{ field.fieldTypeIdName }}}`);
+								}
+							{% raw %}}}{% endraw %}
+							on:remove={(e) => {
+								if (value && e.detail.row != null && !Array.isArray(e.detail.row)) {
+									value.{{ field.fieldName }} = [...(value.{{ field.fieldName }}?.splice(e.detail.row + 1, 1) || [])];
+								}
+							{% raw %}}}{% endraw %}
+							on:goto={(e) => to(`/${$locale}/{{ field.fieldTypeName | paramCase }}/${e.detail.path}`)}
+							{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
+						/>
+						<ErrorLabels errors={errors.{{ field.fieldName }}} />
+					</div>
 				</div>
 				{%- else %}
 				<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						text={fields?.{{ field.fieldName }}?.title?.($LL, fieldsArgs?.{{ field.fieldName }}) || $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 						required={fields?.{{ field.fieldName }}?.required?.(value)}
 					/>
 					{%- if field.isScalarType or field.isEnumType or field.isFile %}

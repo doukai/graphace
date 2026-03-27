@@ -1,9 +1,9 @@
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
-import type { GraphQLError } from '@graphace/graphql';
+import { buildDirectives, type Directive, type GraphQLError } from '@graphace/graphql';
 import type { Event } from '../types/index.js';
 
-export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, query: string): GraphQLStore<T, V> {
+export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, query: (params: QueryParams) => string): GraphQLStore<T, V> {
     const data: Writable<{ isFetching: boolean, response: { data?: T | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -11,7 +11,7 @@ export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, q
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (variables: V) => {
+    const fetch = async (variables: V, params?: FetchParams | undefined) => {
         update((data) => ({ ...data, isFetching: true }));
 
         const response = await event.fetch(url, {
@@ -20,7 +20,7 @@ export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, q
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                query: query,
+                query: query({ directives: buildDirectives(params?.directives) }),
                 variables: variables
             })
         });
@@ -39,13 +39,13 @@ export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, q
     };
 }
 
-export async function fetchGraphQLQueryStore<T, V>(event: Event, url: string | URL, query: string, variables?: V | undefined): Promise<GraphQLStore<T, V>> {
+export async function fetchGraphQLQueryStore<T, V>(event: Event, url: string | URL, query: (params: QueryParams) => string, variables?: V | undefined, params?: FetchParams | undefined): Promise<GraphQLStore<T, V>> {
     const graphQLQueryStore = createGraphQLQueryStore<T, V>(event, url, query);
-    await graphQLQueryStore.fetch(variables);
+    await graphQLQueryStore.fetch(variables, params);
     return graphQLQueryStore;
 }
 
-export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL, query: string): GraphQLStore<T, V> {
+export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL, query: (params: QueryParams) => string): GraphQLStore<T, V> {
     const data: Writable<{ isFetching: boolean, response: { data?: T | undefined, errors?: GraphQLError[] | null | undefined } }> = writable({
         isFetching: false,
         response: {}
@@ -53,7 +53,7 @@ export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (variables: V) => {
+    const fetch = async (variables: V, params?: FetchParams | undefined) => {
         update((data) => ({ ...data, isFetching: true }));
 
         const { clone, files } = extractFiles(variables);
@@ -63,7 +63,7 @@ export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL
             form.set(
                 'operations',
                 JSON.stringify({
-                    query: query,
+                    query: query({ directives: buildDirectives(params?.directives) }),
                     variables: clone
                 })
             );
@@ -97,7 +97,7 @@ export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    query: query,
+                    query: query({ directives: buildDirectives(params?.directives) }),
                     variables: variables
                 })
             });
@@ -116,6 +116,10 @@ export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL
     };
 }
 
+export type FetchParams = { directives?: Directive[] | undefined };
+
+export type QueryParams = { directives: string };
+
 export type GraphQLStore<T, V> = {
     subscribe: (this: void, run: Subscriber<{
         isFetching: boolean;
@@ -124,7 +128,7 @@ export type GraphQLStore<T, V> = {
         isFetching: boolean;
         response: { data?: T | undefined, errors?: GraphQLError[] | null | undefined };
     }> | undefined) => Unsubscriber;
-    fetch: (variables?: V | undefined) => Promise<{ data?: T | undefined, errors?: GraphQLError[] | null | undefined }>;
+    fetch: (variables?: V | undefined, params?: FetchParams | undefined) => Promise<{ data?: T | undefined, errors?: GraphQLError[] | null | undefined }>;
 }
 
 export function extractFiles(value: any, path = "") {

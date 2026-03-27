@@ -110,7 +110,7 @@
 	let selectAll: boolean;
 </script>
 
-<div class="flex justify-between">
+<div class="flex justify-end sm:justify-between">
 	<slot name="start" />
 	<slot name="title">
 		<span class="text-xl font-semibold self-center max-sm:hidden">
@@ -237,7 +237,7 @@
 				{#if !fields?.{{ field.fieldName }}?.hiddenCol?.(args, tab, fieldsArgs?.{{ field.fieldName }})}
 					{%- if field.isScalarType or field.isEnumType %}
 					<{{ field.fieldTypeName }}Th
-						name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						name={fields?.{{ field.fieldName }}?.title?.($LL, fieldsArgs?.{{ field.fieldName }}) || $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 						bind:value={args.{{ field.fieldName }}}
 						{%- if field.isListType == false %}
 						bind:sort={orderBy.{{ field.fieldName }}}
@@ -249,7 +249,7 @@
 					/>
 					{%- elsif field.inQueryArgs %}
 					<{{ field.fieldTypeName }}Th
-						name={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+						name={fields?.{{ field.fieldName }}?.title?.($LL, fieldsArgs?.{{ field.fieldName }}) || $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 						bind:value={args.{{ field.fieldName }}}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.{{ field.fieldName }}?.required?.()}
@@ -257,7 +257,7 @@
 						{...fields?.{{ field.fieldName }}?.props?.($LL, undefined, fieldsArgs?.{{ field.fieldName }})?.['th']}
 					/>
 					{%- else %}
-					<td>{$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
+					<td>{fields?.{{ field.fieldName }}?.title?.($LL, fieldsArgs?.{{ field.fieldName }}) || $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}</td>
 					{%- endif %}
 				{/if}
 			</slot>
@@ -616,7 +616,8 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
+										text={fields?.{{ field.fieldName }}?.title?.($LL, fieldsArgs?.{{ field.fieldName }}) || 
+											$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 										required={fields?.{{ field.fieldName }}?.required?.(node)}
 										class="truncate"
 									/>

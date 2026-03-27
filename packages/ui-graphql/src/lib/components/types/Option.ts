@@ -1,5 +1,3 @@
-import type { Errors } from "@graphace/commons";
-
 export type Option<L, V, R, F, A, P, S> = {
     readonly?: ((value?: V | undefined, fieldArg?: A) => boolean) | undefined;
     disabled?: ((value?: V | undefined, fieldArg?: A) => boolean) | undefined;

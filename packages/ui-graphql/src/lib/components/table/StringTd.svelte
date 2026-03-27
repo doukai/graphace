@@ -18,6 +18,7 @@
 	export let readonly = false;
 	export let disabled = false;
 	export let placeholder: string = '';
+	export let textarea: boolean | undefined = undefined;
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = '';
 	export { className as class };
@@ -93,6 +94,7 @@
 					{readonly}
 					{disabled}
 					{placeholder}
+					{textarea}
 					{errors}
 				/>
 			</FormControl>

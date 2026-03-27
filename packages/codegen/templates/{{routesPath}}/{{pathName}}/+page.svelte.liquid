@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import { buildArguments } from '@graphace/graphql';
+	import { buildArguments, merge, uniqueMerge } from '@graphace/graphql';
 	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {
 		toRecords,
@@ -124,7 +124,7 @@
 					.then((result) => {
 						if (result.errors) {
 							console.error(errors);
-							toast.error($LL.graphence.message.requestFailed());
+							toast.error($LL.{{ appName }}.message.requestFailed());
 						} else {
 							const nodes = result.data?.{{ name | camelCase }}Connection?.edges?.map((edge) => edge?.node);
 							const json = toRecords($LL, nodes);
@@ -147,32 +147,34 @@
 				if (list) {
 					validate('Mutation_{{ name | camelCase }}List_Arguments', { list })
 						.then((data) => {
-							import_{{ name | camelCase }}List_Store.fetch({ list }).then((result) => {
-								if (result.errors) {
-									console.error(result.errors);
-									const errors = buildGraphQLErrors(result.errors, data);
-									if (errors.list?.iterms) {
-										e.detail.writeErrorsFile(
-											$LL.graphql.objects.{{ name }}.name(),
-											e.detail.json,
-											toErrors(errors.list?.iterms)
-										);
+							import_{{ name | camelCase }}List_Store
+								.fetch({ list }, { directives: [merge(), uniqueMerge()] })
+								.then((result) => {
+									if (result.errors) {
+										console.error(result.errors);
+										const errors = buildGraphQLErrors(result.errors, data);
+										if (errors.list?.iterms) {
+											e.detail.writeErrorsFile(
+												$LL.graphql.objects.{{ name }}.name(),
+												e.detail.json,
+												toErrors(errors.list?.iterms)
+											);
+										}
+										const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+										if (globalError) {
+											modal.open({
+												title: $LL.{{ appName }}.message.requestFailed(),
+												description: globalError,
+												confirm: () => {
+													query();
+													return true;
+												}
+											});
+										}
+									} else {
+										toast.success($LL.{{ appName }}.message.requestSuccess());
 									}
-									const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-									if (globalError) {
-										modal.open({
-											title: $LL.graphence.message.requestFailed(),
-											description: globalError,
-											confirm: () => {
-												query();
-												return true;
-											}
-										});
-									}
-								} else {
-									toast.success($LL.graphence.message.requestSuccess());
-								}
-							});
+								});
 						})
 						.catch((validErrors) => {
 							console.error(validErrors);
