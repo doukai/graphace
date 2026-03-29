@@ -33,7 +33,7 @@
 		multiple
 		on:change
 	>
-		<option value={undefined} />
+		<option value={null} />
 		{#each enums as item}
 			<option value={item.value} disabled={item.disabled}>{item.name}</option>
 		{/each}
@@ -50,7 +50,7 @@
 		class={className}
 		on:change
 	>
-		<option value={undefined} />
+		<option value={null} />
 		{#each enums as item}
 			<option value={item.value} disabled={item.disabled}>{item.name}</option>
 		{/each}

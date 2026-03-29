@@ -5,7 +5,7 @@ export const history: Writable<{ url: URL }[]> = writable([]);
 
 export const canBack = derived(
     history,
-    ($history) => $history.length > 1
+    ($history) => $history.length > 0
 );
 
 export function to(url: string | URL, params?: Record<string, string | undefined>) {
@@ -38,11 +38,13 @@ export function init(url: string | URL, params?: Record<string, string | undefin
 export function ot() {
     const $history = get(history);
     const backPage = $history[$history.length - 2];
+    history.update($history => {
+        $history.pop();
+        return $history;
+    });
     if (backPage) {
-        history.update($history => {
-            $history.pop();
-            return $history;
-        });
         goto(backPage.url);
+    } else {
+        goto("/");
     }
 }

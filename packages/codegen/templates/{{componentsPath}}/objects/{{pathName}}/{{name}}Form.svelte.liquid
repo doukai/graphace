@@ -162,7 +162,7 @@
 					{#if !fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }})}
 						{%- if field.isTable %}
 						<div class="card col-span-full border{errors.{{ field.fieldName }} ? ' border-error' : ''}">
-							<div class="card-body">
+							<div class="card-body max-sm:p-2">
 								<{{ field.fieldTypeName }}Editable
 									title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 									fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
@@ -334,7 +334,7 @@
 			{#if !fields?.{{ field.fieldName }}?.hidden?.(value, tab, fieldsArgs?.{{ field.fieldName }})}
 				{%- if field.isTable %}
 				<div class="card col-span-full border{errors.{{ field.fieldName }} ? ' border-error' : ''}">
-					<div class="card-body">
+					<div class="card-body max-sm:p-2">
 						<{{ field.fieldTypeName }}Editable
 							title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 							fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
