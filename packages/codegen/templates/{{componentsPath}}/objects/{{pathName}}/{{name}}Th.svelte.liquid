@@ -3,6 +3,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Funnel } from '@steeze-ui/heroicons';
 	import { hasArguments } from '@graphace/graphql';
+	import { Td } from '@graphace/ui';
 	import {{ name }}Filter from '~/{{ componentsPath }}/objects/{{ name | paramCase }}/{{ name }}Filter.svelte';
 	import type { {{ name }}Expression } from '~/{{ schemaTypesPath }}';
 
@@ -18,8 +19,8 @@
 </script>
 
 <{{ name }}Filter bind:value {disabled} {zIndex} let:trigger on:filter>
-	<td class={className}>
-		<a class="link group inline-flex sm:truncate" href={null} use:melt={trigger}>
+	<Td class={className}>
+		<a class="link group inline-flex" href={null} use:melt={trigger}>
 			{#if required}
 				<span data-part="label-required" class="text-error">*</span>
 			{/if}
@@ -30,5 +31,5 @@
 				</span>
 			{/if}
 		</a>
-	</td>
+	</Td>
 </{{ name }}Filter>

@@ -42,7 +42,7 @@
 
 <a
 	{id}
-	class="link sm:truncate {errors ? 'link-error' : ''} {className}"
+	class="link {errors ? 'link-error' : ''} {className}"
 	href={null}
 	on:click|preventDefault={(e) => {
 		dispatch('goto', { path });

@@ -49,6 +49,7 @@
 		<button
 			data-part="btn-delete"
 			class="btn join-item shrink"
+			disabled={disabled || readonly}
 			aria-label="-"
 			on:click|preventDefault={(e) => (value = [...value.slice(1)])}
 		>
@@ -58,6 +59,7 @@
 			<button
 				data-part="btn-toggle"
 				class="btn join-item shrink data-[state='on']:btn-neutral"
+				disabled={disabled || readonly}
 				use:melt={$item(index + '')}
 				aria-label="index"
 			>
@@ -72,6 +74,7 @@
 			data-part="btn-add"
 			{id}
 			class="btn join-item shrink"
+			disabled={disabled || readonly}
 			aria-label="+"
 			on:click|preventDefault={(e) => (value = [...value, false])}
 		>

@@ -5,7 +5,7 @@
 
 	export let title: string | undefined = undefined;
 	import { zIndex } from '~';
-	let className: string | undefined = '';
+	let className: string | undefined = '[&_[data-part=modal-box]]:w-11/12 [&_[data-part=modal-box]]:max-w-5xl';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.dialog') || '';
@@ -51,7 +51,7 @@
 		/>
 		<div
 			data-part="modal-box"
-			class="modal-box bg-base-100 fixed left-1/2 top-1/2 z-[{nextZIndex}] -translate-x-1/2 -translate-y-1/2"
+			class="modal-box flex flex-col overflow-hidden bg-base-100 fixed left-1/2 top-1/2 z-[{nextZIndex}] -translate-x-1/2 -translate-y-1/2"
 			use:melt={$content}
 		>
 			<button use:melt={$closeEle} class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -60,7 +60,7 @@
 			{#if title}
 				<h2 use:melt={$titleEle} data-part="modal-title" class="font-bold text-lg">{title}</h2>
 			{/if}
-			<div class="py-4">
+			<div class="flex flex-col flex-1 min-h-0 py-4">
 				<slot zIndex={nextZIndex} />
 			</div>
 		</div>

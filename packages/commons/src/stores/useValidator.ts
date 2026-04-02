@@ -9,15 +9,18 @@ import { buildErrorsTree } from '../index.js';
 
 const buildErrors = (errors: ErrorObject[], data: Record<string, any>): Record<string, Errors> => {
     const instancePathErrors: Record<string, Error[]> = {};
-    errors.map(error => {
-        if (error.keyword === "required") {
-            error.instancePath += `/${error.params.missingProperty}`;
-        }
-        return error;
-    }).reduce((errors, error) => {
-        errors[error.instancePath] = [...errors[error.instancePath] || [], error];
-        return errors;
-    }, instancePathErrors);
+    errors
+        .filter(error => error.keyword !== "anyOf")
+        .filter(error => error.keyword !== "type" || error.params?.type !== "null")
+        .map(error => {
+            if (error.keyword === "required") {
+                error.instancePath += `/${error.params.missingProperty}`;
+            }
+            return error;
+        }).reduce((errors, error) => {
+            errors[error.instancePath] = [...errors[error.instancePath] || [], error];
+            return errors;
+        }, instancePathErrors);
 
     let errorsTree: Record<string, Errors> = {};
     Object.entries(instancePathErrors).forEach(

@@ -26,8 +26,9 @@
 	export let id: string | undefined = nanoid();
 	export let name: string | undefined = undefined;
 	export let placeholder: string = '';
-	export let readonly = false;
 	export let disabled = false;
+	export let readonly = false;
+	export let editable = false;
 	export let unique = true;
 	export let addOnPaste = true;
 	export let errors: Errors | undefined = undefined;
@@ -71,7 +72,7 @@
 			? { value: value, label: value.label }
 			: undefined,
 		multiple: multiple,
-		disabled: disabled,
+		disabled: disabled || readonly,
 		onSelectedChange: ({ curr, next }) => {
 			value = Array.isArray(next) ? next.map((item) => item.value) : next?.value;
 			let original = Array.isArray(curr) ? curr.map((item) => item.value) : curr?.value;
@@ -84,8 +85,8 @@
 		elements: { root, tag, deleteTrigger, edit },
 		states: { tags }
 	} = createTagsInput({
-		disabled: disabled,
-		editable: !readonly,
+		disabled: disabled || readonly,
+		editable: editable,
 		placeholder: placeholder,
 		unique: unique,
 		addOnPaste: addOnPaste,
@@ -146,7 +147,7 @@
 				>
 					<span
 						data-part="text"
-						class="flex items-center border-r min-w-0 max-w-full sm:truncate {errors?.iterms?.[index]
+						class="flex items-center border-r min-w-0 max-w-full {errors?.iterms?.[index]
 							? 'bg-error'
 							: 'bg-neutral'} border-white/10"
 					>
@@ -155,7 +156,7 @@
 					<button
 						data-part="delete"
 						use:melt={$deleteTrigger(t)}
-						{disabled}
+						disabled={disabled || readonly}
 						class="flex items-center h-full {errors?.iterms?.[index]
 							? 'enabled:hover:bg-error-focus'
 							: 'enabled:hover:bg-neutral-focus'}"
@@ -189,13 +190,14 @@
 						}
 					}}
 					{name}
-					placeholder={value || (Array.isArray(value) && value.length > 0) ? '' : placeholder}
+					{placeholder}
 					{disabled}
+					{readonly}
 				/>
 			{/if}
 		</div>
 		<div data-part="icon" class="w-4 flex items-center justify-center z-[{zIndex + 9}]">
-			{#if $open}
+			{#if !disabled && !readonly}
 				<Icon src={ChevronUp} data-part="icon-up" class="size-4" />
 			{:else}
 				<Icon src={ChevronDown} data-part="icon-down" class="size-4" />
@@ -203,11 +205,11 @@
 		</div>
 	</div>
 </div>
-{#if $open}
+{#if $open && !disabled && !readonly}
 	<ul
 		data-part="menu"
 		class="menu rounded shadow bg-base-100 z-[{zIndex +
-			9}] w-full max-h-80 mt-4 flex-nowrap overflow-y-auto"
+			9}] w-full max-h-80 mt-2 flex-nowrap overflow-y-auto"
 		use:melt={$menu}
 		transition:fade={{ duration: 100 }}
 	>
@@ -235,7 +237,7 @@
 								})}
 							>
 								<!-- svelte-ignore a11y-missing-attribute -->
-								<a data-part="option-link" class="flex sm:truncate">
+								<a data-part="option-link" class="flex truncate">
 									{#if $isSelected({ ...children, parent: op })}
 										<Icon data-part="icon-selected" src={Check} class="size-4" />
 									{:else}

@@ -6,6 +6,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Check, XMark, Funnel, BarsArrowDown, BarsArrowUp } from '@steeze-ui/heroicons';
 	import type { StringExpression, Sort } from '@graphace/graphql';
+	import { Td } from '@graphace/ui';
 	import StringFilter from '../input/StringFilter.svelte';
 	import SortSelect from '../input/SortSelect.svelte';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
@@ -82,8 +83,8 @@
 	});
 </script>
 
-<td class={className}>
-	<a class="link group inline-flex sm:truncate" href={null} use:melt={$trigger}>
+<Td class={className}>
+	<a class="link group inline-flex" href={null} use:melt={$trigger}>
 		{#if required}
 			<span data-part="label-required" class="text-error">*</span>
 		{/if}
@@ -104,7 +105,7 @@
 			</span>
 		{/if}
 	</a>
-</td>
+</Td>
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />

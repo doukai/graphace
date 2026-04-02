@@ -27,7 +27,7 @@
 	class:modal-open={isModalOpen}
 	bind:this={modal}
 >
-	<div data-part="modal-box" class="modal-box">
+	<div data-part="modal-box" class="modal-box flex flex-col overflow-hidden">
 		<button
 			data-part="btn-close"
 			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -40,7 +40,7 @@
 		{#if title}
 			<h2 data-part="modal-title" class="font-bold text-lg">{title}</h2>
 		{/if}
-		<div class="py-4">
+		<div class="flex flex-col flex-1 min-h-0 py-4">
 			<slot />
 		</div>
 	</div>

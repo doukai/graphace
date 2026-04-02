@@ -12,6 +12,7 @@
 	export let errors: Errors | undefined = undefined;
 	export let readonly = false;
 	export let disabled = false;
+	export let editable = false;
 	export let unique = true;
 	export let addOnPaste = true;
 	export let id: string | undefined = nanoid();
@@ -30,8 +31,8 @@
 		elements: { root, input, tag, deleteTrigger, edit },
 		states: { tags }
 	} = createTagsInput({
-		disabled: disabled,
-		editable: !readonly,
+		disabled: disabled || readonly,
+		editable: editable,
 		placeholder: placeholder,
 		defaultTags: value?.map((item) => ({ id: item, value: item })) || [],
 		unique: unique,
@@ -68,7 +69,7 @@
 				<button
 					data-part="btn-delete"
 					use:melt={$deleteTrigger(t)}
-					{disabled}
+					disabled={disabled || readonly}
 					class="flex items-center h-full enabled:hover:bg-neutral-focus"
 				>
 					<Icon data-part="icon-delete" src={XMark} class="size-3" />
@@ -90,6 +91,8 @@
 			type="time"
 			{placeholder}
 			class="input px-1 h-5 min-w-20 shrink grow basis-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+			{disabled}
+			{readonly}
 		/>
 	</div>
 	{#if errors?.errors}

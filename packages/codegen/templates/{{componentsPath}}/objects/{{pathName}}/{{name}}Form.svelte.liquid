@@ -113,8 +113,8 @@
 		</span>
 	</slot>
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		showRemoveButton={showRemoveButton && value?.{{idName}} != null}
+		showUnbindButton={showUnbindButton && value?.{{idName}} != null}
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
@@ -507,8 +507,8 @@
 <div class="divider my-0" />
 <div class="flex justify-end">
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		showRemoveButton={showRemoveButton && value?.{{idName}} != null}
+		showUnbindButton={showUnbindButton && value?.{{idName}} != null}
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}

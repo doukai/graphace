@@ -249,14 +249,14 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 				{%- elsif field.fieldTypeName == 'DateTime' or field.fieldTypeName == 'Timestamp' %}
 				if (typeof string !== "number") {
 					return string;
-				} else if (string >= 25569) {
+				} else if (typeof string === "number" && string >= 25569) {
 					const date = new Date((string - 25569) * 86400000);
 					return format(date, "yyyy-MM-dd HH:mm:ss");
 				}
 				{%- elsif field.fieldTypeName == 'Date' %}
 				if (typeof string !== "number") {
 					return string;
-				} else if (string >= 25569) {
+				} else if (typeof string === "number" && string >= 25569) {
 					const date = new Date((string - 25569) * 86400000);
 					return format(date, "yyyy-MM-dd");
 				}
@@ -320,7 +320,7 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 				{%- elsif field.isScalarType %}
 				return fieldValue.map(item => item != null ? item.toString() : '').join('/');
 				{%- elsif field.isEnumType %}
-				return fieldValue.map(item => $LL.graphql.enums.{{ field.fieldTypeName }}.values[fieldValue].name()).join('/');
+				return fieldValue.map(item => item != null ? $LL.graphql.enums.{{ field.fieldTypeName }}.values[fieldValue].name() : '').join('/');
 				{%- endif %}
 				{%- else %}
 				{%- if field.fieldTypeName == 'Boolean' %}
@@ -422,27 +422,15 @@ export const validateAll = async ($LL: TranslationFunctions, value: ({{ name }}I
 };
 
 export const toRecords = ($LL: TranslationFunctions, value: ({{ name }}Input | null | undefined)[] | null | undefined, fieldArgs?: {{ name }}FieldsArgs | undefined, fieldsPatch?: {{ name }}Fields | undefined) => {
-	if (fieldsPatch) {
-		return value?.map(item =>
-			Object.fromEntries(
-				Object.entries(fieldsPatch)
-					.flatMap(([fieldName, optionPatch]) => {
-						const option = { ...{{ name | camelCase }}Fields?.[fieldName as keyof {{ name }}Fields], ...optionPatch };
-						const fieldArg = fieldArgs?.[fieldName as keyof {{ name }}FieldsArgs];
-						const title = option.title?.($LL, fieldArg) || fieldName;
-						const fields = option.toFields?.();
-						if (fields && option.toRecord) {
-							return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
-						}
-						const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
-						return [entry];
-					})
-			)
-		);
-	}
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...{{ name | camelCase }}Fields?.[fieldName as keyof {{ name }}Fields], ...optionPatch }])
+		) : {{ name | camelCase }}Fields;
+		
 	return value?.map(item =>
 		Object.fromEntries(
-			Object.entries({{ name | camelCase }}Fields)
+			Object.entries(fields)
 				.flatMap(([fieldName, option]) => {
 					const fieldArg = fieldArgs?.[fieldName as keyof {{ name }}FieldsArgs];
 					const title = option.title?.($LL, fieldArg) || fieldName;
@@ -458,45 +446,55 @@ export const toRecords = ($LL: TranslationFunctions, value: ({{ name }}Input | n
 }
 
 export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: {{ name }}Fields | undefined) => {
-	if (fieldsPatch) {
-		return Object.fromEntries(
-			Object.entries(errors)
-				.map(([row, errors]) =>
-					[
-						row,
-						Object.entries(fieldsPatch)
-							.flatMap(([fieldName, optionPatch]) => {
-								const option = { ...{{ name | camelCase }}Fields?.[fieldName as keyof {{ name }}Fields], ...optionPatch };
-								const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
-								const fields = option.toFields?.();
-								if (fields) {
-									return Object.keys(fields)
-										.map((subFieldName) =>
-											[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
-										);
-								}
-								return [fieldMessages];
-							})
-					]
-				)
-		);
-	}
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...{{ name | camelCase }}Fields?.[fieldName as keyof {{ name }}Fields], ...optionPatch }])
+		) : {{ name | camelCase }}Fields;
+		
 	return Object.fromEntries(
 		Object.entries(errors)
 			.map(([row, errors]) =>
 				[
 					row,
-					Object.entries({{ name | camelCase }}Fields)
+					Object.entries(fields)
 						.flatMap(([fieldName, option]) => {
 							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
 							const fields = option.toFields?.();
 							if (fields) {
-								return Object.keys(fields)
-									.map((subFieldName) =>
-										[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
-									);
+								if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+													.flatMap((rowErrors) =>
+														rowErrors.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								} else {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								}
 							}
-							return [fieldMessages];
+							if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+								return [
+									[
+										...(fieldMessages || []),
+										...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+											.flatMap((rowErrors) =>
+												rowErrors.errors?.map(error => error.message) || []
+											)
+									]
+								];
+							} else {
+								return [fieldMessages];
+							}
 						})
 				]
 			)

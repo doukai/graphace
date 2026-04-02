@@ -126,14 +126,45 @@
 			id: 'winter'
 		}
 	];
+	export let defaultTheme: string | undefined = 'light';
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'mt-2 max-h-96 w-56 overflow-y-auto';
 	export { className as class };
 
 	const themeStore = getContext<Writable<string | undefined>>('theme');
 
+	const setTheme = (themeId: string) => {
+		themeStore.set(themeId);
+		if (typeof document !== 'undefined') {
+			document.documentElement.setAttribute('data-theme', themeId);
+		}
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem('theme', themeId);
+		}
+	};
+
 	onMount(() => {
 		themeChange(false);
+
+		const currentTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
+
+		let themeToUse: string | undefined;
+
+		if (currentTheme) {
+			themeToUse = currentTheme;
+		} else {
+			let storeValue: string | undefined;
+			const unsubscribe = themeStore.subscribe((value) => {
+				storeValue = value;
+			});
+			unsubscribe();
+
+			themeToUse = storeValue ?? defaultTheme;
+		}
+
+		if (themeToUse) {
+			setTheme(themeToUse);
+		}
 	});
 </script>
 
@@ -154,10 +185,7 @@
 					data-act-class="[&_svg]:visible"
 					on:click={(e) => themeStore.set(theme.id)}
 				>
-					<div
-						data-theme={theme.id}
-						class="bg-base-100 text-base-content cursor-pointer font-sans"
-					>
+					<div data-theme={theme.id} class="bg-base-100 text-base-content cursor-pointer font-sans">
 						<div class="grid grid-cols-5 grid-rows-3">
 							<div class="col-span-5 row-span-3 row-start-1 flex items-center gap-2 px-4 py-3">
 								<Icon src={Check} class="invisible h-3 w-3 shrink-0" />

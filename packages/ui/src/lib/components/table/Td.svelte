@@ -13,7 +13,7 @@
 <td data-element="td" data-part="root" class="{contextClass} {className}">
 	<div
 		data-part="tooltip"
-		class={errors ? `tooltip tooltip-open tooltip-error hover:z-[${zIndex + 3}]` : undefined}
+		class="sm:truncate {errors ? `tooltip tooltip-open tooltip-error hover:z-[${zIndex + 3}]` : ""}"
 		data-tip={errors ? errors?.errors?.map((error) => error.message).join(', ') : undefined}
 	>
 		<slot />
