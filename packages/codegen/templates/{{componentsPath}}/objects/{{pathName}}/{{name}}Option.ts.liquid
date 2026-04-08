@@ -113,6 +113,9 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 		hiddenCol: (args, tab, fieldArg) => {
 			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::READ'){% else %}false{% endif %};
 		},
+		hiddenFilter: (args, fieldArg) => {
+			return {% if useAuth %}!auth('{{ name }}::{{ field.fieldName }}::READ'){% else %}false{% endif %};
+		},
 		required: (value) => {
 			return {% if field.isNonNullType %}true{% else %}false{% endif %};
 		},

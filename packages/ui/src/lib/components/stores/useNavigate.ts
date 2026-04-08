@@ -5,8 +5,15 @@ export const history: Writable<{ url: URL }[]> = writable([]);
 
 export const canBack = derived(
     history,
-    ($history) => $history.length > 0
+    ($history) => $history.length > 1
 );
+
+export function add(url: URL) {
+    history.update(($history) => {
+        $history.push({ url });
+        return $history;
+    });
+}
 
 export function to(url: string | URL, params?: Record<string, string | undefined>) {
     let toUrl: URL;
@@ -21,12 +28,11 @@ export function to(url: string | URL, params?: Record<string, string | undefined
         toUrl = url;
     }
     Object.entries(params || {}).forEach(([k, v]) => {
-        toUrl.searchParams.set(k, v);
+        if (v) {
+            toUrl.searchParams.set(k, v);
+        }
     });
-    history.update(($history) => {
-        $history.push({ url: toUrl });
-        return $history;
-    });
+    add(toUrl);
     goto(toUrl);
 }
 

@@ -31,7 +31,7 @@ export type NamespaceUiGraphqlTranslation = {
 	}
 	table: {
 		/**
-		 * R​e​m​o​v​e​ ​r​o​w​?
+		 * R​e​m​o​v​e​ ​R​o​w​?
 		 */
 		removeModalTitle: string
 		/**
@@ -48,11 +48,11 @@ export type NamespaceUiGraphqlTranslation = {
 		cancelBtn: string
 		th: {
 			/**
-			 * f​i​l​t​e​r
+			 * F​i​l​t​e​r
 			 */
 			filter: string
 			/**
-			 * c​a​n​c​e​l
+			 * C​a​n​c​e​l
 			 */
 			cancel: string
 			/**
@@ -124,65 +124,19 @@ export type NamespaceUiGraphqlTranslation = {
 			 */
 			nbt: string
 			/**
-			 * F​i​l​t​e​r​.​.
+			 * F​i​l​t​e​r​ ​V​a​l​u​e
 			 */
 			filterPlaceholder: string
 		}
 		td: {
 			/**
-			 * s​a​v​e
-			 */
-			save: string
-			/**
-			 * c​l​e​a​r
-			 */
-			clear: string
-		}
-	}
-	grid: {
-		buttons: {
-			/**
-			 * R​e​f​r​e​s​h
-			 */
-			refresh: string
-			/**
 			 * S​a​v​e
 			 */
 			save: string
 			/**
-			 * N​e​w
+			 * C​l​e​a​r
 			 */
-			'new': string
-			/**
-			 * A​p​p​e​n​d
-			 */
-			append: string
-			/**
-			 * R​e​m​o​v​e
-			 */
-			remove: string
-			/**
-			 * o​k
-			 */
-			ok: string
-			/**
-			 * C​a​n​e​l
-			 */
-			canel: string
-			/**
-			 * E​x​p​o​r​t
-			 */
-			'export': string
-			/**
-			 * I​m​p​o​r​t
-			 */
-			'import': string
-		}
-		message: {
-			/**
-			 * M​i​s​s​i​n​g​ ​r​e​q​u​i​r​e​d​ ​f​i​e​l​d​s
-			 */
-			requiredField: string
+			clear: string
 		}
 	}
 }
@@ -212,7 +166,7 @@ export type TranslationFunctions = {
 		}
 		table: {
 			/**
-			 * Remove row?
+			 * Remove Row?
 			 */
 			removeModalTitle: () => LocalizedString
 			/**
@@ -229,11 +183,11 @@ export type TranslationFunctions = {
 			cancelBtn: () => LocalizedString
 			th: {
 				/**
-				 * filter
+				 * Filter
 				 */
 				filter: () => LocalizedString
 				/**
-				 * cancel
+				 * Cancel
 				 */
 				cancel: () => LocalizedString
 				/**
@@ -305,65 +259,19 @@ export type TranslationFunctions = {
 				 */
 				nbt: () => LocalizedString
 				/**
-				 * Filter..
+				 * Filter Value
 				 */
 				filterPlaceholder: () => LocalizedString
 			}
 			td: {
 				/**
-				 * save
-				 */
-				save: () => LocalizedString
-				/**
-				 * clear
-				 */
-				clear: () => LocalizedString
-			}
-		}
-		grid: {
-			buttons: {
-				/**
-				 * Refresh
-				 */
-				refresh: () => LocalizedString
-				/**
 				 * Save
 				 */
 				save: () => LocalizedString
 				/**
-				 * New
+				 * Clear
 				 */
-				'new': () => LocalizedString
-				/**
-				 * Append
-				 */
-				append: () => LocalizedString
-				/**
-				 * Remove
-				 */
-				remove: () => LocalizedString
-				/**
-				 * ok
-				 */
-				ok: () => LocalizedString
-				/**
-				 * Canel
-				 */
-				canel: () => LocalizedString
-				/**
-				 * Export
-				 */
-				'export': () => LocalizedString
-				/**
-				 * Import
-				 */
-				'import': () => LocalizedString
-			}
-			message: {
-				/**
-				 * Missing required fields
-				 */
-				requiredField: () => LocalizedString
+				clear: () => LocalizedString
 			}
 		}
 	}

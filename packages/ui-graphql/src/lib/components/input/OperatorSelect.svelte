@@ -15,7 +15,6 @@
 </script>
 
 <select {id} {name} class="select {className}" bind:value {disabled} on:change>
-	<option value={undefined} />
 	<option value="EQ" selected>{$LL.ui_graphql.table.th.eq()}</option>
 	<option value="NEQ">{$LL.ui_graphql.table.th.neq()}</option>
 	<option value="LK">{$LL.ui_graphql.table.th.lk()}</option>

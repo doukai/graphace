@@ -4,7 +4,7 @@ const en: BaseTranslation = {
 	message: {
 		cancel: "Cancel",
 		confirm: "Confirm",
-		empty: "No result"
+		empty: "No Result"
 	},
 	menu: {
 		menu: "Menu",
@@ -13,7 +13,7 @@ const en: BaseTranslation = {
 	},
 	pagination: {
 		size: "Size",
-		total: "{total:number} results",
+		total: "{total:number} Results",
 		current: "Page {current:number}",
 		previous: "Previous",
 		next: "Next"

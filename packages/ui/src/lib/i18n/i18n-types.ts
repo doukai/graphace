@@ -29,7 +29,7 @@ export type NamespaceUiTranslation = {
 		 */
 		confirm: string
 		/**
-		 * N​o​ ​r​e​s​u​l​t
+		 * N​o​ ​R​e​s​u​l​t
 		 */
 		empty: string
 	}
@@ -53,7 +53,7 @@ export type NamespaceUiTranslation = {
 		 */
 		size: string
 		/**
-		 * {​t​o​t​a​l​}​ ​r​e​s​u​l​t​s
+		 * {​t​o​t​a​l​}​ ​R​e​s​u​l​t​s
 		 * @param {number} total
 		 */
 		total: RequiredParams<'total'>
@@ -260,7 +260,7 @@ export type TranslationFunctions = {
 			 */
 			confirm: () => LocalizedString
 			/**
-			 * No result
+			 * No Result
 			 */
 			empty: () => LocalizedString
 		}
@@ -284,7 +284,7 @@ export type TranslationFunctions = {
 			 */
 			size: () => LocalizedString
 			/**
-			 * {total} results
+			 * {total} Results
 			 */
 			total: (arg: { total: number }) => LocalizedString
 			/**

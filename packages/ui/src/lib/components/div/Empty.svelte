@@ -13,7 +13,7 @@
 <div
 	data-element="empty"
 	data-part="root"
-	class="flex justify-center content-center w-full h-full {contextClass} {className}"
+	class="flex justify-center content-center w-full h-full p-1 {contextClass} {className}"
 >
 	<span data-part="badge" class="badge badge-ghost">{$LL.ui.message.empty()}</span>
 </div>

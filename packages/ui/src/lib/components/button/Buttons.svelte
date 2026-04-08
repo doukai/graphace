@@ -13,6 +13,7 @@
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
 	export let loading: boolean = false;
+	export let zIndex: number = 0;
 	let className: string | undefined = 'flex space-x-1';
 	export { className as class };
 
@@ -29,7 +30,11 @@
 	}>();
 </script>
 
-<div data-element="buttons" data-part="root" class="min-w-0 {contextClass} {className}">
+<div
+	data-element="buttons"
+	data-part="root"
+	class="min-w-0 {contextClass} {className} hover:z-[{zIndex + 3}]"
+>
 	<slot name="start" />
 	{#if showRemoveButton}
 		<Button

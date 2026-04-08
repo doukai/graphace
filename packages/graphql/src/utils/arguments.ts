@@ -11,6 +11,10 @@ export const buildArguments = <T>(args: T): T | undefined => {
             )
         ) {
             return undefined;
+        } else if ('opr' in args && args.opr && (args.opr === 'LK' || args.opr === 'NLK') &&
+            'val' in args && args.val
+        ) {
+            return { ...args, val: `%${args.val}%` };
         } else {
             const obj = Object.fromEntries(
                 Object.entries(args)
@@ -26,18 +30,34 @@ export const buildArguments = <T>(args: T): T | undefined => {
     return args;
 };
 
-export const hasArguments = (args: unknown): boolean => args != null &&
+export const hasArguments = (args: unknown): boolean => typeof args === 'object' && args != null &&
     Object.values(args)
         .some(
             (v) =>
-                v &&
-                (typeof v === 'object' &&
-                    (
-                        'val' in v && v.val != null ||
-                        'arr' in v && Array.isArray(v.arr) ||
-                        'opr' in v && v.opr === 'NIL' ||
-                        'opr' in v && v.opr === 'NNIL' ||
-                        Object.values(v).some((v) => hasArguments(v))
-                    )
+                typeof v === 'object' && v != null &&
+                (
+                    'val' in v && v.val != null ||
+                    'arr' in v && Array.isArray(v.arr) ||
+                    'opr' in v && v.opr === 'NIL' ||
+                    'opr' in v && v.opr === 'NNIL' ||
+                    Object.values(v).some((v) => hasArguments(v))
                 )
+        );
+
+export const hasAsc = (orderBy: unknown): boolean => orderBy === 'ASC' || typeof orderBy === 'object' && orderBy != null &&
+    Object.values(orderBy)
+        .some(
+            (v) =>
+                v === 'ASC' ||
+                typeof v === 'object' && v != null &&
+                Object.values(v).some((v) => hasAsc(v))
+        );
+
+export const hasDesc = (orderBy: unknown): boolean => orderBy === 'DESC' || typeof orderBy === 'object' && orderBy != null &&
+    Object.values(orderBy)
+        .some(
+            (v) =>
+                v === 'DESC' ||
+                typeof v === 'object' && v != null &&
+                Object.values(v).some((v) => hasDesc(v))
         );

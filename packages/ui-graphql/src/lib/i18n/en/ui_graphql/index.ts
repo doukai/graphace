@@ -6,13 +6,13 @@ const en: BaseTranslation = {
 		false: 'No'
 	},
 	table: {
-		removeModalTitle: "Remove row?",
+		removeModalTitle: "Remove Row?",
 		editBtn: "Edit",
 		removeBtn: "Remove",
 		cancelBtn: "Cancel",
 		th: {
-			filter: "filter",
-			cancel: "cancel",
+			filter: "Filter",
+			cancel: "Cancel",
 			noSort: "No Sort",
 			asc: "ASC",
 			desc: "DESC",
@@ -30,11 +30,11 @@ const en: BaseTranslation = {
 			nin: "Not In",
 			bt: "Between",
 			nbt: "Not Between",
-			filterPlaceholder: "Filter..",
+			filterPlaceholder: "Filter Value",
 		},
 		td: {
-			save: "save",
-			clear: "clear"
+			save: "Save",
+			clear: "Clear"
 		}
 	}
 }

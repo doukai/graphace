@@ -126,7 +126,6 @@
 			id: 'winter'
 		}
 	];
-	export let defaultTheme: string | undefined = 'light';
 	export let zIndex: number | undefined = 0;
 	let className: string | undefined = 'mt-2 max-h-96 w-56 overflow-y-auto';
 	export { className as class };
@@ -159,7 +158,7 @@
 			});
 			unsubscribe();
 
-			themeToUse = storeValue ?? defaultTheme;
+			themeToUse = storeValue;
 		}
 
 		if (themeToUse) {

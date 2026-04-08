@@ -15,12 +15,12 @@
 	const LL = getContext<Readable<TranslationFunctions>>('LL');
 	export let placeholder: string | null | undefined = $LL.ui_graphql.table.th.filterPlaceholder();
 
-	if (value === null || value === undefined || Object.keys(value).length === 0) {
+	if (value == null || Object.keys(value).length === 0) {
 		value = { opr: 'EQ', val: undefined, arr: undefined };
 	}
 
 	const oprChange = (): void => {
-		value.arr = [];
+		value.arr = undefined;
 		value.val = undefined;
 	};
 </script>
@@ -46,11 +46,11 @@
 		{name}
 		bind:value={value.val}
 		{placeholder}
-		{disabled}
+		disabled={disabled || value.opr === 'NIL' || value.opr === 'NNIL'}
 		class={className}
 		on:change={(e) => {
 			if (value.val) {
-				value.arr = [];
+				value.arr = undefined;
 			}
 		}}
 	/>

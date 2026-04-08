@@ -26,6 +26,7 @@ import TimeFilter from "./TimeFilter.svelte";
 import TimeInput from "./TimeInput.svelte";
 import TimestampFilter from "./TimestampFilter.svelte";
 import TimestampInput from "./TimestampInput.svelte";
+import SortSelect from "./SortSelect.svelte";
 
 export {
     BooleanFilter,
@@ -55,5 +56,6 @@ export {
     TimeFilter,
     TimeInput,
     TimestampFilter,
-    TimestampInput
+    TimestampInput,
+    SortSelect
 }

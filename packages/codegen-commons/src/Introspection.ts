@@ -17,7 +17,7 @@ import {
     isNonNullType
 } from 'graphql';
 
-export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Aggregate"];
+export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Year", "Month", "Day", "Week", "Quarter", "Aggregate"];
 export const listSuffix = "List";
 export const connectionSuffix = "Connection";
 export const relationSuffix = "Relation";
