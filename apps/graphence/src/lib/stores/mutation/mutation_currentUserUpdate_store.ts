@@ -1,12 +1,12 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { fragment_UserFields } from '~/lib/stores/fragment/fragment_UserFields';
 import { createGraphQLMutationStore } from '~/utils';
-import type { MutationCurrentUserUpdateArgs, User } from '~/lib/types/schema';
+import type { MutationCurrentUserUpdateArgs } from '~/lib/types/schema';
+import type { User } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_currentUserUpdate($userInput: UserInput!) {
-  currentUserUpdate(userInput: $userInput) {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_currentUserUpdate($userInput: UserInput!) {
+  currentUserUpdate(userInput: $userInput) ${directives}{
     ...UserFields
-    syncUserPolicy
   }
 }
 ${fragment_UserFields}`;

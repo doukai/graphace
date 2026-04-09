@@ -1,12 +1,12 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { fragment_UserFields } from '~/lib/stores/fragment/fragment_UserFields';
 import { createGraphQLMutationStore } from '~/utils';
-import type { MutationCurrentUserResetPasswordArgs, User } from '~/lib/types/schema';
+import type { MutationCurrentUserResetPasswordArgs } from '~/lib/types/schema';
+import type { User } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_currentUserResetPassword($password: String!, $newPassword: String!) {
-  currentUserResetPassword(password: $password newPassword: $newPassword) {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_currentUserResetPassword($password: String!, $newPassword: String!) {
+  currentUserResetPassword(password: $password newPassword: $newPassword) ${directives}{
     ...UserFields
-    syncUserPolicy
   }
 }
 ${fragment_UserFields}`;

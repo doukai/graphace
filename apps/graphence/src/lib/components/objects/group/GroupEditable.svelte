@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel, Plus } from '@steeze-ui/heroicons';
+	import { PencilSquare, Trash, ArchiveBoxXMark, Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import {
 		Buttons,
@@ -62,9 +61,10 @@
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
 	export let showSearchInput: boolean = false;
+	export let showFilter: boolean = false;
 	export let title: string | undefined = undefined;
 	export let zIndex: number = 0;
-	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
+	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols [&_[data-element=td]]:max-w-64';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryGroupListArgs | undefined) => TabInfo[] | undefined) | undefined = groupTabs;
 	export let tab: string | undefined = groupTab?.(args);
@@ -124,6 +124,8 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
+		class="flex space-x-1 justify-end max-sm:w-full"
+		{zIndex}
 		on:save={(e) =>
 			validateAll($LL, value)
 				.then((value) => dispatch('save', { value }))
@@ -149,22 +151,18 @@
 		<svelte:fragment slot="start">
 			<slot name="search">
 				{#if showSearchInput}
-					<SearchInput class="max-sm:w-full" on:search />
+					<SearchInput class="max-sm:w-full max-sm:[&_[data-part=input]]:w-full" on:search />
 				{/if}
 			</slot>
-			<div class="sm:hidden">
-				<GroupFilter
-					bind:value={args}
-					let:trigger
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				>
-					<div class="tooltip" data-tip={$LL.graphence.components.query.filter()}>
-						<button class="btn btn-square" use:melt={trigger}>
-							<Icon src={Funnel} class="h-5 w-5" />
-						</button>
-					</div>
-				</GroupFilter>
-			</div>
+			{#if showFilter}
+				<div class="sm:hidden">
+					<GroupFilter
+						bind:value={args}
+						bind:orderBy
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+					/>
+				</div>
+			{/if}
 		</svelte:fragment>
 		{#if showCreateDialog}
 			<GroupFormDialog
@@ -235,7 +233,7 @@
 			<slot name="name-th" {args} {orderBy} {fields}>
 				{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 					<StringTh
-						name={$LL.graphql.objects.Group.fields.name.name()}
+						name={fields?.name?.title?.($LL, fieldsArgs?.name) || $LL.graphql.objects.Group.fields.name.name()}
 						bind:value={args.name}
 						bind:sort={orderBy.name}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -248,7 +246,7 @@
 			<slot name="description-th" {args} {orderBy} {fields}>
 				{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 					<StringTh
-						name={$LL.graphql.objects.Group.fields.description.name()}
+						name={fields?.description?.title?.($LL, fieldsArgs?.description) || $LL.graphql.objects.Group.fields.description.name()}
 						bind:value={args.description}
 						bind:sort={orderBy.description}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -261,7 +259,7 @@
 			<slot name="path-th" {args} {orderBy} {fields}>
 				{#if !fields?.path?.hiddenCol?.(args, tab, fieldsArgs?.path)}
 					<StringTh
-						name={$LL.graphql.objects.Group.fields.path.name()}
+						name={fields?.path?.title?.($LL, fieldsArgs?.path) || $LL.graphql.objects.Group.fields.path.name()}
 						bind:value={args.path}
 						bind:sort={orderBy.path}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -274,7 +272,7 @@
 			<slot name="deep-th" {args} {orderBy} {fields}>
 				{#if !fields?.deep?.hiddenCol?.(args, tab, fieldsArgs?.deep)}
 					<IntTh
-						name={$LL.graphql.objects.Group.fields.deep.name()}
+						name={fields?.deep?.title?.($LL, fieldsArgs?.deep) || $LL.graphql.objects.Group.fields.deep.name()}
 						bind:value={args.deep}
 						bind:sort={orderBy.deep}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -287,7 +285,7 @@
 			<slot name="parentId-th" {args} {orderBy} {fields}>
 				{#if !fields?.parentId?.hiddenCol?.(args, tab, fieldsArgs?.parentId)}
 					<StringTh
-						name={$LL.graphql.objects.Group.fields.parentId.name()}
+						name={fields?.parentId?.title?.($LL, fieldsArgs?.parentId) || $LL.graphql.objects.Group.fields.parentId.name()}
 						bind:value={args.parentId}
 						bind:sort={orderBy.parentId}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -300,8 +298,9 @@
 			<slot name="parent-th" {args} {orderBy} {fields}>
 				{#if !fields?.parent?.hiddenCol?.(args, tab, fieldsArgs?.parent)}
 					<GroupTh
-						name={$LL.graphql.objects.Group.fields.parent.name()}
+						name={fields?.parent?.title?.($LL, fieldsArgs?.parent) || $LL.graphql.objects.Group.fields.parent.name()}
 						bind:value={args.parent}
+						bind:orderBy={orderBy.parent}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.parent?.required?.()}
 						{zIndex}
@@ -312,8 +311,9 @@
 			<slot name="subGroups-th" {args} {orderBy} {fields}>
 				{#if !fields?.subGroups?.hiddenCol?.(args, tab, fieldsArgs?.subGroups)}
 					<GroupTh
-						name={$LL.graphql.objects.Group.fields.subGroups.name()}
+						name={fields?.subGroups?.title?.($LL, fieldsArgs?.subGroups) || $LL.graphql.objects.Group.fields.subGroups.name()}
 						bind:value={args.subGroups}
+						bind:orderBy={orderBy.subGroups}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.subGroups?.required?.()}
 						{zIndex}
@@ -324,8 +324,9 @@
 			<slot name="users-th" {args} {orderBy} {fields}>
 				{#if !fields?.users?.hiddenCol?.(args, tab, fieldsArgs?.users)}
 					<UserTh
-						name={$LL.graphql.objects.Group.fields.users.name()}
+						name={fields?.users?.title?.($LL, fieldsArgs?.users) || $LL.graphql.objects.Group.fields.users.name()}
 						bind:value={args.users}
+						bind:orderBy={orderBy.users}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.users?.required?.()}
 						{zIndex}
@@ -336,8 +337,9 @@
 			<slot name="roles-th" {args} {orderBy} {fields}>
 				{#if !fields?.roles?.hiddenCol?.(args, tab, fieldsArgs?.roles)}
 					<RoleTh
-						name={$LL.graphql.objects.Group.fields.roles.name()}
+						name={fields?.roles?.title?.($LL, fieldsArgs?.roles) || $LL.graphql.objects.Group.fields.roles.name()}
 						bind:value={args.roles}
+						bind:orderBy={orderBy.roles}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.roles?.required?.()}
 						{zIndex}
@@ -348,8 +350,9 @@
 			<slot name="realm-th" {args} {orderBy} {fields}>
 				{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 					<RealmTh
-						name={$LL.graphql.objects.Group.fields.realm.name()}
+						name={fields?.realm?.title?.($LL, fieldsArgs?.realm) || $LL.graphql.objects.Group.fields.realm.name()}
 						bind:value={args.realm}
+						bind:orderBy={orderBy.realm}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.realm?.required?.()}
 						{zIndex}
@@ -779,7 +782,7 @@
 	{:else if value && value.length > 0}
 		{#each value as node, row}
 			{#if node}
-				<thead class="border">
+				<thead>
 					<tr>
 						<th class="w-0">
 							<label>
@@ -800,8 +803,8 @@
 								/>
 							</label>
 						</th>
-						<th class="flex justify-end hover:z-[{zIndex + 3}]">
-							<div class="flex space-x-1">
+						<th class="hover:z-[{zIndex + 3}]">
+							<div class="flex justify-end space-x-1">
 								{#if showEditButton}
 									<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
 										<button
@@ -848,14 +851,14 @@
 						</th>
 					</tr>
 				</thead>
-				<tbody class="border">
+				<tbody>
 					<slot name="name-sm" {node} {errors} {fields} {row}>
 						{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 							<Tr class="hover" let:id {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['tr']}>
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.name.name()}
+										text={fields?.name?.title?.($LL, fieldsArgs?.name) || $LL.graphql.objects.Group.fields.name.name()}
 										required={fields?.name?.required?.(node)}
 										class="truncate"
 									/>
@@ -897,7 +900,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.description.name()}
+										text={fields?.description?.title?.($LL, fieldsArgs?.description) || $LL.graphql.objects.Group.fields.description.name()}
 										required={fields?.description?.required?.(node)}
 										class="truncate"
 									/>
@@ -939,7 +942,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.path.name()}
+										text={fields?.path?.title?.($LL, fieldsArgs?.path) || $LL.graphql.objects.Group.fields.path.name()}
 										required={fields?.path?.required?.(node)}
 										class="truncate"
 									/>
@@ -981,7 +984,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.deep.name()}
+										text={fields?.deep?.title?.($LL, fieldsArgs?.deep) || $LL.graphql.objects.Group.fields.deep.name()}
 										required={fields?.deep?.required?.(node)}
 										class="truncate"
 									/>
@@ -1023,7 +1026,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.parentId.name()}
+										text={fields?.parentId?.title?.($LL, fieldsArgs?.parentId) || $LL.graphql.objects.Group.fields.parentId.name()}
 										required={fields?.parentId?.required?.(node)}
 										class="truncate"
 									/>
@@ -1065,7 +1068,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.parent.name()}
+										text={fields?.parent?.title?.($LL, fieldsArgs?.parent) || $LL.graphql.objects.Group.fields.parent.name()}
 										required={fields?.parent?.required?.(node)}
 										class="truncate"
 									/>
@@ -1107,7 +1110,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.subGroups.name()}
+										text={fields?.subGroups?.title?.($LL, fieldsArgs?.subGroups) || $LL.graphql.objects.Group.fields.subGroups.name()}
 										required={fields?.subGroups?.required?.(node)}
 										class="truncate"
 									/>
@@ -1150,7 +1153,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.users.name()}
+										text={fields?.users?.title?.($LL, fieldsArgs?.users) || $LL.graphql.objects.Group.fields.users.name()}
 										required={fields?.users?.required?.(node)}
 										class="truncate"
 									/>
@@ -1193,7 +1196,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.roles.name()}
+										text={fields?.roles?.title?.($LL, fieldsArgs?.roles) || $LL.graphql.objects.Group.fields.roles.name()}
 										required={fields?.roles?.required?.(node)}
 										class="truncate"
 									/>
@@ -1236,7 +1239,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Group.fields.realm.name()}
+										text={fields?.realm?.title?.($LL, fieldsArgs?.realm) || $LL.graphql.objects.Group.fields.realm.name()}
 										required={fields?.realm?.required?.(node)}
 										class="truncate"
 									/>

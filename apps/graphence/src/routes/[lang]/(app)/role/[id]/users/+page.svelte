@@ -2,7 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { buildArguments } from '@graphace/graphql';
+	import { buildArguments, merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
@@ -84,15 +84,18 @@
 			});
 	};
 
-	const merge = (input: UserInput[]) => {
+	const mutation_users = (input: UserInput[]) => {
 		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, users: input })
 			.then((data) => {
 				errors = {};
 				mutation_role_users_Store
-					.fetch({
-						role_id: id,
-						role_users: input
-					})
+					.fetch(
+						{
+							role_id: id,
+							role_users: input
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -133,13 +136,14 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<UserTable
 			showUnbindButton={auth('User::isDeprecated::WRITE')}
 			showEditButton
 			showCreateButton={auth('User::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
+			showFilter
 			{value}
 			bind:args
 			bind:orderBy
@@ -200,7 +204,7 @@
 					title: $LL.graphence.components.modal.unbindModalTitle(),
 					confirm: () => {
 						if (Array.isArray(e.detail.value)) {
-							merge(
+							mutation_users(
 								e.detail.value.map((node) => ({
 									where: { id: { val: node?.id } },
 									isDeprecated: true
@@ -217,11 +221,11 @@
 		>
 			{#if auth('User::*::WRITE')}
 				<UserTableDialog
-					args={{ not: true, roles: { id: { val: role?.id } } }}
+					args={{ exs: [{ not: true, roles: { id: { val: role?.id } } }] }}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {
-							merge(e.detail.value.filter((item) => item != null));
+							mutation_users(e.detail.value.filter((item) => item != null));
 						}
 					}}
 				>

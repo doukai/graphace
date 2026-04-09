@@ -32,7 +32,7 @@
 	const queryNamed_groupList_Store = createQueryNamed_groupList_Store($loadEvent);
 
 	if (value == null || Object.keys(value).length === 0) {
-		value = { opr: 'EQ', val: undefined, arr: [] };
+		value = { opr: 'EQ', val: undefined, arr: undefined };
 	}
 
 	const oprChange = (): void => {
@@ -105,7 +105,7 @@
 					value = {
 						...value,
 						val: undefined,
-						arr: []
+						arr: undefined
 					};
 				}
 				dispatch('change', { value });
@@ -135,13 +135,13 @@
 					value = {
 						...value,
 						val: e.detail.value.value,
-						arr: []
+						arr: undefined
 					};
 				} else if (!e.detail.value) {
 					value = {
 						...value,
 						val: undefined,
-						arr: []
+						arr: undefined
 					};
 				}
 				dispatch('change', { value });

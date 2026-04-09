@@ -1,10 +1,11 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { fragment_RealmFields } from '~/lib/stores/fragment/fragment_RealmFields';
 import { createGraphQLMutationStore } from '~/utils';
-import type { MutationRealmArgs, Realm } from '~/lib/types/schema';
+import type { MutationRealmArgs } from '~/lib/types/schema';
+import type { Realm } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_realm($id: ID, $name: String, $description: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $input: RealmInput, $where: RealmExpression) {
-  realm(id: $id name: $name description: $description isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId input: $input where: $where) {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_realm($id: ID, $name: String, $description: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $input: RealmInput, $where: RealmExpression) {
+  realm(id: $id name: $name description: $description isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId input: $input where: $where) ${directives}{
     ...RealmFields
   }
 }

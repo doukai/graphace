@@ -21,6 +21,7 @@
 	import PermissionTableDialog from '~/lib/components/objects/permission/PermissionTableDialog.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import {
+		roleInit,
 		roleFields,
 		type RoleFields,
 		type RoleFieldsArgs,
@@ -44,7 +45,7 @@
 	export let showBackButton: boolean = false;
 	export let title: string | undefined = undefined;
 	let className: string | undefined =
-		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0 p-1';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryRoleArgs | undefined) => TabInfo[] | undefined) | undefined = roleFormTabs;
 	export let tab: string | undefined = roleFormTab?.(args);
@@ -66,6 +67,10 @@
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
+
+	if (roleInit) {
+		value = roleInit(value);
+	}
 </script>
 
 <div class="flex justify-between">
@@ -80,11 +85,12 @@
 		</span>
 	</slot>
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		showRemoveButton={showRemoveButton && value?.id != null}
+		showUnbindButton={showUnbindButton && value?.id != null}
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
+		class="flex space-x-1 justify-end max-sm:w-full"
 		loading={isMutating}
 		on:save={(e) =>
 			validate($LL, value)
@@ -125,7 +131,7 @@
 				<FormControl let:id {...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Role.fields.name.name()}
+						text={fields?.name?.title?.($LL, fieldsArgs?.name) || $LL.graphql.objects.Role.fields.name.name()}
 						required={fields?.name?.required?.(value)}
 					/>
 					<StringInput
@@ -153,7 +159,7 @@
 				<FormControl let:id {...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Role.fields.description.name()}
+						text={fields?.description?.title?.($LL, fieldsArgs?.description) || $LL.graphql.objects.Role.fields.description.name()}
 						required={fields?.description?.required?.(value)}
 					/>
 					<StringInput
@@ -181,7 +187,7 @@
 				<FormControl let:id {...fields?.users?.props?.($LL, value, fieldsArgs?.users)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Role.fields.users.name()}
+						text={fields?.users?.title?.($LL, fieldsArgs?.users) || $LL.graphql.objects.Role.fields.users.name()}
 						required={fields?.users?.required?.(value)}
 					/>
 					{#if value.id}
@@ -220,7 +226,7 @@
 				<FormControl let:id {...fields?.groups?.props?.($LL, value, fieldsArgs?.groups)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Role.fields.groups.name()}
+						text={fields?.groups?.title?.($LL, fieldsArgs?.groups) || $LL.graphql.objects.Role.fields.groups.name()}
 						required={fields?.groups?.required?.(value)}
 					/>
 					<GroupSelect
@@ -249,7 +255,7 @@
 				<FormControl let:id {...fields?.composites?.props?.($LL, value, fieldsArgs?.composites)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Role.fields.composites.name()}
+						text={fields?.composites?.title?.($LL, fieldsArgs?.composites) || $LL.graphql.objects.Role.fields.composites.name()}
 						required={fields?.composites?.required?.(value)}
 					/>
 					<RoleSelect
@@ -278,7 +284,7 @@
 				<FormControl let:id {...fields?.permissions?.props?.($LL, value, fieldsArgs?.permissions)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Role.fields.permissions.name()}
+						text={fields?.permissions?.title?.($LL, fieldsArgs?.permissions) || $LL.graphql.objects.Role.fields.permissions.name()}
 						required={fields?.permissions?.required?.(value)}
 					/>
 					{#if value.id}
@@ -315,7 +321,7 @@
 				<FormControl let:id {...fields?.realm?.props?.($LL, value, fieldsArgs?.realm)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Role.fields.realm.name()}
+						text={fields?.realm?.title?.($LL, fieldsArgs?.realm) || $LL.graphql.objects.Role.fields.realm.name()}
 						required={fields?.realm?.required?.(value)}
 					/>
 					{#if value.id}
@@ -359,11 +365,12 @@
 <div class="divider my-0" />
 <div class="flex justify-end">
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		showRemoveButton={showRemoveButton && value?.id != null}
+		showUnbindButton={showUnbindButton && value?.id != null}
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
+		class="flex space-x-1 justify-end max-sm:w-full"
 		loading={isMutating}
 		on:save={(e) =>
 			validate($LL, value)

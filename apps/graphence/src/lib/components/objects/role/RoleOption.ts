@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
 import type { Option } from '@graphace/ui-graphql';
@@ -17,6 +18,8 @@ import type {
 import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
+
+export const roleInit: ((value: RoleInput | null | undefined) => RoleInput | null | undefined) | undefined = undefined;
 
 export const roleTabs: (($LL: TranslationFunctions, args?: QueryRoleListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
@@ -156,6 +159,9 @@ export const roleFields: RoleFields = {
 		hiddenCol: (args, tab, fieldArg) => {
 			return !auth('Role::name::READ');
 		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('Role::name::READ');
+		},
 		required: (value) => {
 			return true;
 		},
@@ -180,14 +186,17 @@ export const roleFields: RoleFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.name;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	description: {
@@ -201,6 +210,9 @@ export const roleFields: RoleFields = {
 			return !auth('Role::description::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Role::description::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Role::description::READ');
 		},
 		required: (value) => {
@@ -227,14 +239,17 @@ export const roleFields: RoleFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.description;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	users: {
@@ -248,6 +263,9 @@ export const roleFields: RoleFields = {
 			return !auth('Role::users::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Role::users::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Role::users::READ');
 		},
 		required: (value) => {
@@ -348,6 +366,9 @@ export const roleFields: RoleFields = {
 		hiddenCol: (args, tab, fieldArg) => {
 			return !auth('Role::groups::READ');
 		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('Role::groups::READ');
+		},
 		required: (value) => {
 			return false;
 		},
@@ -444,6 +465,9 @@ export const roleFields: RoleFields = {
 			return !auth('Role::composites::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Role::composites::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Role::composites::READ');
 		},
 		required: (value) => {
@@ -544,6 +568,9 @@ export const roleFields: RoleFields = {
 		hiddenCol: (args, tab, fieldArg) => {
 			return !auth('Role::permissions::READ');
 		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('Role::permissions::READ');
+		},
 		required: (value) => {
 			return false;
 		},
@@ -639,6 +666,9 @@ export const roleFields: RoleFields = {
 			return !auth('Role::realm::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Role::realm::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Role::realm::READ');
 		},
 		required: (value) => {
@@ -797,27 +827,15 @@ export const validateAll = async ($LL: TranslationFunctions, value: (RoleInput |
 };
 
 export const toRecords = ($LL: TranslationFunctions, value: (RoleInput | null | undefined)[] | null | undefined, fieldArgs?: RoleFieldsArgs | undefined, fieldsPatch?: RoleFields | undefined) => {
-	if (fieldsPatch) {
-		return value?.map(item =>
-			Object.fromEntries(
-				Object.entries(fieldsPatch)
-					.flatMap(([fieldName, optionPatch]) => {
-						const option = { ...roleFields?.[fieldName as keyof RoleFields], ...optionPatch };
-						const fieldArg = fieldArgs?.[fieldName as keyof RoleFieldsArgs];
-						const title = option.title?.($LL, fieldArg) || fieldName;
-						const fields = option.toFields?.();
-						if (fields && option.toRecord) {
-							return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
-						}
-						const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
-						return [entry];
-					})
-			)
-		);
-	}
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...roleFields?.[fieldName as keyof RoleFields], ...optionPatch }])
+		) : roleFields;
+		
 	return value?.map(item =>
 		Object.fromEntries(
-			Object.entries(roleFields)
+			Object.entries(fields)
 				.flatMap(([fieldName, option]) => {
 					const fieldArg = fieldArgs?.[fieldName as keyof RoleFieldsArgs];
 					const title = option.title?.($LL, fieldArg) || fieldName;
@@ -833,23 +851,55 @@ export const toRecords = ($LL: TranslationFunctions, value: (RoleInput | null | 
 }
 
 export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: RoleFields | undefined) => {
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...roleFields?.[fieldName as keyof RoleFields], ...optionPatch }])
+		) : roleFields;
+		
 	return Object.fromEntries(
 		Object.entries(errors)
 			.map(([row, errors]) =>
 				[
 					row,
-					Object.entries(roleFields)
+					Object.entries(fields)
 						.flatMap(([fieldName, option]) => {
-							const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof RoleFields] };
 							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
-							const fields = mergedOption.toFields?.();
+							const fields = option.toFields?.();
 							if (fields) {
-								return Object.keys(fields)
-									.map((subFieldName) =>
-										[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
-									);
+								if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+													.flatMap((rowErrors) =>
+														rowErrors.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								} else {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								}
 							}
-							return [fieldMessages];
+							if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+								return [
+									[
+										...(fieldMessages || []),
+										...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+											.flatMap((rowErrors) =>
+												rowErrors.errors?.map(error => error.message) || []
+											)
+									]
+								];
+							} else {
+								return [fieldMessages];
+							}
 						})
 				]
 			)

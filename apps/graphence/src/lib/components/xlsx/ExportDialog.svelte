@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { utils, writeFileXLSX } from 'xlsx';
+	import { utils, writeFileXLSX, type WorkSheet } from 'xlsx';
 	import { format } from 'date-fns';
 	import { melt } from '@melt-ui/svelte';
 	import { Button, Dialog, FormControl, ModalAction } from '@graphace/ui';
@@ -11,8 +11,15 @@
 	export let pageSizeOptions: number[] = [100, 300, 500];
 	export let close: (() => void) | undefined = undefined;
 
-	const writeFile = (fileName: string, json: Record<string, string | null | undefined>[]) => {
+	const writeFile = (
+		fileName: string,
+		json: Record<string, string | null | undefined>[],
+		info?: Record<keyof WorkSheet, any> | undefined
+	) => {
 		const ws = utils.json_to_sheet(json || []);
+		Object.entries(info || {}).forEach(([key, value]) => {
+			ws[key] = value;
+		});
 		const wb = utils.book_new();
 		utils.book_append_sheet(wb, ws, fileName);
 		writeFileXLSX(wb, `${fileName}_${format(new Date(), 'yyMMddHHmmss')}.xlsx`);
@@ -68,14 +75,14 @@
 	</FormControl>
 	<ModalAction>
 		<Button
-			text={$LL.graphence.components.moduleMenu.export()}
+			text={$LL.graphence.components.moduleMenu.template()}
 			color="neutral"
-			on:click={(e) => dispatch('export', { pageSize, writeFile, template })}
+			on:click={(e) => dispatch('template', { writeFile, template })}
 		/>
 		<Button
-			text={$LL.graphence.components.moduleMenu.template()}
+			text={$LL.graphence.components.moduleMenu.export()}
 			color="primary"
-			on:click={(e) => dispatch('template', { writeFile, template })}
+			on:click={(e) => dispatch('export', { pageSize, writeFile, template })}
 		/>
 	</ModalAction>
 </Dialog>

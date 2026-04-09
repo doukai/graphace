@@ -69,6 +69,8 @@
 
 	export let icon: string;
 	export let style: string | undefined = undefined;
+	let className: string | undefined = undefined;
+	export { className as class };
 </script>
 
-<svelte:component this={icons[icon]} {style} />
+<svelte:component this={icons[icon]} {style} class={className} />

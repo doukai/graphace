@@ -2,6 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
+	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
@@ -66,15 +67,18 @@
 			});
 	};
 
-	const merge = (input: RealmInput | null) => {
+	const mutation_realm = (input: RealmInput | null) => {
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, realm: input })
 			.then((data) => {
 				errors = {};
 				mutation_group_realm_Store
-					.fetch({
-						group_id: id,
-						group_realm: input
-					})
+					.fetch(
+						{
+							group_id: id,
+							group_realm: input
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -115,7 +119,7 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<RealmForm
 			showSaveButton={auth('Realm::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('Realm::isDeprecated::WRITE')}
@@ -126,7 +130,7 @@
 			isMutating={$validator.isValidating || $mutation_group_realm_Store.isFetching || $mutation_realm_Store.isFetching}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge(e.detail.value);
+					mutation_realm(e.detail.value);
 				}
 			}}
 			on:remove={(e) => {
@@ -147,7 +151,7 @@
 				modal.open({
 					title: $LL.graphence.components.modal.unbindModalTitle(),
 					confirm: () => {
-						merge(null);
+						mutation_realm(null);
 						return true;
 					}
 				});
@@ -161,7 +165,7 @@
 					class="btn-accent"
 					on:select={(e) => {
 						if (!Array.isArray(e.detail.value) && e.detail.value !== undefined) {
-							merge(e.detail.value);
+							mutation_realm(e.detail.value);
 						}
 					}}
 				>

@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
 import type { Option } from '@graphace/ui-graphql';
@@ -9,6 +10,8 @@ import type {
 import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
+
+export const realmInit: ((value: RealmInput | null | undefined) => RealmInput | null | undefined) | undefined = undefined;
 
 export const realmTabs: (($LL: TranslationFunctions, args?: QueryRealmListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
@@ -83,6 +86,9 @@ export const realmFields: RealmFields = {
 		hiddenCol: (args, tab, fieldArg) => {
 			return !auth('Realm::name::READ');
 		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('Realm::name::READ');
+		},
 		required: (value) => {
 			return true;
 		},
@@ -107,14 +113,17 @@ export const realmFields: RealmFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.name;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	description: {
@@ -128,6 +137,9 @@ export const realmFields: RealmFields = {
 			return !auth('Realm::description::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Realm::description::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Realm::description::READ');
 		},
 		required: (value) => {
@@ -154,14 +166,17 @@ export const realmFields: RealmFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.description;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	}
 };
@@ -249,27 +264,15 @@ export const validateAll = async ($LL: TranslationFunctions, value: (RealmInput 
 };
 
 export const toRecords = ($LL: TranslationFunctions, value: (RealmInput | null | undefined)[] | null | undefined, fieldArgs?: RealmFieldsArgs | undefined, fieldsPatch?: RealmFields | undefined) => {
-	if (fieldsPatch) {
-		return value?.map(item =>
-			Object.fromEntries(
-				Object.entries(fieldsPatch)
-					.flatMap(([fieldName, optionPatch]) => {
-						const option = { ...realmFields?.[fieldName as keyof RealmFields], ...optionPatch };
-						const fieldArg = fieldArgs?.[fieldName as keyof RealmFieldsArgs];
-						const title = option.title?.($LL, fieldArg) || fieldName;
-						const fields = option.toFields?.();
-						if (fields && option.toRecord) {
-							return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
-						}
-						const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
-						return [entry];
-					})
-			)
-		);
-	}
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...realmFields?.[fieldName as keyof RealmFields], ...optionPatch }])
+		) : realmFields;
+		
 	return value?.map(item =>
 		Object.fromEntries(
-			Object.entries(realmFields)
+			Object.entries(fields)
 				.flatMap(([fieldName, option]) => {
 					const fieldArg = fieldArgs?.[fieldName as keyof RealmFieldsArgs];
 					const title = option.title?.($LL, fieldArg) || fieldName;
@@ -285,23 +288,55 @@ export const toRecords = ($LL: TranslationFunctions, value: (RealmInput | null |
 }
 
 export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: RealmFields | undefined) => {
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...realmFields?.[fieldName as keyof RealmFields], ...optionPatch }])
+		) : realmFields;
+		
 	return Object.fromEntries(
 		Object.entries(errors)
 			.map(([row, errors]) =>
 				[
 					row,
-					Object.entries(realmFields)
+					Object.entries(fields)
 						.flatMap(([fieldName, option]) => {
-							const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof RealmFields] };
 							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
-							const fields = mergedOption.toFields?.();
+							const fields = option.toFields?.();
 							if (fields) {
-								return Object.keys(fields)
-									.map((subFieldName) =>
-										[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
-									);
+								if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+													.flatMap((rowErrors) =>
+														rowErrors.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								} else {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								}
 							}
-							return [fieldMessages];
+							if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+								return [
+									[
+										...(fieldMessages || []),
+										...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+											.flatMap((rowErrors) =>
+												rowErrors.errors?.map(error => error.message) || []
+											)
+									]
+								];
+							} else {
+								return [fieldMessages];
+							}
 						})
 				]
 			)

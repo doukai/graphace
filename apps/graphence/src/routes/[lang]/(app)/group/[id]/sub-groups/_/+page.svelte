@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
+	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import {
@@ -23,15 +24,18 @@
 	let value: GroupInput = {};
 	let errors: Record<string, Errors> = {};
 
-	const merge = (input: GroupInput) => {
+	const mutation_subGroups = (input: GroupInput) => {
 		validate('Mutation_group_Arguments', { where: { id: { val: id } }, subGroups: [input] })
 			.then((data) => {
 				errors = {};
 				mutation_group_subGroups_Store
-					.fetch({
-						group_id: id,
-						group_subGroups: [input]
-					})
+					.fetch(
+						{
+							group_id: id,
+							group_subGroups: [input]
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -77,7 +81,7 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<GroupForm
 			showSaveButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
@@ -86,7 +90,7 @@
 			isMutating={$validator.isValidating || $mutation_group_subGroups_Store.isFetching}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge(e.detail.value);
+					mutation_subGroups(e.detail.value);
 				}
 			}}
 			on:back={(e) => ot()}

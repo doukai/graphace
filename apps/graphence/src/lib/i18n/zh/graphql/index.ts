@@ -110,74 +110,59 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '用户 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				nameCount: {
 					name: '姓名 数量',
-				},
-				nameMax: {
-					name: '姓名 最大值',
-				},
-				nameMin: {
-					name: '姓名 最小值',
 				},
 				descriptionCount: {
 					name: '描述 数量',
 				},
-				descriptionMax: {
-					name: '描述 最大值',
-				},
-				descriptionMin: {
-					name: '描述 最小值',
-				},
 				lastNameCount: {
 					name: '姓氏 数量',
-				},
-				lastNameMax: {
-					name: '姓氏 最大值',
-				},
-				lastNameMin: {
-					name: '姓氏 最小值',
 				},
 				loginCount: {
 					name: '账号 数量',
 				},
-				loginMax: {
-					name: '账号 最大值',
-				},
-				loginMin: {
-					name: '账号 最小值',
-				},
 				saltCount: {
 					name: '盐 数量',
-				},
-				saltMax: {
-					name: '盐 最大值',
-				},
-				saltMin: {
-					name: '盐 最小值',
 				},
 				hashCount: {
 					name: '哈希 数量',
 				},
-				hashMax: {
-					name: '哈希 最大值',
-				},
-				hashMin: {
-					name: '哈希 最小值',
-				},
 				emailCount: {
 					name: '邮箱 数量',
 				},
-				emailMax: {
-					name: '邮箱 最大值',
+				disableCount: {
+					name: '禁用 数量',
 				},
-				emailMin: {
-					name: '邮箱 最小值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
+				},
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				},
 				syncUserPolicy: {
 					name: 'syncUserPolicy',
@@ -298,29 +283,41 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '角色 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				nameCount: {
 					name: '名称 数量',
-				},
-				nameMax: {
-					name: '名称 最大值',
-				},
-				nameMin: {
-					name: '名称 最小值',
 				},
 				descriptionCount: {
 					name: '描述 数量',
 				},
-				descriptionMax: {
-					name: '描述 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				descriptionMin: {
-					name: '描述 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				},
 				syncRolePolicy: {
 					name: 'syncRolePolicy',
@@ -426,50 +423,26 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '组 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				nameCount: {
 					name: '名称 数量',
-				},
-				nameMax: {
-					name: '名称 最大值',
-				},
-				nameMin: {
-					name: '名称 最小值',
 				},
 				descriptionCount: {
 					name: '描述 数量',
 				},
-				descriptionMax: {
-					name: '描述 最大值',
-				},
-				descriptionMin: {
-					name: '描述 最小值',
-				},
 				pathCount: {
 					name: '路径 数量',
 				},
-				pathMax: {
-					name: '路径 最大值',
-				},
-				pathMin: {
-					name: '路径 最小值',
+				deepCount: {
+					name: '层级 数量',
 				},
 				parentIdCount: {
 					name: '上级ID 数量',
 				},
-				parentIdMax: {
-					name: '上级ID 最大值',
+				deepMax: {
+					name: '层级 最大值',
 				},
-				parentIdMin: {
-					name: '上级ID 最小值',
-				},
-				deepCount: {
-					name: '层级 数量',
+				deepMin: {
+					name: '层级 最小值',
 				},
 				deepSum: {
 					name: '层级 合计',
@@ -477,11 +450,35 @@ const zh: NamespaceGraphqlTranslation = {
 				deepAvg: {
 					name: '层级 平均值',
 				},
-				deepMax: {
-					name: '层级 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				deepMin: {
-					name: '层级 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				},
 				syncGroupPolicy: {
 					name: 'syncGroupPolicy',
@@ -527,29 +524,41 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '租户 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				nameCount: {
 					name: '名称 数量',
-				},
-				nameMax: {
-					name: '名称 最大值',
-				},
-				nameMin: {
-					name: '名称 最小值',
 				},
 				descriptionCount: {
 					name: '描述 数量',
 				},
-				descriptionMax: {
-					name: '描述 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				descriptionMin: {
-					name: '描述 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				}
 			}
 		},
@@ -622,56 +631,50 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '权限 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				nameCount: {
 					name: '名称 数量',
-				},
-				nameMax: {
-					name: '名称 最大值',
-				},
-				nameMin: {
-					name: '名称 最小值',
 				},
 				descriptionCount: {
 					name: '描述 数量',
 				},
-				descriptionMax: {
-					name: '描述 最大值',
-				},
-				descriptionMin: {
-					name: '描述 最小值',
-				},
 				fieldCount: {
 					name: '字段 数量',
-				},
-				fieldMax: {
-					name: '字段 最大值',
-				},
-				fieldMin: {
-					name: '字段 最小值',
 				},
 				typeCount: {
 					name: '实体 数量',
 				},
-				typeMax: {
-					name: '实体 最大值',
-				},
-				typeMin: {
-					name: '实体 最小值',
-				},
 				permissionTypeCount: {
 					name: '权限类型 数量',
 				},
-				permissionTypeMax: {
-					name: '权限类型 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				permissionTypeMin: {
-					name: '权限类型 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				},
 				syncPermissionPolicy: {
 					name: 'syncPermissionPolicy',
@@ -720,29 +723,41 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '用户 手机号 关系 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				userRefCount: {
 					name: '用户 引用 数量',
-				},
-				userRefMax: {
-					name: '用户 引用 最大值',
-				},
-				userRefMin: {
-					name: '用户 引用 最小值',
 				},
 				phonesRefCount: {
 					name: '手机号 引用 数量',
 				},
-				phonesRefMax: {
-					name: '手机号 引用 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				phonesRefMin: {
-					name: '手机号 引用 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				}
 			}
 		},
@@ -791,29 +806,41 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '用户 组 关系 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				userRefCount: {
 					name: '用户 引用 数量',
-				},
-				userRefMax: {
-					name: '用户 引用 最大值',
-				},
-				userRefMin: {
-					name: '用户 引用 最小值',
 				},
 				groupRefCount: {
 					name: '组 引用 数量',
 				},
-				groupRefMax: {
-					name: '组 引用 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				groupRefMin: {
-					name: '组 引用 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				}
 			}
 		},
@@ -862,29 +889,41 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '用户 角色 关系 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				userRefCount: {
 					name: '用户 引用 数量',
-				},
-				userRefMax: {
-					name: '用户 引用 最大值',
-				},
-				userRefMin: {
-					name: '用户 引用 最小值',
 				},
 				roleRefCount: {
 					name: '角色 引用 数量',
 				},
-				roleRefMax: {
-					name: '角色 引用 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				roleRefMin: {
-					name: '角色 引用 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				}
 			}
 		},
@@ -933,29 +972,41 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '角色 组 关系 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				roleRefCount: {
 					name: '角色 引用 数量',
-				},
-				roleRefMax: {
-					name: '角色 引用 最大值',
-				},
-				roleRefMin: {
-					name: '角色 引用 最小值',
 				},
 				groupRefCount: {
 					name: '组 引用 数量',
 				},
-				groupRefMax: {
-					name: '组 引用 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				groupRefMin: {
-					name: '组 引用 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				}
 			}
 		},
@@ -1004,29 +1055,41 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '角色 角色 关系 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				roleRefCount: {
 					name: '角色 引用 数量',
-				},
-				roleRefMax: {
-					name: '角色 引用 最大值',
-				},
-				roleRefMin: {
-					name: '角色 引用 最小值',
 				},
 				compositeRefCount: {
 					name: '角色 引用 数量',
 				},
-				compositeRefMax: {
-					name: '角色 引用 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				compositeRefMin: {
-					name: '角色 引用 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				}
 			}
 		},
@@ -1075,29 +1138,41 @@ const zh: NamespaceGraphqlTranslation = {
 				idCount: {
 					name: '角色 权限 关系 数量',
 				},
-				idMax: {
-					name: 'ID 最大值',
-				},
-				idMin: {
-					name: 'ID 最小值',
-				},
 				roleRefCount: {
 					name: '角色 引用 数量',
-				},
-				roleRefMax: {
-					name: '角色 引用 最大值',
-				},
-				roleRefMin: {
-					name: '角色 引用 最小值',
 				},
 				permissionRefCount: {
 					name: '权限 引用 数量',
 				},
-				permissionRefMax: {
-					name: '权限 引用 最大值',
+				createTimeYear: {
+					name: 'Year of 创建时间',
 				},
-				permissionRefMin: {
-					name: '权限 引用 最小值',
+				createTimeMonth: {
+					name: 'Month of 创建时间',
+				},
+				createTimeDay: {
+					name: 'Day of 创建时间',
+				},
+				createTimeWeek: {
+					name: 'Week of 创建时间',
+				},
+				createTimeQuarter: {
+					name: 'Quarter of 创建时间',
+				},
+				updateTimeYear: {
+					name: 'Year of 更新时间',
+				},
+				updateTimeMonth: {
+					name: 'Month of 更新时间',
+				},
+				updateTimeDay: {
+					name: 'Day of 更新时间',
+				},
+				updateTimeWeek: {
+					name: 'Week of 更新时间',
+				},
+				updateTimeQuarter: {
+					name: 'Quarter of 更新时间',
 				}
 			}
 		}

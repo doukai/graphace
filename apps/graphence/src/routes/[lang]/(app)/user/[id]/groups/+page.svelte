@@ -2,7 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { buildArguments } from '@graphace/graphql';
+	import { buildArguments, merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import GroupTable from '~/lib/components/objects/group/GroupTable.svelte';
 	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
@@ -84,15 +84,18 @@
 			});
 	};
 
-	const merge = (input: GroupInput[]) => {
+	const mutation_groups = (input: GroupInput[]) => {
 		validate('Mutation_user_Arguments', { where: { id: { val: user?.id } }, groups: input })
 			.then((data) => {
 				errors = {};
 				mutation_user_groups_Store
-					.fetch({
-						user_id: id,
-						user_groups: input
-					})
+					.fetch(
+						{
+							user_id: id,
+							user_groups: input
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -133,13 +136,14 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<GroupTable
 			showUnbindButton={auth('Group::isDeprecated::WRITE')}
 			showEditButton
 			showCreateButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
+			showFilter
 			{value}
 			bind:args
 			bind:orderBy
@@ -198,7 +202,7 @@
 					title: $LL.graphence.components.modal.unbindModalTitle(),
 					confirm: () => {
 						if (Array.isArray(e.detail.value)) {
-							merge(
+							mutation_groups(
 								e.detail.value.map((node) => ({
 									where: { id: { val: node?.id } },
 									isDeprecated: true
@@ -215,11 +219,11 @@
 		>
 			{#if auth('Group::*::WRITE')}
 				<GroupTableDialog
-					args={{ not: true, users: { id: { val: user?.id } } }}
+					args={{ exs: [{ not: true, users: { id: { val: user?.id } } }] }}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {
-							merge(e.detail.value.filter((item) => item != null));
+							mutation_groups(e.detail.value.filter((item) => item != null));
 						}
 					}}
 				>

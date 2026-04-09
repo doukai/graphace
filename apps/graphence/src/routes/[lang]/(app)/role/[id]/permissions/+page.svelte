@@ -2,7 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { buildArguments } from '@graphace/graphql';
+	import { buildArguments, merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import PermissionTable from '~/lib/components/objects/permission/PermissionTable.svelte';
 	import PermissionTableDialog from '~/lib/components/objects/permission/PermissionTableDialog.svelte';
@@ -84,15 +84,18 @@
 			});
 	};
 
-	const merge = (input: PermissionInput[]) => {
+	const mutation_permissions = (input: PermissionInput[]) => {
 		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, permissions: input })
 			.then((data) => {
 				errors = {};
 				mutation_role_permissions_Store
-					.fetch({
-						role_id: id,
-						role_permissions: input
-					})
+					.fetch(
+						{
+							role_id: id,
+							role_permissions: input
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -133,13 +136,14 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<PermissionTable
 			showUnbindButton={auth('Permission::isDeprecated::WRITE')}
 			showEditButton
 			showCreateButton={auth('Permission::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
+			showFilter
 			{value}
 			bind:args
 			bind:orderBy
@@ -198,7 +202,7 @@
 					title: $LL.graphence.components.modal.unbindModalTitle(),
 					confirm: () => {
 						if (Array.isArray(e.detail.value)) {
-							merge(
+							mutation_permissions(
 								e.detail.value.map((node) => ({
 									where: { id: { val: node?.id } },
 									isDeprecated: true
@@ -215,11 +219,11 @@
 		>
 			{#if auth('Permission::*::WRITE')}
 				<PermissionTableDialog
-					args={{ not: true, roles: { id: { val: role?.id } } }}
+					args={{ exs: [{ not: true, roles: { id: { val: role?.id } } }] }}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {
-							merge(e.detail.value.filter((item) => item != null));
+							mutation_permissions(e.detail.value.filter((item) => item != null));
 						}
 					}}
 				>

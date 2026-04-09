@@ -3,10 +3,10 @@ import 'dotenv/config';
 
 const config: CodegenConfig = {
     schema: {
-        [process.env.PUBLIC_GRAPHQL_URL]: {
+        [process.env.PUBLIC_GRAPHQL_URL!]: {
             headers: {
                 'content-type': 'application/json',
-                Authorization: `${process.env.AUTH_SCHEME} ${Buffer.from(process.env.AUTH_TOKEN).toString('base64')}`
+                Authorization: `${process.env.AUTH_SCHEME} ${Buffer.from(process.env.AUTH_TOKEN!).toString('base64')}`
             }
         }
     },

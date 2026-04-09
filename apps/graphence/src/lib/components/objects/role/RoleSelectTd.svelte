@@ -91,7 +91,7 @@
 </script>
 
 <Td {errors} {zIndex}>
-	<a class="link inline-flex sm:truncate" href={null} use:melt={$trigger}>
+	<a class="link" href={null} use:melt={$trigger}>
 		{#if list}
 			{#if Array.isArray(selected)}
 				{#if selected.length > 3}

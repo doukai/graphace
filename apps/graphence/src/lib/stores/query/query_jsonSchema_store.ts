@@ -1,8 +1,8 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, FetchParams, Event } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { QueryJsonSchemaArgs } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `query Query_jsonSchema($name: String) {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_jsonSchema($name: String) {
   jsonSchema(name: $name)
 }`;
 

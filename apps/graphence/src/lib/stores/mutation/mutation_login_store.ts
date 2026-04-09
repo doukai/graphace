@@ -1,8 +1,8 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 import type { MutationLoginArgs } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_login($login: String!, $password: String!) {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_login($login: String!, $password: String!) {
   login(login: $login password: $password)
 }`;
 

@@ -92,52 +92,42 @@ export type User = NamedStruct & Meta & {
   roleUserRelationConnection?: Maybe<RoleUserRelationConnection>;
   /** 用户 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 姓名 数量 */
   nameCount?: Maybe<Scalars['Int']>;
-  /** 姓名 最大值 */
-  nameMax?: Maybe<Scalars['String']>;
-  /** 姓名 最小值 */
-  nameMin?: Maybe<Scalars['String']>;
   /** 描述 数量 */
   descriptionCount?: Maybe<Scalars['Int']>;
-  /** 描述 最大值 */
-  descriptionMax?: Maybe<Scalars['String']>;
-  /** 描述 最小值 */
-  descriptionMin?: Maybe<Scalars['String']>;
   /** 姓氏 数量 */
   lastNameCount?: Maybe<Scalars['Int']>;
-  /** 姓氏 最大值 */
-  lastNameMax?: Maybe<Scalars['String']>;
-  /** 姓氏 最小值 */
-  lastNameMin?: Maybe<Scalars['String']>;
   /** 账号 数量 */
   loginCount?: Maybe<Scalars['Int']>;
-  /** 账号 最大值 */
-  loginMax?: Maybe<Scalars['String']>;
-  /** 账号 最小值 */
-  loginMin?: Maybe<Scalars['String']>;
   /** 盐 数量 */
   saltCount?: Maybe<Scalars['Int']>;
-  /** 盐 最大值 */
-  saltMax?: Maybe<Scalars['String']>;
-  /** 盐 最小值 */
-  saltMin?: Maybe<Scalars['String']>;
   /** 哈希 数量 */
   hashCount?: Maybe<Scalars['Int']>;
-  /** 哈希 最大值 */
-  hashMax?: Maybe<Scalars['String']>;
-  /** 哈希 最小值 */
-  hashMin?: Maybe<Scalars['String']>;
   /** 邮箱 数量 */
   emailCount?: Maybe<Scalars['Int']>;
-  /** 邮箱 最大值 */
-  emailMax?: Maybe<Scalars['String']>;
-  /** 邮箱 最小值 */
-  emailMin?: Maybe<Scalars['String']>;
+  /** 禁用 数量 */
+  disableCount?: Maybe<Scalars['Int']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
   syncUserPolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -177,7 +167,7 @@ export type UserGroupsArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -205,7 +195,7 @@ export type UserRolesArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -228,7 +218,7 @@ export type UserRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
 };
 
 
@@ -246,7 +236,7 @@ export type UserUserPhonesRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -271,7 +261,7 @@ export type UserGroupUserRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -296,7 +286,7 @@ export type UserRoleUserRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -331,7 +321,7 @@ export type UserGroupsAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 
@@ -360,7 +350,7 @@ export type UserGroupsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 
@@ -386,7 +376,7 @@ export type UserRolesAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -412,7 +402,7 @@ export type UserRolesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -434,7 +424,7 @@ export type UserUserPhonesRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
 };
 
 
@@ -456,7 +446,7 @@ export type UserUserPhonesRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
 };
 
 
@@ -479,7 +469,7 @@ export type UserGroupUserRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
 };
 
 
@@ -502,7 +492,7 @@ export type UserGroupUserRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
 };
 
 
@@ -525,7 +515,7 @@ export type UserRoleUserRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
 };
 
 
@@ -548,7 +538,7 @@ export type UserRoleUserRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
 };
 
 /** 角色 */
@@ -628,22 +618,30 @@ export type Role = NamedStruct & Meta & {
   rolePermissionRelationConnection?: Maybe<RolePermissionRelationConnection>;
   /** 角色 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 名称 数量 */
   nameCount?: Maybe<Scalars['Int']>;
-  /** 名称 最大值 */
-  nameMax?: Maybe<Scalars['String']>;
-  /** 名称 最小值 */
-  nameMin?: Maybe<Scalars['String']>;
   /** 描述 数量 */
   descriptionCount?: Maybe<Scalars['Int']>;
-  /** 描述 最大值 */
-  descriptionMax?: Maybe<Scalars['String']>;
-  /** 描述 最小值 */
-  descriptionMin?: Maybe<Scalars['String']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
   syncRolePolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -674,7 +672,17 @@ export type RoleUsersArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<UserGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -705,7 +713,7 @@ export type RoleGroupsArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -733,7 +741,7 @@ export type RoleCompositesArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -761,7 +769,7 @@ export type RolePermissionsArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -784,7 +792,7 @@ export type RoleRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
 };
 
 
@@ -803,7 +811,7 @@ export type RoleRoleUserRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -828,7 +836,7 @@ export type RoleGroupRoleRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -853,7 +861,7 @@ export type RoleRoleCompositeRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -878,7 +886,7 @@ export type RoleRolePermissionRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -914,11 +922,21 @@ export type RoleUsersAggregateArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
 };
 
 
@@ -948,11 +966,21 @@ export type RoleUsersConnectionArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
 };
 
 
@@ -981,7 +1009,7 @@ export type RoleGroupsAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 
@@ -1010,7 +1038,7 @@ export type RoleGroupsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 
@@ -1040,7 +1068,7 @@ export type RoleCompositesAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -1070,7 +1098,7 @@ export type RoleCompositesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -1096,7 +1124,7 @@ export type RolePermissionsAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
 };
 
 
@@ -1122,7 +1150,7 @@ export type RolePermissionsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
 };
 
 
@@ -1145,7 +1173,7 @@ export type RoleRoleUserRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
 };
 
 
@@ -1168,7 +1196,7 @@ export type RoleRoleUserRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
 };
 
 
@@ -1191,7 +1219,7 @@ export type RoleGroupRoleRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
 };
 
 
@@ -1214,7 +1242,7 @@ export type RoleGroupRoleRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
 };
 
 
@@ -1237,7 +1265,7 @@ export type RoleRoleCompositeRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
 };
 
 
@@ -1260,7 +1288,7 @@ export type RoleRoleCompositeRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
 };
 
 
@@ -1283,7 +1311,7 @@ export type RoleRolePermissionRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
 };
 
 
@@ -1306,7 +1334,7 @@ export type RoleRolePermissionRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
 };
 
 /** 组 */
@@ -1376,44 +1404,44 @@ export type Group = TreeStruct & NamedStruct & Meta & {
   groupRoleRelationConnection?: Maybe<GroupRoleRelationConnection>;
   /** 组 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 名称 数量 */
   nameCount?: Maybe<Scalars['Int']>;
-  /** 名称 最大值 */
-  nameMax?: Maybe<Scalars['String']>;
-  /** 名称 最小值 */
-  nameMin?: Maybe<Scalars['String']>;
   /** 描述 数量 */
   descriptionCount?: Maybe<Scalars['Int']>;
-  /** 描述 最大值 */
-  descriptionMax?: Maybe<Scalars['String']>;
-  /** 描述 最小值 */
-  descriptionMin?: Maybe<Scalars['String']>;
   /** 路径 数量 */
   pathCount?: Maybe<Scalars['Int']>;
-  /** 路径 最大值 */
-  pathMax?: Maybe<Scalars['String']>;
-  /** 路径 最小值 */
-  pathMin?: Maybe<Scalars['String']>;
-  /** 上级ID 数量 */
-  parentIdCount?: Maybe<Scalars['Int']>;
-  /** 上级ID 最大值 */
-  parentIdMax?: Maybe<Scalars['String']>;
-  /** 上级ID 最小值 */
-  parentIdMin?: Maybe<Scalars['String']>;
   /** 层级 数量 */
   deepCount?: Maybe<Scalars['Int']>;
-  /** 层级 合计 */
-  deepSum?: Maybe<Scalars['Int']>;
-  /** 层级 平均值 */
-  deepAvg?: Maybe<Scalars['Int']>;
+  /** 上级ID 数量 */
+  parentIdCount?: Maybe<Scalars['Int']>;
   /** 层级 最大值 */
   deepMax?: Maybe<Scalars['Int']>;
   /** 层级 最小值 */
   deepMin?: Maybe<Scalars['Int']>;
+  /** 层级 合计 */
+  deepSum?: Maybe<Scalars['Int']>;
+  /** 层级 平均值 */
+  deepAvg?: Maybe<Scalars['Int']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
   syncGroupPolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -1439,7 +1467,7 @@ export type GroupParentArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 
@@ -1464,7 +1492,7 @@ export type GroupSubGroupsArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -1500,7 +1528,17 @@ export type GroupUsersArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<UserGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -1532,7 +1570,17 @@ export type GroupRolesArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -1555,7 +1603,7 @@ export type GroupRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
 };
 
 
@@ -1574,7 +1622,7 @@ export type GroupGroupUserRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -1599,7 +1647,7 @@ export type GroupGroupRoleRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -1636,7 +1684,7 @@ export type GroupSubGroupsAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 
@@ -1667,7 +1715,7 @@ export type GroupSubGroupsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 
@@ -1697,11 +1745,21 @@ export type GroupUsersAggregateArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
 };
 
 
@@ -1731,11 +1789,21 @@ export type GroupUsersConnectionArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
 };
 
 
@@ -1761,11 +1829,21 @@ export type GroupRolesAggregateArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -1791,11 +1869,21 @@ export type GroupRolesConnectionArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -1818,7 +1906,7 @@ export type GroupGroupUserRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
 };
 
 
@@ -1841,7 +1929,7 @@ export type GroupGroupUserRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
 };
 
 
@@ -1864,7 +1952,7 @@ export type GroupGroupRoleRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
 };
 
 
@@ -1887,7 +1975,7 @@ export type GroupGroupRoleRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
 };
 
 /** 租户 */
@@ -1917,22 +2005,30 @@ export type Realm = NamedStruct & Meta & {
   createGroupId?: Maybe<Scalars['String']>;
   /** 租户 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 名称 数量 */
   nameCount?: Maybe<Scalars['Int']>;
-  /** 名称 最大值 */
-  nameMax?: Maybe<Scalars['String']>;
-  /** 名称 最小值 */
-  nameMin?: Maybe<Scalars['String']>;
   /** 描述 数量 */
   descriptionCount?: Maybe<Scalars['Int']>;
-  /** 描述 最大值 */
-  descriptionMax?: Maybe<Scalars['String']>;
-  /** 描述 最小值 */
-  descriptionMin?: Maybe<Scalars['String']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
 };
 
 /** 权限 */
@@ -1982,40 +2078,36 @@ export type Permission = Meta & {
   rolePermissionRelationConnection?: Maybe<RolePermissionRelationConnection>;
   /** 权限 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 名称 数量 */
   nameCount?: Maybe<Scalars['Int']>;
-  /** 名称 最大值 */
-  nameMax?: Maybe<Scalars['String']>;
-  /** 名称 最小值 */
-  nameMin?: Maybe<Scalars['String']>;
   /** 描述 数量 */
   descriptionCount?: Maybe<Scalars['Int']>;
-  /** 描述 最大值 */
-  descriptionMax?: Maybe<Scalars['String']>;
-  /** 描述 最小值 */
-  descriptionMin?: Maybe<Scalars['String']>;
   /** 字段 数量 */
   fieldCount?: Maybe<Scalars['Int']>;
-  /** 字段 最大值 */
-  fieldMax?: Maybe<Scalars['String']>;
-  /** 字段 最小值 */
-  fieldMin?: Maybe<Scalars['String']>;
   /** 实体 数量 */
   typeCount?: Maybe<Scalars['Int']>;
-  /** 实体 最大值 */
-  typeMax?: Maybe<Scalars['String']>;
-  /** 实体 最小值 */
-  typeMin?: Maybe<Scalars['String']>;
   /** 权限类型 数量 */
   permissionTypeCount?: Maybe<Scalars['Int']>;
-  /** 权限类型 最大值 */
-  permissionTypeMax?: Maybe<PermissionType>;
-  /** 权限类型 最小值 */
-  permissionTypeMin?: Maybe<PermissionType>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
   syncPermissionPolicy?: Maybe<Scalars['Boolean']>;
 };
 
@@ -2042,7 +2134,17 @@ export type PermissionRolesArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2065,7 +2167,17 @@ export type PermissionRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<RealmGroupBy>;
 };
 
 
@@ -2084,7 +2196,7 @@ export type PermissionRolePermissionRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -2116,11 +2228,21 @@ export type PermissionRolesAggregateArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -2146,11 +2268,21 @@ export type PermissionRolesConnectionArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -2173,7 +2305,7 @@ export type PermissionRolePermissionRelationAggregateArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
 };
 
 
@@ -2196,7 +2328,7 @@ export type PermissionRolePermissionRelationConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
 };
 
 /** Query */
@@ -2303,7 +2435,16 @@ export type QueryUserArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
@@ -2336,8 +2477,18 @@ export type QueryUserListArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
@@ -2375,8 +2526,18 @@ export type QueryUserConnectionArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
@@ -2410,7 +2571,16 @@ export type QueryRoleArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
@@ -2439,8 +2609,18 @@ export type QueryRoleListArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
@@ -2474,8 +2654,18 @@ export type QueryRoleConnectionArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
@@ -2510,7 +2700,16 @@ export type QueryGroupArgs = {
   createGroupId?: InputMaybe<StringExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
@@ -2540,8 +2739,18 @@ export type QueryGroupListArgs = {
   createGroupId?: InputMaybe<StringExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
@@ -2576,8 +2785,18 @@ export type QueryGroupConnectionArgs = {
   createGroupId?: InputMaybe<StringExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
@@ -2602,7 +2821,16 @@ export type QueryRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
@@ -2622,8 +2850,18 @@ export type QueryRealmListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RealmOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
@@ -2648,8 +2886,18 @@ export type QueryRealmConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RealmOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
@@ -2680,7 +2928,16 @@ export type QueryPermissionArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
@@ -2706,8 +2963,18 @@ export type QueryPermissionListArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
@@ -2738,8 +3005,18 @@ export type QueryPermissionConnectionArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
@@ -2765,7 +3042,16 @@ export type QueryUserPhonesRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
@@ -2786,8 +3072,18 @@ export type QueryUserPhonesRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
@@ -2813,8 +3109,18 @@ export type QueryUserPhonesRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
@@ -2841,7 +3147,16 @@ export type QueryGroupUserRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
@@ -2863,8 +3178,18 @@ export type QueryGroupUserRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
@@ -2891,8 +3216,18 @@ export type QueryGroupUserRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
@@ -2919,7 +3254,16 @@ export type QueryRoleUserRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
@@ -2941,8 +3285,18 @@ export type QueryRoleUserRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
@@ -2969,8 +3323,18 @@ export type QueryRoleUserRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
@@ -2997,7 +3361,16 @@ export type QueryGroupRoleRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
@@ -3019,8 +3392,18 @@ export type QueryGroupRoleRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
@@ -3047,8 +3430,18 @@ export type QueryGroupRoleRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
@@ -3075,7 +3468,16 @@ export type QueryRoleCompositeRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
@@ -3097,8 +3499,18 @@ export type QueryRoleCompositeRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
@@ -3125,8 +3537,18 @@ export type QueryRoleCompositeRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
@@ -3153,7 +3575,16 @@ export type QueryRolePermissionRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
@@ -3175,8 +3606,18 @@ export type QueryRolePermissionRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
@@ -3203,8 +3644,18 @@ export type QueryRolePermissionRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
@@ -3901,7 +4352,16 @@ export type SubscriptionUserArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
@@ -3934,8 +4394,18 @@ export type SubscriptionUserListArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
@@ -3973,8 +4443,18 @@ export type SubscriptionUserConnectionArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<UserOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
@@ -4008,7 +4488,16 @@ export type SubscriptionRoleArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
@@ -4037,8 +4526,18 @@ export type SubscriptionRoleListArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
@@ -4072,8 +4571,18 @@ export type SubscriptionRoleConnectionArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
@@ -4108,7 +4617,16 @@ export type SubscriptionGroupArgs = {
   createGroupId?: InputMaybe<StringExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
@@ -4138,8 +4656,18 @@ export type SubscriptionGroupListArgs = {
   createGroupId?: InputMaybe<StringExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
@@ -4174,8 +4702,18 @@ export type SubscriptionGroupConnectionArgs = {
   createGroupId?: InputMaybe<StringExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
@@ -4200,7 +4738,16 @@ export type SubscriptionRealmArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
@@ -4220,8 +4767,18 @@ export type SubscriptionRealmListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RealmOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
@@ -4246,8 +4803,18 @@ export type SubscriptionRealmConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RealmOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
@@ -4278,7 +4845,16 @@ export type SubscriptionPermissionArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
@@ -4304,8 +4880,18 @@ export type SubscriptionPermissionListArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
@@ -4336,8 +4922,18 @@ export type SubscriptionPermissionConnectionArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<PermissionOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
@@ -4363,7 +4959,16 @@ export type SubscriptionUserPhonesRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
@@ -4384,8 +4989,18 @@ export type SubscriptionUserPhonesRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
@@ -4411,8 +5026,18 @@ export type SubscriptionUserPhonesRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
@@ -4439,7 +5064,16 @@ export type SubscriptionGroupUserRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
@@ -4461,8 +5095,18 @@ export type SubscriptionGroupUserRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
@@ -4489,8 +5133,18 @@ export type SubscriptionGroupUserRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
@@ -4517,7 +5171,16 @@ export type SubscriptionRoleUserRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
@@ -4539,8 +5202,18 @@ export type SubscriptionRoleUserRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
@@ -4567,8 +5240,18 @@ export type SubscriptionRoleUserRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
@@ -4595,7 +5278,16 @@ export type SubscriptionGroupRoleRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
@@ -4617,8 +5309,18 @@ export type SubscriptionGroupRoleRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
@@ -4645,8 +5347,18 @@ export type SubscriptionGroupRoleRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
@@ -4673,7 +5385,16 @@ export type SubscriptionRoleCompositeRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
@@ -4695,8 +5416,18 @@ export type SubscriptionRoleCompositeRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
@@ -4723,8 +5454,18 @@ export type SubscriptionRoleCompositeRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
@@ -4751,7 +5492,16 @@ export type SubscriptionRolePermissionRelationArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
@@ -4773,8 +5523,18 @@ export type SubscriptionRolePermissionRelationListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
@@ -4801,8 +5561,18 @@ export type SubscriptionRolePermissionRelationConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   not?: InputMaybe<Scalars['Boolean']>;
   cond?: InputMaybe<Conditional>;
   exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
@@ -4842,22 +5612,30 @@ export type UserPhonesRelation = Meta & {
   createGroupId?: Maybe<Scalars['String']>;
   /** 用户 手机号 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 用户 引用 数量 */
   userRefCount?: Maybe<Scalars['Int']>;
-  /** 用户 引用 最大值 */
-  userRefMax?: Maybe<Scalars['String']>;
-  /** 用户 引用 最小值 */
-  userRefMin?: Maybe<Scalars['String']>;
   /** 手机号 引用 数量 */
   phonesRefCount?: Maybe<Scalars['Int']>;
-  /** 手机号 引用 最大值 */
-  phonesRefMax?: Maybe<Scalars['String']>;
-  /** 手机号 引用 最小值 */
-  phonesRefMin?: Maybe<Scalars['String']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
 };
 
 
@@ -4887,7 +5665,17 @@ export type UserPhonesRelationUserArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<UserGroupBy>;
 };
 
 /** 用户 组 关系 */
@@ -4921,22 +5709,30 @@ export type GroupUserRelation = Meta & {
   createGroupId?: Maybe<Scalars['String']>;
   /** 用户 组 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 用户 引用 数量 */
   userRefCount?: Maybe<Scalars['Int']>;
-  /** 用户 引用 最大值 */
-  userRefMax?: Maybe<Scalars['String']>;
-  /** 用户 引用 最小值 */
-  userRefMin?: Maybe<Scalars['String']>;
   /** 组 引用 数量 */
   groupRefCount?: Maybe<Scalars['Int']>;
-  /** 组 引用 最大值 */
-  groupRefMax?: Maybe<Scalars['String']>;
-  /** 组 引用 最小值 */
-  groupRefMin?: Maybe<Scalars['String']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
 };
 
 
@@ -4966,7 +5762,17 @@ export type GroupUserRelationUserArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<UserGroupBy>;
 };
 
 
@@ -4993,7 +5799,17 @@ export type GroupUserRelationGroupArgs = {
   createGroupId?: InputMaybe<StringExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 /** 用户 角色 关系 */
@@ -5027,22 +5843,30 @@ export type RoleUserRelation = Meta & {
   createGroupId?: Maybe<Scalars['String']>;
   /** 用户 角色 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 用户 引用 数量 */
   userRefCount?: Maybe<Scalars['Int']>;
-  /** 用户 引用 最大值 */
-  userRefMax?: Maybe<Scalars['String']>;
-  /** 用户 引用 最小值 */
-  userRefMin?: Maybe<Scalars['String']>;
   /** 角色 引用 数量 */
   roleRefCount?: Maybe<Scalars['Int']>;
-  /** 角色 引用 最大值 */
-  roleRefMax?: Maybe<Scalars['String']>;
-  /** 角色 引用 最小值 */
-  roleRefMin?: Maybe<Scalars['String']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
 };
 
 
@@ -5072,7 +5896,17 @@ export type RoleUserRelationUserArgs = {
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<UserGroupBy>;
 };
 
 
@@ -5098,7 +5932,17 @@ export type RoleUserRelationRoleArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 /** 角色 组 关系 */
@@ -5132,22 +5976,30 @@ export type GroupRoleRelation = Meta & {
   createGroupId?: Maybe<Scalars['String']>;
   /** 角色 组 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 角色 引用 数量 */
   roleRefCount?: Maybe<Scalars['Int']>;
-  /** 角色 引用 最大值 */
-  roleRefMax?: Maybe<Scalars['String']>;
-  /** 角色 引用 最小值 */
-  roleRefMin?: Maybe<Scalars['String']>;
   /** 组 引用 数量 */
   groupRefCount?: Maybe<Scalars['Int']>;
-  /** 组 引用 最大值 */
-  groupRefMax?: Maybe<Scalars['String']>;
-  /** 组 引用 最小值 */
-  groupRefMin?: Maybe<Scalars['String']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
 };
 
 
@@ -5173,7 +6025,17 @@ export type GroupRoleRelationRoleArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -5200,7 +6062,17 @@ export type GroupRoleRelationGroupArgs = {
   createGroupId?: InputMaybe<StringExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 /** 角色 角色 关系 */
@@ -5234,22 +6106,30 @@ export type RoleCompositeRelation = Meta & {
   createGroupId?: Maybe<Scalars['String']>;
   /** 角色 角色 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 角色 引用 数量 */
   roleRefCount?: Maybe<Scalars['Int']>;
-  /** 角色 引用 最大值 */
-  roleRefMax?: Maybe<Scalars['String']>;
-  /** 角色 引用 最小值 */
-  roleRefMin?: Maybe<Scalars['String']>;
   /** 角色 引用 数量 */
   compositeRefCount?: Maybe<Scalars['Int']>;
-  /** 角色 引用 最大值 */
-  compositeRefMax?: Maybe<Scalars['String']>;
-  /** 角色 引用 最小值 */
-  compositeRefMin?: Maybe<Scalars['String']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
 };
 
 
@@ -5275,7 +6155,17 @@ export type RoleCompositeRelationRoleArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -5301,7 +6191,17 @@ export type RoleCompositeRelationCompositeArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 /** 角色 权限 关系 */
@@ -5335,22 +6235,30 @@ export type RolePermissionRelation = Meta & {
   createGroupId?: Maybe<Scalars['String']>;
   /** 角色 权限 关系 数量 */
   idCount?: Maybe<Scalars['Int']>;
-  /** ID 最大值 */
-  idMax?: Maybe<Scalars['Int']>;
-  /** ID 最小值 */
-  idMin?: Maybe<Scalars['Int']>;
   /** 角色 引用 数量 */
   roleRefCount?: Maybe<Scalars['Int']>;
-  /** 角色 引用 最大值 */
-  roleRefMax?: Maybe<Scalars['String']>;
-  /** 角色 引用 最小值 */
-  roleRefMin?: Maybe<Scalars['String']>;
   /** 权限 引用 数量 */
   permissionRefCount?: Maybe<Scalars['Int']>;
-  /** 权限 引用 最大值 */
-  permissionRefMax?: Maybe<Scalars['String']>;
-  /** 权限 引用 最小值 */
-  permissionRefMin?: Maybe<Scalars['String']>;
+  /** Year of 创建时间 */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 创建时间 */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 创建时间 */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 创建时间 */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of 更新时间 */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of 更新时间 */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
 };
 
 
@@ -5376,7 +6284,17 @@ export type RolePermissionRelationRoleArgs = {
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<RoleGroupBy>;
 };
 
 
@@ -5399,7 +6317,17 @@ export type RolePermissionRelationPermissionArgs = {
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
 };
 
 /** 用户 连接 */
@@ -5755,6 +6683,26 @@ export type UserExpressionBase = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -5867,6 +6815,26 @@ export type UserExpression = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -5951,6 +6919,12 @@ export type UserOrderBy = {
   phones?: InputMaybe<Sort>;
   /** 禁用 */
   disable?: InputMaybe<Sort>;
+  /** 组 */
+  groups?: InputMaybe<GroupOrderBy>;
+  /** 角色 */
+  roles?: InputMaybe<RoleOrderBy>;
+  /** 租户 */
+  realm?: InputMaybe<RealmOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -5967,54 +6941,82 @@ export type UserOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
+  /** 用户 手机号 关系 */
+  userPhonesRelation?: InputMaybe<UserPhonesRelationOrderBy>;
+  /** 用户 组 关系 */
+  groupUserRelation?: InputMaybe<GroupUserRelationOrderBy>;
+  /** 用户 角色 关系 */
+  roleUserRelation?: InputMaybe<RoleUserRelationOrderBy>;
+  /** 组 统计字段 */
+  groupsAggregate?: InputMaybe<GroupOrderBy>;
+  /** 角色 统计字段 */
+  rolesAggregate?: InputMaybe<RoleOrderBy>;
+  /** 用户 手机号 关系 统计字段 */
+  userPhonesRelationAggregate?: InputMaybe<UserPhonesRelationOrderBy>;
+  /** 用户 组 关系 统计字段 */
+  groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
+  /** 用户 角色 关系 统计字段 */
+  roleUserRelationAggregate?: InputMaybe<RoleUserRelationOrderBy>;
   /** 用户 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 姓名 数量 */
   nameCount?: InputMaybe<Sort>;
-  /** 姓名 最大值 */
-  nameMax?: InputMaybe<Sort>;
-  /** 姓名 最小值 */
-  nameMin?: InputMaybe<Sort>;
   /** 描述 数量 */
   descriptionCount?: InputMaybe<Sort>;
-  /** 描述 最大值 */
-  descriptionMax?: InputMaybe<Sort>;
-  /** 描述 最小值 */
-  descriptionMin?: InputMaybe<Sort>;
   /** 姓氏 数量 */
   lastNameCount?: InputMaybe<Sort>;
-  /** 姓氏 最大值 */
-  lastNameMax?: InputMaybe<Sort>;
-  /** 姓氏 最小值 */
-  lastNameMin?: InputMaybe<Sort>;
   /** 账号 数量 */
   loginCount?: InputMaybe<Sort>;
-  /** 账号 最大值 */
-  loginMax?: InputMaybe<Sort>;
-  /** 账号 最小值 */
-  loginMin?: InputMaybe<Sort>;
   /** 盐 数量 */
   saltCount?: InputMaybe<Sort>;
-  /** 盐 最大值 */
-  saltMax?: InputMaybe<Sort>;
-  /** 盐 最小值 */
-  saltMin?: InputMaybe<Sort>;
   /** 哈希 数量 */
   hashCount?: InputMaybe<Sort>;
-  /** 哈希 最大值 */
-  hashMax?: InputMaybe<Sort>;
-  /** 哈希 最小值 */
-  hashMin?: InputMaybe<Sort>;
   /** 邮箱 数量 */
   emailCount?: InputMaybe<Sort>;
-  /** 邮箱 最大值 */
-  emailMax?: InputMaybe<Sort>;
-  /** 邮箱 最小值 */
-  emailMin?: InputMaybe<Sort>;
+  /** 禁用 数量 */
+  disableCount?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<UserOrderBy>>>;
+};
+
+/** Group Input for 用户 */
+export type UserGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 组 */
+  groups?: InputMaybe<GroupGroupBy>;
+  /** 角色 */
+  roles?: InputMaybe<RoleGroupBy>;
+  /** 租户 */
+  realm?: InputMaybe<RealmGroupBy>;
+  /** 用户 手机号 关系 */
+  userPhonesRelation?: InputMaybe<UserPhonesRelationGroupBy>;
+  /** 用户 组 关系 */
+  groupUserRelation?: InputMaybe<GroupUserRelationGroupBy>;
+  /** 用户 角色 关系 */
+  roleUserRelation?: InputMaybe<RoleUserRelationGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<UserGroupBy>>>;
 };
 
 /** 角色 查询表达式 */
@@ -6059,6 +7061,26 @@ export type RoleExpressionBase = {
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -6155,6 +7177,26 @@ export type RoleExpression = {
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -6217,6 +7259,16 @@ export type RoleOrderBy = {
   name?: InputMaybe<Sort>;
   /** 描述 */
   description?: InputMaybe<Sort>;
+  /** 用户 */
+  users?: InputMaybe<UserOrderBy>;
+  /** 组 */
+  groups?: InputMaybe<GroupOrderBy>;
+  /** 组合 */
+  composites?: InputMaybe<RoleOrderBy>;
+  /** 权限 */
+  permissions?: InputMaybe<PermissionOrderBy>;
+  /** 租户 */
+  realm?: InputMaybe<RealmOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -6233,24 +7285,84 @@ export type RoleOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
+  /** 用户 角色 关系 */
+  roleUserRelation?: InputMaybe<RoleUserRelationOrderBy>;
+  /** 角色 组 关系 */
+  groupRoleRelation?: InputMaybe<GroupRoleRelationOrderBy>;
+  /** 角色 角色 关系 */
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationOrderBy>;
+  /** 角色 权限 关系 */
+  rolePermissionRelation?: InputMaybe<RolePermissionRelationOrderBy>;
+  /** 用户 统计字段 */
+  usersAggregate?: InputMaybe<UserOrderBy>;
+  /** 组 统计字段 */
+  groupsAggregate?: InputMaybe<GroupOrderBy>;
+  /** 组合 统计字段 */
+  compositesAggregate?: InputMaybe<RoleOrderBy>;
+  /** 权限 统计字段 */
+  permissionsAggregate?: InputMaybe<PermissionOrderBy>;
+  /** 用户 角色 关系 统计字段 */
+  roleUserRelationAggregate?: InputMaybe<RoleUserRelationOrderBy>;
+  /** 角色 组 关系 统计字段 */
+  groupRoleRelationAggregate?: InputMaybe<GroupRoleRelationOrderBy>;
+  /** 角色 角色 关系 统计字段 */
+  roleCompositeRelationAggregate?: InputMaybe<RoleCompositeRelationOrderBy>;
+  /** 角色 权限 关系 统计字段 */
+  rolePermissionRelationAggregate?: InputMaybe<RolePermissionRelationOrderBy>;
   /** 角色 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 名称 数量 */
   nameCount?: InputMaybe<Sort>;
-  /** 名称 最大值 */
-  nameMax?: InputMaybe<Sort>;
-  /** 名称 最小值 */
-  nameMin?: InputMaybe<Sort>;
   /** 描述 数量 */
   descriptionCount?: InputMaybe<Sort>;
-  /** 描述 最大值 */
-  descriptionMax?: InputMaybe<Sort>;
-  /** 描述 最小值 */
-  descriptionMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<RoleOrderBy>>>;
+};
+
+/** Group Input for 角色 */
+export type RoleGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 用户 */
+  users?: InputMaybe<UserGroupBy>;
+  /** 组 */
+  groups?: InputMaybe<GroupGroupBy>;
+  /** 组合 */
+  composites?: InputMaybe<RoleGroupBy>;
+  /** 权限 */
+  permissions?: InputMaybe<PermissionGroupBy>;
+  /** 租户 */
+  realm?: InputMaybe<RealmGroupBy>;
+  /** 用户 角色 关系 */
+  roleUserRelation?: InputMaybe<RoleUserRelationGroupBy>;
+  /** 角色 组 关系 */
+  groupRoleRelation?: InputMaybe<GroupRoleRelationGroupBy>;
+  /** 角色 角色 关系 */
+  roleCompositeRelation?: InputMaybe<RoleCompositeRelationGroupBy>;
+  /** 角色 权限 关系 */
+  rolePermissionRelation?: InputMaybe<RolePermissionRelationGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<RoleGroupBy>>>;
 };
 
 /** 组 查询表达式 */
@@ -6297,6 +7409,26 @@ export type GroupExpressionBase = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -6397,6 +7529,26 @@ export type GroupExpression = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -6467,6 +7619,16 @@ export type GroupOrderBy = {
   deep?: InputMaybe<Sort>;
   /** 上级ID */
   parentId?: InputMaybe<Sort>;
+  /** 上级 */
+  parent?: InputMaybe<GroupOrderBy>;
+  /** 下级 */
+  subGroups?: InputMaybe<GroupOrderBy>;
+  /** 用户 */
+  users?: InputMaybe<UserOrderBy>;
+  /** 角色 */
+  roles?: InputMaybe<RoleOrderBy>;
+  /** 租户 */
+  realm?: InputMaybe<RealmOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -6483,46 +7645,84 @@ export type GroupOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
+  /** 用户 组 关系 */
+  groupUserRelation?: InputMaybe<GroupUserRelationOrderBy>;
+  /** 角色 组 关系 */
+  groupRoleRelation?: InputMaybe<GroupRoleRelationOrderBy>;
+  /** 下级 统计字段 */
+  subGroupsAggregate?: InputMaybe<GroupOrderBy>;
+  /** 用户 统计字段 */
+  usersAggregate?: InputMaybe<UserOrderBy>;
+  /** 角色 统计字段 */
+  rolesAggregate?: InputMaybe<RoleOrderBy>;
+  /** 用户 组 关系 统计字段 */
+  groupUserRelationAggregate?: InputMaybe<GroupUserRelationOrderBy>;
+  /** 角色 组 关系 统计字段 */
+  groupRoleRelationAggregate?: InputMaybe<GroupRoleRelationOrderBy>;
   /** 组 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 名称 数量 */
   nameCount?: InputMaybe<Sort>;
-  /** 名称 最大值 */
-  nameMax?: InputMaybe<Sort>;
-  /** 名称 最小值 */
-  nameMin?: InputMaybe<Sort>;
   /** 描述 数量 */
   descriptionCount?: InputMaybe<Sort>;
-  /** 描述 最大值 */
-  descriptionMax?: InputMaybe<Sort>;
-  /** 描述 最小值 */
-  descriptionMin?: InputMaybe<Sort>;
   /** 路径 数量 */
   pathCount?: InputMaybe<Sort>;
-  /** 路径 最大值 */
-  pathMax?: InputMaybe<Sort>;
-  /** 路径 最小值 */
-  pathMin?: InputMaybe<Sort>;
-  /** 上级ID 数量 */
-  parentIdCount?: InputMaybe<Sort>;
-  /** 上级ID 最大值 */
-  parentIdMax?: InputMaybe<Sort>;
-  /** 上级ID 最小值 */
-  parentIdMin?: InputMaybe<Sort>;
   /** 层级 数量 */
   deepCount?: InputMaybe<Sort>;
-  /** 层级 合计 */
-  deepSum?: InputMaybe<Sort>;
-  /** 层级 平均值 */
-  deepAvg?: InputMaybe<Sort>;
+  /** 上级ID 数量 */
+  parentIdCount?: InputMaybe<Sort>;
   /** 层级 最大值 */
   deepMax?: InputMaybe<Sort>;
   /** 层级 最小值 */
   deepMin?: InputMaybe<Sort>;
+  /** 层级 合计 */
+  deepSum?: InputMaybe<Sort>;
+  /** 层级 平均值 */
+  deepAvg?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<GroupOrderBy>>>;
+};
+
+/** Group Input for 组 */
+export type GroupGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 上级 */
+  parent?: InputMaybe<GroupGroupBy>;
+  /** 下级 */
+  subGroups?: InputMaybe<GroupGroupBy>;
+  /** 用户 */
+  users?: InputMaybe<UserGroupBy>;
+  /** 角色 */
+  roles?: InputMaybe<RoleGroupBy>;
+  /** 租户 */
+  realm?: InputMaybe<RealmGroupBy>;
+  /** 用户 组 关系 */
+  groupUserRelation?: InputMaybe<GroupUserRelationGroupBy>;
+  /** 角色 组 关系 */
+  groupRoleRelation?: InputMaybe<GroupRoleRelationGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<GroupGroupBy>>>;
 };
 
 /** 租户 查询表达式 */
@@ -6549,6 +7749,26 @@ export type RealmExpressionBase = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -6609,6 +7829,26 @@ export type RealmExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -6671,22 +7911,40 @@ export type RealmOrderBy = {
   createGroupId?: InputMaybe<Sort>;
   /** 租户 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 名称 数量 */
   nameCount?: InputMaybe<Sort>;
-  /** 名称 最大值 */
-  nameMax?: InputMaybe<Sort>;
-  /** 名称 最小值 */
-  nameMin?: InputMaybe<Sort>;
   /** 描述 数量 */
   descriptionCount?: InputMaybe<Sort>;
-  /** 描述 最大值 */
-  descriptionMax?: InputMaybe<Sort>;
-  /** 描述 最小值 */
-  descriptionMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<RealmOrderBy>>>;
+};
+
+/** Group Input for 租户 */
+export type RealmGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<RealmGroupBy>>>;
 };
 
 /** 权限 查询表达式 */
@@ -6725,6 +7983,26 @@ export type PermissionExpressionBase = {
   createGroupId?: InputMaybe<StringExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -6809,6 +8087,26 @@ export type PermissionExpression = {
   createGroupId?: InputMaybe<StringExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -6871,6 +8169,10 @@ export type PermissionOrderBy = {
   type?: InputMaybe<Sort>;
   /** 权限类型 */
   permissionType?: InputMaybe<Sort>;
+  /** 角色 */
+  roles?: InputMaybe<RoleOrderBy>;
+  /** 租户 */
+  realm?: InputMaybe<RealmOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -6887,42 +8189,60 @@ export type PermissionOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
+  /** 角色 权限 关系 */
+  rolePermissionRelation?: InputMaybe<RolePermissionRelationOrderBy>;
+  /** 角色 统计字段 */
+  rolesAggregate?: InputMaybe<RoleOrderBy>;
+  /** 角色 权限 关系 统计字段 */
+  rolePermissionRelationAggregate?: InputMaybe<RolePermissionRelationOrderBy>;
   /** 权限 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 名称 数量 */
   nameCount?: InputMaybe<Sort>;
-  /** 名称 最大值 */
-  nameMax?: InputMaybe<Sort>;
-  /** 名称 最小值 */
-  nameMin?: InputMaybe<Sort>;
   /** 描述 数量 */
   descriptionCount?: InputMaybe<Sort>;
-  /** 描述 最大值 */
-  descriptionMax?: InputMaybe<Sort>;
-  /** 描述 最小值 */
-  descriptionMin?: InputMaybe<Sort>;
   /** 字段 数量 */
   fieldCount?: InputMaybe<Sort>;
-  /** 字段 最大值 */
-  fieldMax?: InputMaybe<Sort>;
-  /** 字段 最小值 */
-  fieldMin?: InputMaybe<Sort>;
   /** 实体 数量 */
   typeCount?: InputMaybe<Sort>;
-  /** 实体 最大值 */
-  typeMax?: InputMaybe<Sort>;
-  /** 实体 最小值 */
-  typeMin?: InputMaybe<Sort>;
   /** 权限类型 数量 */
   permissionTypeCount?: InputMaybe<Sort>;
-  /** 权限类型 最大值 */
-  permissionTypeMax?: InputMaybe<Sort>;
-  /** 权限类型 最小值 */
-  permissionTypeMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<PermissionOrderBy>>>;
+};
+
+/** Group Input for 权限 */
+export type PermissionGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 角色 */
+  roles?: InputMaybe<RoleGroupBy>;
+  /** 租户 */
+  realm?: InputMaybe<RealmGroupBy>;
+  /** 角色 权限 关系 */
+  rolePermissionRelation?: InputMaybe<RolePermissionRelationGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<PermissionGroupBy>>>;
 };
 
 /** 用户 手机号 关系 查询表达式 */
@@ -6951,6 +8271,26 @@ export type UserPhonesRelationExpressionBase = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7015,6 +8355,26 @@ export type UserPhonesRelationExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7059,6 +8419,8 @@ export type UserPhonesRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
+  /** 用户 */
+  user?: InputMaybe<UserOrderBy>;
   /** 手机号 引用 */
   phonesRef?: InputMaybe<Sort>;
   /** 已移除 */
@@ -7079,22 +8441,42 @@ export type UserPhonesRelationOrderBy = {
   createGroupId?: InputMaybe<Sort>;
   /** 用户 手机号 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 用户 引用 数量 */
   userRefCount?: InputMaybe<Sort>;
-  /** 用户 引用 最大值 */
-  userRefMax?: InputMaybe<Sort>;
-  /** 用户 引用 最小值 */
-  userRefMin?: InputMaybe<Sort>;
   /** 手机号 引用 数量 */
   phonesRefCount?: InputMaybe<Sort>;
-  /** 手机号 引用 最大值 */
-  phonesRefMax?: InputMaybe<Sort>;
-  /** 手机号 引用 最小值 */
-  phonesRefMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<UserPhonesRelationOrderBy>>>;
+};
+
+/** Group Input for 用户 手机号 关系 */
+export type UserPhonesRelationGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 用户 */
+  user?: InputMaybe<UserGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<UserPhonesRelationGroupBy>>>;
 };
 
 /** 用户 组 关系 查询表达式 */
@@ -7125,6 +8507,26 @@ export type GroupUserRelationExpressionBase = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7193,6 +8595,26 @@ export type GroupUserRelationExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7239,8 +8661,12 @@ export type GroupUserRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
+  /** 用户 */
+  user?: InputMaybe<UserOrderBy>;
   /** 组 引用 */
   groupRef?: InputMaybe<Sort>;
+  /** 组 */
+  group?: InputMaybe<GroupOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -7259,22 +8685,44 @@ export type GroupUserRelationOrderBy = {
   createGroupId?: InputMaybe<Sort>;
   /** 用户 组 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 用户 引用 数量 */
   userRefCount?: InputMaybe<Sort>;
-  /** 用户 引用 最大值 */
-  userRefMax?: InputMaybe<Sort>;
-  /** 用户 引用 最小值 */
-  userRefMin?: InputMaybe<Sort>;
   /** 组 引用 数量 */
   groupRefCount?: InputMaybe<Sort>;
-  /** 组 引用 最大值 */
-  groupRefMax?: InputMaybe<Sort>;
-  /** 组 引用 最小值 */
-  groupRefMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<GroupUserRelationOrderBy>>>;
+};
+
+/** Group Input for 用户 组 关系 */
+export type GroupUserRelationGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 用户 */
+  user?: InputMaybe<UserGroupBy>;
+  /** 组 */
+  group?: InputMaybe<GroupGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<GroupUserRelationGroupBy>>>;
 };
 
 /** 用户 角色 关系 查询表达式 */
@@ -7305,6 +8753,26 @@ export type RoleUserRelationExpressionBase = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7373,6 +8841,26 @@ export type RoleUserRelationExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7419,8 +8907,12 @@ export type RoleUserRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 用户 引用 */
   userRef?: InputMaybe<Sort>;
+  /** 用户 */
+  user?: InputMaybe<UserOrderBy>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
+  /** 角色 */
+  role?: InputMaybe<RoleOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -7439,22 +8931,44 @@ export type RoleUserRelationOrderBy = {
   createGroupId?: InputMaybe<Sort>;
   /** 用户 角色 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 用户 引用 数量 */
   userRefCount?: InputMaybe<Sort>;
-  /** 用户 引用 最大值 */
-  userRefMax?: InputMaybe<Sort>;
-  /** 用户 引用 最小值 */
-  userRefMin?: InputMaybe<Sort>;
   /** 角色 引用 数量 */
   roleRefCount?: InputMaybe<Sort>;
-  /** 角色 引用 最大值 */
-  roleRefMax?: InputMaybe<Sort>;
-  /** 角色 引用 最小值 */
-  roleRefMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<RoleUserRelationOrderBy>>>;
+};
+
+/** Group Input for 用户 角色 关系 */
+export type RoleUserRelationGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 用户 */
+  user?: InputMaybe<UserGroupBy>;
+  /** 角色 */
+  role?: InputMaybe<RoleGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<RoleUserRelationGroupBy>>>;
 };
 
 /** 角色 组 关系 查询表达式 */
@@ -7485,6 +8999,26 @@ export type GroupRoleRelationExpressionBase = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7553,6 +9087,26 @@ export type GroupRoleRelationExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7599,8 +9153,12 @@ export type GroupRoleRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
+  /** 角色 */
+  role?: InputMaybe<RoleOrderBy>;
   /** 组 引用 */
   groupRef?: InputMaybe<Sort>;
+  /** 组 */
+  group?: InputMaybe<GroupOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -7619,22 +9177,44 @@ export type GroupRoleRelationOrderBy = {
   createGroupId?: InputMaybe<Sort>;
   /** 角色 组 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 角色 引用 数量 */
   roleRefCount?: InputMaybe<Sort>;
-  /** 角色 引用 最大值 */
-  roleRefMax?: InputMaybe<Sort>;
-  /** 角色 引用 最小值 */
-  roleRefMin?: InputMaybe<Sort>;
   /** 组 引用 数量 */
   groupRefCount?: InputMaybe<Sort>;
-  /** 组 引用 最大值 */
-  groupRefMax?: InputMaybe<Sort>;
-  /** 组 引用 最小值 */
-  groupRefMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<GroupRoleRelationOrderBy>>>;
+};
+
+/** Group Input for 角色 组 关系 */
+export type GroupRoleRelationGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 角色 */
+  role?: InputMaybe<RoleGroupBy>;
+  /** 组 */
+  group?: InputMaybe<GroupGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<GroupRoleRelationGroupBy>>>;
 };
 
 /** 角色 角色 关系 查询表达式 */
@@ -7665,6 +9245,26 @@ export type RoleCompositeRelationExpressionBase = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7733,6 +9333,26 @@ export type RoleCompositeRelationExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7779,8 +9399,12 @@ export type RoleCompositeRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
+  /** 角色 */
+  role?: InputMaybe<RoleOrderBy>;
   /** 角色 引用 */
   compositeRef?: InputMaybe<Sort>;
+  /** 角色 */
+  composite?: InputMaybe<RoleOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -7799,22 +9423,44 @@ export type RoleCompositeRelationOrderBy = {
   createGroupId?: InputMaybe<Sort>;
   /** 角色 角色 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 角色 引用 数量 */
   roleRefCount?: InputMaybe<Sort>;
-  /** 角色 引用 最大值 */
-  roleRefMax?: InputMaybe<Sort>;
-  /** 角色 引用 最小值 */
-  roleRefMin?: InputMaybe<Sort>;
   /** 角色 引用 数量 */
   compositeRefCount?: InputMaybe<Sort>;
-  /** 角色 引用 最大值 */
-  compositeRefMax?: InputMaybe<Sort>;
-  /** 角色 引用 最小值 */
-  compositeRefMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationOrderBy>>>;
+};
+
+/** Group Input for 角色 角色 关系 */
+export type RoleCompositeRelationGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 角色 */
+  role?: InputMaybe<RoleGroupBy>;
+  /** 角色 */
+  composite?: InputMaybe<RoleGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationGroupBy>>>;
 };
 
 /** 角色 权限 关系 查询表达式 */
@@ -7845,6 +9491,26 @@ export type RolePermissionRelationExpressionBase = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7913,6 +9579,26 @@ export type RolePermissionRelationExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -7959,8 +9645,12 @@ export type RolePermissionRelationOrderBy = {
   id?: InputMaybe<Sort>;
   /** 角色 引用 */
   roleRef?: InputMaybe<Sort>;
+  /** 角色 */
+  role?: InputMaybe<RoleOrderBy>;
   /** 权限 引用 */
   permissionRef?: InputMaybe<Sort>;
+  /** 权限 */
+  permission?: InputMaybe<PermissionOrderBy>;
   /** 已移除 */
   isDeprecated?: InputMaybe<Sort>;
   /** 版本 */
@@ -7979,22 +9669,44 @@ export type RolePermissionRelationOrderBy = {
   createGroupId?: InputMaybe<Sort>;
   /** 角色 权限 关系 数量 */
   idCount?: InputMaybe<Sort>;
-  /** ID 最大值 */
-  idMax?: InputMaybe<Sort>;
-  /** ID 最小值 */
-  idMin?: InputMaybe<Sort>;
   /** 角色 引用 数量 */
   roleRefCount?: InputMaybe<Sort>;
-  /** 角色 引用 最大值 */
-  roleRefMax?: InputMaybe<Sort>;
-  /** 角色 引用 最小值 */
-  roleRefMin?: InputMaybe<Sort>;
   /** 权限 引用 数量 */
   permissionRefCount?: InputMaybe<Sort>;
-  /** 权限 引用 最大值 */
-  permissionRefMax?: InputMaybe<Sort>;
-  /** 权限 引用 最小值 */
-  permissionRefMin?: InputMaybe<Sort>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<RolePermissionRelationOrderBy>>>;
+};
+
+/** Group Input for 角色 权限 关系 */
+export type RolePermissionRelationGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** 角色 */
+  role?: InputMaybe<RoleGroupBy>;
+  /** 权限 */
+  permission?: InputMaybe<PermissionGroupBy>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<RolePermissionRelationGroupBy>>>;
 };
 
 /** 权限类型 查询表达式 */
@@ -8057,8 +9769,26 @@ export type UserQueryArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8117,10 +9847,30 @@ export type UserListQueryArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8189,10 +9939,30 @@ export type UserConnectionQueryArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8253,8 +10023,26 @@ export type RoleQueryArguments = {
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8305,10 +10093,30 @@ export type RoleListQueryArguments = {
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8369,10 +10177,30 @@ export type RoleConnectionQueryArguments = {
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8435,8 +10263,26 @@ export type GroupQueryArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8489,10 +10335,30 @@ export type GroupListQueryArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8555,10 +10421,30 @@ export type GroupConnectionQueryArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8601,8 +10487,26 @@ export type RealmQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8635,10 +10539,30 @@ export type RealmListQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RealmOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8681,10 +10605,30 @@ export type RealmConnectionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RealmOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8739,8 +10683,26 @@ export type PermissionQueryArguments = {
   createGroupId?: InputMaybe<StringExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8785,10 +10747,30 @@ export type PermissionListQueryArguments = {
   createGroupId?: InputMaybe<StringExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<PermissionOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8843,10 +10825,30 @@ export type PermissionConnectionQueryArguments = {
   createGroupId?: InputMaybe<StringExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<PermissionOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8891,8 +10893,26 @@ export type UserPhonesRelationQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8927,10 +10947,30 @@ export type UserPhonesRelationListQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -8975,10 +11015,30 @@ export type UserPhonesRelationConnectionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9025,8 +11085,26 @@ export type GroupUserRelationQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9063,10 +11141,30 @@ export type GroupUserRelationListQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9113,10 +11211,30 @@ export type GroupUserRelationConnectionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9163,8 +11281,26 @@ export type RoleUserRelationQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9201,10 +11337,30 @@ export type RoleUserRelationListQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9251,10 +11407,30 @@ export type RoleUserRelationConnectionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9301,8 +11477,26 @@ export type GroupRoleRelationQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9339,10 +11533,30 @@ export type GroupRoleRelationListQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9389,10 +11603,30 @@ export type GroupRoleRelationConnectionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9439,8 +11673,26 @@ export type RoleCompositeRelationQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9477,10 +11729,30 @@ export type RoleCompositeRelationListQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9527,10 +11799,30 @@ export type RoleCompositeRelationConnectionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9577,8 +11869,26 @@ export type RolePermissionRelationQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9615,10 +11925,30 @@ export type RolePermissionRelationListQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -9665,10 +11995,30 @@ export type RolePermissionRelationConnectionQueryArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -10593,8 +12943,26 @@ export type UserSubscriptionArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -10653,10 +13021,30 @@ export type UserListSubscriptionArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -10725,10 +13113,30 @@ export type UserConnectionSubscriptionArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -10789,8 +13197,26 @@ export type RoleSubscriptionArguments = {
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -10841,10 +13267,30 @@ export type RoleListSubscriptionArguments = {
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -10905,10 +13351,30 @@ export type RoleConnectionSubscriptionArguments = {
   roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -10971,8 +13437,26 @@ export type GroupSubscriptionArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11025,10 +13509,30 @@ export type GroupListSubscriptionArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11091,10 +13595,30 @@ export type GroupConnectionSubscriptionArguments = {
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11137,8 +13661,26 @@ export type RealmSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11171,10 +13713,30 @@ export type RealmListSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RealmOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11217,10 +13779,30 @@ export type RealmConnectionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RealmOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RealmGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11275,8 +13857,26 @@ export type PermissionSubscriptionArguments = {
   createGroupId?: InputMaybe<StringExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11321,10 +13921,30 @@ export type PermissionListSubscriptionArguments = {
   createGroupId?: InputMaybe<StringExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<PermissionOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11379,10 +13999,30 @@ export type PermissionConnectionSubscriptionArguments = {
   createGroupId?: InputMaybe<StringExpression>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<PermissionOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<PermissionGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11427,8 +14067,26 @@ export type UserPhonesRelationSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11463,10 +14121,30 @@ export type UserPhonesRelationListSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11511,10 +14189,30 @@ export type UserPhonesRelationConnectionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11561,8 +14259,26 @@ export type GroupUserRelationSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11599,10 +14315,30 @@ export type GroupUserRelationListSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11649,10 +14385,30 @@ export type GroupUserRelationConnectionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupUserRelationOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11699,8 +14455,26 @@ export type RoleUserRelationSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11737,10 +14511,30 @@ export type RoleUserRelationListSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11787,10 +14581,30 @@ export type RoleUserRelationConnectionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleUserRelationOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11837,8 +14651,26 @@ export type GroupRoleRelationSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11875,10 +14707,30 @@ export type GroupRoleRelationListSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11925,10 +14777,30 @@ export type GroupRoleRelationConnectionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -11975,8 +14847,26 @@ export type RoleCompositeRelationSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -12013,10 +14903,30 @@ export type RoleCompositeRelationListSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -12063,10 +14973,30 @@ export type RoleCompositeRelationConnectionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -12113,8 +15043,26 @@ export type RolePermissionRelationSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
-  /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -12151,10 +15099,30 @@ export type RolePermissionRelationListSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
   /** 分组 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -12201,10 +15169,30 @@ export type RolePermissionRelationConnectionSubscriptionArguments = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** Year of 创建时间 */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 创建时间 */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 创建时间 */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 创建时间 */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 创建时间 */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of 更新时间 */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of 更新时间 */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of 更新时间 */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of 更新时间 */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of 更新时间 */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
   /** 排序 */
   orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
   /** 排序 */
-  groupBy?: InputMaybe<Array<Scalars['String']>>;
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
   /** 取非 */
   not?: InputMaybe<Scalars['Boolean']>;
   /** 与/或 */
@@ -12530,7 +15518,12 @@ export type Func =
   | 'MAX'
   | 'MIN'
   | 'SUM'
-  | 'AVG';
+  | 'AVG'
+  | 'YEAR'
+  | 'MONTH'
+  | 'DAY'
+  | 'WEEK'
+  | 'QUARTER';
 
 export type Protocol =
   | 'LOCAL'

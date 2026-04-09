@@ -1,9 +1,10 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, FetchParams, Event } from "@graphace/ui-graphql";
 import { fragment_PolicyFields } from '~/lib/stores/fragment/fragment_PolicyFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
+import type { Policy } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `query Query_policyList {
-  policyList {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_policyList {
+  policyList ${directives}{
     ...PolicyFields
   }
 }

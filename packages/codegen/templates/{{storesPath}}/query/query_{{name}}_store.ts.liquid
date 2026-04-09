@@ -4,7 +4,10 @@ import { fragment_{{ originalFieldTypeName }}Fields{% if isListType and isNamed 
 {%- endif %}
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 {%- if args and args.length > 0 %}
-import type { Query{{ fieldName | pascalCase }}Args{% if isScalarType == false %}, {{ fieldTypeName }}{% endif %} } from '~/{{ schemaTypesPath }}';
+import type { Query{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
+{%- endif %}
+{%- if isScalarType == false %}
+import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 {%- endif %}
 
 const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
@@ -144,7 +147,7 @@ export async function fetchQuery_{{ fieldName }}_Store(event: Event, variables{%
 export type Query_{{ fieldName }}_Store = GraphQLStore<{ {{ fieldName }}: {{ tsTypeName }}{% if isListType %}[]{% endif %} }, {% if args and args.length > 0 %}Query{{ fieldName | pascalCase }}Args{% else %}undefined{% endif %}>;
 {%- if isListType and isNamed %}
 
-const queryNamed = ({ directives }: QueryParams) =>//* GraphQL */ `query QueryNamed_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
+const queryNamed = ({ directives }: QueryParams) =>/* GraphQL */ `query QueryNamed_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
   {{ fieldName }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %} ${directives}{
     ...{{ originalFieldTypeName }}NamedFields
   }

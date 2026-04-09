@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
 import type { Option } from '@graphace/ui-graphql';
@@ -14,6 +15,8 @@ import type {
 import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
+
+export const permissionInit: ((value: PermissionInput | null | undefined) => PermissionInput | null | undefined) | undefined = undefined;
 
 export const permissionTabs: (($LL: TranslationFunctions, args?: QueryPermissionListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
@@ -144,6 +147,9 @@ export const permissionFields: PermissionFields = {
 		hiddenCol: (args, tab, fieldArg) => {
 			return !auth('Permission::name::READ');
 		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('Permission::name::READ');
+		},
 		required: (value) => {
 			return true;
 		},
@@ -168,14 +174,17 @@ export const permissionFields: PermissionFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.name;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	description: {
@@ -189,6 +198,9 @@ export const permissionFields: PermissionFields = {
 			return !auth('Permission::description::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Permission::description::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Permission::description::READ');
 		},
 		required: (value) => {
@@ -215,14 +227,17 @@ export const permissionFields: PermissionFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.description;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	field: {
@@ -236,6 +251,9 @@ export const permissionFields: PermissionFields = {
 			return !auth('Permission::field::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Permission::field::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Permission::field::READ');
 		},
 		required: (value) => {
@@ -262,14 +280,17 @@ export const permissionFields: PermissionFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.field;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	type: {
@@ -283,6 +304,9 @@ export const permissionFields: PermissionFields = {
 			return !auth('Permission::type::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Permission::type::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Permission::type::READ');
 		},
 		required: (value) => {
@@ -309,14 +333,17 @@ export const permissionFields: PermissionFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.type;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	permissionType: {
@@ -330,6 +357,9 @@ export const permissionFields: PermissionFields = {
 			return !auth('Permission::permissionType::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Permission::permissionType::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Permission::permissionType::READ');
 		},
 		required: (value) => {
@@ -356,14 +386,17 @@ export const permissionFields: PermissionFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return Object.entries($LL.graphql.enums.PermissionType.values).find(([_, v]) => v.name() === string)?.[0] as PermissionType;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.permissionType;
-			return fieldValue ? $LL.graphql.enums.PermissionType.values[fieldValue].name() : '';
+			if (fieldValue != null) {
+				return $LL.graphql.enums.PermissionType.values[fieldValue].name();
+			}
+			return '';
 		}
 	},
 	roles: {
@@ -377,6 +410,9 @@ export const permissionFields: PermissionFields = {
 			return !auth('Permission::roles::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Permission::roles::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Permission::roles::READ');
 		},
 		required: (value) => {
@@ -475,6 +511,9 @@ export const permissionFields: PermissionFields = {
 			return !auth('Permission::realm::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('Permission::realm::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('Permission::realm::READ');
 		},
 		required: (value) => {
@@ -633,27 +672,15 @@ export const validateAll = async ($LL: TranslationFunctions, value: (PermissionI
 };
 
 export const toRecords = ($LL: TranslationFunctions, value: (PermissionInput | null | undefined)[] | null | undefined, fieldArgs?: PermissionFieldsArgs | undefined, fieldsPatch?: PermissionFields | undefined) => {
-	if (fieldsPatch) {
-		return value?.map(item =>
-			Object.fromEntries(
-				Object.entries(fieldsPatch)
-					.flatMap(([fieldName, optionPatch]) => {
-						const option = { ...permissionFields?.[fieldName as keyof PermissionFields], ...optionPatch };
-						const fieldArg = fieldArgs?.[fieldName as keyof PermissionFieldsArgs];
-						const title = option.title?.($LL, fieldArg) || fieldName;
-						const fields = option.toFields?.();
-						if (fields && option.toRecord) {
-							return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
-						}
-						const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
-						return [entry];
-					})
-			)
-		);
-	}
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...permissionFields?.[fieldName as keyof PermissionFields], ...optionPatch }])
+		) : permissionFields;
+		
 	return value?.map(item =>
 		Object.fromEntries(
-			Object.entries(permissionFields)
+			Object.entries(fields)
 				.flatMap(([fieldName, option]) => {
 					const fieldArg = fieldArgs?.[fieldName as keyof PermissionFieldsArgs];
 					const title = option.title?.($LL, fieldArg) || fieldName;
@@ -669,23 +696,55 @@ export const toRecords = ($LL: TranslationFunctions, value: (PermissionInput | n
 }
 
 export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: PermissionFields | undefined) => {
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...permissionFields?.[fieldName as keyof PermissionFields], ...optionPatch }])
+		) : permissionFields;
+		
 	return Object.fromEntries(
 		Object.entries(errors)
 			.map(([row, errors]) =>
 				[
 					row,
-					Object.entries(permissionFields)
+					Object.entries(fields)
 						.flatMap(([fieldName, option]) => {
-							const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof PermissionFields] };
 							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
-							const fields = mergedOption.toFields?.();
+							const fields = option.toFields?.();
 							if (fields) {
-								return Object.keys(fields)
-									.map((subFieldName) =>
-										[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
-									);
+								if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+													.flatMap((rowErrors) =>
+														rowErrors.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								} else {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								}
 							}
-							return [fieldMessages];
+							if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+								return [
+									[
+										...(fieldMessages || []),
+										...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+											.flatMap((rowErrors) =>
+												rowErrors.errors?.map(error => error.message) || []
+											)
+									]
+								];
+							} else {
+								return [fieldMessages];
+							}
 						})
 				]
 			)

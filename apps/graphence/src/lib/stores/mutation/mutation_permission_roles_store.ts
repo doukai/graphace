@@ -1,16 +1,15 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { fragment_PermissionFields } from '~/lib/stores/fragment/fragment_PermissionFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { RoleInput, Permission } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_permission_roles($permission_id: String, $permission_roles: [RoleInput]) {
-  permission(where: { id: { val: $permission_id } }, roles: $permission_roles) @merge {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_permission_roles($permission_id: String, $permission_roles: [RoleInput]) {
+  permission(where: { id: { val: $permission_id } }, roles: $permission_roles) ${directives}{
     ...PermissionFields
     syncPermissionPolicy
     roles {
       ...RoleFields
-      syncRolePolicy
     }
   }
 }

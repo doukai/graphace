@@ -4,7 +4,10 @@ import { fragment_{{ fieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/
 {%- endif %}
 import { createGraphQLMutationStore } from '~/utils';
 {%- if args and args.length > 0 %}
-import type { Mutation{{ fieldName | pascalCase }}Args{% if isScalarType == false %}, {{ fieldTypeName }}{% endif %} } from '~/{{ schemaTypesPath }}';
+import type { Mutation{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath }}';
+{%- endif %}
+{%- if isScalarType == false %}
+import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 {%- endif %}
 
 const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {

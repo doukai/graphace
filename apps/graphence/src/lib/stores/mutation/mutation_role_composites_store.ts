@@ -1,15 +1,14 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { RoleInput, Role } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput]) {
-  role(where: { id: { val: $role_id } }, composites: $role_composites) @merge {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_role_composites($role_id: String, $role_composites: [RoleInput]) {
+  role(where: { id: { val: $role_id } }, composites: $role_composites) ${directives}{
     ...RoleFields
     syncRolePolicy
     composites {
       ...RoleFields
-      syncRolePolicy
     }
   }
 }

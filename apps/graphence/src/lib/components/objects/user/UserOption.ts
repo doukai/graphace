@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
 import type { Option } from '@graphace/ui-graphql';
@@ -15,6 +16,8 @@ import type {
 import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
+
+export const userInit: ((value: UserInput | null | undefined) => UserInput | null | undefined) | undefined = undefined;
 
 export const userTabs: (($LL: TranslationFunctions, args?: QueryUserListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
@@ -178,6 +181,9 @@ export const userFields: UserFields = {
 		hiddenCol: (args, tab, fieldArg) => {
 			return !auth('User::name::READ');
 		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('User::name::READ');
+		},
 		required: (value) => {
 			return true;
 		},
@@ -202,14 +208,17 @@ export const userFields: UserFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.name;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	description: {
@@ -223,6 +232,9 @@ export const userFields: UserFields = {
 			return !auth('User::description::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::description::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('User::description::READ');
 		},
 		required: (value) => {
@@ -249,14 +261,17 @@ export const userFields: UserFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.description;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	lastName: {
@@ -270,6 +285,9 @@ export const userFields: UserFields = {
 			return !auth('User::lastName::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::lastName::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('User::lastName::READ');
 		},
 		required: (value) => {
@@ -296,14 +314,17 @@ export const userFields: UserFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.lastName;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	login: {
@@ -317,6 +338,9 @@ export const userFields: UserFields = {
 			return !auth('User::login::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::login::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('User::login::READ');
 		},
 		required: (value) => {
@@ -343,14 +367,17 @@ export const userFields: UserFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.login;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	email: {
@@ -364,6 +391,9 @@ export const userFields: UserFields = {
 			return !auth('User::email::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::email::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('User::email::READ');
 		},
 		required: (value) => {
@@ -390,14 +420,17 @@ export const userFields: UserFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.email;
-			return fieldValue ? '' + fieldValue : '';
+			if (fieldValue != null) {
+				return fieldValue.toString();
+			}
+			return '';
 		}
 	},
 	phones: {
@@ -411,6 +444,9 @@ export const userFields: UserFields = {
 			return !auth('User::phones::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::phones::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('User::phones::READ');
 		},
 		required: (value) => {
@@ -437,7 +473,7 @@ export const userFields: UserFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				if (string.includes('/')) {
 					return string.split('/');
 				} else {
@@ -448,7 +484,10 @@ export const userFields: UserFields = {
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.phones;
-            return fieldValue?.map(item => '' + item).join('/') || '';
+			if (fieldValue != null) {
+				return fieldValue.map(item => item != null ? item.toString() : '').join('/');
+			}
+			return '';
 		}
 	},
 	disable: {
@@ -462,6 +501,9 @@ export const userFields: UserFields = {
 			return !auth('User::disable::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::disable::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('User::disable::READ');
 		},
 		required: (value) => {
@@ -488,14 +530,17 @@ export const userFields: UserFields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			const string = record?.[title];
-			if (string) {
+			if (string != null) {
 				return string === $LL.graphence.components.label.true() ? true : false;
 			}
 			return undefined;
 		},
 		toString: ($LL, value, fieldArg) => {
 			const fieldValue = value?.disable;
-			return fieldValue ? $LL.graphence.components.label.true() : $LL.graphence.components.label.false();
+			if (fieldValue != null) {
+				return fieldValue ? $LL.graphence.components.label.true() : $LL.graphence.components.label.false();
+			}
+			return '';
 		}
 	},
 	groups: {
@@ -509,6 +554,9 @@ export const userFields: UserFields = {
 			return !auth('User::groups::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::groups::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('User::groups::READ');
 		},
 		required: (value) => {
@@ -609,6 +657,9 @@ export const userFields: UserFields = {
 		hiddenCol: (args, tab, fieldArg) => {
 			return !auth('User::roles::READ');
 		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('User::roles::READ');
+		},
 		required: (value) => {
 			return false;
 		},
@@ -705,6 +756,9 @@ export const userFields: UserFields = {
 			return !auth('User::realm::READ');
 		},
 		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::realm::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
 			return !auth('User::realm::READ');
 		},
 		required: (value) => {
@@ -863,27 +917,15 @@ export const validateAll = async ($LL: TranslationFunctions, value: (UserInput |
 };
 
 export const toRecords = ($LL: TranslationFunctions, value: (UserInput | null | undefined)[] | null | undefined, fieldArgs?: UserFieldsArgs | undefined, fieldsPatch?: UserFields | undefined) => {
-	if (fieldsPatch) {
-		return value?.map(item =>
-			Object.fromEntries(
-				Object.entries(fieldsPatch)
-					.flatMap(([fieldName, optionPatch]) => {
-						const option = { ...userFields?.[fieldName as keyof UserFields], ...optionPatch };
-						const fieldArg = fieldArgs?.[fieldName as keyof UserFieldsArgs];
-						const title = option.title?.($LL, fieldArg) || fieldName;
-						const fields = option.toFields?.();
-						if (fields && option.toRecord) {
-							return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
-						}
-						const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
-						return [entry];
-					})
-			)
-		);
-	}
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...userFields?.[fieldName as keyof UserFields], ...optionPatch }])
+		) : userFields;
+		
 	return value?.map(item =>
 		Object.fromEntries(
-			Object.entries(userFields)
+			Object.entries(fields)
 				.flatMap(([fieldName, option]) => {
 					const fieldArg = fieldArgs?.[fieldName as keyof UserFieldsArgs];
 					const title = option.title?.($LL, fieldArg) || fieldName;
@@ -899,23 +941,55 @@ export const toRecords = ($LL: TranslationFunctions, value: (UserInput | null | 
 }
 
 export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: UserFields | undefined) => {
+	const fields = fieldsPatch ?
+		Object.fromEntries(
+			Object.entries(fieldsPatch)
+				.map(([fieldName, optionPatch]) => [fieldName, { ...userFields?.[fieldName as keyof UserFields], ...optionPatch }])
+		) : userFields;
+		
 	return Object.fromEntries(
 		Object.entries(errors)
 			.map(([row, errors]) =>
 				[
 					row,
-					Object.entries(userFields)
+					Object.entries(fields)
 						.flatMap(([fieldName, option]) => {
-							const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof UserFields] };
 							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
-							const fields = mergedOption.toFields?.();
+							const fields = option.toFields?.();
 							if (fields) {
-								return Object.keys(fields)
-									.map((subFieldName) =>
-										[...(fieldMessages || []), ...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])]
-									);
+								if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+													.flatMap((rowErrors) =>
+														rowErrors.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								} else {
+									return Object.keys(fields)
+										.map((subFieldName) =>
+											[
+												...(fieldMessages || []),
+												...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
+											]
+										);
+								}
 							}
-							return [fieldMessages];
+							if (errors.iterms?.[fieldName]?.iterms?.[0]) {
+								return [
+									[
+										...(fieldMessages || []),
+										...Object.values(errors.iterms?.[fieldName]?.iterms || {})
+											.flatMap((rowErrors) =>
+												rowErrors.errors?.map(error => error.message) || []
+											)
+									]
+								];
+							} else {
+								return [fieldMessages];
+							}
 						})
 				]
 			)

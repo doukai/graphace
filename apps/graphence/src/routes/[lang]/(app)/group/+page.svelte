@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
-	import { buildArguments } from '@graphace/graphql';
-	import { to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import { buildArguments, merge, uniqueMerge } from '@graphace/graphql';
+	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {
 		toRecords,
 		fromRecords,
@@ -113,7 +113,7 @@
 		<ExportDialog
 			on:export={(e) => {
 				export_groupConnection_Store
-					.fetch(buildArguments({ ...args, first: e.detail.pageSize }))
+					.fetch(buildArguments({ ...args, orderBy, first: e.detail.pageSize }))
 					.then((result) => {
 						if (result.errors) {
 							console.error(errors);
@@ -140,32 +140,35 @@
 				if (list) {
 					validate('Mutation_groupList_Arguments', { list })
 						.then((data) => {
-							import_groupList_Store.fetch({ list }).then((result) => {
-								if (result.errors) {
-									console.error(result.errors);
-									const errors = buildGraphQLErrors(result.errors, data);
-									if (errors.list?.iterms) {
-										e.detail.writeErrorsFile(
-											$LL.graphql.objects.Group.name(),
-											e.detail.json,
-											toErrors(errors.list?.iterms)
-										);
+							import_groupList_Store
+								.fetch({ list }, { directives: [merge(), uniqueMerge()] })
+								.then((result) => {
+									if (result.errors) {
+										console.error(result.errors);
+										const errors = buildGraphQLErrors(result.errors, data);
+										if (errors.list?.iterms) {
+											e.detail.writeErrorsFile(
+												$LL.graphql.objects.Group.name(),
+												e.detail.json,
+												toErrors(errors.list?.iterms)
+											);
+										}
+										const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+										if (globalError) {
+											modal.open({
+												title: $LL.graphence.message.requestFailed(),
+												description: globalError,
+												confirm: () => {
+													query();
+													return true;
+												}
+											});
+										}
+									} else {
+										toast.success($LL.graphence.message.requestSuccess());
+										query();
 									}
-									const globalError = buildGlobalGraphQLErrorMessage(result.errors);
-									if (globalError) {
-										modal.open({
-											title: $LL.graphence.message.requestFailed(),
-											description: globalError,
-											confirm: () => {
-												query();
-												return true;
-											}
-										});
-									}
-								} else {
-									toast.success($LL.graphence.message.requestSuccess());
-								}
-							});
+								});
 						})
 						.catch((validErrors) => {
 							console.error(validErrors);
@@ -181,13 +184,14 @@
 	</ModuleMenu>
 </div>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<GroupTable
 			showRemoveButton={auth('Group::isDeprecated::WRITE')}
 			showEditButton
 			showCreateButton={auth('Group::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
+			showFilter
 			{value}
 			bind:args
 			bind:orderBy
@@ -248,6 +252,7 @@
 			}}
 			on:create={(e) => to(`/${$locale}/group/_`)}
 			on:goto={(e) => to(`/${$locale}/group/${e.detail.path}`)}
+			on:back={(e) => ot()}
 		/>
 		<div class="divider my-0" />
 		<Pagination

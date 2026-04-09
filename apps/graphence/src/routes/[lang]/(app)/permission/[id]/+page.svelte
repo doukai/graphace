@@ -73,7 +73,7 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<PermissionForm
 			showSaveButton={auth('Permission::*::WRITE')}
 			showRemoveButton={auth('Permission::isDeprecated::WRITE')}

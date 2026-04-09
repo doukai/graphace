@@ -16,6 +16,7 @@
 	} from '@graphace/ui';
 	import { StringInput, ObjectLink } from '@graphace/ui-graphql';
 	import {
+		realmInit,
 		realmFields,
 		type RealmFields,
 		type RealmFieldsArgs,
@@ -39,7 +40,7 @@
 	export let showBackButton: boolean = false;
 	export let title: string | undefined = undefined;
 	let className: string | undefined =
-		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0';
+		'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 overflow-x-hidden overflow-y-auto [&_[data-part=input]]:min-w-0 p-1';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryRealmArgs | undefined) => TabInfo[] | undefined) | undefined = realmFormTabs;
 	export let tab: string | undefined = realmFormTab?.(args);
@@ -61,6 +62,10 @@
 		goto: { path: string; name: string | undefined };
 		back: {};
 	}>();
+
+	if (realmInit) {
+		value = realmInit(value);
+	}
 </script>
 
 <div class="flex justify-between">
@@ -75,11 +80,12 @@
 		</span>
 	</slot>
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		showRemoveButton={showRemoveButton && value?.id != null}
+		showUnbindButton={showUnbindButton && value?.id != null}
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
+		class="flex space-x-1 justify-end max-sm:w-full"
 		loading={isMutating}
 		on:save={(e) =>
 			validate($LL, value)
@@ -120,7 +126,7 @@
 				<FormControl let:id {...fields?.name?.props?.($LL, value, fieldsArgs?.name)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Realm.fields.name.name()}
+						text={fields?.name?.title?.($LL, fieldsArgs?.name) || $LL.graphql.objects.Realm.fields.name.name()}
 						required={fields?.name?.required?.(value)}
 					/>
 					<StringInput
@@ -148,7 +154,7 @@
 				<FormControl let:id {...fields?.description?.props?.($LL, value, fieldsArgs?.description)?.['form-control']}>
 					<Label
 						{id}
-						text={$LL.graphql.objects.Realm.fields.description.name()}
+						text={fields?.description?.title?.($LL, fieldsArgs?.description) || $LL.graphql.objects.Realm.fields.description.name()}
 						required={fields?.description?.required?.(value)}
 					/>
 					<StringInput
@@ -180,11 +186,12 @@
 <div class="divider my-0" />
 <div class="flex justify-end">
 	<Buttons
-		{showRemoveButton}
-		{showUnbindButton}
+		showRemoveButton={showRemoveButton && value?.id != null}
+		showUnbindButton={showUnbindButton && value?.id != null}
 		{showSaveButton}
 		{showSelectButton}
 		{showBackButton}
+		class="flex space-x-1 justify-end max-sm:w-full"
 		loading={isMutating}
 		on:save={(e) =>
 			validate($LL, value)

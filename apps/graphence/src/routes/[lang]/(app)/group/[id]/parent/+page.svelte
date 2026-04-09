@@ -2,6 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
+	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
@@ -23,7 +24,7 @@
 	$: id = data.id;
 	$: query_group_parent_Store = data.query_group_parent_Store;
 	$: group = $query_group_parent_Store.response.data?.group;
-	$: group = group?.parent;
+	$: parent = group?.parent;
 	$: mutation_group_parent_Store = data.mutation_group_parent_Store;
 	$: mutation_group_Store = data.mutation_group_Store;
 
@@ -31,8 +32,8 @@
 	let showUnbindButton = false;
 	let errors: Record<string, Errors> = {};
 
-	$: if (group && Object.keys(group).length > 0) {
-		value = group;
+	$: if (parent && Object.keys(parent).length > 0) {
+		value = parent;
 		showUnbindButton = true;
 	} else {
 		value = {};
@@ -66,15 +67,18 @@
 			});
 	};
 
-	const merge = (input: GroupInput | null) => {
+	const mutation_parent = (input: GroupInput | null) => {
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: input })
 			.then((data) => {
 				errors = {};
 				mutation_group_parent_Store
-					.fetch({
-						group_id: id,
-						group_parent: input
-					})
+					.fetch(
+						{
+							group_id: id,
+							group_parent: input
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -115,7 +119,7 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<GroupForm
 			showSaveButton={auth('Group::*::WRITE')}
 			showUnbindButton={showUnbindButton && auth('Group::isDeprecated::WRITE')}
@@ -126,7 +130,7 @@
 			isMutating={$validator.isValidating || $mutation_group_parent_Store.isFetching || $mutation_group_Store.isFetching}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge(e.detail.value);
+					mutation_parent(e.detail.value);
 				}
 			}}
 			on:remove={(e) => {
@@ -147,7 +151,7 @@
 				modal.open({
 					title: $LL.graphence.components.modal.unbindModalTitle(),
 					confirm: () => {
-						merge(null);
+						mutation_parent(null);
 						return true;
 					}
 				});
@@ -157,12 +161,12 @@
 		>
 			{#if auth('Group::*::WRITE')}
 				<GroupTableDialog
-					args={{ not: true, parent: { id: { val: group?.id } } }}
+					args={{ exs: [{ not: true, parent: { id: { val: group?.id } } }] }}
 					singleChoice
 					class="btn-accent"
 					on:select={(e) => {
 						if (!Array.isArray(e.detail.value) && e.detail.value !== undefined) {
-							merge(e.detail.value);
+							mutation_parent(e.detail.value);
 						}
 					}}
 				>

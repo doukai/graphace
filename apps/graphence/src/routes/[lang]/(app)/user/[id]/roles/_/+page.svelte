@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
+	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import {
@@ -23,15 +24,18 @@
 	let value: RoleInput = {};
 	let errors: Record<string, Errors> = {};
 
-	const merge = (input: RoleInput) => {
+	const mutation_roles = (input: RoleInput) => {
 		validate('Mutation_user_Arguments', { where: { id: { val: id } }, roles: [input] })
 			.then((data) => {
 				errors = {};
 				mutation_user_roles_Store
-					.fetch({
-						user_id: id,
-						user_roles: [input]
-					})
+					.fetch(
+						{
+							user_id: id,
+							user_roles: [input]
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -77,7 +81,7 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<RoleForm
 			showSaveButton={auth('Role::*::WRITE')}
 			showBackButton={$canBack}
@@ -86,7 +90,7 @@
 			isMutating={$validator.isValidating || $mutation_user_roles_Store.isFetching}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge(e.detail.value);
+					mutation_roles(e.detail.value);
 				}
 			}}
 			on:back={(e) => ot()}

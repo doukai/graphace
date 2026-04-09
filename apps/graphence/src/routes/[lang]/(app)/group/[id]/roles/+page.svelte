@@ -2,7 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
-	import { buildArguments } from '@graphace/graphql';
+	import { buildArguments, merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
@@ -84,15 +84,18 @@
 			});
 	};
 
-	const merge = (input: RoleInput[]) => {
+	const mutation_roles = (input: RoleInput[]) => {
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, roles: input })
 			.then((data) => {
 				errors = {};
 				mutation_group_roles_Store
-					.fetch({
-						group_id: id,
-						group_roles: input
-					})
+					.fetch(
+						{
+							group_id: id,
+							group_roles: input
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -133,13 +136,14 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<RoleTable
 			showUnbindButton={auth('Role::isDeprecated::WRITE')}
 			showEditButton
 			showCreateButton={auth('Role::*::WRITE')}
 			showBackButton={$canBack}
 			showSearchInput
+			showFilter
 			{value}
 			bind:args
 			bind:orderBy
@@ -196,7 +200,7 @@
 					title: $LL.graphence.components.modal.unbindModalTitle(),
 					confirm: () => {
 						if (Array.isArray(e.detail.value)) {
-							merge(
+							mutation_roles(
 								e.detail.value.map((node) => ({
 									where: { id: { val: node?.id } },
 									isDeprecated: true
@@ -213,11 +217,11 @@
 		>
 			{#if auth('Role::*::WRITE')}
 				<RoleTableDialog
-					args={{ not: true, groups: { id: { val: group?.id } } }}
+					args={{ exs: [{ not: true, groups: { id: { val: group?.id } } }] }}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {
-							merge(e.detail.value.filter((item) => item != null));
+							mutation_roles(e.detail.value.filter((item) => item != null));
 						}
 					}}
 				>

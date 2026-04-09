@@ -1,16 +1,15 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { fragment_GroupFields } from '~/lib/stores/fragment/fragment_GroupFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { RoleInput, Group } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_group_roles($group_id: String, $group_roles: [RoleInput]) {
-  group(where: { id: { val: $group_id } }, roles: $group_roles) @merge {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_group_roles($group_id: String, $group_roles: [RoleInput]) {
+  group(where: { id: { val: $group_id } }, roles: $group_roles) ${directives}{
     ...GroupFields
     syncGroupPolicy
     roles {
       ...RoleFields
-      syncRolePolicy
     }
   }
 }

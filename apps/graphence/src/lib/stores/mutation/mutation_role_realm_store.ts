@@ -1,11 +1,11 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { fragment_RealmFields } from '~/lib/stores/fragment/fragment_RealmFields';
 import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { RealmInput, Role } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput) {
-  role(where: { id: { val: $role_id } }, realm: $role_realm) @merge {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput) {
+  role(where: { id: { val: $role_id } }, realm: $role_realm) ${directives}{
     ...RoleFields
     syncRolePolicy
     realm {

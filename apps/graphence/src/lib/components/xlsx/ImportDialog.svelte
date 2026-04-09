@@ -61,7 +61,10 @@
 		const data = await file.arrayBuffer();
 		const wb = read(data);
 		const json: Record<string, string | null | undefined>[] = utils.sheet_to_json(
-			wb.Sheets[wb.SheetNames[0]]
+			wb.Sheets[wb.SheetNames[0]],
+			{
+				dateNF: 'yyyy-MM-dd hh:mm:ss'
+			}
 		);
 		dispatch('import', { json, writeErrorsFile, template });
 	};
@@ -119,7 +122,7 @@
 	<ModalAction>
 		<Button
 			text={$LL.graphence.components.moduleMenu.import()}
-			color="neutral"
+			color="primary"
 			disabled={file === undefined}
 			on:click={(e) => {
 				if (file) {

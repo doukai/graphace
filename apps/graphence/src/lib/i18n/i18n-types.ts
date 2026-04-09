@@ -991,33 +991,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				nameCount: {
 					/**
 					 * n​a​m​e​C​o​u​n​t
-					 */
-					name: string
-				}
-				nameMax: {
-					/**
-					 * n​a​m​e​M​a​x
-					 */
-					name: string
-				}
-				nameMin: {
-					/**
-					 * n​a​m​e​M​i​n
 					 */
 					name: string
 				}
@@ -1027,33 +1003,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				descriptionMax: {
-					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
-					 */
-					name: string
-				}
-				descriptionMin: {
-					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
-					 */
-					name: string
-				}
 				lastNameCount: {
 					/**
 					 * l​a​s​t​N​a​m​e​C​o​u​n​t
-					 */
-					name: string
-				}
-				lastNameMax: {
-					/**
-					 * l​a​s​t​N​a​m​e​M​a​x
-					 */
-					name: string
-				}
-				lastNameMin: {
-					/**
-					 * l​a​s​t​N​a​m​e​M​i​n
 					 */
 					name: string
 				}
@@ -1063,33 +1015,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				loginMax: {
-					/**
-					 * l​o​g​i​n​M​a​x
-					 */
-					name: string
-				}
-				loginMin: {
-					/**
-					 * l​o​g​i​n​M​i​n
-					 */
-					name: string
-				}
 				saltCount: {
 					/**
 					 * s​a​l​t​C​o​u​n​t
-					 */
-					name: string
-				}
-				saltMax: {
-					/**
-					 * s​a​l​t​M​a​x
-					 */
-					name: string
-				}
-				saltMin: {
-					/**
-					 * s​a​l​t​M​i​n
 					 */
 					name: string
 				}
@@ -1099,33 +1027,75 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				hashMax: {
-					/**
-					 * h​a​s​h​M​a​x
-					 */
-					name: string
-				}
-				hashMin: {
-					/**
-					 * h​a​s​h​M​i​n
-					 */
-					name: string
-				}
 				emailCount: {
 					/**
 					 * e​m​a​i​l​C​o​u​n​t
 					 */
 					name: string
 				}
-				emailMax: {
+				disableCount: {
 					/**
-					 * e​m​a​i​l​M​a​x
+					 * d​i​s​a​b​l​e​C​o​u​n​t
 					 */
 					name: string
 				}
-				emailMin: {
+				createTimeYear: {
 					/**
-					 * e​m​a​i​l​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				createTimeMonth: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -1365,33 +1335,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				nameCount: {
 					/**
 					 * n​a​m​e​C​o​u​n​t
-					 */
-					name: string
-				}
-				nameMax: {
-					/**
-					 * n​a​m​e​M​a​x
-					 */
-					name: string
-				}
-				nameMin: {
-					/**
-					 * n​a​m​e​M​i​n
 					 */
 					name: string
 				}
@@ -1401,15 +1347,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				descriptionMax: {
+				createTimeYear: {
 					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				descriptionMin: {
+				createTimeMonth: {
 					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -1619,33 +1613,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				nameCount: {
 					/**
 					 * n​a​m​e​C​o​u​n​t
-					 */
-					name: string
-				}
-				nameMax: {
-					/**
-					 * n​a​m​e​M​a​x
-					 */
-					name: string
-				}
-				nameMin: {
-					/**
-					 * n​a​m​e​M​i​n
 					 */
 					name: string
 				}
@@ -1655,33 +1625,15 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				descriptionMax: {
-					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
-					 */
-					name: string
-				}
-				descriptionMin: {
-					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
-					 */
-					name: string
-				}
 				pathCount: {
 					/**
 					 * p​a​t​h​C​o​u​n​t
 					 */
 					name: string
 				}
-				pathMax: {
+				deepCount: {
 					/**
-					 * p​a​t​h​M​a​x
-					 */
-					name: string
-				}
-				pathMin: {
-					/**
-					 * p​a​t​h​M​i​n
+					 * d​e​e​p​C​o​u​n​t
 					 */
 					name: string
 				}
@@ -1691,21 +1643,15 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				parentIdMax: {
+				deepMax: {
 					/**
-					 * p​a​r​e​n​t​I​d​M​a​x
+					 * d​e​e​p​M​a​x
 					 */
 					name: string
 				}
-				parentIdMin: {
+				deepMin: {
 					/**
-					 * p​a​r​e​n​t​I​d​M​i​n
-					 */
-					name: string
-				}
-				deepCount: {
-					/**
-					 * d​e​e​p​C​o​u​n​t
+					 * d​e​e​p​M​i​n
 					 */
 					name: string
 				}
@@ -1721,15 +1667,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				deepMax: {
+				createTimeYear: {
 					/**
-					 * d​e​e​p​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				deepMin: {
+				createTimeMonth: {
 					/**
-					 * d​e​e​p​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -1819,33 +1813,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				nameCount: {
 					/**
 					 * n​a​m​e​C​o​u​n​t
-					 */
-					name: string
-				}
-				nameMax: {
-					/**
-					 * n​a​m​e​M​a​x
-					 */
-					name: string
-				}
-				nameMin: {
-					/**
-					 * n​a​m​e​M​i​n
 					 */
 					name: string
 				}
@@ -1855,15 +1825,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				descriptionMax: {
+				createTimeYear: {
 					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				descriptionMin: {
+				createTimeMonth: {
 					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -2007,33 +2025,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				nameCount: {
 					/**
 					 * n​a​m​e​C​o​u​n​t
-					 */
-					name: string
-				}
-				nameMax: {
-					/**
-					 * n​a​m​e​M​a​x
-					 */
-					name: string
-				}
-				nameMin: {
-					/**
-					 * n​a​m​e​M​i​n
 					 */
 					name: string
 				}
@@ -2043,33 +2037,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				descriptionMax: {
-					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​a​x
-					 */
-					name: string
-				}
-				descriptionMin: {
-					/**
-					 * d​e​s​c​r​i​p​t​i​o​n​M​i​n
-					 */
-					name: string
-				}
 				fieldCount: {
 					/**
 					 * f​i​e​l​d​C​o​u​n​t
-					 */
-					name: string
-				}
-				fieldMax: {
-					/**
-					 * f​i​e​l​d​M​a​x
-					 */
-					name: string
-				}
-				fieldMin: {
-					/**
-					 * f​i​e​l​d​M​i​n
 					 */
 					name: string
 				}
@@ -2079,33 +2049,69 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				typeMax: {
-					/**
-					 * t​y​p​e​M​a​x
-					 */
-					name: string
-				}
-				typeMin: {
-					/**
-					 * t​y​p​e​M​i​n
-					 */
-					name: string
-				}
 				permissionTypeCount: {
 					/**
 					 * p​e​r​m​i​s​s​i​o​n​T​y​p​e​C​o​u​n​t
 					 */
 					name: string
 				}
-				permissionTypeMax: {
+				createTimeYear: {
 					/**
-					 * p​e​r​m​i​s​s​i​o​n​T​y​p​e​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				permissionTypeMin: {
+				createTimeMonth: {
 					/**
-					 * p​e​r​m​i​s​s​i​o​n​T​y​p​e​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -2201,33 +2207,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				userRefCount: {
 					/**
 					 * u​s​e​r​R​e​f​C​o​u​n​t
-					 */
-					name: string
-				}
-				userRefMax: {
-					/**
-					 * u​s​e​r​R​e​f​M​a​x
-					 */
-					name: string
-				}
-				userRefMin: {
-					/**
-					 * u​s​e​r​R​e​f​M​i​n
 					 */
 					name: string
 				}
@@ -2237,15 +2219,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				phonesRefMax: {
+				createTimeYear: {
 					/**
-					 * p​h​o​n​e​s​R​e​f​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				phonesRefMin: {
+				createTimeMonth: {
 					/**
-					 * p​h​o​n​e​s​R​e​f​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -2341,33 +2371,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				userRefCount: {
 					/**
 					 * u​s​e​r​R​e​f​C​o​u​n​t
-					 */
-					name: string
-				}
-				userRefMax: {
-					/**
-					 * u​s​e​r​R​e​f​M​a​x
-					 */
-					name: string
-				}
-				userRefMin: {
-					/**
-					 * u​s​e​r​R​e​f​M​i​n
 					 */
 					name: string
 				}
@@ -2377,15 +2383,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				groupRefMax: {
+				createTimeYear: {
 					/**
-					 * g​r​o​u​p​R​e​f​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				groupRefMin: {
+				createTimeMonth: {
 					/**
-					 * g​r​o​u​p​R​e​f​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -2481,33 +2535,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				userRefCount: {
 					/**
 					 * u​s​e​r​R​e​f​C​o​u​n​t
-					 */
-					name: string
-				}
-				userRefMax: {
-					/**
-					 * u​s​e​r​R​e​f​M​a​x
-					 */
-					name: string
-				}
-				userRefMin: {
-					/**
-					 * u​s​e​r​R​e​f​M​i​n
 					 */
 					name: string
 				}
@@ -2517,15 +2547,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				roleRefMax: {
+				createTimeYear: {
 					/**
-					 * r​o​l​e​R​e​f​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				roleRefMin: {
+				createTimeMonth: {
 					/**
-					 * r​o​l​e​R​e​f​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -2621,33 +2699,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				roleRefCount: {
 					/**
 					 * r​o​l​e​R​e​f​C​o​u​n​t
-					 */
-					name: string
-				}
-				roleRefMax: {
-					/**
-					 * r​o​l​e​R​e​f​M​a​x
-					 */
-					name: string
-				}
-				roleRefMin: {
-					/**
-					 * r​o​l​e​R​e​f​M​i​n
 					 */
 					name: string
 				}
@@ -2657,15 +2711,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				groupRefMax: {
+				createTimeYear: {
 					/**
-					 * g​r​o​u​p​R​e​f​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				groupRefMin: {
+				createTimeMonth: {
 					/**
-					 * g​r​o​u​p​R​e​f​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -2761,33 +2863,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				roleRefCount: {
 					/**
 					 * r​o​l​e​R​e​f​C​o​u​n​t
-					 */
-					name: string
-				}
-				roleRefMax: {
-					/**
-					 * r​o​l​e​R​e​f​M​a​x
-					 */
-					name: string
-				}
-				roleRefMin: {
-					/**
-					 * r​o​l​e​R​e​f​M​i​n
 					 */
 					name: string
 				}
@@ -2797,15 +2875,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				compositeRefMax: {
+				createTimeYear: {
 					/**
-					 * c​o​m​p​o​s​i​t​e​R​e​f​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				compositeRefMin: {
+				createTimeMonth: {
 					/**
-					 * c​o​m​p​o​s​i​t​e​R​e​f​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -2901,33 +3027,9 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				idMax: {
-					/**
-					 * i​d​M​a​x
-					 */
-					name: string
-				}
-				idMin: {
-					/**
-					 * i​d​M​i​n
-					 */
-					name: string
-				}
 				roleRefCount: {
 					/**
 					 * r​o​l​e​R​e​f​C​o​u​n​t
-					 */
-					name: string
-				}
-				roleRefMax: {
-					/**
-					 * r​o​l​e​R​e​f​M​a​x
-					 */
-					name: string
-				}
-				roleRefMin: {
-					/**
-					 * r​o​l​e​R​e​f​M​i​n
 					 */
 					name: string
 				}
@@ -2937,15 +3039,63 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
-				permissionRefMax: {
+				createTimeYear: {
 					/**
-					 * p​e​r​m​i​s​s​i​o​n​R​e​f​M​a​x
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
 					 */
 					name: string
 				}
-				permissionRefMin: {
+				createTimeMonth: {
 					/**
-					 * p​e​r​m​i​s​s​i​o​n​R​e​f​M​i​n
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
 					 */
 					name: string
 				}
@@ -4294,33 +4444,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					nameCount: {
 						/**
 						 * nameCount
-						 */
-						name: () => LocalizedString
-					}
-					nameMax: {
-						/**
-						 * nameMax
-						 */
-						name: () => LocalizedString
-					}
-					nameMin: {
-						/**
-						 * nameMin
 						 */
 						name: () => LocalizedString
 					}
@@ -4330,33 +4456,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					descriptionMax: {
-						/**
-						 * descriptionMax
-						 */
-						name: () => LocalizedString
-					}
-					descriptionMin: {
-						/**
-						 * descriptionMin
-						 */
-						name: () => LocalizedString
-					}
 					lastNameCount: {
 						/**
 						 * lastNameCount
-						 */
-						name: () => LocalizedString
-					}
-					lastNameMax: {
-						/**
-						 * lastNameMax
-						 */
-						name: () => LocalizedString
-					}
-					lastNameMin: {
-						/**
-						 * lastNameMin
 						 */
 						name: () => LocalizedString
 					}
@@ -4366,33 +4468,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					loginMax: {
-						/**
-						 * loginMax
-						 */
-						name: () => LocalizedString
-					}
-					loginMin: {
-						/**
-						 * loginMin
-						 */
-						name: () => LocalizedString
-					}
 					saltCount: {
 						/**
 						 * saltCount
-						 */
-						name: () => LocalizedString
-					}
-					saltMax: {
-						/**
-						 * saltMax
-						 */
-						name: () => LocalizedString
-					}
-					saltMin: {
-						/**
-						 * saltMin
 						 */
 						name: () => LocalizedString
 					}
@@ -4402,33 +4480,75 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					hashMax: {
-						/**
-						 * hashMax
-						 */
-						name: () => LocalizedString
-					}
-					hashMin: {
-						/**
-						 * hashMin
-						 */
-						name: () => LocalizedString
-					}
 					emailCount: {
 						/**
 						 * emailCount
 						 */
 						name: () => LocalizedString
 					}
-					emailMax: {
+					disableCount: {
 						/**
-						 * emailMax
+						 * disableCount
 						 */
 						name: () => LocalizedString
 					}
-					emailMin: {
+					createTimeYear: {
 						/**
-						 * emailMin
+						 * createTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					createTimeMonth: {
+						/**
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -4668,33 +4788,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					nameCount: {
 						/**
 						 * nameCount
-						 */
-						name: () => LocalizedString
-					}
-					nameMax: {
-						/**
-						 * nameMax
-						 */
-						name: () => LocalizedString
-					}
-					nameMin: {
-						/**
-						 * nameMin
 						 */
 						name: () => LocalizedString
 					}
@@ -4704,15 +4800,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					descriptionMax: {
+					createTimeYear: {
 						/**
-						 * descriptionMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					descriptionMin: {
+					createTimeMonth: {
 						/**
-						 * descriptionMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -4922,33 +5066,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					nameCount: {
 						/**
 						 * nameCount
-						 */
-						name: () => LocalizedString
-					}
-					nameMax: {
-						/**
-						 * nameMax
-						 */
-						name: () => LocalizedString
-					}
-					nameMin: {
-						/**
-						 * nameMin
 						 */
 						name: () => LocalizedString
 					}
@@ -4958,33 +5078,15 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					descriptionMax: {
-						/**
-						 * descriptionMax
-						 */
-						name: () => LocalizedString
-					}
-					descriptionMin: {
-						/**
-						 * descriptionMin
-						 */
-						name: () => LocalizedString
-					}
 					pathCount: {
 						/**
 						 * pathCount
 						 */
 						name: () => LocalizedString
 					}
-					pathMax: {
+					deepCount: {
 						/**
-						 * pathMax
-						 */
-						name: () => LocalizedString
-					}
-					pathMin: {
-						/**
-						 * pathMin
+						 * deepCount
 						 */
 						name: () => LocalizedString
 					}
@@ -4994,21 +5096,15 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					parentIdMax: {
+					deepMax: {
 						/**
-						 * parentIdMax
+						 * deepMax
 						 */
 						name: () => LocalizedString
 					}
-					parentIdMin: {
+					deepMin: {
 						/**
-						 * parentIdMin
-						 */
-						name: () => LocalizedString
-					}
-					deepCount: {
-						/**
-						 * deepCount
+						 * deepMin
 						 */
 						name: () => LocalizedString
 					}
@@ -5024,15 +5120,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					deepMax: {
+					createTimeYear: {
 						/**
-						 * deepMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					deepMin: {
+					createTimeMonth: {
 						/**
-						 * deepMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -5122,33 +5266,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					nameCount: {
 						/**
 						 * nameCount
-						 */
-						name: () => LocalizedString
-					}
-					nameMax: {
-						/**
-						 * nameMax
-						 */
-						name: () => LocalizedString
-					}
-					nameMin: {
-						/**
-						 * nameMin
 						 */
 						name: () => LocalizedString
 					}
@@ -5158,15 +5278,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					descriptionMax: {
+					createTimeYear: {
 						/**
-						 * descriptionMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					descriptionMin: {
+					createTimeMonth: {
 						/**
-						 * descriptionMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -5310,33 +5478,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					nameCount: {
 						/**
 						 * nameCount
-						 */
-						name: () => LocalizedString
-					}
-					nameMax: {
-						/**
-						 * nameMax
-						 */
-						name: () => LocalizedString
-					}
-					nameMin: {
-						/**
-						 * nameMin
 						 */
 						name: () => LocalizedString
 					}
@@ -5346,33 +5490,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					descriptionMax: {
-						/**
-						 * descriptionMax
-						 */
-						name: () => LocalizedString
-					}
-					descriptionMin: {
-						/**
-						 * descriptionMin
-						 */
-						name: () => LocalizedString
-					}
 					fieldCount: {
 						/**
 						 * fieldCount
-						 */
-						name: () => LocalizedString
-					}
-					fieldMax: {
-						/**
-						 * fieldMax
-						 */
-						name: () => LocalizedString
-					}
-					fieldMin: {
-						/**
-						 * fieldMin
 						 */
 						name: () => LocalizedString
 					}
@@ -5382,33 +5502,69 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					typeMax: {
-						/**
-						 * typeMax
-						 */
-						name: () => LocalizedString
-					}
-					typeMin: {
-						/**
-						 * typeMin
-						 */
-						name: () => LocalizedString
-					}
 					permissionTypeCount: {
 						/**
 						 * permissionTypeCount
 						 */
 						name: () => LocalizedString
 					}
-					permissionTypeMax: {
+					createTimeYear: {
 						/**
-						 * permissionTypeMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					permissionTypeMin: {
+					createTimeMonth: {
 						/**
-						 * permissionTypeMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -5504,33 +5660,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					userRefCount: {
 						/**
 						 * userRefCount
-						 */
-						name: () => LocalizedString
-					}
-					userRefMax: {
-						/**
-						 * userRefMax
-						 */
-						name: () => LocalizedString
-					}
-					userRefMin: {
-						/**
-						 * userRefMin
 						 */
 						name: () => LocalizedString
 					}
@@ -5540,15 +5672,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					phonesRefMax: {
+					createTimeYear: {
 						/**
-						 * phonesRefMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					phonesRefMin: {
+					createTimeMonth: {
 						/**
-						 * phonesRefMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -5644,33 +5824,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					userRefCount: {
 						/**
 						 * userRefCount
-						 */
-						name: () => LocalizedString
-					}
-					userRefMax: {
-						/**
-						 * userRefMax
-						 */
-						name: () => LocalizedString
-					}
-					userRefMin: {
-						/**
-						 * userRefMin
 						 */
 						name: () => LocalizedString
 					}
@@ -5680,15 +5836,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					groupRefMax: {
+					createTimeYear: {
 						/**
-						 * groupRefMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					groupRefMin: {
+					createTimeMonth: {
 						/**
-						 * groupRefMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -5784,33 +5988,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					userRefCount: {
 						/**
 						 * userRefCount
-						 */
-						name: () => LocalizedString
-					}
-					userRefMax: {
-						/**
-						 * userRefMax
-						 */
-						name: () => LocalizedString
-					}
-					userRefMin: {
-						/**
-						 * userRefMin
 						 */
 						name: () => LocalizedString
 					}
@@ -5820,15 +6000,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					roleRefMax: {
+					createTimeYear: {
 						/**
-						 * roleRefMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					roleRefMin: {
+					createTimeMonth: {
 						/**
-						 * roleRefMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -5924,33 +6152,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					roleRefCount: {
 						/**
 						 * roleRefCount
-						 */
-						name: () => LocalizedString
-					}
-					roleRefMax: {
-						/**
-						 * roleRefMax
-						 */
-						name: () => LocalizedString
-					}
-					roleRefMin: {
-						/**
-						 * roleRefMin
 						 */
 						name: () => LocalizedString
 					}
@@ -5960,15 +6164,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					groupRefMax: {
+					createTimeYear: {
 						/**
-						 * groupRefMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					groupRefMin: {
+					createTimeMonth: {
 						/**
-						 * groupRefMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -6064,33 +6316,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					roleRefCount: {
 						/**
 						 * roleRefCount
-						 */
-						name: () => LocalizedString
-					}
-					roleRefMax: {
-						/**
-						 * roleRefMax
-						 */
-						name: () => LocalizedString
-					}
-					roleRefMin: {
-						/**
-						 * roleRefMin
 						 */
 						name: () => LocalizedString
 					}
@@ -6100,15 +6328,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					compositeRefMax: {
+					createTimeYear: {
 						/**
-						 * compositeRefMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					compositeRefMin: {
+					createTimeMonth: {
 						/**
-						 * compositeRefMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}
@@ -6204,33 +6480,9 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					idMax: {
-						/**
-						 * idMax
-						 */
-						name: () => LocalizedString
-					}
-					idMin: {
-						/**
-						 * idMin
-						 */
-						name: () => LocalizedString
-					}
 					roleRefCount: {
 						/**
 						 * roleRefCount
-						 */
-						name: () => LocalizedString
-					}
-					roleRefMax: {
-						/**
-						 * roleRefMax
-						 */
-						name: () => LocalizedString
-					}
-					roleRefMin: {
-						/**
-						 * roleRefMin
 						 */
 						name: () => LocalizedString
 					}
@@ -6240,15 +6492,63 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
-					permissionRefMax: {
+					createTimeYear: {
 						/**
-						 * permissionRefMax
+						 * createTimeYear
 						 */
 						name: () => LocalizedString
 					}
-					permissionRefMin: {
+					createTimeMonth: {
 						/**
-						 * permissionRefMin
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
 						 */
 						name: () => LocalizedString
 					}

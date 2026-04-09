@@ -110,74 +110,59 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				nameCount: {
 					name: 'nameCount',
-				},
-				nameMax: {
-					name: 'nameMax',
-				},
-				nameMin: {
-					name: 'nameMin',
 				},
 				descriptionCount: {
 					name: 'descriptionCount',
 				},
-				descriptionMax: {
-					name: 'descriptionMax',
-				},
-				descriptionMin: {
-					name: 'descriptionMin',
-				},
 				lastNameCount: {
 					name: 'lastNameCount',
-				},
-				lastNameMax: {
-					name: 'lastNameMax',
-				},
-				lastNameMin: {
-					name: 'lastNameMin',
 				},
 				loginCount: {
 					name: 'loginCount',
 				},
-				loginMax: {
-					name: 'loginMax',
-				},
-				loginMin: {
-					name: 'loginMin',
-				},
 				saltCount: {
 					name: 'saltCount',
-				},
-				saltMax: {
-					name: 'saltMax',
-				},
-				saltMin: {
-					name: 'saltMin',
 				},
 				hashCount: {
 					name: 'hashCount',
 				},
-				hashMax: {
-					name: 'hashMax',
-				},
-				hashMin: {
-					name: 'hashMin',
-				},
 				emailCount: {
 					name: 'emailCount',
 				},
-				emailMax: {
-					name: 'emailMax',
+				disableCount: {
+					name: 'disableCount',
 				},
-				emailMin: {
-					name: 'emailMin',
+				createTimeYear: {
+					name: 'createTimeYear',
+				},
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				},
 				syncUserPolicy: {
 					name: 'syncUserPolicy',
@@ -298,29 +283,41 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				nameCount: {
 					name: 'nameCount',
-				},
-				nameMax: {
-					name: 'nameMax',
-				},
-				nameMin: {
-					name: 'nameMin',
 				},
 				descriptionCount: {
 					name: 'descriptionCount',
 				},
-				descriptionMax: {
-					name: 'descriptionMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				descriptionMin: {
-					name: 'descriptionMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				},
 				syncRolePolicy: {
 					name: 'syncRolePolicy',
@@ -426,50 +423,26 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				nameCount: {
 					name: 'nameCount',
-				},
-				nameMax: {
-					name: 'nameMax',
-				},
-				nameMin: {
-					name: 'nameMin',
 				},
 				descriptionCount: {
 					name: 'descriptionCount',
 				},
-				descriptionMax: {
-					name: 'descriptionMax',
-				},
-				descriptionMin: {
-					name: 'descriptionMin',
-				},
 				pathCount: {
 					name: 'pathCount',
 				},
-				pathMax: {
-					name: 'pathMax',
-				},
-				pathMin: {
-					name: 'pathMin',
+				deepCount: {
+					name: 'deepCount',
 				},
 				parentIdCount: {
 					name: 'parentIdCount',
 				},
-				parentIdMax: {
-					name: 'parentIdMax',
+				deepMax: {
+					name: 'deepMax',
 				},
-				parentIdMin: {
-					name: 'parentIdMin',
-				},
-				deepCount: {
-					name: 'deepCount',
+				deepMin: {
+					name: 'deepMin',
 				},
 				deepSum: {
 					name: 'deepSum',
@@ -477,11 +450,35 @@ const en: BaseTranslation = {
 				deepAvg: {
 					name: 'deepAvg',
 				},
-				deepMax: {
-					name: 'deepMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				deepMin: {
-					name: 'deepMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				},
 				syncGroupPolicy: {
 					name: 'syncGroupPolicy',
@@ -527,29 +524,41 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				nameCount: {
 					name: 'nameCount',
-				},
-				nameMax: {
-					name: 'nameMax',
-				},
-				nameMin: {
-					name: 'nameMin',
 				},
 				descriptionCount: {
 					name: 'descriptionCount',
 				},
-				descriptionMax: {
-					name: 'descriptionMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				descriptionMin: {
-					name: 'descriptionMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				}
 			}
 		},
@@ -622,56 +631,50 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				nameCount: {
 					name: 'nameCount',
-				},
-				nameMax: {
-					name: 'nameMax',
-				},
-				nameMin: {
-					name: 'nameMin',
 				},
 				descriptionCount: {
 					name: 'descriptionCount',
 				},
-				descriptionMax: {
-					name: 'descriptionMax',
-				},
-				descriptionMin: {
-					name: 'descriptionMin',
-				},
 				fieldCount: {
 					name: 'fieldCount',
-				},
-				fieldMax: {
-					name: 'fieldMax',
-				},
-				fieldMin: {
-					name: 'fieldMin',
 				},
 				typeCount: {
 					name: 'typeCount',
 				},
-				typeMax: {
-					name: 'typeMax',
-				},
-				typeMin: {
-					name: 'typeMin',
-				},
 				permissionTypeCount: {
 					name: 'permissionTypeCount',
 				},
-				permissionTypeMax: {
-					name: 'permissionTypeMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				permissionTypeMin: {
-					name: 'permissionTypeMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				},
 				syncPermissionPolicy: {
 					name: 'syncPermissionPolicy',
@@ -720,29 +723,41 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				userRefCount: {
 					name: 'userRefCount',
-				},
-				userRefMax: {
-					name: 'userRefMax',
-				},
-				userRefMin: {
-					name: 'userRefMin',
 				},
 				phonesRefCount: {
 					name: 'phonesRefCount',
 				},
-				phonesRefMax: {
-					name: 'phonesRefMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				phonesRefMin: {
-					name: 'phonesRefMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				}
 			}
 		},
@@ -791,29 +806,41 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				userRefCount: {
 					name: 'userRefCount',
-				},
-				userRefMax: {
-					name: 'userRefMax',
-				},
-				userRefMin: {
-					name: 'userRefMin',
 				},
 				groupRefCount: {
 					name: 'groupRefCount',
 				},
-				groupRefMax: {
-					name: 'groupRefMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				groupRefMin: {
-					name: 'groupRefMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				}
 			}
 		},
@@ -862,29 +889,41 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				userRefCount: {
 					name: 'userRefCount',
-				},
-				userRefMax: {
-					name: 'userRefMax',
-				},
-				userRefMin: {
-					name: 'userRefMin',
 				},
 				roleRefCount: {
 					name: 'roleRefCount',
 				},
-				roleRefMax: {
-					name: 'roleRefMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				roleRefMin: {
-					name: 'roleRefMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				}
 			}
 		},
@@ -933,29 +972,41 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				roleRefCount: {
 					name: 'roleRefCount',
-				},
-				roleRefMax: {
-					name: 'roleRefMax',
-				},
-				roleRefMin: {
-					name: 'roleRefMin',
 				},
 				groupRefCount: {
 					name: 'groupRefCount',
 				},
-				groupRefMax: {
-					name: 'groupRefMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				groupRefMin: {
-					name: 'groupRefMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				}
 			}
 		},
@@ -1004,29 +1055,41 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				roleRefCount: {
 					name: 'roleRefCount',
-				},
-				roleRefMax: {
-					name: 'roleRefMax',
-				},
-				roleRefMin: {
-					name: 'roleRefMin',
 				},
 				compositeRefCount: {
 					name: 'compositeRefCount',
 				},
-				compositeRefMax: {
-					name: 'compositeRefMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				compositeRefMin: {
-					name: 'compositeRefMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				}
 			}
 		},
@@ -1075,29 +1138,41 @@ const en: BaseTranslation = {
 				idCount: {
 					name: 'idCount',
 				},
-				idMax: {
-					name: 'idMax',
-				},
-				idMin: {
-					name: 'idMin',
-				},
 				roleRefCount: {
 					name: 'roleRefCount',
-				},
-				roleRefMax: {
-					name: 'roleRefMax',
-				},
-				roleRefMin: {
-					name: 'roleRefMin',
 				},
 				permissionRefCount: {
 					name: 'permissionRefCount',
 				},
-				permissionRefMax: {
-					name: 'permissionRefMax',
+				createTimeYear: {
+					name: 'createTimeYear',
 				},
-				permissionRefMin: {
-					name: 'permissionRefMin',
+				createTimeMonth: {
+					name: 'createTimeMonth',
+				},
+				createTimeDay: {
+					name: 'createTimeDay',
+				},
+				createTimeWeek: {
+					name: 'createTimeWeek',
+				},
+				createTimeQuarter: {
+					name: 'createTimeQuarter',
+				},
+				updateTimeYear: {
+					name: 'updateTimeYear',
+				},
+				updateTimeMonth: {
+					name: 'updateTimeMonth',
+				},
+				updateTimeDay: {
+					name: 'updateTimeDay',
+				},
+				updateTimeWeek: {
+					name: 'updateTimeWeek',
+				},
+				updateTimeQuarter: {
+					name: 'updateTimeQuarter',
 				}
 			}
 		}

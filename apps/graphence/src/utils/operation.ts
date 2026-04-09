@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import type { GraphQLError } from '@graphace/graphql';
-import type { GraphQLStore, Event } from '@graphace/ui-graphql';
+import type { GraphQLStore, Event, QueryParams, FetchParams } from '@graphace/ui-graphql';
 import {
     createGraphQLQueryStore as _createGraphQLQueryStore,
     fetchGraphQLQueryStore as _fetchGraphQLQueryStore,
@@ -31,7 +31,7 @@ const authInterceptor = <T>(event: Event, response: { data?: T | undefined, erro
     }
 }
 
-export function createGraphQLQueryStore<T, V>(query: string, event: Event): GraphQLStore<T, V> {
+export function createGraphQLQueryStore<T, V>(query: (params: QueryParams) => string, event: Event): GraphQLStore<T, V> {
     const graphQLQueryStore = _createGraphQLQueryStore<T, V>(event, getUrl(event), query);
 
     graphQLQueryStore.subscribe(data => {
@@ -41,8 +41,8 @@ export function createGraphQLQueryStore<T, V>(query: string, event: Event): Grap
     return graphQLQueryStore;
 }
 
-export async function fetchGraphQLQueryStore<T, V>(query: string, event: Event, variables?: V | undefined): Promise<GraphQLStore<T, V>> {
-    const graphQLQueryStore = await _fetchGraphQLQueryStore<T, V>(event, getUrl(event), query, variables);
+export async function fetchGraphQLQueryStore<T, V>(query: (params: QueryParams) => string, event: Event, variables?: V | undefined, params?: FetchParams | undefined): Promise<GraphQLStore<T, V>> {
+    const graphQLQueryStore = await _fetchGraphQLQueryStore<T, V>(event, getUrl(event), query, variables, params);
 
     graphQLQueryStore.subscribe(data => {
         authInterceptor(event, data.response);
@@ -51,7 +51,7 @@ export async function fetchGraphQLQueryStore<T, V>(query: string, event: Event, 
     return graphQLQueryStore;
 }
 
-export function createGraphQLMutationStore<T, V>(query: string, event: Event): GraphQLStore<T, V> {
+export function createGraphQLMutationStore<T, V>(query: (params: QueryParams) => string, event: Event): GraphQLStore<T, V> {
     const graphQLQueryStore = _createGraphQLMutationStore<T, V>(event, getUrl(event), query);
 
     graphQLQueryStore.subscribe(data => {

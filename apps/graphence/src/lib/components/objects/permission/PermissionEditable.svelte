@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Readable } from 'svelte/store';
-	import { melt } from '@melt-ui/svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { PencilSquare, Trash, ArchiveBoxXMark, Funnel, Plus } from '@steeze-ui/heroicons';
+	import { PencilSquare, Trash, ArchiveBoxXMark, Plus } from '@steeze-ui/heroicons';
 	import type { Errors } from '@graphace/commons';
 	import {
 		Buttons,
@@ -60,9 +59,10 @@
 	export let showSelectButton: boolean = false;
 	export let showBackButton: boolean = false;
 	export let showSearchInput: boolean = false;
+	export let showFilter: boolean = false;
 	export let title: string | undefined = undefined;
 	export let zIndex: number = 0;
-	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols';
+	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols [&_[data-element=td]]:max-w-64';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryPermissionListArgs | undefined) => TabInfo[] | undefined) | undefined = permissionTabs;
 	export let tab: string | undefined = permissionTab?.(args);
@@ -122,6 +122,8 @@
 		{showSelectButton}
 		{showBackButton}
 		loading={isMutating}
+		class="flex space-x-1 justify-end max-sm:w-full"
+		{zIndex}
 		on:save={(e) =>
 			validateAll($LL, value)
 				.then((value) => dispatch('save', { value }))
@@ -147,22 +149,18 @@
 		<svelte:fragment slot="start">
 			<slot name="search">
 				{#if showSearchInput}
-					<SearchInput class="max-sm:w-full" on:search />
+					<SearchInput class="max-sm:w-full max-sm:[&_[data-part=input]]:w-full" on:search />
 				{/if}
 			</slot>
-			<div class="sm:hidden">
-				<PermissionFilter
-					bind:value={args}
-					let:trigger
-					on:filter={(e) => dispatch('query', { args, orderBy })}
-				>
-					<div class="tooltip" data-tip={$LL.graphence.components.query.filter()}>
-						<button class="btn btn-square" use:melt={trigger}>
-							<Icon src={Funnel} class="h-5 w-5" />
-						</button>
-					</div>
-				</PermissionFilter>
-			</div>
+			{#if showFilter}
+				<div class="sm:hidden">
+					<PermissionFilter
+						bind:value={args}
+						bind:orderBy
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+					/>
+				</div>
+			{/if}
 		</svelte:fragment>
 		{#if showCreateDialog}
 			<PermissionFormDialog
@@ -233,7 +231,7 @@
 			<slot name="name-th" {args} {orderBy} {fields}>
 				{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 					<StringTh
-						name={$LL.graphql.objects.Permission.fields.name.name()}
+						name={fields?.name?.title?.($LL, fieldsArgs?.name) || $LL.graphql.objects.Permission.fields.name.name()}
 						bind:value={args.name}
 						bind:sort={orderBy.name}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -246,7 +244,7 @@
 			<slot name="description-th" {args} {orderBy} {fields}>
 				{#if !fields?.description?.hiddenCol?.(args, tab, fieldsArgs?.description)}
 					<StringTh
-						name={$LL.graphql.objects.Permission.fields.description.name()}
+						name={fields?.description?.title?.($LL, fieldsArgs?.description) || $LL.graphql.objects.Permission.fields.description.name()}
 						bind:value={args.description}
 						bind:sort={orderBy.description}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -259,7 +257,7 @@
 			<slot name="field-th" {args} {orderBy} {fields}>
 				{#if !fields?.field?.hiddenCol?.(args, tab, fieldsArgs?.field)}
 					<StringTh
-						name={$LL.graphql.objects.Permission.fields.field.name()}
+						name={fields?.field?.title?.($LL, fieldsArgs?.field) || $LL.graphql.objects.Permission.fields.field.name()}
 						bind:value={args.field}
 						bind:sort={orderBy.field}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -272,7 +270,7 @@
 			<slot name="type-th" {args} {orderBy} {fields}>
 				{#if !fields?.type?.hiddenCol?.(args, tab, fieldsArgs?.type)}
 					<StringTh
-						name={$LL.graphql.objects.Permission.fields.type.name()}
+						name={fields?.type?.title?.($LL, fieldsArgs?.type) || $LL.graphql.objects.Permission.fields.type.name()}
 						bind:value={args.type}
 						bind:sort={orderBy.type}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -285,7 +283,7 @@
 			<slot name="permissionType-th" {args} {orderBy} {fields}>
 				{#if !fields?.permissionType?.hiddenCol?.(args, tab, fieldsArgs?.permissionType)}
 					<PermissionTypeTh
-						name={$LL.graphql.objects.Permission.fields.permissionType.name()}
+						name={fields?.permissionType?.title?.($LL, fieldsArgs?.permissionType) || $LL.graphql.objects.Permission.fields.permissionType.name()}
 						bind:value={args.permissionType}
 						bind:sort={orderBy.permissionType}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
@@ -298,8 +296,9 @@
 			<slot name="roles-th" {args} {orderBy} {fields}>
 				{#if !fields?.roles?.hiddenCol?.(args, tab, fieldsArgs?.roles)}
 					<RoleTh
-						name={$LL.graphql.objects.Permission.fields.roles.name()}
+						name={fields?.roles?.title?.($LL, fieldsArgs?.roles) || $LL.graphql.objects.Permission.fields.roles.name()}
 						bind:value={args.roles}
+						bind:orderBy={orderBy.roles}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.roles?.required?.()}
 						{zIndex}
@@ -310,8 +309,9 @@
 			<slot name="realm-th" {args} {orderBy} {fields}>
 				{#if !fields?.realm?.hiddenCol?.(args, tab, fieldsArgs?.realm)}
 					<RealmTh
-						name={$LL.graphql.objects.Permission.fields.realm.name()}
+						name={fields?.realm?.title?.($LL, fieldsArgs?.realm) || $LL.graphql.objects.Permission.fields.realm.name()}
 						bind:value={args.realm}
+						bind:orderBy={orderBy.realm}
 						on:filter={(e) => dispatch('query', { args, orderBy })}
 						required={fields?.realm?.required?.()}
 						{zIndex}
@@ -646,7 +646,7 @@
 	{:else if value && value.length > 0}
 		{#each value as node, row}
 			{#if node}
-				<thead class="border">
+				<thead>
 					<tr>
 						<th class="w-0">
 							<label>
@@ -667,8 +667,8 @@
 								/>
 							</label>
 						</th>
-						<th class="flex justify-end hover:z-[{zIndex + 3}]">
-							<div class="flex space-x-1">
+						<th class="hover:z-[{zIndex + 3}]">
+							<div class="flex justify-end space-x-1">
 								{#if showEditButton}
 									<div class="tooltip" data-tip={$LL.graphence.components.table.editBtn()}>
 										<button
@@ -715,14 +715,14 @@
 						</th>
 					</tr>
 				</thead>
-				<tbody class="border">
+				<tbody>
 					<slot name="name-sm" {node} {errors} {fields} {row}>
 						{#if !fields?.name?.hiddenCol?.(args, tab, fieldsArgs?.name)}
 							<Tr class="hover" let:id {...fields?.name?.props?.($LL, node, fieldsArgs?.name)?.['tr']}>
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Permission.fields.name.name()}
+										text={fields?.name?.title?.($LL, fieldsArgs?.name) || $LL.graphql.objects.Permission.fields.name.name()}
 										required={fields?.name?.required?.(node)}
 										class="truncate"
 									/>
@@ -764,7 +764,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Permission.fields.description.name()}
+										text={fields?.description?.title?.($LL, fieldsArgs?.description) || $LL.graphql.objects.Permission.fields.description.name()}
 										required={fields?.description?.required?.(node)}
 										class="truncate"
 									/>
@@ -806,7 +806,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Permission.fields.field.name()}
+										text={fields?.field?.title?.($LL, fieldsArgs?.field) || $LL.graphql.objects.Permission.fields.field.name()}
 										required={fields?.field?.required?.(node)}
 										class="truncate"
 									/>
@@ -848,7 +848,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Permission.fields.type.name()}
+										text={fields?.type?.title?.($LL, fieldsArgs?.type) || $LL.graphql.objects.Permission.fields.type.name()}
 										required={fields?.type?.required?.(node)}
 										class="truncate"
 									/>
@@ -890,7 +890,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Permission.fields.permissionType.name()}
+										text={fields?.permissionType?.title?.($LL, fieldsArgs?.permissionType) || $LL.graphql.objects.Permission.fields.permissionType.name()}
 										required={fields?.permissionType?.required?.(node)}
 										class="truncate"
 									/>
@@ -932,7 +932,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Permission.fields.roles.name()}
+										text={fields?.roles?.title?.($LL, fieldsArgs?.roles) || $LL.graphql.objects.Permission.fields.roles.name()}
 										required={fields?.roles?.required?.(node)}
 										class="truncate"
 									/>
@@ -975,7 +975,7 @@
 								<td>
 									<Label
 										{id}
-										text={$LL.graphql.objects.Permission.fields.realm.name()}
+										text={fields?.realm?.title?.($LL, fieldsArgs?.realm) || $LL.graphql.objects.Permission.fields.realm.name()}
 										required={fields?.realm?.required?.(node)}
 										class="truncate"
 									/>

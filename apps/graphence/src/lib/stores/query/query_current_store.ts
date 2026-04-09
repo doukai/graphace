@@ -1,9 +1,10 @@
-import type { GraphQLStore, Event } from "@graphace/ui-graphql";
+import type { GraphQLStore, QueryParams, FetchParams, Event } from "@graphace/ui-graphql";
 import { fragment_CurrentFields } from '~/lib/stores/fragment/fragment_CurrentFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
+import type { Current } from '~/lib/types/schema';
 
-const query = /* GraphQL */ `query Query_current {
-  current {
+const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_current {
+  current ${directives}{
     ...CurrentFields
   }
 }

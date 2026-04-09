@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
+	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import PermissionForm from '~/lib/components/objects/permission/PermissionForm.svelte';
 	import {
@@ -23,15 +24,18 @@
 	let value: PermissionInput = {};
 	let errors: Record<string, Errors> = {};
 
-	const merge = (input: PermissionInput) => {
+	const mutation_permissions = (input: PermissionInput) => {
 		validate('Mutation_role_Arguments', { where: { id: { val: id } }, permissions: [input] })
 			.then((data) => {
 				errors = {};
 				mutation_role_permissions_Store
-					.fetch({
-						role_id: id,
-						role_permissions: [input]
-					})
+					.fetch(
+						{
+							role_id: id,
+							role_permissions: [input]
+						},
+						{ directives: [merge()] }
+					)
 					.then((result) => {
 						if (result.errors) {
 							console.error(result.errors);
@@ -77,7 +81,7 @@
 	</li>
 </Breadcrumbs>
 <Card class="flex flex-col max-w-full min-h-0">
-	<CardBody class="flex-1 min-h-0 overflow-auto">
+	<CardBody class="flex-1 min-h-0">
 		<PermissionForm
 			showSaveButton={auth('Permission::*::WRITE')}
 			showBackButton={$canBack}
@@ -86,7 +90,7 @@
 			isMutating={$validator.isValidating || $mutation_role_permissions_Store.isFetching}
 			on:save={(e) => {
 				if (e.detail.value) {
-					merge(e.detail.value);
+					mutation_permissions(e.detail.value);
 				}
 			}}
 			on:back={(e) => ot()}
