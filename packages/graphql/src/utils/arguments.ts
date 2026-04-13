@@ -11,6 +11,28 @@ export const buildArguments = <T>(args: T): T | undefined => {
             )
         ) {
             return undefined;
+        } else if ('opr' in args && args.opr &&
+            !(args.opr === 'IN' ||
+                args.opr === 'NIN' ||
+                args.opr === 'BT' ||
+                args.opr === 'NBT') &&
+            'arr' in args && Array.isArray(args.arr)
+        ) {
+            if ('val' in args && args.val != null) {
+                return { ...args, arr: undefined };
+            }
+            return undefined;
+        } else if ('opr' in args && args.opr &&
+            (args.opr === 'IN' ||
+                args.opr === 'NIN' ||
+                args.opr === 'BT' ||
+                args.opr === 'NBT') &&
+            'val' in args && args.val != null
+        ) {
+            if ('arr' in args && Array.isArray(args.arr)) {
+                return { ...args, val: undefined };
+            }
+            return undefined;
         } else if ('opr' in args && args.opr && (args.opr === 'LK' || args.opr === 'NLK') &&
             'val' in args && args.val
         ) {

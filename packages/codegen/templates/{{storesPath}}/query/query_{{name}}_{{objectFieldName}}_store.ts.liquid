@@ -16,7 +16,7 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fiel
     {%- endif %}
     {%- endif %}
     {%- endfor %}
-    {{ objectFieldInfo.fieldName }}{% if objectFieldInfo.args and objectFieldInfo.args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %} {
+    {{ objectFieldInfo.fieldName }}{% if objectFieldInfo.args and objectFieldInfo.args.length > 0 %}({% for arg in objectFieldInfo.args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %} {
       {%- if objectFieldInfo.isConnection %}
       totalCount
       edges {
