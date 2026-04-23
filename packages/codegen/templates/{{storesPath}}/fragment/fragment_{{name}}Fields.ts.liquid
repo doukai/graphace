@@ -17,7 +17,7 @@ export const fragment_{{ name }}Fields = /* GraphQL */ `fragment {{ name }}Field
       description
     }
     {%- elsif field.textFieldName %}
-    {{ field.fieldName }}(first: 3) {
+    {{ field.fieldName }}{% if field.isListType %}(first: 3){% endif %} {
       {{ field.fieldTypeIdName }}
       {{ field.textFieldName }}
     }

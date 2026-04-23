@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { Errors } from '@graphace/commons';
 	import { NumberInput, NumberInputList } from '@graphace/ui';
 
@@ -15,6 +16,12 @@
 	export let placeholder: string = '';
 	let className: string | undefined = undefined;
 	export { className as class };
+
+	const dispatch = createEventDispatcher<{
+		change: {
+			value: number | (number | null | undefined)[] | null | undefined;
+		};
+	}>();
 </script>
 
 {#if list}
@@ -30,7 +37,12 @@
 		{readonly}
 		{disabled}
 		class={className}
-		on:change
+		on:change={(e) => {
+			if (Array.isArray(e.detail.value) && !e.detail.value.length) {
+				value = null;
+			}
+			dispatch('change', { value });
+		}}
 	/>
 {:else}
 	<NumberInput

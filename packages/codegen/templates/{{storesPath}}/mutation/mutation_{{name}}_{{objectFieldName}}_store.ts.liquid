@@ -6,13 +6,17 @@ import { fragment_{{ fieldTypeName }}Fields } from '~/{{ storesPath }}/fragment/
 import { createGraphQLMutationStore } from '~/utils';
 import type { {{ objectFieldInfo.fieldTypeName }}Input, {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}) {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_{{ fieldName }}_{{ objectFieldInfo.fieldName}}(${{ fieldName }}_{{ fieldTypeIdName }}: String, ${{ fieldName }}_{{ objectFieldInfo.fieldName}}: {% if objectFieldInfo.isListType %}[{{ objectFieldInfo.fieldTypeName }}Input]{% else %}{{ objectFieldInfo.fieldTypeName }}Input{% endif %}) {
   {{ fieldName }}(where: { {{ fieldTypeIdName }}: { val: ${{ fieldName }}_{{ fieldTypeIdName }} } }, {{ objectFieldInfo.fieldName}}: ${{ fieldName }}_{{ objectFieldInfo.fieldName}}) ${directives}{
     ...{{ fieldTypeName }}Fields
     {%- for field in fields %}
     {%- if field.mutationOnly %}
     {%- if field.isLeafType %}
     {{ field.fieldName }}
+    {%- elsif field.isObjectType %}
+    {{ field.fieldName }} {
+      {{ field.fieldTypeIdName }}
+    }
     {%- endif %}
     {%- endif %}
     {%- endfor %}
@@ -28,7 +32,7 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_{
         description
       }
       {%- elsif field.textFieldName %}
-      {{ field.fieldName }}(first: 3) {
+      {{ field.fieldName }}{% if field.isListType %}(first: 3){% endif %} {
         {{ field.fieldTypeIdName }}
         {{ field.textFieldName }}
       }
@@ -51,7 +55,7 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_{
           description
         }
         {%- elsif subField.textFieldName %}
-        {{ subField.fieldName }}(first: 3) {
+        {{ subField.fieldName }}{% if subField.isListType %}(first: 3){% endif %} {
           {{ subField.fieldTypeIdName }}
           {{ subField.textFieldName }}
         }
@@ -60,29 +64,18 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_{
         {%- endfor %}
       }
       {%- endif %}
+      {%- endif %}
       {%- if field.mutationOnly %}
       {%- if field.isLeafType %}
       {{ field.fieldName }}
-      {%- elsif field.isFile %}
+      {%- elsif field.isObjectType %}
       {{ field.fieldName }} {
-        id
-        name
-      }
-      {%- elsif field.isNamed %}
-      {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
         {{ field.fieldTypeIdName }}
-        name
-        description
       }
-      {%- elsif field.textFieldName %}
-      {{ field.fieldName }}(first: 3) {
-        {{ field.fieldTypeIdName }}
-        {{ field.textFieldName }}
-      }
-      {%- endif %}
       {%- endif %}
       {%- endif %}
       {%- endfor %}
+      ${fields}
     }
   }
 }

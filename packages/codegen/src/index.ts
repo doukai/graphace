@@ -106,8 +106,7 @@ const renders: Record<Template, Render> = {
     '{{storesPath}}/fragment/fragment_{{name}}Fields.ts': (schema: GraphQLSchema, documents: Types.DocumentFile[], config: GraphacePluginConfig) => {
         const objectInfo = getObjectInfo(schema, config.name!)
         if (objectInfo) {
-            const fields = objectInfo.fields
-                .filter(field => field.inGraphQL && !field.queryOnly && !field.mutationOnly && !field.subscriptionOnly)
+            const fields = objectInfo.fields;
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,

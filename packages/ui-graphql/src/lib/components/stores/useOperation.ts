@@ -1,6 +1,6 @@
 import type { Invalidator, Subscriber, Unsubscriber, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
-import { buildDirectives, type Directive, type GraphQLError } from '@graphace/graphql';
+import { buildFields, buildDirectives, type Directive, type GraphQLError, type Field } from '@graphace/graphql';
 import type { Event } from '../types/index.js';
 
 export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, query: (params: QueryParams) => string): GraphQLStore<T, V> {
@@ -11,7 +11,7 @@ export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, q
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (variables: V, params?: FetchParams | undefined) => {
+    const fetch = async (variables?: V | undefined, params?: FetchParams | undefined) => {
         update((data) => ({ ...data, isFetching: true }));
 
         const response = await event.fetch(url, {
@@ -20,7 +20,7 @@ export function createGraphQLQueryStore<T, V>(event: Event, url: string | URL, q
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                query: query({ directives: buildDirectives(params?.directives) }),
+                query: query({ fields: buildFields(params?.fields), directives: buildDirectives(params?.directives) }),
                 variables: variables
             })
         });
@@ -53,7 +53,7 @@ export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL
 
     const { subscribe, set, update } = data;
 
-    const fetch = async (variables: V, params?: FetchParams | undefined) => {
+    const fetch = async (variables?: V | undefined, params?: FetchParams | undefined) => {
         update((data) => ({ ...data, isFetching: true }));
 
         const { clone, files } = extractFiles(variables);
@@ -63,7 +63,7 @@ export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL
             form.set(
                 'operations',
                 JSON.stringify({
-                    query: query({ directives: buildDirectives(params?.directives) }),
+                    query: query({ fields: buildFields(params?.fields), directives: buildDirectives(params?.directives) }),
                     variables: clone
                 })
             );
@@ -97,7 +97,7 @@ export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    query: query({ directives: buildDirectives(params?.directives) }),
+                    query: query({ fields: buildFields(params?.fields), directives: buildDirectives(params?.directives) }),
                     variables: variables
                 })
             });
@@ -116,9 +116,9 @@ export function createGraphQLMutationStore<T, V>(event: Event, url: string | URL
     };
 }
 
-export type FetchParams = { directives?: Directive[] | undefined };
+export type FetchParams = { fields?: Field[] | undefined; directives?: Directive[] | undefined };
 
-export type QueryParams = { directives: string };
+export type QueryParams = { fields: string; directives: string };
 
 export type GraphQLStore<T, V> = {
     subscribe: (this: void, run: Subscriber<{

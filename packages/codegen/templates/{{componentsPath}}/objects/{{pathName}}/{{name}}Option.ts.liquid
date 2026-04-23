@@ -29,7 +29,7 @@ import { permissions } from '~/utils';
 const { auth } = permissions;
 {%- endif %}
 
-export const {{ name | camelCase }}Init: ((value: {{ name }}Input | null | undefined) => {{ name }}Input | null | undefined) | undefined = undefined;
+export const {{ name | camelCase }}Init: ((value?: {{ name }}Input | null | undefined) => {{ name }}Input | null | undefined) | undefined = undefined;
 
 export const {{ name | camelCase }}Tabs: (($LL: TranslationFunctions, args?: Query{{ name }}ListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
@@ -74,15 +74,18 @@ export type {{ name }}FieldsProps = {
 		'th'?: {} | undefined;
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
-		{%- if field.isObjectType %}
+		{%- if field.isScalarType %}
+		'input'?: {} | undefined;
+		{%- elsif field.isFile %}
+		'file-input'?: {} | undefined;
+		{%- elsif field.isEnumType %}
+		'select'?: {} | undefined;
+		{%- else %}
 		'table'?: {} | undefined;
 		'form'?: {} | undefined;
 		'combobox'?: {} | undefined;
 		'dialog'?: {} | undefined;
 		'link'?: {} | undefined;
-		{%- else %}
-		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 		{%- endif %}
 	} | undefined;
 	{%- endfor %}
@@ -345,9 +348,19 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 export const validateRequired = async ($LL: TranslationFunctions, value: {{ name }}Input | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		for (const [fieldName, options] of Object.entries({{ name | camelCase }}Fields)) {
-			if (options?.required?.(value) && value[fieldName as keyof {{ name }}Input] == null) {
-				errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+		if (value?.{{ idName }} || value?.where && Object.values(value.where).length > 0) {
+			for (const [fieldName, fieldValue] of Object.entries(value)) {
+				const options = {{ name | camelCase }}Fields[fieldName as keyof {{ name }}Fields];
+				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
+					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+				}
+			}
+		} else {
+			for (const [fieldName, options] of Object.entries({{ name | camelCase }}Fields)) {
+				const fieldValue = value[fieldName as keyof {{ name }}Input];
+				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
+					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+				}
 			}
 		}
 	}
@@ -357,10 +370,20 @@ export const validateRequired = async ($LL: TranslationFunctions, value: {{ name
 export const validateErrors = async ($LL: TranslationFunctions, value: {{ name }}Input | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		for (const [fieldName, options] of Object.entries({{ name | camelCase }}Fields)) {
-			const fieldErrors = await options?.validate?.($LL, value);
-			if (fieldErrors && fieldErrors.length > 0) {
-				errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+		if (value?.{{ idName }} || value?.where && Object.values(value.where).length > 0) {
+			for (const [fieldName, fieldValue] of Object.entries(value)) {
+				const options = {{ name | camelCase }}Fields[fieldName as keyof {{ name }}Fields];
+				const fieldErrors = await options?.validate?.($LL, value);
+				if (fieldErrors && fieldErrors.length > 0) {
+					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+				}
+			}
+		} else {
+			for (const [fieldName, options] of Object.entries({{ name | camelCase }}Fields)) {
+				const fieldErrors = await options?.validate?.($LL, value);
+				if (fieldErrors && fieldErrors.length > 0) {
+					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+				}
 			}
 		}
 	}

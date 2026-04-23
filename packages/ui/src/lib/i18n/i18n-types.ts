@@ -110,6 +110,10 @@ export type NamespaceUiTranslation = {
 		 * B​a​c​k
 		 */
 		back: string
+		/**
+		 * P​r​e​v​i​e​w
+		 */
+		preview: string
 	}
 	themeSelect: {
 		/**
@@ -339,6 +343,10 @@ export type TranslationFunctions = {
 			 * Back
 			 */
 			back: () => LocalizedString
+			/**
+			 * Preview
+			 */
+			preview: () => LocalizedString
 		}
 		themeSelect: {
 			/**

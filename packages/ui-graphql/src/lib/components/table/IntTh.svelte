@@ -89,7 +89,7 @@
 			<span data-part="label-required" class="text-error">*</span>
 		{/if}
 		{name}
-		{#if value?.val || (value?.arr && value.arr.length > 0)}
+		{#if value?.val != null || Array.isArray(value?.arr) || value?.opr === 'NIL' || value?.opr === 'NNIL'}
 			<span class="ml-1 flex-none">
 				<Icon src={Funnel} class="h-5 w-5" />
 			</span>

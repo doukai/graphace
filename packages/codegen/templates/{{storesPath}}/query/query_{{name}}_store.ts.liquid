@@ -10,7 +10,7 @@ import type { Query{{ fieldName | pascalCase }}Args } from '~/{{ schemaTypesPath
 import type { {{ fieldTypeName }} } from '~/{{ schemaTypesPath }}';
 {%- endif %}
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fieldName }}{% if args and args.length > 0 -%}({% for arg in args %}${{ arg.inputName }}: {{ arg.inputType }}{% if forloop.last == false %}, {% endif %}{% endfor %}){% endif %} {
   {{ fieldName }}{% if args and args.length > 0 %}({% for arg in args %}{{ arg.inputName }}: ${{ arg.inputName }}{% if forloop.last == false %} {% endif %}{% endfor %}){% endif %}
   {%- if fields and fields.length > 0 %} ${directives}{
     {%- if isConnection %}
@@ -28,7 +28,7 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fiel
           description
         }
         {%- elsif field.textFieldName %}
-        {{ field.fieldName }}(first: 3) {
+        {{ field.fieldName }}{% if field.isListType %}(first: 3){% endif %} {
           {{ field.fieldTypeIdName }}
           {{ field.textFieldName }}
         }
@@ -37,26 +37,15 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fiel
         {%- if field.queryOnly %}
         {%- if field.isLeafType %}
         {{ field.fieldName }}
-        {%- elsif field.isFile %}
+        {%- elsif field.isObjectType %}
         {{ field.fieldName }} {
-          id
-          name
-        }
-        {%- elsif field.isNamed %}
-        {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
           {{ field.fieldTypeIdName }}
-          name
-          description
-        }
-        {%- elsif field.textFieldName %}
-        {{ field.fieldName }}(first: 3) {
-          {{ field.fieldTypeIdName }}
-          {{ field.textFieldName }}
         }
         {%- endif %}
         {%- endif %}
         {%- endif %}
         {%- endfor %}
+        ${fields}
       }
     }
     {%- else %}
@@ -72,7 +61,7 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fiel
       description
     }
     {%- elsif field.textFieldName %}
-    {{ field.fieldName }}(first: 3) {
+    {{ field.fieldName }}{% if field.isListType %}(first: 3){% endif %} {
       {{ field.fieldTypeIdName }}
       {{ field.textFieldName }}
     }
@@ -81,6 +70,7 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fiel
     {{ field.fieldName }} {
       {%- for subField in field.fields %}
       {%- if subField.isAggregate == false %}
+
       {%- if subField.isLeafType %}
       {{ subField.fieldName }}
       {%- elsif subField.isFile %}
@@ -95,7 +85,7 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fiel
         description
       }
       {%- elsif subField.textFieldName %}
-      {{ subField.fieldName }}(first: 3) {
+      {{ subField.fieldName }}{% if subField.isListType %}(first: 3){% endif %} {
         {{ subField.fieldTypeIdName }}
         {{ subField.textFieldName }}
       }
@@ -108,26 +98,15 @@ const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_{{ fiel
     {%- if field.queryOnly %}
     {%- if field.isLeafType %}
     {{ field.fieldName }}
-    {%- elsif field.isFile %}
+    {%- elsif field.isObjectType %}
     {{ field.fieldName }} {
-      id
-      name
-    }
-    {%- elsif field.isNamed %}
-    {{ field.fieldName }}{% if field.isListType and field.isSelect == false %}(first: 3){% endif %} {
       {{ field.fieldTypeIdName }}
-      name
-      description
-    }
-    {%- elsif field.textFieldName %}
-    {{ field.fieldName }}(first: 3) {
-      {{ field.fieldTypeIdName }}
-      {{ field.textFieldName }}
     }
     {%- endif %}
     {%- endif %}
     {%- endif %}
     {%- endfor %}
+    ${fields}
     {%- endif %}
   }
   {%- endif %}

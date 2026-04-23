@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { Errors, FileInfo } from '@graphace/commons';
 	import { FileInput, FileInputList } from '@graphace/ui';
 
@@ -12,6 +13,13 @@
 	export let placeholder: string = '';
 	let className: string | undefined = undefined;
 	export { className as class };
+
+	const dispatch = createEventDispatcher<{
+		upload: {
+			file: File | (File | null | undefined)[] | null | undefined;
+			then: (value: FileInfo | (FileInfo | null | undefined)[] | null | undefined) => void;
+		};
+	}>();
 </script>
 
 {#if list}
@@ -24,7 +32,20 @@
 		{readonly}
 		{disabled}
 		class={className}
-		on:upload
+		on:upload={(e) => {
+			dispatch('upload', {
+				file: e.detail.file,
+				then: (value) => {
+					if (Array.isArray(value)) {
+						if (!value.length) {
+							e.detail.then(null);
+						} else {
+							e.detail.then(value);
+						}
+					}
+				}
+			});
+		}}
 	/>
 {:else}
 	<FileInput

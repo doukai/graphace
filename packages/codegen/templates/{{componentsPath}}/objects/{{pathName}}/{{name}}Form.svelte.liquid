@@ -13,6 +13,10 @@
 		Wrapper{% endif %},
 		type TabInfo,
 		Tabs,
+		{%- if tables and tables.length > 0 %}
+		Card,
+		CardBody,
+		{%- endif %}
 		to
 	} from '@graphace/ui';
 	import { {% for scalar in scalars %}{{ scalar }}Input, {% endfor %}{% if hasFileField %}FileInput, {% endif %}ObjectLink } from '@graphace/ui-graphql';
@@ -131,7 +135,6 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
 		bind:value={tab}
@@ -171,8 +174,8 @@
 								text={fields?.{{ field.fieldName }}?.title?.($LL, fieldsArgs?.{{ field.fieldName }}) || $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 								required={fields?.{{ field.fieldName }}?.required?.(value)}
 							/>
-							<div class="card col-span-full border{errors.{{ field.fieldName }} ? ' border-error' : ''}">
-								<div class="card-body max-sm:p-2">
+							<Card class="border{errors.{{ field.fieldName }} ? ' border-error' : ''}">
+								<CardBody>
 									<{{ field.fieldTypeName }}Editable
 										title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 										fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
@@ -204,8 +207,8 @@
 										{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
 									/>
 									<ErrorLabels errors={errors.{{ field.fieldName }}} />
-								</div>
-							</div>
+								</CardBody>
+							</Card>
 						</FormControl>
 						{%- else %}
 						<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['form-control']}>
@@ -247,6 +250,8 @@
 								{%- endif %}
 								{%- if field.isScalarType %}
 								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['input']}
+								{%- elsif field.isFile %}
+								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['file-input']}
 								{%- else %}
 								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
 								{%- endif %}
@@ -353,8 +358,8 @@
 						text={fields?.{{ field.fieldName }}?.title?.($LL, fieldsArgs?.{{ field.fieldName }}) || $LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 						required={fields?.{{ field.fieldName }}?.required?.(value)}
 					/>
-					<div class="card border{errors.{{ field.fieldName }} ? ' border-error' : ''}">
-						<div class="card-body max-sm:p-2">
+					<Card class="border{errors.{{ field.fieldName }} ? ' border-error' : ''}">
+						<CardBody>
 							<{{ field.fieldTypeName }}Editable
 								title={$LL.graphql.objects.{{ name }}.fields.{{ field.fieldName }}.name()}
 								fieldsPatch={fields?.{{ field.fieldName }}?.fields?.(value, fieldsArgs?.{{ field.fieldName }})}
@@ -386,8 +391,8 @@
 								{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['table']}
 							/>
 							<ErrorLabels errors={errors.{{ field.fieldName }}} />
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</FormControl>
 				{%- else %}
 				<FormControl let:id {...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['form-control']}>
@@ -429,6 +434,8 @@
 						{%- endif %}
 						{%- if field.isScalarType %}
 						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['input']}
+						{%- elsif field.isFile %}
+						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['file-input']}
 						{%- else %}
 						{...fields?.{{ field.fieldName }}?.props?.($LL, value, fieldsArgs?.{{ field.fieldName }})?.['select']}
 						{%- endif %}
@@ -525,7 +532,6 @@
 		</div>
 	{/if}
 </Form>
-<div class="divider my-0" />
 <div class="flex justify-end">
 	<Buttons
 		showRemoveButton={showRemoveButton && value?.{{idName}} != null}

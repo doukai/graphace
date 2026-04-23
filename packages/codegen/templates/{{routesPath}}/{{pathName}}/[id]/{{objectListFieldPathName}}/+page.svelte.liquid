@@ -6,9 +6,6 @@
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
 	import {{ fieldObjectInfo.name }}Table from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Table.svelte';
 	import {{ fieldObjectInfo.name }}TableDialog from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}TableDialog.svelte';
-	{%- if hasFileField %}
-	import type { Mutation_singleUpload_Store } from '~/{{ storesPath }}/mutation/mutation_singleUpload_store';
-	{%- endif %}
 	import {
 		validator,
 		{%- if useAuth %}
@@ -36,7 +33,8 @@
 	$: mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
 	$: mutation_{{ fieldObjectInfo.name | camelCase }}_Store = data.mutation_{{ fieldObjectInfo.name | camelCase }}_Store;
 	{%- if hasFileField %}
-	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store as Mutation_singleUpload_Store;
+	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store;
+	$: mutation_multipleUpload_Store = data.mutation_multipleUpload_Store;
 	{%- endif %}
 
 	let value: ({{ fieldObjectInfo.name }}Input | null | undefined)[] = [];
@@ -229,9 +227,15 @@
 			on:back={(e) => ot()}
 			{%- if hasFileField %}
 			on:upload={(e) => {
-				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
-					e.detail.then(result.data?.singleUpload)
-				);
+				if (Array.isArray(e.detail.file)) {
+					mutation_multipleUpload_Store
+						.fetch({ files: e.detail.file })
+						.then((result) => e.detail.then(result.data?.multipleUpload));
+				} else {
+					mutation_singleUpload_Store
+						.fetch({ file: e.detail.file })
+						.then((result) => e.detail.then(result.data?.singleUpload));
+				}
 			{% raw %}}}{% endraw %}
 			{%- endif %}
 		>
@@ -251,7 +255,6 @@
 				</{{ fieldObjectInfo.name }}TableDialog>
 			{/if}
 		</{{ fieldObjectInfo.name }}Table>
-		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

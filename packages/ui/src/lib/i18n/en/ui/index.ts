@@ -29,7 +29,8 @@ const en: BaseTranslation = {
 		save: "Save",
 		create: "Create",
 		select: "Select",
-		back: "Back"
+		back: "Back",
+		preview: "Preview"
 	},
 	themeSelect: {
 		btn: "Theme",

@@ -6,6 +6,7 @@
 	import { nanoid } from 'nanoid';
 	import type { Errors, FileInfo } from '@graphace/commons';
 	import type { TranslationFunctions } from '~/i18n/i18n-types';
+	import { Dialog } from '~';
 
 	export let name: string | undefined = undefined;
 	export let value: FileInfo | null | undefined = undefined;
@@ -17,6 +18,7 @@
 	export let id: string | undefined = nanoid();
 	let className: string | undefined = '';
 	export { className as class };
+	export let open: (() => void) | undefined = undefined;
 
 	const contextClass = getContext<string>('ui.input') || '';
 
@@ -30,20 +32,26 @@
 	}>();
 </script>
 
-<div data-element="file-input" data-part="root" class="{contextClass} {className}">
+<div
+	data-element="file-input"
+	data-part="root"
+	class="grid min-w-0 overflow-hidden {contextClass} {className}"
+>
 	{#if value}
 		<div data-element="file" class="flex items-center justify-between">
-			<a data-part="link" href={downloadUrl + '/' + value.id} class="link" download>
-				{value.name}
-			</a>
-			<div
-				data-part="delete"
-				class="tooltip flex iterms-center"
-				data-tip={$LL.ui.inputList.remove()}
-			>
+			{#if value.contentType.split(';')[0].trim().startsWith('image/')}
+				<a data-part="link" href={undefined} class="link" on:click={(e) => open()}>
+					{value.name}
+				</a>
+			{:else}
+				<a data-part="link" href={downloadUrl + '/' + value.id} class="link" download>
+					{value.name}
+				</a>
+			{/if}
+			<div data-part="delete" class="tooltip grid h-12" data-tip={$LL.ui.inputList.remove()}>
 				<button
 					data-part="btn-delete"
-					class="btn btn-xs btn-square btn-outline"
+					class="btn btn-xs btn-square btn-outline place-self-center"
 					on:click|preventDefault={(e) => {
 						value = null;
 					}}
@@ -59,7 +67,7 @@
 			{id}
 			{name}
 			{placeholder}
-			class="file-input {errors?.errors ? 'file-input-error' : ''} file-input-bordered"
+			class="file-input {errors?.errors ? 'file-input-error' : ''} file-input-bordered w-full"
 			on:change={(e) => {
 				if (e.currentTarget?.files?.[0]) {
 					dispatch('upload', {
@@ -84,3 +92,13 @@
 		</label>
 	{/if}
 </div>
+<Dialog title={$LL.ui.button.preview()} class="[&_[data-part=modal-box]]:max-w-full" bind:open>
+	{#if value.contentType.split(';')[0].trim().startsWith('image/')}
+		<img
+			data-part="preview-image"
+			src={downloadUrl + '/' + value.id}
+			alt={value.name}
+			class="w-full"
+		/>
+	{/if}
+</Dialog>

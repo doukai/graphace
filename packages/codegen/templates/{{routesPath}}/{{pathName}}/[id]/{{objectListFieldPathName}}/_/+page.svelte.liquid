@@ -26,6 +26,7 @@
 	$: mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store = data.mutation_{{ name | camelCase }}_{{ fieldInfo.fieldName }}_Store;
 	{%- if hasFileField %}
 	$: mutation_singleUpload_Store = data.mutation_singleUpload_Store;
+	$: mutation_multipleUpload_Store = data.mutation_multipleUpload_Store;
 	{%- endif %}
 
 	let value: {{ fieldObjectInfo.name }}Input = {};
@@ -103,9 +104,15 @@
 			on:back={(e) => ot()}
 			{%- if hasFileField %}
 			on:upload={(e) => {
-				mutation_singleUpload_Store.fetch({ file: e.detail.file }).then((result) =>
-					e.detail.then(result.data?.singleUpload)
-				);
+				if (Array.isArray(e.detail.file)) {
+					mutation_multipleUpload_Store
+						.fetch({ files: e.detail.file })
+						.then((result) => e.detail.then(result.data?.multipleUpload));
+				} else {
+					mutation_singleUpload_Store
+						.fetch({ file: e.detail.file })
+						.then((result) => e.detail.then(result.data?.singleUpload));
+				}
 			{% raw %}}}{% endraw %}
 			{%- endif %}
 		/>

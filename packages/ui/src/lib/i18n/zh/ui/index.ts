@@ -29,7 +29,8 @@ const zh: NamespaceUiTranslation = {
 		save: "保存",
 		create: "新建",
 		select: "选择",
-		back: "返回"
+		back: "返回",
+		preview: "预览"
 	},
 	themeSelect: {
 		btn: "主题",

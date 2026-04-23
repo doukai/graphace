@@ -98,6 +98,7 @@
 					{disabled}
 					{placeholder}
 					{errors}
+					on:upload
 				/>
 			</FormControl>
 			{#if !readonly}

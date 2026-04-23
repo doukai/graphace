@@ -506,6 +506,7 @@ export function getNonSelectObjectNames(fields: FieldInfo[] | undefined): string
     const objectNames = fields
         ?.filter(field => field.isObjectType)
         ?.filter(field => !field.isSelect)
+        ?.filter(field => !field.isTable)
         .map(field => field.fieldTypeName);
     if (objectNames) {
         return Array.from(new Set(objectNames));
