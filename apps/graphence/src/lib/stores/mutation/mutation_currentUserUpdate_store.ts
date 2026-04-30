@@ -4,9 +4,11 @@ import { createGraphQLMutationStore } from '~/utils';
 import type { MutationCurrentUserUpdateArgs } from '~/lib/types/schema';
 import type { User } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_currentUserUpdate($userInput: UserInput!) {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_currentUserUpdate($userInput: UserInput!) {
   currentUserUpdate(userInput: $userInput) ${directives}{
     ...UserFields
+    syncUserPolicy
+    ${fields}
   }
 }
 ${fragment_UserFields}`;

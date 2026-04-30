@@ -84,11 +84,15 @@
 	class={className}
 	on:change={(e) => {
 		if (Array.isArray(e.detail.value)) {
-			value = e.detail.value.map((item) => ({
-				id: item.value,
-				name: item.label,
-				...item.node
-			}));
+			if (!e.detail.value.length) {
+				value = null;
+			} else {
+				value = e.detail.value.map((item) => ({
+					id: item.value,
+					name: item.label,
+					...item.node
+				}));
+			}
 		} else if (e.detail.value && !Array.isArray(e.detail.value)) {
 			value = { id: e.detail.value.value, name: e.detail.value.label, ...e.detail.value.node };
 		} else {

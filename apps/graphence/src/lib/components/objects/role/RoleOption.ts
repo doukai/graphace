@@ -19,7 +19,7 @@ import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
 
-export const roleInit: ((value: RoleInput | null | undefined) => RoleInput | null | undefined) | undefined = undefined;
+export const roleInit: ((value?: RoleInput | null | undefined) => RoleInput | null | undefined) | undefined = undefined;
 
 export const roleTabs: (($LL: TranslationFunctions, args?: QueryRoleListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
@@ -68,7 +68,6 @@ export type RoleFieldsProps = {
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 	} | undefined;
 	description?: {
 		'tr'?: {} | undefined;
@@ -76,7 +75,6 @@ export type RoleFieldsProps = {
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 	} | undefined;
 	users?: {
 		'tr'?: {} | undefined;
@@ -747,9 +745,19 @@ export const roleFields: RoleFields = {
 export const validateRequired = async ($LL: TranslationFunctions, value: RoleInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		for (const [fieldName, options] of Object.entries(roleFields)) {
-			if (options?.required?.(value) && value[fieldName as keyof RoleInput] == null) {
-				errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+		if (value?.id || value?.where && Object.values(value.where).length > 0) {
+			for (const [fieldName, fieldValue] of Object.entries(value)) {
+				const options = roleFields[fieldName as keyof RoleFields];
+				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
+					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+				}
+			}
+		} else {
+			for (const [fieldName, options] of Object.entries(roleFields)) {
+				const fieldValue = value[fieldName as keyof RoleInput];
+				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
+					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+				}
 			}
 		}
 	}
@@ -759,10 +767,20 @@ export const validateRequired = async ($LL: TranslationFunctions, value: RoleInp
 export const validateErrors = async ($LL: TranslationFunctions, value: RoleInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		for (const [fieldName, options] of Object.entries(roleFields)) {
-			const fieldErrors = await options?.validate?.($LL, value);
-			if (fieldErrors && fieldErrors.length > 0) {
-				errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+		if (value?.id || value?.where && Object.values(value.where).length > 0) {
+			for (const [fieldName, fieldValue] of Object.entries(value)) {
+				const options = roleFields[fieldName as keyof RoleFields];
+				const fieldErrors = await options?.validate?.($LL, value);
+				if (fieldErrors && fieldErrors.length > 0) {
+					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+				}
+			}
+		} else {
+			for (const [fieldName, options] of Object.entries(roleFields)) {
+				const fieldErrors = await options?.validate?.($LL, value);
+				if (fieldErrors && fieldErrors.length > 0) {
+					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+				}
 			}
 		}
 	}

@@ -3,9 +3,10 @@ import { fragment_UserFields } from '~/lib/stores/fragment/fragment_UserFields';
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { User } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_currentUser {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `query Query_currentUser {
   currentUser ${directives}{
     ...UserFields
+    ${fields}
   }
 }
 ${fragment_UserFields}`;

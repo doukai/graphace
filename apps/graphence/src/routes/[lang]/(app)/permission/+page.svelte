@@ -2,6 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments, merge, uniqueMerge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import {
 		toRecords,
 		fromRecords,
@@ -49,11 +50,11 @@
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
 
-	const query = (to?: number | undefined) => {
+	const query = (to?: number | undefined, params?: FetchParams | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;
 		args.offset = ((to || pageNumber) - 1) * pageSize;
-		query_permissionConnection_Store.fetch(buildArguments(args)).then((result) => {
+		query_permissionConnection_Store.fetch(buildArguments(args), params).then((result) => {
 			if (result.errors) {
 				console.error(errors);
 				toast.error($LL.graphence.message.requestFailed());
@@ -63,7 +64,7 @@
 		});
 	};
 
-	const mutation = (args: MutationPermissionArgs) => {
+	const mutation = (args: MutationPermissionArgs, params?: FetchParams | undefined) => {
 		const row = value
 			?.map((node) => node?.id)
 			?.indexOf(args.id || args.where?.id?.val || undefined);
@@ -73,7 +74,7 @@
 				if (row !== -1 && row !== undefined && errors[row]) {
 					errors[row].iterms = {};
 				}
-				mutation_permission_Store.fetch(args).then((result) => {
+				mutation_permission_Store.fetch(args, params).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
 						errors = buildGraphQLErrors(result.errors, data);
@@ -254,7 +255,6 @@
 			on:goto={(e) => to(`/${$locale}/permission/${e.detail.path}`)}
 			on:back={(e) => ot()}
 		/>
-		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

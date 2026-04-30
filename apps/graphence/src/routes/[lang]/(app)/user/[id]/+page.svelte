@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import {
 		validator,
@@ -30,11 +31,11 @@
 		value = {};
 	}
 
-	const mutation = (args: MutationUserArgs) => {
+	const mutation = (args: MutationUserArgs, params?: FetchParams | undefined) => {
 		validate('Mutation_user_Arguments', args)
 			.then((data) => {
 				errors = {};
-				mutation_user_Store.fetch(args).then((result) => {
+				mutation_user_Store.fetch(args, params).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
 						errors = buildGraphQLErrors(result.errors, data);

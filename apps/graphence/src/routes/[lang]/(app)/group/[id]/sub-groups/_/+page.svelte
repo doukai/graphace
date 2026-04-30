@@ -2,6 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import {
 		validator,
@@ -24,7 +25,7 @@
 	let value: GroupInput = {};
 	let errors: Record<string, Errors> = {};
 
-	const mutation_subGroups = (input: GroupInput) => {
+	const mutation_subGroups = (input: GroupInput, params?: FetchParams | undefined) => {
 		validate('Mutation_group_Arguments', { where: { id: { val: id } }, subGroups: [input] })
 			.then((data) => {
 				errors = {};
@@ -34,7 +35,7 @@
 							group_id: id,
 							group_subGroups: [input]
 						},
-						{ directives: [merge()] }
+						{ directives: [merge()], ...params }
 					)
 					.then((result) => {
 						if (result.errors) {

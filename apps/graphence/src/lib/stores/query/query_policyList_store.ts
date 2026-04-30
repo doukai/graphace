@@ -3,9 +3,10 @@ import { fragment_PolicyFields } from '~/lib/stores/fragment/fragment_PolicyFiel
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { Policy } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_policyList {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `query Query_policyList {
   policyList ${directives}{
     ...PolicyFields
+    ${fields}
   }
 }
 ${fragment_PolicyFields}`;

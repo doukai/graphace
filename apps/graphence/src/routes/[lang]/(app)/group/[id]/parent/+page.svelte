@@ -4,6 +4,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import GroupForm from '~/lib/components/objects/group/GroupForm.svelte';
 	import GroupTableDialog from '~/lib/components/objects/group/GroupTableDialog.svelte';
 	import {
@@ -40,11 +41,11 @@
 		showUnbindButton = false;
 	}
 
-	const mutation = (args: MutationGroupArgs) => {
+	const mutation = (args: MutationGroupArgs, params?: FetchParams | undefined) => {
 		validate('Mutation_group_Arguments', args)
 			.then((data) => {
 				errors = {};
-				mutation_group_Store.fetch(args).then((result) => {
+				mutation_group_Store.fetch(args, params).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
 						errors = buildGraphQLErrors(result.errors, data);
@@ -67,7 +68,7 @@
 			});
 	};
 
-	const mutation_parent = (input: GroupInput | null) => {
+	const mutation_parent = (input: GroupInput | null, params?: FetchParams | undefined) => {
 		validate('Mutation_group_Arguments', { where: { id: { val: group?.id } }, parent: input })
 			.then((data) => {
 				errors = {};
@@ -77,7 +78,7 @@
 							group_id: id,
 							group_parent: input
 						},
-						{ directives: [merge()] }
+						{ directives: [merge()], ...params }
 					)
 					.then((result) => {
 						if (result.errors) {

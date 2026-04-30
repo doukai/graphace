@@ -3,9 +3,10 @@ import { fragment_CurrentFields } from '~/lib/stores/fragment/fragment_CurrentFi
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 import type { Current } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_current {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `query Query_current {
   current ${directives}{
     ...CurrentFields
+    ${fields}
   }
 }
 ${fragment_CurrentFields}`;

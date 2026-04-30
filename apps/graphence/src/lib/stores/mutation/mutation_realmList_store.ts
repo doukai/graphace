@@ -4,9 +4,10 @@ import { createGraphQLMutationStore } from '~/utils';
 import type { MutationRealmListArgs } from '~/lib/types/schema';
 import type { Realm } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_realmList($id: ID, $name: String, $description: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [RealmInput], $where: RealmExpression) {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_realmList($id: ID, $name: String, $description: String, $isDeprecated: Boolean, $version: Int, $realmId: Int, $createUserId: String, $createTime: Timestamp, $updateUserId: String, $updateTime: Timestamp, $createGroupId: String, $list: [RealmInput], $where: RealmExpression) {
   realmList(id: $id name: $name description: $description isDeprecated: $isDeprecated version: $version realmId: $realmId createUserId: $createUserId createTime: $createTime updateUserId: $updateUserId updateTime: $updateTime createGroupId: $createGroupId list: $list where: $where) ${directives}{
     ...RealmFields
+    ${fields}
   }
 }
 ${fragment_RealmFields}`;

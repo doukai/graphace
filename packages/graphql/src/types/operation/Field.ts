@@ -8,14 +8,14 @@ export type Field = {
     directives?: Directive[] | undefined;
 }
 
-export function f(name: string, ...fields: Field[]): Field {
+export function field(name: string, ...fields: Field[]): Field {
     return {
         name,
         fields
     }
 }
 
-export function fa(name: string, ...fields: Field[]): (args?: Record<string, unknown> | undefined) => Field {
+export function fieldWithArgs(name: string, ...fields: Field[]): (args?: Record<string, unknown> | undefined) => Field {
     return (args?: Record<string, unknown> | undefined): Field => ({
         name,
         args,

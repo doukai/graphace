@@ -1,7 +1,7 @@
 import type { GraphQLStore, QueryParams, Event } from "@graphace/ui-graphql";
 import { createGraphQLMutationStore } from '~/utils';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_syncModelPolicy {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_syncModelPolicy {
   syncModelPolicy
 }`;
 

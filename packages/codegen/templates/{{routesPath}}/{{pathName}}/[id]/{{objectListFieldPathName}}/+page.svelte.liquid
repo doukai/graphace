@@ -4,6 +4,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments, merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import {{ fieldObjectInfo.name }}Table from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Table.svelte';
 	import {{ fieldObjectInfo.name }}TableDialog from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}TableDialog.svelte';
 	import {
@@ -49,12 +50,12 @@
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
 
-	const query = (to?: number | undefined) => {
+	const query = (to?: number | undefined, params?: FetchParams | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;
 		args.offset = ((to || pageNumber) - 1) * pageSize;
 		query_{{ name | camelCase }}_{{ fieldInfo.fieldName }}Connection_Store
-			.fetch({ {{ name | camelCase }}_{{ idName }}: id, ...buildArguments(args) })
+			.fetch({ {{ name | camelCase }}_{{ idName }}: id, ...buildArguments(args) }, params)
 			.then((result) => {
 				if (result.errors) {
 					console.error(errors);
@@ -65,11 +66,11 @@
 			});
 	};
 
-	const mutation = (args: {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args) => {
+	const mutation = (args: {{ mutationTypeName }}{{ fieldObjectInfo.name }}Args, params?: FetchParams | undefined) => {
 		validate('{{ mutationTypeName }}_{{ fieldObjectInfo.name | camelCase }}_Arguments', args)
 			.then((data) => {
 				errors = {};
-				mutation_{{ fieldObjectInfo.name | camelCase }}_Store.fetch(args).then((result) => {
+				mutation_{{ fieldObjectInfo.name | camelCase }}_Store.fetch(args, params).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
 						errors = buildGraphQLErrors(result.errors, data);
@@ -92,7 +93,7 @@
 			});
 	};
 
-	const mutation_{{ fieldInfo.fieldName }} = (input: {{ fieldObjectInfo.name }}Input[]) => {
+	const mutation_{{ fieldInfo.fieldName }} = (input: {{ fieldObjectInfo.name }}Input[], params?: FetchParams | undefined) => {
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } }, {{ fieldInfo.fieldName }}: input })
 			.then((data) => {
 				errors = {};
@@ -102,7 +103,7 @@
 							{{ name | camelCase }}_{{ idName }}: id,
 							{{ name | camelCase }}_{{ fieldInfo.fieldName }}: input
 						},
-						{ directives: [merge()] }
+						{ directives: [merge()], ...params }
 					)
 					.then((result) => {
 						if (result.errors) {

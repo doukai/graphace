@@ -4,6 +4,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments, merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import UserTable from '~/lib/components/objects/user/UserTable.svelte';
 	import UserTableDialog from '~/lib/components/objects/user/UserTableDialog.svelte';
 	import {
@@ -41,12 +42,12 @@
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
 
-	const query = (to?: number | undefined) => {
+	const query = (to?: number | undefined, params?: FetchParams | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;
 		args.offset = ((to || pageNumber) - 1) * pageSize;
 		query_role_usersConnection_Store
-			.fetch({ role_id: id, ...buildArguments(args) })
+			.fetch({ role_id: id, ...buildArguments(args) }, params)
 			.then((result) => {
 				if (result.errors) {
 					console.error(errors);
@@ -57,11 +58,11 @@
 			});
 	};
 
-	const mutation = (args: MutationUserArgs) => {
+	const mutation = (args: MutationUserArgs, params?: FetchParams | undefined) => {
 		validate('Mutation_user_Arguments', args)
 			.then((data) => {
 				errors = {};
-				mutation_user_Store.fetch(args).then((result) => {
+				mutation_user_Store.fetch(args, params).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
 						errors = buildGraphQLErrors(result.errors, data);
@@ -84,7 +85,7 @@
 			});
 	};
 
-	const mutation_users = (input: UserInput[]) => {
+	const mutation_users = (input: UserInput[], params?: FetchParams | undefined) => {
 		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, users: input })
 			.then((data) => {
 				errors = {};
@@ -94,7 +95,7 @@
 							role_id: id,
 							role_users: input
 						},
-						{ directives: [merge()] }
+						{ directives: [merge()], ...params }
 					)
 					.then((result) => {
 						if (result.errors) {
@@ -233,7 +234,6 @@
 				</UserTableDialog>
 			{/if}
 		</UserTable>
-		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

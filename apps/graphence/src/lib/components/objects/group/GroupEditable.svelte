@@ -64,7 +64,7 @@
 	export let showFilter: boolean = false;
 	export let title: string | undefined = undefined;
 	export let zIndex: number = 0;
-	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols [&_[data-element=td]]:max-w-64';
+	let className: string | undefined = '[&_[data-part=table]]:table-pin-rows [&_[data-part=table]]:table-pin-cols [&_[data-element=td]]:min-w-64';
 	export { className as class };
 	export let tabs: (($LL: TranslationFunctions, args?: QueryGroupListArgs | undefined) => TabInfo[] | undefined) | undefined = groupTabs;
 	export let tab: string | undefined = groupTab?.(args);
@@ -116,6 +116,26 @@
 			{/if}
 		</span>
 	</slot>
+	{#if tabs?.($LL, args)}
+		<Tabs
+			bind:value={tab}
+			tabs={tabs?.($LL, args)}
+			class="max-md:hidden"
+			on:change={(e) => {
+				dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+				if (e.detail.value !== e.detail.origin) {
+					groupTabChange(e.detail.value, args, value)
+						.then((args) => {
+							dispatch('query', {
+								args,
+								orderBy
+							});
+						})
+						.catch((e) => (errors = e));
+				}
+			}}
+		/>
+	{/if}
 	<Buttons
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
@@ -181,11 +201,11 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
 		bind:value={tab}
 		tabs={tabs?.($LL, args)}
+		class="md:hidden"
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
 			if (e.detail.value !== e.detail.origin) {

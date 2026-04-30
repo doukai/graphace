@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Errors } from '@graphace/commons';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import RoleForm from '~/lib/components/objects/role/RoleForm.svelte';
 	import {
 		validator,
@@ -30,11 +31,11 @@
 		value = {};
 	}
 
-	const mutation = (args: MutationRoleArgs) => {
+	const mutation = (args: MutationRoleArgs, params?: FetchParams | undefined) => {
 		validate('Mutation_role_Arguments', args)
 			.then((data) => {
 				errors = {};
-				mutation_role_Store.fetch(args).then((result) => {
+				mutation_role_Store.fetch(args, params).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
 						errors = buildGraphQLErrors(result.errors, data);

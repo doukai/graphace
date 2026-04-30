@@ -3,12 +3,14 @@ import { fragment_GroupFields } from '~/lib/stores/fragment/fragment_GroupFields
 import { createGraphQLMutationStore } from '~/utils';
 import type { GroupInput, Group } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput) {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_group_parent($group_id: String, $group_parent: GroupInput) {
   group(where: { id: { val: $group_id } }, parent: $group_parent) ${directives}{
     ...GroupFields
     syncGroupPolicy
     parent {
       ...GroupFields
+      syncGroupPolicy
+      ${fields}
     }
   }
 }

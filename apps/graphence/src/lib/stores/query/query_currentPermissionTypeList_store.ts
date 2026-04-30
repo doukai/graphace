@@ -1,7 +1,7 @@
 import type { GraphQLStore, QueryParams, FetchParams, Event } from "@graphace/ui-graphql";
 import { createGraphQLQueryStore, fetchGraphQLQueryStore } from '~/utils';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `query Query_currentPermissionTypeList {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `query Query_currentPermissionTypeList {
   currentPermissionTypeList
 }`;
 

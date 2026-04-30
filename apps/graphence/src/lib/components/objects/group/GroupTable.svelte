@@ -116,6 +116,26 @@
 			{/if}
 		</span>
 	</slot>
+	{#if tabs?.($LL, args)}
+		<Tabs
+			bind:value={tab}
+			tabs={tabs?.($LL, args)}
+			class="max-md:hidden"
+			on:change={(e) => {
+				dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+				if (e.detail.value !== e.detail.origin) {
+					groupTabChange(e.detail.value, args, value)
+						.then((args) => {
+							dispatch('query', {
+								args,
+								orderBy
+							});
+						})
+						.catch((e) => (errors = e));
+				}
+			}}
+		/>
+	{/if}
 	<Buttons
 		showRemoveButton={showRemoveButton && selectedIdList.length > 0}
 		showUnbindButton={showUnbindButton && selectedIdList.length > 0}
@@ -177,11 +197,11 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
 		bind:value={tab}
 		tabs={tabs?.($LL, args)}
+		class="md:hidden"
 		on:change={(e) => {
 			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
 			if (e.detail.value !== e.detail.origin) {

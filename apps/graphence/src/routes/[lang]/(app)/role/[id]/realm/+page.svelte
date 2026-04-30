@@ -4,6 +4,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import RealmForm from '~/lib/components/objects/realm/RealmForm.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
 	import {
@@ -40,11 +41,11 @@
 		showUnbindButton = false;
 	}
 
-	const mutation = (args: MutationRealmArgs) => {
+	const mutation = (args: MutationRealmArgs, params?: FetchParams | undefined) => {
 		validate('Mutation_realm_Arguments', args)
 			.then((data) => {
 				errors = {};
-				mutation_realm_Store.fetch(args).then((result) => {
+				mutation_realm_Store.fetch(args, params).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
 						errors = buildGraphQLErrors(result.errors, data);
@@ -67,7 +68,7 @@
 			});
 	};
 
-	const mutation_realm = (input: RealmInput | null) => {
+	const mutation_realm = (input: RealmInput | null, params?: FetchParams | undefined) => {
 		validate('Mutation_role_Arguments', { where: { id: { val: role?.id } }, realm: input })
 			.then((data) => {
 				errors = {};
@@ -77,7 +78,7 @@
 							role_id: id,
 							role_realm: input
 						},
-						{ directives: [merge()] }
+						{ directives: [merge()], ...params }
 					)
 					.then((result) => {
 						if (result.errors) {

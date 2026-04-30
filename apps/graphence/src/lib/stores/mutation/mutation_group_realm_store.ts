@@ -4,12 +4,13 @@ import { fragment_GroupFields } from '~/lib/stores/fragment/fragment_GroupFields
 import { createGraphQLMutationStore } from '~/utils';
 import type { RealmInput, Group } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput) {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_group_realm($group_id: String, $group_realm: RealmInput) {
   group(where: { id: { val: $group_id } }, realm: $group_realm) ${directives}{
     ...GroupFields
     syncGroupPolicy
     realm {
       ...RealmFields
+      ${fields}
     }
   }
 }

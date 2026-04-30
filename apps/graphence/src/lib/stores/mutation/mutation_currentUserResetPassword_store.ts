@@ -4,9 +4,11 @@ import { createGraphQLMutationStore } from '~/utils';
 import type { MutationCurrentUserResetPasswordArgs } from '~/lib/types/schema';
 import type { User } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_currentUserResetPassword($password: String!, $newPassword: String!) {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_currentUserResetPassword($password: String!, $newPassword: String!) {
   currentUserResetPassword(password: $password newPassword: $newPassword) ${directives}{
     ...UserFields
+    syncUserPolicy
+    ${fields}
   }
 }
 ${fragment_UserFields}`;

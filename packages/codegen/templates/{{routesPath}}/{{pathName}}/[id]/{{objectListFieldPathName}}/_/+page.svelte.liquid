@@ -2,6 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import {{ fieldObjectInfo.name }}Form from '~/{{ componentsPath }}/objects/{{ fieldObjectInfo.name | paramCase }}/{{ fieldObjectInfo.name }}Form.svelte';
 	import {
 		validator,
@@ -32,7 +33,7 @@
 	let value: {{ fieldObjectInfo.name }}Input = {};
 	let errors: Record<string, Errors> = {};
 
-	const mutation_{{ fieldInfo.fieldName }} = (input: {{ fieldObjectInfo.name }}Input) => {
+	const mutation_{{ fieldInfo.fieldName }} = (input: {{ fieldObjectInfo.name }}Input, params?: FetchParams | undefined) => {
 		validate('{{ mutationTypeName }}_{{ name | camelCase }}_Arguments', { where: { {{ idName }}: { val: id } }, {{ fieldInfo.fieldName }}: [input] })
 			.then((data) => {
 				errors = {};
@@ -42,7 +43,7 @@
 							{{ name | camelCase }}_{{ idName }}: {{ idName }},
 							{{ name | camelCase }}_{{ fieldInfo.fieldName }}: [input]
 						},
-						{ directives: [merge()] }
+						{ directives: [merge()], ...params }
 					)
 					.then((result) => {
 						if (result.errors) {

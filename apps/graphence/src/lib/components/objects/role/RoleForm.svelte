@@ -103,7 +103,6 @@
 		<slot />
 	</Buttons>
 </div>
-<div class="divider my-0" />
 {#if tabs?.($LL, args)}
 	<Tabs
 		bind:value={tab}
@@ -362,7 +361,6 @@
 		</div>
 	{/if}
 </Form>
-<div class="divider my-0" />
 <div class="flex justify-end">
 	<Buttons
 		showRemoveButton={showRemoveButton && value?.id != null}

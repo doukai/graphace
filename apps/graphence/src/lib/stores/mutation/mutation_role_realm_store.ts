@@ -4,12 +4,13 @@ import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { RealmInput, Role } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput) {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_role_realm($role_id: String, $role_realm: RealmInput) {
   role(where: { id: { val: $role_id } }, realm: $role_realm) ${directives}{
     ...RoleFields
     syncRolePolicy
     realm {
       ...RealmFields
+      ${fields}
     }
   }
 }

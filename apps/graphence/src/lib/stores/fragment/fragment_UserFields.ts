@@ -4,6 +4,8 @@ export const fragment_UserFields = /* GraphQL */ `fragment UserFields on User {
     description
     lastName
     login
+    salt
+    hash
     email
     phones
     disable
@@ -30,6 +32,7 @@ export const fragment_UserFields = /* GraphQL */ `fragment UserFields on User {
     updateUserId
     updateTime
     createGroupId
+    syncUserPolicy
   }`;
 
 export const fragment_UserNamedFields = /* GraphQL */ `fragment UserNamedFields on User {

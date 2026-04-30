@@ -116,6 +116,27 @@
 			{/if}
 		</span>
 	</slot>
+	<slot name="tabs">
+		{#if tabs?.($LL, args)}
+			<Tabs
+				bind:value={tab}
+				tabs={tabs?.($LL, args)}
+				class="max-md:hidden"
+				on:change={(e) => {
+					dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+					if (e.detail.value !== e.detail.origin) {
+						{{ name | camelCase }}FormTabChange(e.detail.value, args, value)
+							.then((args) => {
+								dispatch('query', {
+									args
+								});
+							})
+							.catch((e) => (errors = e));
+					}
+				}}
+			/>
+		{/if}
+	</slot>
 	<Buttons
 		showRemoveButton={showRemoveButton && value?.{{idName}} != null}
 		showUnbindButton={showUnbindButton && value?.{{idName}} != null}
@@ -135,23 +156,26 @@
 		<slot />
 	</Buttons>
 </div>
-{#if tabs?.($LL, args)}
-	<Tabs
-		bind:value={tab}
-		tabs={tabs?.($LL, args)}
-		on:change={(e) => {
-			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
-			if (e.detail.value !== e.detail.origin) {
-				{{ name | camelCase }}FormTabChange(e.detail.value, args, value)
-					.then((args) => {
-						dispatch('query', {
-							args
-						});
-					})
-					.catch((e) => (errors = e));
-			}
-		}}
-	/>
+<slot name="tabs-sm">
+	{#if tabs?.($LL, args)}
+		<Tabs
+			bind:value={tab}
+			tabs={tabs?.($LL, args)}
+			class="md:hidden"
+			on:change={(e) => {
+				dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+				if (e.detail.value !== e.detail.origin) {
+					{{ name | camelCase }}FormTabChange(e.detail.value, args, value)
+						.then((args) => {
+							dispatch('query', {
+								args
+							});
+						})
+						.catch((e) => (errors = e));
+				}
+			}}
+		/>
+	{/if}
 {/if}
 <Form class={className}>
 	{#if isFetching}

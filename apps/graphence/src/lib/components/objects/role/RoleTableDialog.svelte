@@ -292,7 +292,6 @@
 			on:create={(e) => to(`/${$locale}/role/_`)}
 			on:goto={(e) => to(`/${$locale}/role/${e.detail.path}`)}
 		/>
-		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber

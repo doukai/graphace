@@ -2,6 +2,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import UserForm from '~/lib/components/objects/user/UserForm.svelte';
 	import {
 		validator,
@@ -24,7 +25,7 @@
 	let value: UserInput = {};
 	let errors: Record<string, Errors> = {};
 
-	const mutation_users = (input: UserInput) => {
+	const mutation_users = (input: UserInput, params?: FetchParams | undefined) => {
 		validate('Mutation_role_Arguments', { where: { id: { val: id } }, users: [input] })
 			.then((data) => {
 				errors = {};
@@ -34,7 +35,7 @@
 							role_id: id,
 							role_users: [input]
 						},
-						{ directives: [merge()] }
+						{ directives: [merge()], ...params }
 					)
 					.then((result) => {
 						if (result.errors) {

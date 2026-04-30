@@ -16,7 +16,7 @@ import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
 
-export const permissionInit: ((value: PermissionInput | null | undefined) => PermissionInput | null | undefined) | undefined = undefined;
+export const permissionInit: ((value?: PermissionInput | null | undefined) => PermissionInput | null | undefined) | undefined = undefined;
 
 export const permissionTabs: (($LL: TranslationFunctions, args?: QueryPermissionListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
@@ -65,7 +65,6 @@ export type PermissionFieldsProps = {
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 	} | undefined;
 	description?: {
 		'tr'?: {} | undefined;
@@ -73,7 +72,6 @@ export type PermissionFieldsProps = {
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 	} | undefined;
 	field?: {
 		'tr'?: {} | undefined;
@@ -81,7 +79,6 @@ export type PermissionFieldsProps = {
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 	} | undefined;
 	type?: {
 		'tr'?: {} | undefined;
@@ -89,14 +86,12 @@ export type PermissionFieldsProps = {
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 	} | undefined;
 	permissionType?: {
 		'tr'?: {} | undefined;
 		'th'?: {} | undefined;
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
-		'input'?: {} | undefined;
 		'select'?: {} | undefined;
 	} | undefined;
 	roles?: {
@@ -592,9 +587,19 @@ export const permissionFields: PermissionFields = {
 export const validateRequired = async ($LL: TranslationFunctions, value: PermissionInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		for (const [fieldName, options] of Object.entries(permissionFields)) {
-			if (options?.required?.(value) && value[fieldName as keyof PermissionInput] == null) {
-				errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+		if (value?.id || value?.where && Object.values(value.where).length > 0) {
+			for (const [fieldName, fieldValue] of Object.entries(value)) {
+				const options = permissionFields[fieldName as keyof PermissionFields];
+				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
+					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+				}
+			}
+		} else {
+			for (const [fieldName, options] of Object.entries(permissionFields)) {
+				const fieldValue = value[fieldName as keyof PermissionInput];
+				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
+					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+				}
 			}
 		}
 	}
@@ -604,10 +609,20 @@ export const validateRequired = async ($LL: TranslationFunctions, value: Permiss
 export const validateErrors = async ($LL: TranslationFunctions, value: PermissionInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		for (const [fieldName, options] of Object.entries(permissionFields)) {
-			const fieldErrors = await options?.validate?.($LL, value);
-			if (fieldErrors && fieldErrors.length > 0) {
-				errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+		if (value?.id || value?.where && Object.values(value.where).length > 0) {
+			for (const [fieldName, fieldValue] of Object.entries(value)) {
+				const options = permissionFields[fieldName as keyof PermissionFields];
+				const fieldErrors = await options?.validate?.($LL, value);
+				if (fieldErrors && fieldErrors.length > 0) {
+					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+				}
+			}
+		} else {
+			for (const [fieldName, options] of Object.entries(permissionFields)) {
+				const fieldErrors = await options?.validate?.($LL, value);
+				if (fieldErrors && fieldErrors.length > 0) {
+					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+				}
 			}
 		}
 	}

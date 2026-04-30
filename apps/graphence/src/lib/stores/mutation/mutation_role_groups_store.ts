@@ -4,12 +4,14 @@ import { fragment_RoleFields } from '~/lib/stores/fragment/fragment_RoleFields';
 import { createGraphQLMutationStore } from '~/utils';
 import type { GroupInput, Role } from '~/lib/types/schema';
 
-const query = ({ directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_role_groups($role_id: String, $role_groups: [GroupInput]) {
+const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mutation_role_groups($role_id: String, $role_groups: [GroupInput]) {
   role(where: { id: { val: $role_id } }, groups: $role_groups) ${directives}{
     ...RoleFields
     syncRolePolicy
     groups {
       ...GroupFields
+      syncGroupPolicy
+      ${fields}
     }
   }
 }

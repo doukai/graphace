@@ -11,7 +11,7 @@ import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
 const { auth } = permissions;
 
-export const realmInit: ((value: RealmInput | null | undefined) => RealmInput | null | undefined) | undefined = undefined;
+export const realmInit: ((value?: RealmInput | null | undefined) => RealmInput | null | undefined) | undefined = undefined;
 
 export const realmTabs: (($LL: TranslationFunctions, args?: QueryRealmListArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
@@ -55,7 +55,6 @@ export type RealmFieldsProps = {
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 	} | undefined;
 	description?: {
 		'tr'?: {} | undefined;
@@ -63,7 +62,6 @@ export type RealmFieldsProps = {
 		'td'?: {} | undefined;
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
-		'select'?: {} | undefined;
 	} | undefined;
 };
 
@@ -184,9 +182,19 @@ export const realmFields: RealmFields = {
 export const validateRequired = async ($LL: TranslationFunctions, value: RealmInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		for (const [fieldName, options] of Object.entries(realmFields)) {
-			if (options?.required?.(value) && value[fieldName as keyof RealmInput] == null) {
-				errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+		if (value?.id || value?.where && Object.values(value.where).length > 0) {
+			for (const [fieldName, fieldValue] of Object.entries(value)) {
+				const options = realmFields[fieldName as keyof RealmFields];
+				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
+					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+				}
+			}
+		} else {
+			for (const [fieldName, options] of Object.entries(realmFields)) {
+				const fieldValue = value[fieldName as keyof RealmInput];
+				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
+					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
+				}
 			}
 		}
 	}
@@ -196,10 +204,20 @@ export const validateRequired = async ($LL: TranslationFunctions, value: RealmIn
 export const validateErrors = async ($LL: TranslationFunctions, value: RealmInput | null | undefined) => {
 	const errors: Record<string, Errors> = {};
 	if (value) {
-		for (const [fieldName, options] of Object.entries(realmFields)) {
-			const fieldErrors = await options?.validate?.($LL, value);
-			if (fieldErrors && fieldErrors.length > 0) {
-				errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+		if (value?.id || value?.where && Object.values(value.where).length > 0) {
+			for (const [fieldName, fieldValue] of Object.entries(value)) {
+				const options = realmFields[fieldName as keyof RealmFields];
+				const fieldErrors = await options?.validate?.($LL, value);
+				if (fieldErrors && fieldErrors.length > 0) {
+					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+				}
+			}
+		} else {
+			for (const [fieldName, options] of Object.entries(realmFields)) {
+				const fieldErrors = await options?.validate?.($LL, value);
+				if (fieldErrors && fieldErrors.length > 0) {
+					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
+				}
 			}
 		}
 	}

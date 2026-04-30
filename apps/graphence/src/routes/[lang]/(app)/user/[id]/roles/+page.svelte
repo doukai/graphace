@@ -4,6 +4,7 @@
 	import type { Errors } from '@graphace/commons';
 	import { buildArguments, merge } from '@graphace/graphql';
 	import { ot, to, canBack, Card, CardBody, Pagination, Breadcrumbs, toast, modal } from '@graphace/ui';
+	import type { FetchParams } from '@graphace/ui-graphql';
 	import RoleTable from '~/lib/components/objects/role/RoleTable.svelte';
 	import RoleTableDialog from '~/lib/components/objects/role/RoleTableDialog.svelte';
 	import {
@@ -41,12 +42,12 @@
 	let pageSize: number = 10;
 	let errors: Record<number, Errors> = {};
 
-	const query = (to?: number | undefined) => {
+	const query = (to?: number | undefined, params?: FetchParams | undefined) => {
 		args.orderBy = orderBy;
 		args.first = pageSize;
 		args.offset = ((to || pageNumber) - 1) * pageSize;
 		query_user_rolesConnection_Store
-			.fetch({ user_id: id, ...buildArguments(args) })
+			.fetch({ user_id: id, ...buildArguments(args) }, params)
 			.then((result) => {
 				if (result.errors) {
 					console.error(errors);
@@ -57,11 +58,11 @@
 			});
 	};
 
-	const mutation = (args: MutationRoleArgs) => {
+	const mutation = (args: MutationRoleArgs, params?: FetchParams | undefined) => {
 		validate('Mutation_role_Arguments', args)
 			.then((data) => {
 				errors = {};
-				mutation_role_Store.fetch(args).then((result) => {
+				mutation_role_Store.fetch(args, params).then((result) => {
 					if (result.errors) {
 						console.error(result.errors);
 						errors = buildGraphQLErrors(result.errors, data);
@@ -84,7 +85,7 @@
 			});
 	};
 
-	const mutation_roles = (input: RoleInput[]) => {
+	const mutation_roles = (input: RoleInput[], params?: FetchParams | undefined) => {
 		validate('Mutation_user_Arguments', { where: { id: { val: user?.id } }, roles: input })
 			.then((data) => {
 				errors = {};
@@ -94,7 +95,7 @@
 							user_id: id,
 							user_roles: input
 						},
-						{ directives: [merge()] }
+						{ directives: [merge()], ...params }
 					)
 					.then((result) => {
 						if (result.errors) {
@@ -229,7 +230,6 @@
 				</RoleTableDialog>
 			{/if}
 		</RoleTable>
-		<div class="divider my-0" />
 		<Pagination
 			bind:pageSize
 			bind:pageNumber
