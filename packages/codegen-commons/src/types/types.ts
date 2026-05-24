@@ -17,7 +17,6 @@ export type ObjectConfig = {
     select?: boolean;
     table?: boolean;
     fields?: FieldConfig[];
-    isContainer?: boolean;
     textFieldName?: string | undefined;
     groups?: GroupConfig[];
 }
@@ -57,9 +56,9 @@ export type ObjectInfo = {
     idName: string | undefined;
     fields: FieldInfo[];
     hasFileField: boolean;
+    hasInput: boolean;
     isConnection: boolean;
     isNamed: boolean;
-    aggFields?: FieldInfo[] | undefined;
     textFieldName?: string | undefined;
     groups?: GroupInfo[] | undefined;
 }
@@ -79,9 +78,7 @@ export type FieldInfo = {
     fieldTypeName: string;
     tsTypeName: string;
     fieldTypeIdName: string | undefined;
-    originalFieldName: string;
     originalFieldTypeName: string;
-    pairFieldName?: string | undefined;
     args: InputInfo[] | undefined;
     isScalarType: boolean;
     isEnumType: boolean;
@@ -90,7 +87,6 @@ export type FieldInfo = {
     isNonNullType: boolean;
     isListType: boolean;
     isConnection: boolean;
-    isAggregate: boolean;
     isNamed: boolean;
     isFile: boolean;
     isSelect: boolean;
@@ -104,8 +100,8 @@ export type FieldInfo = {
     inRoute: boolean;
     inList: boolean;
     inDetail: boolean;
+    inInput: boolean;
     fields?: FieldInfo[] | undefined;
-    aggFields?: FieldInfo[] | undefined;
     textFieldName?: string | undefined;
 }
 

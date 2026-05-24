@@ -3101,6 +3101,218 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
+		File: {
+			/**
+			 * F​i​l​e
+			 */
+			name: string
+			fields: {
+				id: {
+					/**
+					 * i​d
+					 */
+					name: string
+				}
+				name: {
+					/**
+					 * n​a​m​e
+					 */
+					name: string
+				}
+				contentType: {
+					/**
+					 * c​o​n​t​e​n​t​T​y​p​e
+					 */
+					name: string
+				}
+				contentLength: {
+					/**
+					 * c​o​n​t​e​n​t​L​e​n​g​t​h
+					 */
+					name: string
+				}
+				content: {
+					/**
+					 * c​o​n​t​e​n​t
+					 */
+					name: string
+				}
+				url: {
+					/**
+					 * u​r​l
+					 */
+					name: string
+				}
+				isDeprecated: {
+					/**
+					 * i​s​D​e​p​r​e​c​a​t​e​d
+					 */
+					name: string
+				}
+				version: {
+					/**
+					 * v​e​r​s​i​o​n
+					 */
+					name: string
+				}
+				realmId: {
+					/**
+					 * r​e​a​l​m​I​d
+					 */
+					name: string
+				}
+				createUserId: {
+					/**
+					 * c​r​e​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				createTime: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				updateUserId: {
+					/**
+					 * u​p​d​a​t​e​U​s​e​r​I​d
+					 */
+					name: string
+				}
+				updateTime: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e
+					 */
+					name: string
+				}
+				createGroupId: {
+					/**
+					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				idCount: {
+					/**
+					 * i​d​C​o​u​n​t
+					 */
+					name: string
+				}
+				nameCount: {
+					/**
+					 * n​a​m​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				contentTypeCount: {
+					/**
+					 * c​o​n​t​e​n​t​T​y​p​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				contentLengthCount: {
+					/**
+					 * c​o​n​t​e​n​t​L​e​n​g​t​h​C​o​u​n​t
+					 */
+					name: string
+				}
+				contentCount: {
+					/**
+					 * c​o​n​t​e​n​t​C​o​u​n​t
+					 */
+					name: string
+				}
+				urlCount: {
+					/**
+					 * u​r​l​C​o​u​n​t
+					 */
+					name: string
+				}
+				contentLengthMax: {
+					/**
+					 * c​o​n​t​e​n​t​L​e​n​g​t​h​M​a​x
+					 */
+					name: string
+				}
+				contentLengthMin: {
+					/**
+					 * c​o​n​t​e​n​t​L​e​n​g​t​h​M​i​n
+					 */
+					name: string
+				}
+				contentLengthSum: {
+					/**
+					 * c​o​n​t​e​n​t​L​e​n​g​t​h​S​u​m
+					 */
+					name: string
+				}
+				contentLengthAvg: {
+					/**
+					 * c​o​n​t​e​n​t​L​e​n​g​t​h​A​v​g
+					 */
+					name: string
+				}
+				createTimeYear: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				createTimeMonth: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				createTimeDay: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				createTimeWeek: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				createTimeQuarter: {
+					/**
+					 * c​r​e​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+				updateTimeYear: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Y​e​a​r
+					 */
+					name: string
+				}
+				updateTimeMonth: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​M​o​n​t​h
+					 */
+					name: string
+				}
+				updateTimeDay: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​D​a​y
+					 */
+					name: string
+				}
+				updateTimeWeek: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​W​e​e​k
+					 */
+					name: string
+				}
+				updateTimeQuarter: {
+					/**
+					 * u​p​d​a​t​e​T​i​m​e​Q​u​a​r​t​e​r
+					 */
+					name: string
+				}
+			}
+		}
 	}
 	enums: {
 		PermissionType: {
@@ -6489,6 +6701,218 @@ export type TranslationFunctions = {
 					permissionRefCount: {
 						/**
 						 * permissionRefCount
+						 */
+						name: () => LocalizedString
+					}
+					createTimeYear: {
+						/**
+						 * createTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					createTimeMonth: {
+						/**
+						 * createTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					createTimeDay: {
+						/**
+						 * createTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					createTimeWeek: {
+						/**
+						 * createTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					createTimeQuarter: {
+						/**
+						 * createTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeYear: {
+						/**
+						 * updateTimeYear
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeMonth: {
+						/**
+						 * updateTimeMonth
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeDay: {
+						/**
+						 * updateTimeDay
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeWeek: {
+						/**
+						 * updateTimeWeek
+						 */
+						name: () => LocalizedString
+					}
+					updateTimeQuarter: {
+						/**
+						 * updateTimeQuarter
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			File: {
+				/**
+				 * File
+				 */
+				name: () => LocalizedString
+				fields: {
+					id: {
+						/**
+						 * id
+						 */
+						name: () => LocalizedString
+					}
+					name: {
+						/**
+						 * name
+						 */
+						name: () => LocalizedString
+					}
+					contentType: {
+						/**
+						 * contentType
+						 */
+						name: () => LocalizedString
+					}
+					contentLength: {
+						/**
+						 * contentLength
+						 */
+						name: () => LocalizedString
+					}
+					content: {
+						/**
+						 * content
+						 */
+						name: () => LocalizedString
+					}
+					url: {
+						/**
+						 * url
+						 */
+						name: () => LocalizedString
+					}
+					isDeprecated: {
+						/**
+						 * isDeprecated
+						 */
+						name: () => LocalizedString
+					}
+					version: {
+						/**
+						 * version
+						 */
+						name: () => LocalizedString
+					}
+					realmId: {
+						/**
+						 * realmId
+						 */
+						name: () => LocalizedString
+					}
+					createUserId: {
+						/**
+						 * createUserId
+						 */
+						name: () => LocalizedString
+					}
+					createTime: {
+						/**
+						 * createTime
+						 */
+						name: () => LocalizedString
+					}
+					updateUserId: {
+						/**
+						 * updateUserId
+						 */
+						name: () => LocalizedString
+					}
+					updateTime: {
+						/**
+						 * updateTime
+						 */
+						name: () => LocalizedString
+					}
+					createGroupId: {
+						/**
+						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					idCount: {
+						/**
+						 * idCount
+						 */
+						name: () => LocalizedString
+					}
+					nameCount: {
+						/**
+						 * nameCount
+						 */
+						name: () => LocalizedString
+					}
+					contentTypeCount: {
+						/**
+						 * contentTypeCount
+						 */
+						name: () => LocalizedString
+					}
+					contentLengthCount: {
+						/**
+						 * contentLengthCount
+						 */
+						name: () => LocalizedString
+					}
+					contentCount: {
+						/**
+						 * contentCount
+						 */
+						name: () => LocalizedString
+					}
+					urlCount: {
+						/**
+						 * urlCount
+						 */
+						name: () => LocalizedString
+					}
+					contentLengthMax: {
+						/**
+						 * contentLengthMax
+						 */
+						name: () => LocalizedString
+					}
+					contentLengthMin: {
+						/**
+						 * contentLengthMin
+						 */
+						name: () => LocalizedString
+					}
+					contentLengthSum: {
+						/**
+						 * contentLengthSum
+						 */
+						name: () => LocalizedString
+					}
+					contentLengthAvg: {
+						/**
+						 * contentLengthAvg
 						 */
 						name: () => LocalizedString
 					}

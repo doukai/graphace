@@ -220,7 +220,6 @@
 		>
 			{#if auth('Group::*::WRITE')}
 				<GroupTableDialog
-					args={{ exs: [{ not: true, parent: { id: { val: group?.id } } }] }}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {

@@ -222,7 +222,6 @@
 		>
 			{#if auth('User::*::WRITE')}
 				<UserTableDialog
-					args={{ exs: [{ not: true, groups: { id: { val: group?.id } } }] }}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {

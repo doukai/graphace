@@ -107,9 +107,7 @@ const config: CodegenConfig = {
                                 },
                                 {
                                     name: 'syncUserPolicy',
-                                    mutationOnly: true,
-                                    inList: false,
-                                    inDetail: false
+                                    mutationOnly: true
                                 }
                             ]
                         },
@@ -123,9 +121,7 @@ const config: CodegenConfig = {
                                 },
                                 {
                                     name: 'syncRolePolicy',
-                                    mutationOnly: true,
-                                    inList: false,
-                                    inDetail: false
+                                    mutationOnly: true
                                 }
                             ]
                         },
@@ -135,9 +131,7 @@ const config: CodegenConfig = {
                             fields: [
                                 {
                                     name: 'syncGroupPolicy',
-                                    mutationOnly: true,
-                                    inList: false,
-                                    inDetail: false
+                                    mutationOnly: true
                                 }
                             ]
                         },
@@ -150,9 +144,7 @@ const config: CodegenConfig = {
                                 },
                                 {
                                     name: 'syncPermissionPolicy',
-                                    mutationOnly: true,
-                                    inList: false,
-                                    inDetail: false
+                                    mutationOnly: true
                                 }
                             ]
                         }

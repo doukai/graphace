@@ -162,7 +162,6 @@
 		>
 			{#if auth('Group::*::WRITE')}
 				<GroupTableDialog
-					args={{ exs: [{ not: true, parent: { id: { val: group?.id } } }] }}
 					singleChoice
 					class="btn-accent"
 					on:select={(e) => {

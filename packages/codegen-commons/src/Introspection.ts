@@ -4,7 +4,6 @@ import {
     type GraphQLNamedType,
     type GraphQLInputType,
     type GraphQLOutputType,
-    type GraphQLObjectType,
     type GraphQLField,
     type GraphQLEnumValue,
     assertScalarType,
@@ -14,29 +13,25 @@ import {
     isLeafType,
     isObjectType,
     isListType,
-    isNonNullType
+    isNonNullType,
+    isInputObjectType
 } from 'graphql';
 
-export const aggregateSuffix = ["Count", "Sum", "Avg", "Max", "Min", "Year", "Month", "Day", "Week", "Quarter", "Aggregate"];
-export const listSuffix = "List";
+export const inputSuffix = "Input";
 export const connectionSuffix = "Connection";
+export const edgeSuffix = "Edge";
 export const relationSuffix = "Relation";
 export const refSuffix = "Ref";
-export const edgeSuffix = "Edge";
-export const pageInfoName = "PageInfo";
 export const introspectionPrefix = "__";
-export const innerEnum = ["Operator", "Conditional", "Sort", "Func", "Protocol"];
+export const fileTypeName = "File";
 export const namedStructInterfaceName = "NamedStruct";
 export const treeStructInterfaceName = "TreeStruct";
 
-export const isAggregate = (name?: string): boolean => { return aggregateSuffix.some(suffix => name?.slice(-suffix.length) === suffix) };
 export const isConnection = (name?: string): boolean => { return name?.slice(-connectionSuffix.length) === connectionSuffix };
+export const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };
 export const isRelation = (name?: string): boolean => { return name?.slice(-relationSuffix.length) === relationSuffix };
 export const isRef = (name?: string): boolean => { return name?.slice(-refSuffix.length) === refSuffix };
-export const isEdge = (name?: string): boolean => { return name?.slice(-edgeSuffix.length) === edgeSuffix };
-export const isPageInfo = (name?: string): boolean => { return name === pageInfoName };
 export const isIntrospection = (name?: string): boolean | undefined => { return name?.startsWith(introspectionPrefix) };
-export const isInnerEnum = (name?: string): boolean => { return innerEnum.some(enumName => name === enumName) };
 
 export const getFieldType = (type: GraphQLOutputType): GraphQLNamedType => {
     if (isListType(type) || isNonNullType(type)) {
@@ -82,7 +77,7 @@ export const fieldTypeIsFile = (type: GraphQLOutputType): boolean => {
         return fieldTypeIsFile(type.ofType);
     }
     return isObjectType(type) &&
-        type.name === 'File' ||
+        type.name === fileTypeName ||
         false;
 }
 
@@ -108,36 +103,21 @@ export const getFields = (field?: GraphQLField<any, any, any>): GraphQLField<any
     return undefined;
 }
 
-export const getLeafAndAggregateFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
+export const getLeafFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
     return getFields(field)
         ?.filter(field => isLeafType(getFieldType(field.type)));
-}
-
-export const getLeafFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
-    return getLeafAndAggregateFields(field)
-        ?.filter(field => !isAggregate(field.name));
-}
-
-export const getAggFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
-    return getLeafAndAggregateFields(field)
-        ?.filter(field =>
-            isLeafType(getFieldType(field.type)) && getFieldType(field.type).name !== 'Boolean' && !fieldTypeIsList(field.type) && !isAggregate(field.name) ||
-            isObjectType(getFieldType(field.type)) && (!fieldTypeIsList(field.type) || isAggregate(field.name))
-        )
 }
 
 export const getNamedFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
     return getFields(field)
         ?.filter(field => isObjectType(getFieldType(field.type)))
-        .filter(field => !isAggregate(field.name))
         .filter(field => fieldTypeIsNamedStruct(field.type));
 }
 
 export const getFileFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
     return getFields(field)
         ?.filter(field => isObjectType(getFieldType(field.type)))
-        .filter(field => !isAggregate(field.name))
-        .filter(field => getFieldType(field.type).name === 'File');
+        .filter(field => getFieldType(field.type).name === fileTypeName);
 }
 
 export const getObjectFields = (field?: GraphQLField<any, any, any>): GraphQLField<any, any, any>[] | undefined => {
@@ -145,8 +125,6 @@ export const getObjectFields = (field?: GraphQLField<any, any, any>): GraphQLFie
         ?.filter(field => isObjectType(getFieldType(field.type)))
         .filter(field => !isConnection(getFieldType(field.type).name))
         .filter(field => !isEdge(getFieldType(field.type).name))
-        .filter(field => !isAggregate(field.name))
-        .filter(field => !isPageInfo(getFieldType(field.type).name))
         .filter(field => !isIntrospection(getFieldType(field.type).name));
 }
 
@@ -187,16 +165,6 @@ export const getIDFieldName = (type: GraphQLNamedType): string | undefined => {
     return undefined;
 }
 
-export const getOriginalFieldName = (field: GraphQLField<any, any, any>): string => {
-    const fieldName = field.name;
-    for (let suffix of aggregateSuffix) {
-        if (fieldName.slice(-suffix.length) === suffix) {
-            return fieldName.substring(0, fieldName.lastIndexOf(suffix));
-        }
-    }
-    return fieldName;
-}
-
 export const getOriginalTypeName = (type: GraphQLNamedType): string => {
     const typeName = type.name;
     for (let suffix of [connectionSuffix, edgeSuffix]) {
@@ -212,20 +180,9 @@ export const hasFileField = (type: GraphQLNamedType): boolean => {
         return Object.values(type.getFields())
             .map(field => getFieldType(field.type))
             .filter(fieldType => isObjectType(fieldType))
-            .some(fieldType => fieldType.name === 'File' || fieldType.name === 'FileConnection')
+            .some(fieldType => fieldType.name === fileTypeName)
     }
     return false;
-}
-
-export const getPairField = (type: GraphQLObjectType, field: GraphQLField<any, any, any>): GraphQLField<any, any, any> | undefined => {
-    const fieldType = getFieldType(field.type);
-    if (isObjectType(fieldType)) {
-        const pairField = Object.values(fieldType.getFields())
-            .filter(field => !isAggregate(field.name))
-            .find(field => getFieldType(field.type).name === type.name);
-        return pairField;
-    }
-    return undefined;
 }
 
 export const fieldInQueryArgs = (schema: GraphQLSchema, typeName: string, fieldName: string): boolean => {
@@ -263,4 +220,23 @@ export const isTreeStruct = (type: GraphQLNamedType): boolean => {
     return assertObjectType(type)
         .getInterfaces()
         .some(interfaceType => interfaceType.name === treeStructInterfaceName);
+}
+
+export const typeHasInput = (schema: GraphQLSchema, typeName: string): boolean => {
+    return schema.getType(typeName + inputSuffix) !== undefined;
+}
+
+export const fieldInInput = (schema: GraphQLSchema, typeName: string, fieldName: string): boolean => {
+    const input = schema.getType(typeName + inputSuffix);
+    if (input && isInputObjectType(input)) {
+        return input.getFields()[fieldName] !== undefined;
+    }
+    return false;
+}
+
+export const typeInObject = (schema: GraphQLSchema, typeName: string): boolean => {
+    return Object.values(schema.getTypeMap())
+        .filter(type => isObjectType(type))
+        .map(type => assertObjectType(type))
+        .some(type => Object.values(type.getFields()).some(field => getFieldType(field.type).name === typeName));
 }

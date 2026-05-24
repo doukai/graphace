@@ -1,7 +1,6 @@
-import { format } from 'date-fns';
 import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
-import type { Option } from '@graphace/ui-graphql';
+import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters, type ScalarFieldProps, type EnumFieldProps, type ObjectFieldProps } from '@graphace/ui-graphql';
 {%- for object in objects %}
 {%- if object != name %}
 import { {{ object | camelCase }}Fields, type {{ object }}Fields } from '~/{{ componentsPath }}/objects/{{ object | paramCase }}/{{ object }}Option';
@@ -35,30 +34,16 @@ export const {{ name | camelCase }}Tabs: (($LL: TranslationFunctions, args?: Que
 
 export const {{ name | camelCase }}Tab: ((args?: Query{{ name }}ListArgs | undefined) => string | undefined) | undefined = undefined;
 
-export const {{ name | camelCase }}TabChange = async (tab: string, args: Query{{ name }}ListArgs, value?: ({{ name }}Input | null | undefined)[] | null | undefined) => {
-	return new Promise(
-		(
-			resolve: (data: Query{{ name }}ListArgs) => void,
-			reject: (errors: Record<number, Errors>) => void
-		) => {
-			resolve(args);
-		}
-	);
+export const {{ name | camelCase }}TabChange = async (tab: string, args: Query{{ name }}ListArgs, value?: ({{ name }}Input | null | undefined)[] | null | undefined): Promise<Query{{ name }}ListArgs> => {
+	return args;
 };
 
 export const {{ name | camelCase }}FormTabs: (($LL: TranslationFunctions, args?: Query{{ name }}Args | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
 export const {{ name | camelCase }}FormTab: ((args?: Query{{ name }}Args | undefined) => string | undefined) | undefined = undefined;
 
-export const {{ name | camelCase }}FormTabChange = async (tab: string, args: Query{{ name }}Args, value?: {{ name }}Input | null | undefined) => {
-	return new Promise(
-		(
-			resolve: (data: Query{{ name }}Args) => void,
-			reject: (errors: Record<string, Errors>) => void
-		) => {
-			resolve(args);
-		}
-	);
+export const {{ name | camelCase }}FormTabChange = async (tab: string, args: Query{{ name }}Args, value?: {{ name }}Input | null | undefined): Promise<Query{{ name }}Args> => {
+	return args;
 };
 
 export type {{ name }}FieldsArgs = {
@@ -69,25 +54,13 @@ export type {{ name }}FieldsArgs = {
 
 export type {{ name }}FieldsProps = {
 	{%- for field in fields %}
-	{{ field.fieldName }}?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		{%- if field.isScalarType %}
-		'input'?: {} | undefined;
-		{%- elsif field.isFile %}
-		'file-input'?: {} | undefined;
-		{%- elsif field.isEnumType %}
-		'select'?: {} | undefined;
-		{%- else %}
-		'table'?: {} | undefined;
-		'form'?: {} | undefined;
-		'combobox'?: {} | undefined;
-		'dialog'?: {} | undefined;
-		'link'?: {} | undefined;
-		{%- endif %}
-	} | undefined;
+	{%- if field.isScalarType or field.isFile %}
+	{{ field.fieldName }}?: ScalarFieldProps | undefined;
+	{%- elsif field.isEnumType %}
+	{{ field.fieldName }}?: EnumFieldProps | undefined;
+	{%- else %}
+	{{ field.fieldName }}?: ObjectFieldProps | undefined;
+	{%- endif %}
 	{%- endfor %}
 };
 
@@ -126,14 +99,7 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: {{ name }}Input | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -143,142 +109,42 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
 			{%- if field.isObjectType %}
-			if (fields) {
-				{%- if field.isListType %}
-				const fieldStringArray = Object.fromEntries(
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
-							if (string?.includes('|')) {
-								return [[fieldName, string?.split('|')]];
-							} else if (string) {
-								return [[fieldName, [string]]];
-							}
-							return [];
-						})
-				);
-
-				const fieldRecords = Array.from({ length: Object.values(fieldStringArray)[0]?.length || 0 })
-					.map((_, row) =>
-						Object.fromEntries(
-							Object.entries(fieldStringArray)
-								.map(([fieldName, stringArray]) =>
-									[fieldName, stringArray[row]]
-								)
-						)
-					);
-
-				const value = fieldRecords.map(fieldRecord =>
-					Object.fromEntries(
-						Object.entries(fields)
-							.flatMap(([fieldName, option]) => {
-								const fields = option.toFields?.();
-								const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
-								if (value) {
-									return [[fieldName, value]];
-								}
-								return [];
-							})
-					) as {{ field.fieldTypeName }}Input | null | undefined
-				);
-
-				if (value.length) {
-					return value;
-				}
-				{%- else %}
-				const fieldRecord = Object.fromEntries(
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
-							if (string) {
-								return [[fieldName, string]];
-							}
-							return [];
-						})
-				);
-
-				const value = Object.fromEntries(
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const fields = option.toFields?.();
-							const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
-							if (value) {
-								return [[fieldName, value]];
-							}
-							return [];
-						})
-				) as {{ field.fieldTypeName }}Input;
-
-				if (Object.keys(value).length) {
-					return value;
-				}
-				{%- endif %}
-			}
+			{%- if field.isListType %}
+			return objectListFromRecord($LL, fields, title, record, fieldArg);
 			{%- else %}
-			const string = record?.[title];
-			if (string != null) {
-				{%- if field.isListType %}
-				{%- if field.fieldTypeName == 'Boolean' %}
-				if (string.includes('/')) {
-					return string.split('/').map(item => item === $LL.{{ appName }}.components.label.true() ? true : false);
-				} else {
-					return [string === $LL.{{ appName }}.components.label.true() ? true : false]
-				}
-				{%- elsif field.fieldTypeName == 'Int' or field.fieldTypeName == 'BigInteger' %}
-				if (string.includes('/')) {
-					return string.split('/').map(item => parseInt(item));
-				} else {
-					return [parseInt(string)];
-				}
-				{%- elsif field.fieldTypeName == 'Float' or field.fieldTypeName == 'BigDecimal' %}
-				if (string.includes('/')) {
-					return string.split('/').map(item => parseFloat(item));
-				} else {
-					return [parseFloat(string)];
-				}
-				{%- elsif field.isScalarType %}
-				if (string.includes('/')) {
-					return string.split('/');
-				} else {
-					return [string];
-				}
-				{%- elsif field.isEnumType %}
-				if (string.includes('/')) {
-					return string.split('/').map(item => Object.entries($LL.graphql.enums.{{ field.fieldTypeName }}.values).find(([_, v]) => v.name() === item)?.[0] as {{ field.fieldTypeName }});
-				} else {
-					return [Object.entries($LL.graphql.enums.{{ field.fieldTypeName }}.values).find(([_, v]) => v.name() === string)?.[0] as {{ field.fieldTypeName }}];
-				}
-				{%- endif %}
-				{%- else %}
-				{%- if field.fieldTypeName == 'Boolean' %}
-				return string === $LL.{{ appName }}.components.label.true() ? true : false;
-				{%- elsif field.fieldTypeName == 'DateTime' or field.fieldTypeName == 'Timestamp' %}
-				if (typeof string !== "number") {
-					return string;
-				} else if (typeof string === "number" && string >= 25569) {
-					const date = new Date((string - 25569) * 86400000);
-					return format(date, "yyyy-MM-dd HH:mm:ss");
-				}
-				{%- elsif field.fieldTypeName == 'Date' %}
-				if (typeof string !== "number") {
-					return string;
-				} else if (typeof string === "number" && string >= 25569) {
-					const date = new Date((string - 25569) * 86400000);
-					return format(date, "yyyy-MM-dd");
-				}
-				{%- elsif field.fieldTypeName == 'Int' or field.fieldTypeName == 'BigInteger' %}
-				return parseInt(string);
-				{%- elsif field.fieldTypeName == 'Float' or field.fieldTypeName == 'BigDecimal' %}
-				return parseFloat(string);
-				{%- elsif field.isScalarType %}
-				return string;
-				{%- elsif field.isEnumType %}
-				return Object.entries($LL.graphql.enums.{{ field.fieldTypeName }}.values).find(([_, v]) => v.name() === string)?.[0] as {{ field.fieldTypeName }};
-				{%- endif %}
-				{%- endif %}
-			}
+			return objectFromRecord($LL, fields, title, record, fieldArg);
 			{%- endif %}
-			return undefined;
+			{%- else %}
+			{%- if field.isListType %}
+			{%- if field.fieldTypeName == 'Boolean' %}
+			return booleanListFromRecord(record, title, '/', $LL.{{ appName }}.components.label.true());
+			{%- elsif field.fieldTypeName == 'Int' or field.fieldTypeName == 'BigInteger' %}
+			return numberListFromRecord(record, title, '/');
+			{%- elsif field.fieldTypeName == 'Float' or field.fieldTypeName == 'BigDecimal' %}
+			return floatListFromRecord(record, title, '/');
+			{%- elsif field.isScalarType %}
+			return stringListFromRecord(record, title, '/');
+			{%- elsif field.isEnumType %}
+			return enumListFromRecord(record, title, '/', $LL.graphql.enums.{{ field.fieldTypeName }}.values);
+			{%- endif %}
+			{%- else %}
+			{%- if field.fieldTypeName == 'Boolean' %}
+			return booleanFromRecord(record, title, $LL.{{ appName }}.components.label.true());
+			{%- elsif field.fieldTypeName == 'DateTime' or field.fieldTypeName == 'Timestamp' %}
+			return dateTimeFromRecord(record, title);
+			{%- elsif field.fieldTypeName == 'Date' %}
+			return dateFromRecord(record, title);
+			{%- elsif field.fieldTypeName == 'Int' or field.fieldTypeName == 'BigInteger' %}
+			return numberFromRecord(record, title);
+			{%- elsif field.fieldTypeName == 'Float' or field.fieldTypeName == 'BigDecimal' %}
+			return floatFromRecord(record, title);
+			{%- elsif field.isScalarType %}
+			return stringFromRecord(record, title);
+			{%- elsif field.isEnumType %}
+			return enumFromRecord(record, title, $LL.graphql.enums.{{ field.fieldTypeName }}.values);
+			{%- endif %}
+			{%- endif %}
+			{%- endif %}
 		}{%- if field.isObjectType%},
 		toFields: (fieldArg) => {
 			{%- if field.isNamed %}
@@ -292,252 +158,46 @@ export const {{ name | camelCase }}Fields: {{ name }}Fields = {
 			{%- endif %}
 		},
 		toRecord: ($LL, fields, title, value, fieldArg) => {
-			const fieldValue = value?.{{ field.fieldName }};
 			{%- if field.isListType %}
-			return Object.fromEntries(
-				Object.entries(fields)
-					.map(([fieldName, option]) =>
-						[
-							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
-							fieldValue?.map(item => option?.toString?.($LL, item, fieldArg) || '').join('|') || ''
-						]
-					)
-			);
+			return objectListToRecord($LL, fields, title, value, '{{ field.fieldName }}', fieldArg);
 			{%- else %}
-			return Object.fromEntries(
-				Object.entries(fields)
-					.map(([fieldName, option]) =>
-						[
-							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
-							option?.toString?.($LL, fieldValue, fieldArg) || ''
-						]
-					)
-			);
+			return objectToRecord($LL, fields, title, value, '{{ field.fieldName }}', fieldArg);
 			{%- endif %}
 		},
 		fields: (value, fieldArg) => {{ field.fieldTypeName | camelCase }}Fields
 		{%- else %},
 		toString: ($LL, value, fieldArg) => {
-			const fieldValue = value?.{{ field.fieldName }};
-			if (fieldValue != null) {
-				{%- if field.isListType %}
-				{%- if field.fieldTypeName == 'Boolean' %}
-				return fieldValue.map(item => item ? $LL.{{ appName }}.components.label.true() : $LL.{{ appName }}.components.label.false()).join('/');
-				{%- elsif field.isScalarType %}
-				return fieldValue.map(item => item != null ? item.toString() : '').join('/');
-				{%- elsif field.isEnumType %}
-				return fieldValue.map(item => item != null ? $LL.graphql.enums.{{ field.fieldTypeName }}.values[fieldValue].name() : '').join('/');
-				{%- endif %}
-				{%- else %}
-				{%- if field.fieldTypeName == 'Boolean' %}
-				return fieldValue ? $LL.{{ appName }}.components.label.true() : $LL.{{ appName }}.components.label.false();
-				{%- elsif field.isScalarType %}
-				return fieldValue.toString();
-				{%- elsif field.isEnumType %}
-				return $LL.graphql.enums.{{ field.fieldTypeName }}.values[fieldValue].name();
-				{%- endif %}
-				{%- endif %}
-			}
-			return '';
+			{%- if field.isListType %}
+			{%- if field.fieldTypeName == 'Boolean' %}
+			return booleanListToString(value, '{{ field.fieldName }}', '/', $LL.{{ appName }}.components.label.true(), $LL.{{ appName }}.components.label.false());
+			{%- elsif field.fieldTypeName == 'Int' or field.fieldTypeName == 'BigInteger' %}
+			return numberListToString(value, '{{ field.fieldName }}', '/');
+			{%- elsif field.fieldTypeName == 'Float' or field.fieldTypeName == 'BigDecimal' %}
+			return floatListToString(value, '{{ field.fieldName }}', '/');
+			{%- elsif field.isScalarType %}
+			return stringListToString(value, '{{ field.fieldName }}', '/');
+			{%- elsif field.isEnumType %}
+			return enumListToString(value, '{{ field.fieldName }}', '/', $LL.graphql.enums.{{ field.fieldTypeName }}.values);
+			{%- endif %}
+			{%- else %}
+			{%- if field.fieldTypeName == 'Boolean' %}
+			return booleanToString(value, '{{ field.fieldName }}', $LL.{{ appName }}.components.label.true(), $LL.{{ appName }}.components.label.false());
+			{%- elsif field.fieldTypeName == 'Int' or field.fieldTypeName == 'BigInteger' %}
+			return numberToString(value, '{{ field.fieldName }}');
+			{%- elsif field.fieldTypeName == 'Float' or field.fieldTypeName == 'BigDecimal' %}
+			return floatToString(value, '{{ field.fieldName }}');
+			{%- elsif field.isScalarType %}
+			return stringToString(value, '{{ field.fieldName }}');
+			{%- elsif field.isEnumType %}
+			return enumToString(value, '{{ field.fieldName }}', $LL.graphql.enums.{{ field.fieldTypeName }}.values);
+			{%- endif %}
+			{%- endif %}
 		}
 		{%- endif %}
 	}{% if forloop.last == false %},{% endif %}
 	{%- endfor %}
 };
 
-export const validateRequired = async ($LL: TranslationFunctions, value: {{ name }}Input | null | undefined) => {
-	const errors: Record<string, Errors> = {};
-	if (value) {
-		if (value?.{{ idName }} || value?.where && Object.values(value.where).length > 0) {
-			for (const [fieldName, fieldValue] of Object.entries(value)) {
-				const options = {{ name | camelCase }}Fields[fieldName as keyof {{ name }}Fields];
-				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
-					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-				}
-			}
-		} else {
-			for (const [fieldName, options] of Object.entries({{ name | camelCase }}Fields)) {
-				const fieldValue = value[fieldName as keyof {{ name }}Input];
-				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
-					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-				}
-			}
-		}
-	}
-	return errors;
-};
+export const { validateRequired, validateErrors, validate, validateAll } = createValidators<{{ name }}Input, {{ name }}Fields>({{ name | camelCase }}Fields);
 
-export const validateErrors = async ($LL: TranslationFunctions, value: {{ name }}Input | null | undefined) => {
-	const errors: Record<string, Errors> = {};
-	if (value) {
-		if (value?.{{ idName }} || value?.where && Object.values(value.where).length > 0) {
-			for (const [fieldName, fieldValue] of Object.entries(value)) {
-				const options = {{ name | camelCase }}Fields[fieldName as keyof {{ name }}Fields];
-				const fieldErrors = await options?.validate?.($LL, value);
-				if (fieldErrors && fieldErrors.length > 0) {
-					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
-				}
-			}
-		} else {
-			for (const [fieldName, options] of Object.entries({{ name | camelCase }}Fields)) {
-				const fieldErrors = await options?.validate?.($LL, value);
-				if (fieldErrors && fieldErrors.length > 0) {
-					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
-				}
-			}
-		}
-	}
-	return errors;
-};
-
-export const validate = async ($LL: TranslationFunctions, value: {{ name }}Input | null | undefined) => {
-	let errors = await validateRequired($LL, value);
-	if (Object.keys(errors).length === 0) {
-		errors = await validateErrors($LL, value);
-	}
-	return new Promise(
-		(
-			resolve: (data: {{ name }}Input | null | undefined) => void,
-			reject: (errors: Record<string, Errors>) => void
-		) => {
-			if (Object.keys(errors).length === 0) {
-				resolve(value);
-			} else {
-				reject(errors);
-			}
-		}
-	);
-};
-
-export const validateAll = async ($LL: TranslationFunctions, value: ({{ name }}Input | null | undefined)[] | null | undefined) => {
-	let errors: Record<number, Errors> = {};
-	if (value) {
-		for (let row = 0; row < value.length; row++) {
-			const node = value[row];
-			if (node) {
-				const rowErrors = await validateRequired($LL, node);
-				if (Object.keys(rowErrors).length > 0) {
-					errors[row] = { iterms: rowErrors };
-				}
-			}
-		}
-		if (Object.keys(errors).length === 0) {
-			for (let row = 0; row < value.length; row++) {
-				const node = value[row];
-				if (node) {
-					const rowErrors = await validateErrors($LL, node);
-					if (Object.keys(rowErrors).length > 0) {
-						errors[row] = { iterms: rowErrors };
-					}
-				}
-			}
-		}
-	}
-	return new Promise(
-		(
-			resolve: (data: ({{ name }}Input | null | undefined)[] | null | undefined) => void,
-			reject: (errors: Record<number, Errors>) => void
-		) => {
-			if (Object.keys(errors).length === 0) {
-				resolve(value);
-			} else {
-				reject(errors);
-			}
-		}
-	);
-};
-
-export const toRecords = ($LL: TranslationFunctions, value: ({{ name }}Input | null | undefined)[] | null | undefined, fieldArgs?: {{ name }}FieldsArgs | undefined, fieldsPatch?: {{ name }}Fields | undefined) => {
-	const fields = fieldsPatch ?
-		Object.fromEntries(
-			Object.entries(fieldsPatch)
-				.map(([fieldName, optionPatch]) => [fieldName, { ...{{ name | camelCase }}Fields?.[fieldName as keyof {{ name }}Fields], ...optionPatch }])
-		) : {{ name | camelCase }}Fields;
-		
-	return value?.map(item =>
-		Object.fromEntries(
-			Object.entries(fields)
-				.flatMap(([fieldName, option]) => {
-					const fieldArg = fieldArgs?.[fieldName as keyof {{ name }}FieldsArgs];
-					const title = option.title?.($LL, fieldArg) || fieldName;
-					const fields = option.toFields?.();
-					if (fields && option.toRecord) {
-						return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
-					}
-					const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
-					return [entry];
-				})
-		)
-	);
-}
-
-export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: {{ name }}Fields | undefined) => {
-	const fields = fieldsPatch ?
-		Object.fromEntries(
-			Object.entries(fieldsPatch)
-				.map(([fieldName, optionPatch]) => [fieldName, { ...{{ name | camelCase }}Fields?.[fieldName as keyof {{ name }}Fields], ...optionPatch }])
-		) : {{ name | camelCase }}Fields;
-		
-	return Object.fromEntries(
-		Object.entries(errors)
-			.map(([row, errors]) =>
-				[
-					row,
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
-							const fields = option.toFields?.();
-							if (fields) {
-								if (errors.iterms?.[fieldName]?.iterms?.[0]) {
-									return Object.keys(fields)
-										.map((subFieldName) =>
-											[
-												...(fieldMessages || []),
-												...Object.values(errors.iterms?.[fieldName]?.iterms || {})
-													.flatMap((rowErrors) =>
-														rowErrors.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
-											]
-										);
-								} else {
-									return Object.keys(fields)
-										.map((subFieldName) =>
-											[
-												...(fieldMessages || []),
-												...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
-											]
-										);
-								}
-							}
-							if (errors.iterms?.[fieldName]?.iterms?.[0]) {
-								return [
-									[
-										...(fieldMessages || []),
-										...Object.values(errors.iterms?.[fieldName]?.iterms || {})
-											.flatMap((rowErrors) =>
-												rowErrors.errors?.map(error => error.message) || []
-											)
-									]
-								];
-							} else {
-								return [fieldMessages];
-							}
-						})
-				]
-			)
-	);
-}
-
-export const fromRecords = ($LL: TranslationFunctions, records: Record<string, string | null | undefined>[] | undefined, fieldArgs?: {{ name }}FieldsArgs | undefined, fieldsPatch?: {{ name }}Fields | undefined) => {
-	return records?.map(reocrd =>
-		Object.fromEntries(
-			Object.entries({{ name | camelCase }}Fields)
-				.map(([fieldName, option]) => {
-					const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof {{ name }}Fields] };
-					const fieldArg = fieldArgs?.[fieldName as keyof {{ name }}FieldsArgs];
-					const title = mergedOption.title?.($LL, fieldArg) || fieldName;
-					const fields = option.toFields?.();
-					return [fieldName, mergedOption.fromRecord?.($LL, fields, title, reocrd, fieldArg)];
-				})
-		) as {{ name }}Input
-	);
-}
+export const { toRecords, toErrors, fromRecords } = createConverters<{{ name }}Input, {{ name }}Fields, {{ name }}FieldsArgs>({{ name | camelCase }}Fields);

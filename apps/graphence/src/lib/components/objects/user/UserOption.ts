@@ -1,7 +1,6 @@
-import { format } from 'date-fns';
 import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
-import type { Option } from '@graphace/ui-graphql';
+import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters, type ScalarFieldProps, type EnumFieldProps, type ObjectFieldProps } from '@graphace/ui-graphql';
 import { groupFields, type GroupFields } from '~/lib/components/objects/group/GroupOption';
 import { roleFields, type RoleFields } from '~/lib/components/objects/role/RoleOption';
 import { realmFields, type RealmFields } from '~/lib/components/objects/realm/RealmOption';
@@ -23,30 +22,16 @@ export const userTabs: (($LL: TranslationFunctions, args?: QueryUserListArgs | u
 
 export const userTab: ((args?: QueryUserListArgs | undefined) => string | undefined) | undefined = undefined;
 
-export const userTabChange = async (tab: string, args: QueryUserListArgs, value?: (UserInput | null | undefined)[] | null | undefined) => {
-	return new Promise(
-		(
-			resolve: (data: QueryUserListArgs) => void,
-			reject: (errors: Record<number, Errors>) => void
-		) => {
-			resolve(args);
-		}
-	);
+export const userTabChange = async (tab: string, args: QueryUserListArgs, value?: (UserInput | null | undefined)[] | null | undefined): Promise<QueryUserListArgs> => {
+	return args;
 };
 
 export const userFormTabs: (($LL: TranslationFunctions, args?: QueryUserArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
 
 export const userFormTab: ((args?: QueryUserArgs | undefined) => string | undefined) | undefined = undefined;
 
-export const userFormTabChange = async (tab: string, args: QueryUserArgs, value?: UserInput | null | undefined) => {
-	return new Promise(
-		(
-			resolve: (data: QueryUserArgs) => void,
-			reject: (errors: Record<string, Errors>) => void
-		) => {
-			resolve(args);
-		}
-	);
+export const userFormTabChange = async (tab: string, args: QueryUserArgs, value?: UserInput | null | undefined): Promise<QueryUserArgs> => {
+	return args;
 };
 
 export type UserFieldsArgs = {
@@ -63,88 +48,16 @@ export type UserFieldsArgs = {
 };
 
 export type UserFieldsProps = {
-	name?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'input'?: {} | undefined;
-	} | undefined;
-	description?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'input'?: {} | undefined;
-	} | undefined;
-	lastName?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'input'?: {} | undefined;
-	} | undefined;
-	login?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'input'?: {} | undefined;
-	} | undefined;
-	email?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'input'?: {} | undefined;
-	} | undefined;
-	phones?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'input'?: {} | undefined;
-	} | undefined;
-	disable?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'input'?: {} | undefined;
-	} | undefined;
-	groups?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'table'?: {} | undefined;
-		'form'?: {} | undefined;
-		'combobox'?: {} | undefined;
-		'dialog'?: {} | undefined;
-		'link'?: {} | undefined;
-	} | undefined;
-	roles?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'table'?: {} | undefined;
-		'form'?: {} | undefined;
-		'combobox'?: {} | undefined;
-		'dialog'?: {} | undefined;
-		'link'?: {} | undefined;
-	} | undefined;
-	realm?: {
-		'tr'?: {} | undefined;
-		'th'?: {} | undefined;
-		'td'?: {} | undefined;
-		'form-control'?: {} | undefined;
-		'table'?: {} | undefined;
-		'form'?: {} | undefined;
-		'combobox'?: {} | undefined;
-		'dialog'?: {} | undefined;
-		'link'?: {} | undefined;
-	} | undefined;
+	name?: ScalarFieldProps | undefined;
+	description?: ScalarFieldProps | undefined;
+	lastName?: ScalarFieldProps | undefined;
+	login?: ScalarFieldProps | undefined;
+	email?: ScalarFieldProps | undefined;
+	phones?: ScalarFieldProps | undefined;
+	disable?: ScalarFieldProps | undefined;
+	groups?: ObjectFieldProps | undefined;
+	roles?: ObjectFieldProps | undefined;
+	realm?: ObjectFieldProps | undefined;
 };
 
 export type UserFields = {
@@ -184,14 +97,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -200,18 +106,10 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.name.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			const string = record?.[title];
-			if (string != null) {
-				return string;
-			}
-			return undefined;
+			return stringFromRecord(record, title);
 		},
 		toString: ($LL, value, fieldArg) => {
-			const fieldValue = value?.name;
-			if (fieldValue != null) {
-				return fieldValue.toString();
-			}
-			return '';
+			return stringToString(value, 'name');
 		}
 	},
 	description: {
@@ -237,14 +135,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -253,18 +144,10 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.description.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			const string = record?.[title];
-			if (string != null) {
-				return string;
-			}
-			return undefined;
+			return stringFromRecord(record, title);
 		},
 		toString: ($LL, value, fieldArg) => {
-			const fieldValue = value?.description;
-			if (fieldValue != null) {
-				return fieldValue.toString();
-			}
-			return '';
+			return stringToString(value, 'description');
 		}
 	},
 	lastName: {
@@ -290,14 +173,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -306,18 +182,10 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.lastName.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			const string = record?.[title];
-			if (string != null) {
-				return string;
-			}
-			return undefined;
+			return stringFromRecord(record, title);
 		},
 		toString: ($LL, value, fieldArg) => {
-			const fieldValue = value?.lastName;
-			if (fieldValue != null) {
-				return fieldValue.toString();
-			}
-			return '';
+			return stringToString(value, 'lastName');
 		}
 	},
 	login: {
@@ -343,14 +211,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -359,18 +220,10 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.login.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			const string = record?.[title];
-			if (string != null) {
-				return string;
-			}
-			return undefined;
+			return stringFromRecord(record, title);
 		},
 		toString: ($LL, value, fieldArg) => {
-			const fieldValue = value?.login;
-			if (fieldValue != null) {
-				return fieldValue.toString();
-			}
-			return '';
+			return stringToString(value, 'login');
 		}
 	},
 	email: {
@@ -396,14 +249,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -412,18 +258,10 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.email.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			const string = record?.[title];
-			if (string != null) {
-				return string;
-			}
-			return undefined;
+			return stringFromRecord(record, title);
 		},
 		toString: ($LL, value, fieldArg) => {
-			const fieldValue = value?.email;
-			if (fieldValue != null) {
-				return fieldValue.toString();
-			}
-			return '';
+			return stringToString(value, 'email');
 		}
 	},
 	phones: {
@@ -449,14 +287,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -465,22 +296,10 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.phones.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			const string = record?.[title];
-			if (string != null) {
-				if (string.includes('/')) {
-					return string.split('/');
-				} else {
-					return [string];
-				}
-			}
-			return undefined;
+			return stringListFromRecord(record, title, '/');
 		},
 		toString: ($LL, value, fieldArg) => {
-			const fieldValue = value?.phones;
-			if (fieldValue != null) {
-				return fieldValue.map(item => item != null ? item.toString() : '').join('/');
-			}
-			return '';
+			return stringListToString(value, 'phones', '/');
 		}
 	},
 	disable: {
@@ -506,14 +325,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -522,18 +334,10 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.disable.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			const string = record?.[title];
-			if (string != null) {
-				return string === $LL.graphence.components.label.true() ? true : false;
-			}
-			return undefined;
+			return booleanFromRecord(record, title, $LL.graphence.components.label.true());
 		},
 		toString: ($LL, value, fieldArg) => {
-			const fieldValue = value?.disable;
-			if (fieldValue != null) {
-				return fieldValue ? $LL.graphence.components.label.true() : $LL.graphence.components.label.false();
-			}
-			return '';
+			return booleanToString(value, 'disable', $LL.graphence.components.label.true(), $LL.graphence.components.label.false());
 		}
 	},
 	groups: {
@@ -559,14 +363,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -575,65 +372,14 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.groups.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			if (fields) {
-				const fieldStringArray = Object.fromEntries(
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
-							if (string?.includes('|')) {
-								return [[fieldName, string?.split('|')]];
-							} else if (string) {
-								return [[fieldName, [string]]];
-							}
-							return [];
-						})
-				);
-
-				const fieldRecords = Array.from({ length: Object.values(fieldStringArray)[0]?.length || 0 })
-					.map((_, row) =>
-						Object.fromEntries(
-							Object.entries(fieldStringArray)
-								.map(([fieldName, stringArray]) =>
-									[fieldName, stringArray[row]]
-								)
-						)
-					);
-
-				const value = fieldRecords.map(fieldRecord =>
-					Object.fromEntries(
-						Object.entries(fields)
-							.flatMap(([fieldName, option]) => {
-								const fields = option.toFields?.();
-								const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
-								if (value) {
-									return [[fieldName, value]];
-								}
-								return [];
-							})
-					) as GroupInput | null | undefined
-				);
-
-				if (value.length) {
-					return value;
-				}
-			}
-			return undefined;
+			return objectListFromRecord($LL, fields, title, record, fieldArg);
 		},
 		toFields: (fieldArg) => {
 			const { name } = groupFields;
 			return { name };
 		},
 		toRecord: ($LL, fields, title, value, fieldArg) => {
-			const fieldValue = value?.groups;
-			return Object.fromEntries(
-				Object.entries(fields)
-					.map(([fieldName, option]) =>
-						[
-							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
-							fieldValue?.map(item => option?.toString?.($LL, item, fieldArg) || '').join('|') || ''
-						]
-					)
-			);
+			return objectListToRecord($LL, fields, title, value, 'groups', fieldArg);
 		},
 		fields: (value, fieldArg) => groupFields
 	},
@@ -660,14 +406,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -676,65 +415,14 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.roles.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			if (fields) {
-				const fieldStringArray = Object.fromEntries(
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
-							if (string?.includes('|')) {
-								return [[fieldName, string?.split('|')]];
-							} else if (string) {
-								return [[fieldName, [string]]];
-							}
-							return [];
-						})
-				);
-
-				const fieldRecords = Array.from({ length: Object.values(fieldStringArray)[0]?.length || 0 })
-					.map((_, row) =>
-						Object.fromEntries(
-							Object.entries(fieldStringArray)
-								.map(([fieldName, stringArray]) =>
-									[fieldName, stringArray[row]]
-								)
-						)
-					);
-
-				const value = fieldRecords.map(fieldRecord =>
-					Object.fromEntries(
-						Object.entries(fields)
-							.flatMap(([fieldName, option]) => {
-								const fields = option.toFields?.();
-								const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
-								if (value) {
-									return [[fieldName, value]];
-								}
-								return [];
-							})
-					) as RoleInput | null | undefined
-				);
-
-				if (value.length) {
-					return value;
-				}
-			}
-			return undefined;
+			return objectListFromRecord($LL, fields, title, record, fieldArg);
 		},
 		toFields: (fieldArg) => {
 			const { name } = roleFields;
 			return { name };
 		},
 		toRecord: ($LL, fields, title, value, fieldArg) => {
-			const fieldValue = value?.roles;
-			return Object.fromEntries(
-				Object.entries(fields)
-					.map(([fieldName, option]) =>
-						[
-							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
-							fieldValue?.map(item => option?.toString?.($LL, item, fieldArg) || '').join('|') || ''
-						]
-					)
-			);
+			return objectListToRecord($LL, fields, title, value, 'roles', fieldArg);
 		},
 		fields: (value, fieldArg) => roleFields
 	},
@@ -761,14 +449,7 @@ export const userFields: UserFields = {
 			return [];
 		},
 		onChange: async ($LL, fieldValue, value, fieldArg) => {
-			return new Promise(
-				(
-					resolve: (data: UserInput | null | undefined) => void,
-					reject: (errors: Errors) => void
-				) => {
-					resolve(value);
-				}
-			);
+			return value;
 		},
 		props: ($LL, value, fieldArg) => {
 			return {};
@@ -777,249 +458,19 @@ export const userFields: UserFields = {
 			return $LL.graphql.objects.User.fields.realm.name();
 		},
 		fromRecord: ($LL, fields, title, record, fieldArg) => {
-			if (fields) {
-				const fieldRecord = Object.fromEntries(
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const string = record?.[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)];
-							if (string) {
-								return [[fieldName, string]];
-							}
-							return [];
-						})
-				);
-
-				const value = Object.fromEntries(
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const fields = option.toFields?.();
-							const value = option.fromRecord?.($LL, fields, fieldName, fieldRecord);
-							if (value) {
-								return [[fieldName, value]];
-							}
-							return [];
-						})
-				) as RealmInput;
-
-				if (Object.keys(value).length) {
-					return value;
-				}
-			}
-			return undefined;
+			return objectFromRecord($LL, fields, title, record, fieldArg);
 		},
 		toFields: (fieldArg) => {
 			const { name } = realmFields;
 			return { name };
 		},
 		toRecord: ($LL, fields, title, value, fieldArg) => {
-			const fieldValue = value?.realm;
-			return Object.fromEntries(
-				Object.entries(fields)
-					.map(([fieldName, option]) =>
-						[
-							[title + '-' + (option?.title?.($LL, fieldArg) || fieldName)],
-							option?.toString?.($LL, fieldValue, fieldArg) || ''
-						]
-					)
-			);
+			return objectToRecord($LL, fields, title, value, 'realm', fieldArg);
 		},
 		fields: (value, fieldArg) => realmFields
 	}
 };
 
-export const validateRequired = async ($LL: TranslationFunctions, value: UserInput | null | undefined) => {
-	const errors: Record<string, Errors> = {};
-	if (value) {
-		if (value?.id || value?.where && Object.values(value.where).length > 0) {
-			for (const [fieldName, fieldValue] of Object.entries(value)) {
-				const options = userFields[fieldName as keyof UserFields];
-				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
-					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-				}
-			}
-		} else {
-			for (const [fieldName, options] of Object.entries(userFields)) {
-				const fieldValue = value[fieldName as keyof UserInput];
-				if (options?.required?.(value) && (fieldValue == null || Array.isArray(fieldValue) && !fieldValue.length)) {
-					errors[fieldName] = { errors: [{ message: $LL.errors.jsonSchema.required() }] };
-				}
-			}
-		}
-	}
-	return errors;
-};
+export const { validateRequired, validateErrors, validate, validateAll } = createValidators<UserInput, UserFields>(userFields);
 
-export const validateErrors = async ($LL: TranslationFunctions, value: UserInput | null | undefined) => {
-	const errors: Record<string, Errors> = {};
-	if (value) {
-		if (value?.id || value?.where && Object.values(value.where).length > 0) {
-			for (const [fieldName, fieldValue] of Object.entries(value)) {
-				const options = userFields[fieldName as keyof UserFields];
-				const fieldErrors = await options?.validate?.($LL, value);
-				if (fieldErrors && fieldErrors.length > 0) {
-					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
-				}
-			}
-		} else {
-			for (const [fieldName, options] of Object.entries(userFields)) {
-				const fieldErrors = await options?.validate?.($LL, value);
-				if (fieldErrors && fieldErrors.length > 0) {
-					errors[fieldName] = { errors: fieldErrors.map((message) => ({ message })) };
-				}
-			}
-		}
-	}
-	return errors;
-};
-
-export const validate = async ($LL: TranslationFunctions, value: UserInput | null | undefined) => {
-	let errors = await validateRequired($LL, value);
-	if (Object.keys(errors).length === 0) {
-		errors = await validateErrors($LL, value);
-	}
-	return new Promise(
-		(
-			resolve: (data: UserInput | null | undefined) => void,
-			reject: (errors: Record<string, Errors>) => void
-		) => {
-			if (Object.keys(errors).length === 0) {
-				resolve(value);
-			} else {
-				reject(errors);
-			}
-		}
-	);
-};
-
-export const validateAll = async ($LL: TranslationFunctions, value: (UserInput | null | undefined)[] | null | undefined) => {
-	let errors: Record<number, Errors> = {};
-	if (value) {
-		for (let row = 0; row < value.length; row++) {
-			const node = value[row];
-			if (node) {
-				const rowErrors = await validateRequired($LL, node);
-				if (Object.keys(rowErrors).length > 0) {
-					errors[row] = { iterms: rowErrors };
-				}
-			}
-		}
-		if (Object.keys(errors).length === 0) {
-			for (let row = 0; row < value.length; row++) {
-				const node = value[row];
-				if (node) {
-					const rowErrors = await validateErrors($LL, node);
-					if (Object.keys(rowErrors).length > 0) {
-						errors[row] = { iterms: rowErrors };
-					}
-				}
-			}
-		}
-	}
-	return new Promise(
-		(
-			resolve: (data: (UserInput | null | undefined)[] | null | undefined) => void,
-			reject: (errors: Record<number, Errors>) => void
-		) => {
-			if (Object.keys(errors).length === 0) {
-				resolve(value);
-			} else {
-				reject(errors);
-			}
-		}
-	);
-};
-
-export const toRecords = ($LL: TranslationFunctions, value: (UserInput | null | undefined)[] | null | undefined, fieldArgs?: UserFieldsArgs | undefined, fieldsPatch?: UserFields | undefined) => {
-	const fields = fieldsPatch ?
-		Object.fromEntries(
-			Object.entries(fieldsPatch)
-				.map(([fieldName, optionPatch]) => [fieldName, { ...userFields?.[fieldName as keyof UserFields], ...optionPatch }])
-		) : userFields;
-		
-	return value?.map(item =>
-		Object.fromEntries(
-			Object.entries(fields)
-				.flatMap(([fieldName, option]) => {
-					const fieldArg = fieldArgs?.[fieldName as keyof UserFieldsArgs];
-					const title = option.title?.($LL, fieldArg) || fieldName;
-					const fields = option.toFields?.();
-					if (fields && option.toRecord) {
-						return Object.entries(option.toRecord($LL, fields, title, item, fieldArg));
-					}
-					const entry: [string, string | null | undefined] = [title, option.toString?.($LL, item, fieldArg) || ''];
-					return [entry];
-				})
-		)
-	);
-}
-
-export const toErrors = (errors: Record<number, Errors>, fieldsPatch?: UserFields | undefined) => {
-	const fields = fieldsPatch ?
-		Object.fromEntries(
-			Object.entries(fieldsPatch)
-				.map(([fieldName, optionPatch]) => [fieldName, { ...userFields?.[fieldName as keyof UserFields], ...optionPatch }])
-		) : userFields;
-		
-	return Object.fromEntries(
-		Object.entries(errors)
-			.map(([row, errors]) =>
-				[
-					row,
-					Object.entries(fields)
-						.flatMap(([fieldName, option]) => {
-							const fieldMessages = errors.iterms?.[fieldName]?.errors?.map(error => error.message);
-							const fields = option.toFields?.();
-							if (fields) {
-								if (errors.iterms?.[fieldName]?.iterms?.[0]) {
-									return Object.keys(fields)
-										.map((subFieldName) =>
-											[
-												...(fieldMessages || []),
-												...Object.values(errors.iterms?.[fieldName]?.iterms || {})
-													.flatMap((rowErrors) =>
-														rowErrors.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
-											]
-										);
-								} else {
-									return Object.keys(fields)
-										.map((subFieldName) =>
-											[
-												...(fieldMessages || []),
-												...(errors.iterms?.[fieldName]?.iterms?.[subFieldName]?.errors?.map(error => error.message) || [])
-											]
-										);
-								}
-							}
-							if (errors.iterms?.[fieldName]?.iterms?.[0]) {
-								return [
-									[
-										...(fieldMessages || []),
-										...Object.values(errors.iterms?.[fieldName]?.iterms || {})
-											.flatMap((rowErrors) =>
-												rowErrors.errors?.map(error => error.message) || []
-											)
-									]
-								];
-							} else {
-								return [fieldMessages];
-							}
-						})
-				]
-			)
-	);
-}
-
-export const fromRecords = ($LL: TranslationFunctions, records: Record<string, string | null | undefined>[] | undefined, fieldArgs?: UserFieldsArgs | undefined, fieldsPatch?: UserFields | undefined) => {
-	return records?.map(reocrd =>
-		Object.fromEntries(
-			Object.entries(userFields)
-				.map(([fieldName, option]) => {
-					const mergedOption = { ...option, ...fieldsPatch?.[fieldName as keyof UserFields] };
-					const fieldArg = fieldArgs?.[fieldName as keyof UserFieldsArgs];
-					const title = mergedOption.title?.($LL, fieldArg) || fieldName;
-					const fields = option.toFields?.();
-					return [fieldName, mergedOption.fromRecord?.($LL, fields, title, reocrd, fieldArg)];
-				})
-		) as UserInput
-	);
-}
+export const { toRecords, toErrors, fromRecords } = createConverters<UserInput, UserFields, UserFieldsArgs>(userFields);

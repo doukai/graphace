@@ -15,7 +15,7 @@ const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mu
     {%- if fields and fields.length > 0 %} ${directives}{
     ...{{ fieldTypeName }}Fields
     {%- for field in fields %}
-    {%- if field.isAggregate == false %}
+    {%- if field.inInput %}
     {%- if field.isTable %}
     {%- if isListType %}
     {%- if field.isNamed %}
@@ -33,7 +33,7 @@ const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mu
     {%- else %}
     {{ field.fieldName }} {
       {%- for subField in field.fields %}
-      {%- if subField.isAggregate == false %}
+      {%- if subField.inInput %}
       {%- if subField.isLeafType %}
       {{ subField.fieldName }}
       {%- elsif subField.isFile %}
@@ -58,6 +58,7 @@ const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mu
     }
     {%- endif %}
     {%- endif %}
+    {%- endif %}
     {%- if field.mutationOnly %}
     {%- if field.isLeafType %}
     {{ field.fieldName }}
@@ -65,7 +66,6 @@ const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mu
     {{ field.fieldName }} {
       {{ field.fieldTypeIdName }}
     }
-    {%- endif %}
     {%- endif %}
     {%- endif %}
     {%- endfor %}

@@ -1,0 +1,203 @@
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import { melt } from '@melt-ui/svelte';
+	import type { Errors } from '@graphace/commons';
+	import { to, Dialog, toast, modal, type TabInfo } from '@graphace/ui';
+	import { createQuery_file_Store } from '~/lib/stores/query/query_file_store';
+	import { createMutation_file_Store } from '~/lib/stores/mutation/mutation_file_store';
+	import FileForm from '~/lib/components/objects/file/FileForm.svelte';
+	import type { FileFields, FileFieldsArgs } from '~/lib/components/objects/file/FileOption';
+	import {
+		loadEvent,
+		validator,
+		permissions,
+		buildGlobalGraphQLErrorMessage,
+		buildGraphQLErrors
+	} from '~/utils';
+	import type { File, QueryFileArgs, MutationFileArgs, FileInput } from '~/lib/types/schema';
+	import { LL, locale } from '$i18n/i18n-svelte';
+
+	export let value: FileInput | null | undefined = {};
+	export let textFieldName: (keyof File & keyof FileInput) | undefined = undefined;
+	export let text: string | undefined = undefined;
+	export let errors: Record<string, Errors> = {};
+	export let select: boolean | undefined = false;
+	export let queryById: boolean | undefined = false;
+	export let clearAfterSelect: boolean | undefined = false;
+	export let readonly = false;
+	export let disabled = false;
+	let className: string | undefined = 'btn-link p-0';
+	export { className as class };
+	export let tabs: (($LL: TranslationFunctions, args?: QueryFileArgs | undefined) => TabInfo[] | undefined) | undefined = undefined;
+	export let tab: string | undefined = undefined;
+	export let fields: FileFields | undefined = undefined;
+	export let fieldsPatch: FileFields | undefined = undefined;
+	export let fieldsArgs: FileFieldsArgs | undefined = undefined;
+
+	const { validate } = validator;
+	const { auth } = permissions;
+
+	const dispatch = createEventDispatcher<{
+		select: { value: FileInput | null | undefined };
+	}>();
+
+	const query_file_Store = createQuery_file_Store($loadEvent);
+	const mutation_file_Store = createMutation_file_Store($loadEvent);
+	export let close: (() => void) | undefined = undefined;
+
+ 	$: if (textFieldName) {
+		if (value && !value?.[textFieldName] && value.id) {
+			query_file_Store
+				.fetch({
+					id: { opr: 'EQ', val: value.id }
+				})
+				.then((response) => {
+					value = {
+						[textFieldName]: response.data?.file?.[textFieldName],
+						id: response.data?.file?.id
+					};
+				});
+		} else if (value) {
+			text = value[textFieldName] + '';
+		} else {
+			text = undefined;
+		}
+	}
+
+	const query = () => {
+		query_file_Store.fetch({ id: { val: value?.id } }).then((result) => {
+			value = result.data?.file;
+			if (result.errors) {
+				console.error(result.errors);
+				toast.error($LL.graphence.message.requestFailed());
+			}
+		});
+	};
+
+	const mutation = (args: MutationFileArgs) => {
+		validate('Mutation_file_Arguments', args)
+			.then((data) => {
+				errors = {};
+				mutation_file_Store.fetch(args).then((result) => {
+					if (result.errors) {
+						console.error(result.errors);
+						errors = buildGraphQLErrors(result.errors, data);
+						const globalError = buildGlobalGraphQLErrorMessage(result.errors);
+						if (globalError) {
+							modal.open({
+								title: $LL.graphence.message.requestFailed(),
+								description: globalError
+							});
+						}
+					} else {
+						toast.success($LL.graphence.message.requestSuccess());
+						dispatch('select', { value: result.data?.file });
+						if (clearAfterSelect) {
+							value = {};
+						}
+						if (close) {
+							close();
+						}
+					}
+				});
+			})
+			.catch((validErrors) => {
+				console.error(validErrors);
+				errors = validErrors;
+			});
+	};
+</script>
+
+<Dialog bind:close>
+	<div class="tooltip" data-tip={text} slot="trigger" let:trigger let:zIndex>
+		<button
+			use:melt={trigger}
+			class="btn truncate {className} max-sm:hidden"
+			{disabled}
+			on:click={(e) => {
+				if (queryById && value?.id) {
+					query();
+				}
+			}}
+		>
+			<slot>
+				{#if text}
+					{text}
+				{:else}
+					{$LL.ui.button.select()}
+				{/if}
+			</slot>
+		</button>
+		<button
+			use:melt={trigger}
+			class="btn btn-square {className} sm:hidden"
+			{disabled}
+			on:click={(e) => {
+				if (queryById && value?.id) {
+					query();
+				}
+			}}
+		>
+			<slot name="sm">
+				{#if text}
+					{text}
+				{:else}
+					{$LL.ui.button.select()}
+				{/if}
+			</slot>
+		</button>
+	</div>
+	<svelte:fragment let:zIndex>
+		<FileForm
+			showSaveButton={!readonly && auth('File::*::WRITE')}
+			showRemoveButton={!readonly && auth('File::isDeprecated::WRITE')}
+			{value}
+			{errors}
+			isFetching={$query_file_Store.isFetching}
+			isMutating={$mutation_file_Store.isFetching}
+			{tabs}
+			{tab}
+			{fields}
+			{fieldsPatch}
+			{fieldsArgs}
+			on:save={(e) => {
+				if (select) {
+					dispatch('select', { value });
+					if (clearAfterSelect) {
+						value = {};
+					}
+					if (close) {
+						close();
+					}
+				} else if (e.detail.value) {
+					mutation(e.detail.value);
+				}
+			}}
+			on:remove={(e) => {
+				modal.open({
+					title: $LL.graphence.components.modal.removeModalTitle(),
+					confirm: () => {
+						text = undefined;
+						value = null;
+						if (select) {
+							dispatch('select', { value });
+							if (clearAfterSelect) {
+								value = {};
+							}
+							if (close) {
+								close();
+							}
+						} else if (e.detail.value) {
+							mutation({
+								where: { id: { val: e.detail.value.id } },
+								isDeprecated: true
+							});
+						}
+						return true;
+					}
+				});
+			}}
+			on:goto={(e) => to(`/${$locale}/file/${e.detail.path}`)}
+		/>
+	</svelte:fragment>
+</Dialog>

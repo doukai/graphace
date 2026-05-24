@@ -9,19 +9,19 @@ import {
     getMutationTypeName,
     getSubscriptionTypeName,
     isConnection,
-    isAggregate,
     isEdge,
-    isPageInfo,
     isNamedStruct,
     isOperationType,
-    isInnerEnum,
     isIntrospection,
     fieldTypeIsList,
     inGraphQLField,
     inComponentObject,
     inComponentEnum,
     inRouteObject,
-    inRouteField
+    inRouteField,
+    typeHasInput,
+    typeInObject,
+    fieldInInput
 } from 'graphace-codegen-commons'
 import type { GraphacePresetConfig } from "./config";
 import { buildPath } from "./builder";
@@ -58,27 +58,24 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
             .filter(type => !isOperationType(type.name))
             .filter(type => !isConnection(type.name))
             .filter(type => !isEdge(type.name))
-            .filter(type => !isPageInfo(type.name))
-            .filter(type => !isAggregate(type.name))
             .filter(type => !isIntrospection(type.name))
             .filter(type => isObjectType(type))
             .filter(type => getIDFieldName(type))
+            .filter(type => typeHasInput(options.schemaAst!, type.name))
             .map(type => assertObjectType(type));
 
         const fragmentTypes = Object.values(options.schemaAst?.getTypeMap() || {})
             .filter(type => !isOperationType(type.name))
             .filter(type => !isConnection(type.name))
             .filter(type => !isEdge(type.name))
-            .filter(type => !isPageInfo(type.name))
-            .filter(type => !isAggregate(type.name))
             .filter(type => !isIntrospection(type.name))
             .filter(type => isObjectType(type))
             .map(type => assertObjectType(type));
 
         const enumTypes = Object.values(options.schemaAst?.getTypeMap() || {})
             .filter(type => !isIntrospection(type.name))
-            .filter(type => !isInnerEnum(type.name))
             .filter(type => isEnumType(type))
+            .filter(type => typeInObject(options.schemaAst!, type.name))
             .map(type => assertEnumType(type));
 
         const targetComponentObjectTypes = objectTypes
@@ -97,11 +94,10 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         const fieldType = getFieldType(field.type);
                         return isObjectType(fieldType) &&
                             !isEdge(fieldType.name) &&
-                            !isPageInfo(fieldType.name) &&
                             !isIntrospection(fieldType.name) &&
-                            inRouteField(type.name, field.name, fieldType.name)
+                            inRouteField(type.name, field.name, fieldType.name) &&
+                            (fieldInInput(options.schemaAst!, type.name, field.name) || isConnection(fieldType.name))
                     })
-                    .filter(field => !isAggregate(field.name))
                     .map(field => { return { name: type.name, objectFieldName: field.name } })
             );
 
@@ -113,11 +109,10 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         return isObjectType(fieldType) &&
                             !isConnection(fieldType.name) &&
                             !isEdge(fieldType.name) &&
-                            !isPageInfo(fieldType.name) &&
                             !isIntrospection(fieldType.name) &&
-                            inRouteField(type.name, field.name, fieldType.name)
+                            inRouteField(type.name, field.name, fieldType.name) &&
+                            fieldInInput(options.schemaAst!, type.name, field.name)
                     })
-                    .filter(field => !isAggregate(field.name))
                     .map(field => { return { name: type.name, objectFieldName: field.name } })
             );
 
@@ -129,11 +124,10 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         return isObjectType(fieldType) &&
                             !isConnection(fieldType.name) &&
                             !isEdge(fieldType.name) &&
-                            !isPageInfo(fieldType.name) &&
                             !isIntrospection(fieldType.name) &&
-                            inRouteField(type.name, field.name, fieldType.name)
+                            inRouteField(type.name, field.name, fieldType.name) &&
+                            fieldInInput(options.schemaAst!, type.name, field.name)
                     })
-                    .filter(field => !isAggregate(field.name))
                     .filter(field => !fieldTypeIsList(field.type))
                     .map(field => { return { name: type.name, objectFieldName: field.name } })
             );
@@ -146,11 +140,10 @@ export const preset: Types.OutputPreset<GraphacePresetConfig> = {
                         return isObjectType(fieldType) &&
                             !isConnection(fieldType.name) &&
                             !isEdge(fieldType.name) &&
-                            !isPageInfo(fieldType.name) &&
                             !isIntrospection(fieldType.name) &&
-                            inRouteField(type.name, field.name, fieldType.name)
+                            inRouteField(type.name, field.name, fieldType.name) &&
+                            fieldInInput(options.schemaAst!, type.name, field.name)
                     })
-                    .filter(field => !isAggregate(field.name))
                     .filter(field => fieldTypeIsList(field.type))
                     .map(field => { return { name: type.name, objectFieldName: field.name } })
             );

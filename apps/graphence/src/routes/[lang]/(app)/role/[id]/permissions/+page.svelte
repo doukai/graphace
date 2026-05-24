@@ -220,7 +220,6 @@
 		>
 			{#if auth('Permission::*::WRITE')}
 				<PermissionTableDialog
-					args={{ exs: [{ not: true, roles: { id: { val: role?.id } } }] }}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {

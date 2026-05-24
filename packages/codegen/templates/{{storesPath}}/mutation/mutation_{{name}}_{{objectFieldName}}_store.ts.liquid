@@ -40,7 +40,7 @@ const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mu
       {%- else %}
       {{ field.fieldName }} {
         {%- for subField in field.fields %}
-        {%- if subField.isAggregate == false %}
+        {%- if subField.inInput %}
         {%- if subField.isLeafType %}
         {{ subField.fieldName }}
         {%- elsif subField.isFile %}

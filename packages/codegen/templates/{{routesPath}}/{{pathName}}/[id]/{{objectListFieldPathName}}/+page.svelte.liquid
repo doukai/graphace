@@ -242,9 +242,6 @@
 		>
 			{#if auth('{{ fieldObjectInfo.name }}::*::WRITE')}
 				<{{ fieldObjectInfo.name }}TableDialog
-					{%- if fieldInfo.pairFieldName %}
-					args={% raw %}{{{% endraw %} exs: [{ not: true, {{ fieldInfo.pairFieldName }}: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } } }] {% raw %}}}{% endraw %}
-					{%- endif %}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {

@@ -2405,7 +2405,14 @@ export type Query = {
   currentPermissionTypeList?: Maybe<Array<Maybe<Scalars['String']>>>;
   currentPermissionNameListByTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
   policyList?: Maybe<Array<Maybe<Policy>>>;
+  createCurrentFileSignedUrl: Scalars['String'];
   jsonSchema?: Maybe<Scalars['String']>;
+  /** Query Field for 文件 */
+  file?: Maybe<File>;
+  /** Query Field for 文件 List */
+  fileList?: Maybe<Array<Maybe<File>>>;
+  /** Query Field for 文件 Connection */
+  fileConnection?: Maybe<FileConnection>;
 };
 
 
@@ -3674,8 +3681,125 @@ export type QueryCurrentPermissionNameListByTypesArgs = {
 
 
 /** Query */
+export type QueryCreateCurrentFileSignedUrlArgs = {
+  fileId: Scalars['String'];
+  ttlSeconds?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Query */
 export type QueryJsonSchemaArgs = {
   name?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Query */
+export type QueryFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  contentLength?: InputMaybe<IntExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+
+/** Query */
+export type QueryFileListArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  contentLength?: InputMaybe<IntExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<FileGroupBy>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Query */
+export type QueryFileConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  contentLength?: InputMaybe<IntExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<FileGroupBy>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** Mutation */
@@ -3730,6 +3854,12 @@ export type Mutation = {
   login?: Maybe<Scalars['String']>;
   syncModelPolicy?: Maybe<Scalars['Boolean']>;
   syncPermissionRoleRelationPolicy?: Maybe<Scalars['Boolean']>;
+  /** Mutation Field for 文件 */
+  file?: Maybe<File>;
+  /** Mutation Field for 文件 List */
+  fileList?: Maybe<Array<Maybe<File>>>;
+  singleUpload?: Maybe<File>;
+  multipleUpload?: Maybe<Array<Maybe<File>>>;
 };
 
 
@@ -4254,6 +4384,60 @@ export type MutationSyncPermissionRoleRelationPolicyArgs = {
   removedPermissionNameList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+
+/** Mutation */
+export type MutationFileArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  contentLength?: InputMaybe<Scalars['Int']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  input?: InputMaybe<FileInput>;
+  where?: InputMaybe<FileExpression>;
+};
+
+
+/** Mutation */
+export type MutationFileListArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  contentType?: InputMaybe<Scalars['String']>;
+  contentLength?: InputMaybe<Scalars['Int']>;
+  content?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<Scalars['Int']>;
+  realmId?: InputMaybe<Scalars['Int']>;
+  createUserId?: InputMaybe<Scalars['String']>;
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  updateUserId?: InputMaybe<Scalars['String']>;
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  createGroupId?: InputMaybe<Scalars['String']>;
+  list?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  where?: InputMaybe<FileExpression>;
+};
+
+
+/** Mutation */
+export type MutationSingleUploadArgs = {
+  file?: InputMaybe<Scalars['Upload']>;
+};
+
+
+/** Mutation */
+export type MutationMultipleUploadArgs = {
+  files?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
+};
+
 /** Subscription */
 export type Subscription = {
   __typename?: 'Subscription';
@@ -4323,6 +4507,12 @@ export type Subscription = {
   rolePermissionRelationList?: Maybe<Array<Maybe<RolePermissionRelation>>>;
   /** 角色 权限 关系连接 订阅接口 */
   rolePermissionRelationConnection?: Maybe<RolePermissionRelationConnection>;
+  /** Subscription Field for 文件 */
+  file?: Maybe<File>;
+  /** Subscription Field for 文件 List */
+  fileList?: Maybe<Array<Maybe<File>>>;
+  /** Subscription Field for 文件 Connection */
+  fileConnection?: Maybe<FileConnection>;
 };
 
 
@@ -5583,6 +5773,116 @@ export type SubscriptionRolePermissionRelationConnectionArgs = {
   before?: InputMaybe<Scalars['ID']>;
 };
 
+
+/** Subscription */
+export type SubscriptionFileArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  contentLength?: InputMaybe<IntExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+};
+
+
+/** Subscription */
+export type SubscriptionFileListArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  contentLength?: InputMaybe<IntExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<FileGroupBy>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Subscription */
+export type SubscriptionFileConnectionArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  contentType?: InputMaybe<StringExpression>;
+  contentLength?: InputMaybe<IntExpression>;
+  content?: InputMaybe<StringExpression>;
+  url?: InputMaybe<StringExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  createTimeYear?: InputMaybe<IntExpression>;
+  createTimeMonth?: InputMaybe<IntExpression>;
+  createTimeDay?: InputMaybe<IntExpression>;
+  createTimeWeek?: InputMaybe<IntExpression>;
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  updateTimeYear?: InputMaybe<IntExpression>;
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  updateTimeDay?: InputMaybe<IntExpression>;
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  orderBy?: InputMaybe<FileOrderBy>;
+  groupBy?: InputMaybe<FileGroupBy>;
+  not?: InputMaybe<Scalars['Boolean']>;
+  cond?: InputMaybe<Conditional>;
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+};
+
 /** 用户 手机号 关系 */
 export type UserPhonesRelation = Meta & {
   __typename?: 'UserPhonesRelation';
@@ -6582,6 +6882,99 @@ export type Policy = {
   v5?: Maybe<Scalars['String']>;
 };
 
+/** 文件 */
+export type File = Meta & {
+  __typename?: 'File';
+  /** ID */
+  id?: Maybe<Scalars['ID']>;
+  /** 文件名 */
+  name?: Maybe<Scalars['String']>;
+  /** 类型 */
+  contentType?: Maybe<Scalars['String']>;
+  /** 长度 */
+  contentLength?: Maybe<Scalars['Int']>;
+  /** 内容 */
+  content?: Maybe<Scalars['String']>;
+  /** URL */
+  url?: Maybe<Scalars['String']>;
+  /** Is Deprecated */
+  isDeprecated?: Maybe<Scalars['Boolean']>;
+  /** Version */
+  version?: Maybe<Scalars['Int']>;
+  /** Realm ID */
+  realmId?: Maybe<Scalars['Int']>;
+  /** Create User ID */
+  createUserId?: Maybe<Scalars['String']>;
+  /** Create Time */
+  createTime?: Maybe<Scalars['Timestamp']>;
+  /** Update User ID */
+  updateUserId?: Maybe<Scalars['String']>;
+  /** Update Time */
+  updateTime?: Maybe<Scalars['Timestamp']>;
+  /** Create Group ID */
+  createGroupId?: Maybe<Scalars['String']>;
+  /** Count of 文件 */
+  idCount?: Maybe<Scalars['Int']>;
+  /** Count of 文件名 */
+  nameCount?: Maybe<Scalars['Int']>;
+  /** Count of 类型 */
+  contentTypeCount?: Maybe<Scalars['Int']>;
+  /** Count of 长度 */
+  contentLengthCount?: Maybe<Scalars['Int']>;
+  /** Count of 内容 */
+  contentCount?: Maybe<Scalars['Int']>;
+  /** Count of URL */
+  urlCount?: Maybe<Scalars['Int']>;
+  /** Max of 长度 */
+  contentLengthMax?: Maybe<Scalars['Int']>;
+  /** Min of 长度 */
+  contentLengthMin?: Maybe<Scalars['Int']>;
+  /** Sum of 长度 */
+  contentLengthSum?: Maybe<Scalars['Int']>;
+  /** Avg of 长度 */
+  contentLengthAvg?: Maybe<Scalars['Int']>;
+  /** Year of Create Time */
+  createTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of Create Time */
+  createTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of Create Time */
+  createTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of Create Time */
+  createTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of Create Time */
+  createTimeQuarter?: Maybe<Scalars['Int']>;
+  /** Year of Update Time */
+  updateTimeYear?: Maybe<Scalars['Int']>;
+  /** Month of Update Time */
+  updateTimeMonth?: Maybe<Scalars['Int']>;
+  /** Day of Update Time */
+  updateTimeDay?: Maybe<Scalars['Int']>;
+  /** Week of Update Time */
+  updateTimeWeek?: Maybe<Scalars['Int']>;
+  /** Quarter of Update Time */
+  updateTimeQuarter?: Maybe<Scalars['Int']>;
+};
+
+/** Connection Object for 文件 */
+export type FileConnection = {
+  __typename?: 'FileConnection';
+  /** Total */
+  totalCount?: Maybe<Scalars['Int']>;
+  /** Page Info */
+  pageInfo?: Maybe<PageInfo>;
+  /** Edges */
+  edges?: Maybe<Array<Maybe<FileEdge>>>;
+};
+
+/** Edge Object for 文件 */
+export type FileEdge = {
+  __typename?: 'FileEdge';
+  /** Node */
+  node?: Maybe<File>;
+  /** Cursor */
+  cursor?: Maybe<Scalars['String']>;
+};
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   hasNextPage: Scalars['Boolean'];
@@ -6631,138 +7024,6 @@ export type MetaExpression = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
-};
-
-/** 用户 查询表达式 */
-export type UserExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 姓名 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 姓氏 */
-  lastName?: InputMaybe<StringExpression>;
-  /** 账号 */
-  login?: InputMaybe<StringExpression>;
-  /** 盐 */
-  salt?: InputMaybe<StringExpression>;
-  /** 哈希 */
-  hash?: InputMaybe<StringExpression>;
-  /** 邮箱 */
-  email?: InputMaybe<StringExpression>;
-  /** 手机号 */
-  phones?: InputMaybe<StringExpression>;
-  /** 禁用 */
-  disable?: InputMaybe<BooleanExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-};
-
-/** 用户 变更内容 */
-export type UserInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 姓名 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 姓氏 */
-  lastName?: InputMaybe<Scalars['String']>;
-  /** 账号 */
-  login?: InputMaybe<Scalars['String']>;
-  /** 盐 */
-  salt?: InputMaybe<Scalars['String']>;
-  /** 哈希 */
-  hash?: InputMaybe<Scalars['String']>;
-  /** 邮箱 */
-  email?: InputMaybe<Scalars['String']>;
-  /** 手机号 */
-  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** 禁用 */
-  disable?: InputMaybe<Scalars['Boolean']>;
-  /** 组 */
-  groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<UserExpression>;
 };
 
 /** 用户 查询表达式 */
@@ -6841,6 +7102,20 @@ export type UserExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<UserGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 用户 变更内容 */
@@ -6893,6 +7168,10 @@ export type UserInput = {
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   /** 用户 角色 关系 */
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
+  /** 变更内容 */
+  input?: InputMaybe<UserInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<UserInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<UserExpression>;
 };
@@ -7020,122 +7299,6 @@ export type UserGroupBy = {
 };
 
 /** 角色 查询表达式 */
-export type RoleExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 组合 */
-  composites?: InputMaybe<RoleExpression>;
-  /** 权限 */
-  permissions?: InputMaybe<PermissionExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
-};
-
-/** 角色 变更内容 */
-export type RoleInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
-  /** 组 */
-  groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 组合 */
-  composites?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 权限 */
-  permissions?: InputMaybe<Array<InputMaybe<PermissionInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleExpression>;
-};
-
-/** 角色 查询表达式 */
 export type RoleExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -7203,6 +7366,20 @@ export type RoleExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<RoleOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<RoleGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 角色 变更内容 */
@@ -7247,6 +7424,10 @@ export type RoleInput = {
   roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
+  /** 变更内容 */
+  input?: InputMaybe<RoleInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<RoleExpression>;
 };
@@ -7366,126 +7547,6 @@ export type RoleGroupBy = {
 };
 
 /** 组 查询表达式 */
-export type GroupExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 路径 */
-  path?: InputMaybe<StringExpression>;
-  /** 层级 */
-  deep?: InputMaybe<IntExpression>;
-  /** 上级ID */
-  parentId?: InputMaybe<StringExpression>;
-  /** 上级 */
-  parent?: InputMaybe<GroupExpression>;
-  /** 下级 */
-  subGroups?: InputMaybe<GroupExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
-};
-
-/** 组 变更内容 */
-export type GroupInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 路径 */
-  path?: InputMaybe<Scalars['String']>;
-  /** 层级 */
-  deep?: InputMaybe<Scalars['Int']>;
-  /** 上级ID */
-  parentId?: InputMaybe<Scalars['String']>;
-  /** 上级 */
-  parent?: InputMaybe<GroupInput>;
-  /** 下级 */
-  subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 用户 */
-  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupExpression>;
-};
-
-/** 组 查询表达式 */
 export type GroupExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -7555,6 +7616,20 @@ export type GroupExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<GroupOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<GroupGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 组 变更内容 */
@@ -7601,6 +7676,10 @@ export type GroupInput = {
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   /** 角色 组 关系 */
   groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
+  /** 变更内容 */
+  input?: InputMaybe<GroupInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<GroupExpression>;
 };
@@ -7726,86 +7805,6 @@ export type GroupGroupBy = {
 };
 
 /** 租户 查询表达式 */
-export type RealmExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
-};
-
-/** 租户 变更内容 */
-export type RealmInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 匹配条件 */
-  where?: InputMaybe<RealmExpression>;
-};
-
-/** 租户 查询表达式 */
 export type RealmExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -7855,6 +7854,20 @@ export type RealmExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<RealmOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<RealmGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 租户 变更内容 */
@@ -7881,6 +7894,10 @@ export type RealmInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<RealmInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<RealmInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<RealmExpression>;
 };
@@ -7948,110 +7965,6 @@ export type RealmGroupBy = {
 };
 
 /** 权限 查询表达式 */
-export type PermissionExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 字段 */
-  field?: InputMaybe<StringExpression>;
-  /** 实体 */
-  type?: InputMaybe<StringExpression>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionTypeExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
-};
-
-/** 权限 变更内容 */
-export type PermissionInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 字段 */
-  field?: InputMaybe<Scalars['String']>;
-  /** 实体 */
-  type?: InputMaybe<Scalars['String']>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionType>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<PermissionExpression>;
-};
-
-/** 权限 查询表达式 */
 export type PermissionExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -8113,6 +8026,20 @@ export type PermissionExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<PermissionOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<PermissionGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 权限 变更内容 */
@@ -8151,6 +8078,10 @@ export type PermissionInput = {
   createGroupId?: InputMaybe<Scalars['String']>;
   /** 角色 权限 关系 */
   rolePermissionRelation?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
+  /** 变更内容 */
+  input?: InputMaybe<PermissionInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<PermissionInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<PermissionExpression>;
 };
@@ -8246,90 +8177,6 @@ export type PermissionGroupBy = {
 };
 
 /** 用户 手机号 关系 查询表达式 */
-export type UserPhonesRelationExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
-};
-
-/** 用户 手机号 关系 变更内容 */
-export type UserPhonesRelationInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<Scalars['String']>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 匹配条件 */
-  where?: InputMaybe<UserPhonesRelationExpression>;
-};
-
-/** 用户 手机号 关系 查询表达式 */
 export type UserPhonesRelationExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -8381,6 +8228,20 @@ export type UserPhonesRelationExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 用户 手机号 关系 变更内容 */
@@ -8409,6 +8270,10 @@ export type UserPhonesRelationInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<UserPhonesRelationInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<UserPhonesRelationExpression>;
 };
@@ -8480,94 +8345,6 @@ export type UserPhonesRelationGroupBy = {
 };
 
 /** 用户 组 关系 查询表达式 */
-export type GroupUserRelationExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
-};
-
-/** 用户 组 关系 变更内容 */
-export type GroupUserRelationInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<Scalars['String']>;
-  /** 组 */
-  group?: InputMaybe<GroupInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupUserRelationExpression>;
-};
-
-/** 用户 组 关系 查询表达式 */
 export type GroupUserRelationExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -8621,6 +8398,20 @@ export type GroupUserRelationExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 用户 组 关系 变更内容 */
@@ -8651,6 +8442,10 @@ export type GroupUserRelationInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<GroupUserRelationInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<GroupUserRelationExpression>;
 };
@@ -8726,94 +8521,6 @@ export type GroupUserRelationGroupBy = {
 };
 
 /** 用户 角色 关系 查询表达式 */
-export type RoleUserRelationExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
-};
-
-/** 用户 角色 关系 变更内容 */
-export type RoleUserRelationInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleUserRelationExpression>;
-};
-
-/** 用户 角色 关系 查询表达式 */
 export type RoleUserRelationExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -8867,6 +8574,20 @@ export type RoleUserRelationExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 用户 角色 关系 变更内容 */
@@ -8897,6 +8618,10 @@ export type RoleUserRelationInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<RoleUserRelationInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<RoleUserRelationExpression>;
 };
@@ -8972,94 +8697,6 @@ export type RoleUserRelationGroupBy = {
 };
 
 /** 角色 组 关系 查询表达式 */
-export type GroupRoleRelationExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
-};
-
-/** 角色 组 关系 变更内容 */
-export type GroupRoleRelationInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<Scalars['String']>;
-  /** 组 */
-  group?: InputMaybe<GroupInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupRoleRelationExpression>;
-};
-
-/** 角色 组 关系 查询表达式 */
 export type GroupRoleRelationExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -9113,6 +8750,20 @@ export type GroupRoleRelationExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 角色 组 关系 变更内容 */
@@ -9143,6 +8794,10 @@ export type GroupRoleRelationInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<GroupRoleRelationInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<GroupRoleRelationExpression>;
 };
@@ -9218,94 +8873,6 @@ export type GroupRoleRelationGroupBy = {
 };
 
 /** 角色 角色 关系 查询表达式 */
-export type RoleCompositeRelationExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  composite?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
-};
-
-/** 角色 角色 关系 变更内容 */
-export type RoleCompositeRelationInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  composite?: InputMaybe<RoleInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleCompositeRelationExpression>;
-};
-
-/** 角色 角色 关系 查询表达式 */
 export type RoleCompositeRelationExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -9359,6 +8926,20 @@ export type RoleCompositeRelationExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 角色 角色 关系 变更内容 */
@@ -9389,6 +8970,10 @@ export type RoleCompositeRelationInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<RoleCompositeRelationInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<RoleCompositeRelationExpression>;
 };
@@ -9464,94 +9049,6 @@ export type RoleCompositeRelationGroupBy = {
 };
 
 /** 角色 权限 关系 查询表达式 */
-export type RolePermissionRelationExpressionBase = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<StringExpression>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
-};
-
-/** 角色 权限 关系 变更内容 */
-export type RolePermissionRelationInputBase = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<Scalars['String']>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 匹配条件 */
-  where?: InputMaybe<RolePermissionRelationExpression>;
-};
-
-/** 角色 权限 关系 查询表达式 */
 export type RolePermissionRelationExpression = {
   /** ID */
   id?: InputMaybe<StringExpression>;
@@ -9605,6 +9102,20 @@ export type RolePermissionRelationExpression = {
   cond?: InputMaybe<Conditional>;
   /** 查询表达式组 */
   exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
+  /** 排序 */
+  orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
+  /** 分组 */
+  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
+  /** 前...条数 */
+  first?: InputMaybe<Scalars['Int']>;
+  /** 后...条数 */
+  last?: InputMaybe<Scalars['Int']>;
+  /** 偏移条数 */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** 取...之后 */
+  after?: InputMaybe<Scalars['ID']>;
+  /** 取...之前 */
+  before?: InputMaybe<Scalars['ID']>;
 };
 
 /** 角色 权限 关系 变更内容 */
@@ -9635,6 +9146,10 @@ export type RolePermissionRelationInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 变更内容 */
+  input?: InputMaybe<RolePermissionRelationInput>;
+  /** 变更内容列表 */
+  list?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
   /** 匹配条件 */
   where?: InputMaybe<RolePermissionRelationExpression>;
 };
@@ -9719,5500 +9234,13 @@ export type PermissionTypeExpression = {
   arr?: InputMaybe<Array<InputMaybe<PermissionType>>>;
 };
 
-/** 用户 查询参数 */
-export type UserQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 姓名 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 姓氏 */
-  lastName?: InputMaybe<StringExpression>;
-  /** 账号 */
-  login?: InputMaybe<StringExpression>;
-  /** 盐 */
-  salt?: InputMaybe<StringExpression>;
-  /** 哈希 */
-  hash?: InputMaybe<StringExpression>;
-  /** 邮箱 */
-  email?: InputMaybe<StringExpression>;
-  /** 手机号 */
-  phones?: InputMaybe<StringExpression>;
-  /** 禁用 */
-  disable?: InputMaybe<BooleanExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-};
-
-/** 用户列表 查询参数 */
-export type UserListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 姓名 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 姓氏 */
-  lastName?: InputMaybe<StringExpression>;
-  /** 账号 */
-  login?: InputMaybe<StringExpression>;
-  /** 盐 */
-  salt?: InputMaybe<StringExpression>;
-  /** 哈希 */
-  hash?: InputMaybe<StringExpression>;
-  /** 邮箱 */
-  email?: InputMaybe<StringExpression>;
-  /** 手机号 */
-  phones?: InputMaybe<StringExpression>;
-  /** 禁用 */
-  disable?: InputMaybe<BooleanExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<UserOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<UserGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户连接 查询参数 */
-export type UserConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 姓名 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 姓氏 */
-  lastName?: InputMaybe<StringExpression>;
-  /** 账号 */
-  login?: InputMaybe<StringExpression>;
-  /** 盐 */
-  salt?: InputMaybe<StringExpression>;
-  /** 哈希 */
-  hash?: InputMaybe<StringExpression>;
-  /** 邮箱 */
-  email?: InputMaybe<StringExpression>;
-  /** 手机号 */
-  phones?: InputMaybe<StringExpression>;
-  /** 禁用 */
-  disable?: InputMaybe<BooleanExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<UserOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<UserGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 查询参数 */
-export type RoleQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 组合 */
-  composites?: InputMaybe<RoleExpression>;
-  /** 权限 */
-  permissions?: InputMaybe<PermissionExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
-};
-
-/** 角色列表 查询参数 */
-export type RoleListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 组合 */
-  composites?: InputMaybe<RoleExpression>;
-  /** 权限 */
-  permissions?: InputMaybe<PermissionExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色连接 查询参数 */
-export type RoleConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 组合 */
-  composites?: InputMaybe<RoleExpression>;
-  /** 权限 */
-  permissions?: InputMaybe<PermissionExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 组 查询参数 */
-export type GroupQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 路径 */
-  path?: InputMaybe<StringExpression>;
-  /** 层级 */
-  deep?: InputMaybe<IntExpression>;
-  /** 上级ID */
-  parentId?: InputMaybe<StringExpression>;
-  /** 上级 */
-  parent?: InputMaybe<GroupExpression>;
-  /** 下级 */
-  subGroups?: InputMaybe<GroupExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
-};
-
-/** 组列表 查询参数 */
-export type GroupListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 路径 */
-  path?: InputMaybe<StringExpression>;
-  /** 层级 */
-  deep?: InputMaybe<IntExpression>;
-  /** 上级ID */
-  parentId?: InputMaybe<StringExpression>;
-  /** 上级 */
-  parent?: InputMaybe<GroupExpression>;
-  /** 下级 */
-  subGroups?: InputMaybe<GroupExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 组连接 查询参数 */
-export type GroupConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 路径 */
-  path?: InputMaybe<StringExpression>;
-  /** 层级 */
-  deep?: InputMaybe<IntExpression>;
-  /** 上级ID */
-  parentId?: InputMaybe<StringExpression>;
-  /** 上级 */
-  parent?: InputMaybe<GroupExpression>;
-  /** 下级 */
-  subGroups?: InputMaybe<GroupExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 租户 查询参数 */
-export type RealmQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
-};
-
-/** 租户列表 查询参数 */
-export type RealmListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RealmOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RealmGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 租户连接 查询参数 */
-export type RealmConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RealmOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RealmGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 权限 查询参数 */
-export type PermissionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 字段 */
-  field?: InputMaybe<StringExpression>;
-  /** 实体 */
-  type?: InputMaybe<StringExpression>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionTypeExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
-};
-
-/** 权限列表 查询参数 */
-export type PermissionListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 字段 */
-  field?: InputMaybe<StringExpression>;
-  /** 实体 */
-  type?: InputMaybe<StringExpression>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionTypeExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<PermissionOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<PermissionGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 权限连接 查询参数 */
-export type PermissionConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 字段 */
-  field?: InputMaybe<StringExpression>;
-  /** 实体 */
-  type?: InputMaybe<StringExpression>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionTypeExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<PermissionOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<PermissionGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 手机号 关系 查询参数 */
-export type UserPhonesRelationQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
-};
-
-/** 用户 手机号 关系列表 查询参数 */
-export type UserPhonesRelationListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 手机号 关系连接 查询参数 */
-export type UserPhonesRelationConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 组 关系 查询参数 */
-export type GroupUserRelationQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
-};
-
-/** 用户 组 关系列表 查询参数 */
-export type GroupUserRelationListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 组 关系连接 查询参数 */
-export type GroupUserRelationConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 角色 关系 查询参数 */
-export type RoleUserRelationQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
-};
-
-/** 用户 角色 关系列表 查询参数 */
-export type RoleUserRelationListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 角色 关系连接 查询参数 */
-export type RoleUserRelationConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 组 关系 查询参数 */
-export type GroupRoleRelationQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
-};
-
-/** 角色 组 关系列表 查询参数 */
-export type GroupRoleRelationListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 组 关系连接 查询参数 */
-export type GroupRoleRelationConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 角色 关系 查询参数 */
-export type RoleCompositeRelationQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  composite?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
-};
-
-/** 角色 角色 关系列表 查询参数 */
-export type RoleCompositeRelationListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  composite?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 角色 关系连接 查询参数 */
-export type RoleCompositeRelationConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  composite?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 权限 关系 查询参数 */
-export type RolePermissionRelationQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<StringExpression>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
-};
-
-/** 角色 权限 关系列表 查询参数 */
-export type RolePermissionRelationListQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<StringExpression>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 权限 关系连接 查询参数 */
-export type RolePermissionRelationConnectionQueryArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<StringExpression>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 变更参数 */
-export type UserMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 姓名 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 姓氏 */
-  lastName?: InputMaybe<Scalars['String']>;
-  /** 账号 */
-  login?: InputMaybe<Scalars['String']>;
-  /** 盐 */
-  salt?: InputMaybe<Scalars['String']>;
-  /** 哈希 */
-  hash?: InputMaybe<Scalars['String']>;
-  /** 邮箱 */
-  email?: InputMaybe<Scalars['String']>;
-  /** 手机号 */
-  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** 禁用 */
-  disable?: InputMaybe<Scalars['Boolean']>;
-  /** 组 */
-  groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
-  /** 变更内容 */
-  input?: InputMaybe<UserInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<UserExpression>;
-};
-
-/** 用户列表 变更参数  */
-export type UserListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 姓名 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 姓氏 */
-  lastName?: InputMaybe<Scalars['String']>;
-  /** 账号 */
-  login?: InputMaybe<Scalars['String']>;
-  /** 盐 */
-  salt?: InputMaybe<Scalars['String']>;
-  /** 哈希 */
-  hash?: InputMaybe<Scalars['String']>;
-  /** 邮箱 */
-  email?: InputMaybe<Scalars['String']>;
-  /** 手机号 */
-  phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** 禁用 */
-  disable?: InputMaybe<Scalars['Boolean']>;
-  /** 组 */
-  groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<UserInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<UserExpression>;
-};
-
-/** 角色 变更参数 */
-export type RoleMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
-  /** 组 */
-  groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 组合 */
-  composites?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 权限 */
-  permissions?: InputMaybe<Array<InputMaybe<PermissionInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
-  /** 变更内容 */
-  input?: InputMaybe<RoleInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleExpression>;
-};
-
-/** 角色列表 变更参数  */
-export type RoleListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
-  /** 组 */
-  groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 组合 */
-  composites?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 权限 */
-  permissions?: InputMaybe<Array<InputMaybe<PermissionInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleExpression>;
-};
-
-/** 组 变更参数 */
-export type GroupMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 路径 */
-  path?: InputMaybe<Scalars['String']>;
-  /** 层级 */
-  deep?: InputMaybe<Scalars['Int']>;
-  /** 上级ID */
-  parentId?: InputMaybe<Scalars['String']>;
-  /** 上级 */
-  parent?: InputMaybe<GroupInput>;
-  /** 下级 */
-  subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 用户 */
-  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
-  /** 变更内容 */
-  input?: InputMaybe<GroupInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupExpression>;
-};
-
-/** 组列表 变更参数  */
-export type GroupListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 路径 */
-  path?: InputMaybe<Scalars['String']>;
-  /** 层级 */
-  deep?: InputMaybe<Scalars['Int']>;
-  /** 上级ID */
-  parentId?: InputMaybe<Scalars['String']>;
-  /** 上级 */
-  parent?: InputMaybe<GroupInput>;
-  /** 下级 */
-  subGroups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 用户 */
-  users?: InputMaybe<Array<InputMaybe<UserInput>>>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<GroupInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupExpression>;
-};
-
-/** 租户 变更参数 */
-export type RealmMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容 */
-  input?: InputMaybe<RealmInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<RealmExpression>;
-};
-
-/** 租户列表 变更参数  */
-export type RealmListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<RealmInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<RealmExpression>;
-};
-
-/** 权限 变更参数 */
-export type PermissionMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 字段 */
-  field?: InputMaybe<Scalars['String']>;
-  /** 实体 */
-  type?: InputMaybe<Scalars['String']>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionType>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
-  /** 变更内容 */
-  input?: InputMaybe<PermissionInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<PermissionExpression>;
-};
-
-/** 权限列表 变更参数  */
-export type PermissionListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 名称 */
-  name?: InputMaybe<Scalars['String']>;
-  /** 描述 */
-  description?: InputMaybe<Scalars['String']>;
-  /** 字段 */
-  field?: InputMaybe<Scalars['String']>;
-  /** 实体 */
-  type?: InputMaybe<Scalars['String']>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionType>;
-  /** 角色 */
-  roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
-  /** 租户 */
-  realm?: InputMaybe<RealmInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<PermissionInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<PermissionExpression>;
-};
-
-/** 用户 手机号 关系 变更参数 */
-export type UserPhonesRelationMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<Scalars['String']>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容 */
-  input?: InputMaybe<UserPhonesRelationInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<UserPhonesRelationExpression>;
-};
-
-/** 用户 手机号 关系列表 变更参数  */
-export type UserPhonesRelationListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<Scalars['String']>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<UserPhonesRelationExpression>;
-};
-
-/** 用户 组 关系 变更参数 */
-export type GroupUserRelationMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<Scalars['String']>;
-  /** 组 */
-  group?: InputMaybe<GroupInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容 */
-  input?: InputMaybe<GroupUserRelationInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupUserRelationExpression>;
-};
-
-/** 用户 组 关系列表 变更参数  */
-export type GroupUserRelationListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<Scalars['String']>;
-  /** 组 */
-  group?: InputMaybe<GroupInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupUserRelationExpression>;
-};
-
-/** 用户 角色 关系 变更参数 */
-export type RoleUserRelationMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容 */
-  input?: InputMaybe<RoleUserRelationInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleUserRelationExpression>;
-};
-
-/** 用户 角色 关系列表 变更参数  */
-export type RoleUserRelationListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<Scalars['String']>;
-  /** 用户 */
-  user?: InputMaybe<UserInput>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleUserRelationExpression>;
-};
-
-/** 角色 组 关系 变更参数 */
-export type GroupRoleRelationMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<Scalars['String']>;
-  /** 组 */
-  group?: InputMaybe<GroupInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容 */
-  input?: InputMaybe<GroupRoleRelationInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupRoleRelationExpression>;
-};
-
-/** 角色 组 关系列表 变更参数  */
-export type GroupRoleRelationListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<Scalars['String']>;
-  /** 组 */
-  group?: InputMaybe<GroupInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<GroupRoleRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<GroupRoleRelationExpression>;
-};
-
-/** 角色 角色 关系 变更参数 */
-export type RoleCompositeRelationMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  composite?: InputMaybe<RoleInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容 */
-  input?: InputMaybe<RoleCompositeRelationInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleCompositeRelationExpression>;
-};
-
-/** 角色 角色 关系列表 变更参数  */
-export type RoleCompositeRelationListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  composite?: InputMaybe<RoleInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<RoleCompositeRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<RoleCompositeRelationExpression>;
-};
-
-/** 角色 权限 关系 变更参数 */
-export type RolePermissionRelationMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<Scalars['String']>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容 */
-  input?: InputMaybe<RolePermissionRelationInput>;
-  /** 匹配条件 */
-  where?: InputMaybe<RolePermissionRelationExpression>;
-};
-
-/** 角色 权限 关系列表 变更参数  */
-export type RolePermissionRelationListMutationArguments = {
-  /** ID */
-  id?: InputMaybe<Scalars['ID']>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<Scalars['String']>;
-  /** 角色 */
-  role?: InputMaybe<RoleInput>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<Scalars['String']>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionInput>;
-  /** 已移除 */
-  isDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<Scalars['Int']>;
-  /** 域 */
-  realmId?: InputMaybe<Scalars['Int']>;
-  /** 创建者 */
-  createUserId?: InputMaybe<Scalars['String']>;
-  /** 创建时间 */
-  createTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<Scalars['String']>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<Scalars['Timestamp']>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<Scalars['String']>;
-  /** 变更内容列表 */
-  list?: InputMaybe<Array<InputMaybe<RolePermissionRelationInput>>>;
-  /** 匹配条件 */
-  where?: InputMaybe<RolePermissionRelationExpression>;
-};
-
-/** 用户 订阅参数 */
-export type UserSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 姓名 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 姓氏 */
-  lastName?: InputMaybe<StringExpression>;
-  /** 账号 */
-  login?: InputMaybe<StringExpression>;
-  /** 盐 */
-  salt?: InputMaybe<StringExpression>;
-  /** 哈希 */
-  hash?: InputMaybe<StringExpression>;
-  /** 邮箱 */
-  email?: InputMaybe<StringExpression>;
-  /** 手机号 */
-  phones?: InputMaybe<StringExpression>;
-  /** 禁用 */
-  disable?: InputMaybe<BooleanExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-};
-
-/** 用户列表 订阅参数 */
-export type UserListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 姓名 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 姓氏 */
-  lastName?: InputMaybe<StringExpression>;
-  /** 账号 */
-  login?: InputMaybe<StringExpression>;
-  /** 盐 */
-  salt?: InputMaybe<StringExpression>;
-  /** 哈希 */
-  hash?: InputMaybe<StringExpression>;
-  /** 邮箱 */
-  email?: InputMaybe<StringExpression>;
-  /** 手机号 */
-  phones?: InputMaybe<StringExpression>;
-  /** 禁用 */
-  disable?: InputMaybe<BooleanExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<UserOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<UserGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户列表 订阅参数 */
-export type UserConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 姓名 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 姓氏 */
-  lastName?: InputMaybe<StringExpression>;
-  /** 账号 */
-  login?: InputMaybe<StringExpression>;
-  /** 盐 */
-  salt?: InputMaybe<StringExpression>;
-  /** 哈希 */
-  hash?: InputMaybe<StringExpression>;
-  /** 邮箱 */
-  email?: InputMaybe<StringExpression>;
-  /** 手机号 */
-  phones?: InputMaybe<StringExpression>;
-  /** 禁用 */
-  disable?: InputMaybe<BooleanExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 手机号 关系 */
-  userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<UserOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<UserGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 订阅参数 */
-export type RoleSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 组合 */
-  composites?: InputMaybe<RoleExpression>;
-  /** 权限 */
-  permissions?: InputMaybe<PermissionExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
-};
-
-/** 角色列表 订阅参数 */
-export type RoleListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 组合 */
-  composites?: InputMaybe<RoleExpression>;
-  /** 权限 */
-  permissions?: InputMaybe<PermissionExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色列表 订阅参数 */
-export type RoleConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 组 */
-  groups?: InputMaybe<GroupExpression>;
-  /** 组合 */
-  composites?: InputMaybe<RoleExpression>;
-  /** 权限 */
-  permissions?: InputMaybe<PermissionExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 角色 关系 */
-  roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** 角色 角色 关系 */
-  roleCompositeRelation?: InputMaybe<RoleCompositeRelationExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<RoleGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 组 订阅参数 */
-export type GroupSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 路径 */
-  path?: InputMaybe<StringExpression>;
-  /** 层级 */
-  deep?: InputMaybe<IntExpression>;
-  /** 上级ID */
-  parentId?: InputMaybe<StringExpression>;
-  /** 上级 */
-  parent?: InputMaybe<GroupExpression>;
-  /** 下级 */
-  subGroups?: InputMaybe<GroupExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
-};
-
-/** 组列表 订阅参数 */
-export type GroupListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 路径 */
-  path?: InputMaybe<StringExpression>;
-  /** 层级 */
-  deep?: InputMaybe<IntExpression>;
-  /** 上级ID */
-  parentId?: InputMaybe<StringExpression>;
-  /** 上级 */
-  parent?: InputMaybe<GroupExpression>;
-  /** 下级 */
-  subGroups?: InputMaybe<GroupExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 组列表 订阅参数 */
-export type GroupConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 路径 */
-  path?: InputMaybe<StringExpression>;
-  /** 层级 */
-  deep?: InputMaybe<IntExpression>;
-  /** 上级ID */
-  parentId?: InputMaybe<StringExpression>;
-  /** 上级 */
-  parent?: InputMaybe<GroupExpression>;
-  /** 下级 */
-  subGroups?: InputMaybe<GroupExpression>;
-  /** 用户 */
-  users?: InputMaybe<UserExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 用户 组 关系 */
-  groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
-  /** 角色 组 关系 */
-  groupRoleRelation?: InputMaybe<GroupRoleRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<GroupGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 租户 订阅参数 */
-export type RealmSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
-};
-
-/** 租户列表 订阅参数 */
-export type RealmListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RealmOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RealmGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 租户列表 订阅参数 */
-export type RealmConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RealmOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<RealmGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RealmExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 权限 订阅参数 */
-export type PermissionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 字段 */
-  field?: InputMaybe<StringExpression>;
-  /** 实体 */
-  type?: InputMaybe<StringExpression>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionTypeExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
-};
-
-/** 权限列表 订阅参数 */
-export type PermissionListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 字段 */
-  field?: InputMaybe<StringExpression>;
-  /** 实体 */
-  type?: InputMaybe<StringExpression>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionTypeExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<PermissionOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<PermissionGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 权限列表 订阅参数 */
-export type PermissionConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 名称 */
-  name?: InputMaybe<StringExpression>;
-  /** 描述 */
-  description?: InputMaybe<StringExpression>;
-  /** 字段 */
-  field?: InputMaybe<StringExpression>;
-  /** 实体 */
-  type?: InputMaybe<StringExpression>;
-  /** 权限类型 */
-  permissionType?: InputMaybe<PermissionTypeExpression>;
-  /** 角色 */
-  roles?: InputMaybe<RoleExpression>;
-  /** 租户 */
-  realm?: InputMaybe<RealmExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** 角色 权限 关系 */
-  rolePermissionRelation?: InputMaybe<RolePermissionRelationExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<PermissionOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<PermissionGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<PermissionExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 手机号 关系 订阅参数 */
-export type UserPhonesRelationSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
-};
-
-/** 用户 手机号 关系列表 订阅参数 */
-export type UserPhonesRelationListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 手机号 关系列表 订阅参数 */
-export type UserPhonesRelationConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 手机号 引用 */
-  phonesRef?: InputMaybe<StringExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<UserPhonesRelationOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<UserPhonesRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<UserPhonesRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 组 关系 订阅参数 */
-export type GroupUserRelationSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
-};
-
-/** 用户 组 关系列表 订阅参数 */
-export type GroupUserRelationListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 组 关系列表 订阅参数 */
-export type GroupUserRelationConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupUserRelationOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<GroupUserRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupUserRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 角色 关系 订阅参数 */
-export type RoleUserRelationSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
-};
-
-/** 用户 角色 关系列表 订阅参数 */
-export type RoleUserRelationListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 用户 角色 关系列表 订阅参数 */
-export type RoleUserRelationConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 用户 引用 */
-  userRef?: InputMaybe<StringExpression>;
-  /** 用户 */
-  user?: InputMaybe<UserExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleUserRelationOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<RoleUserRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleUserRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 组 关系 订阅参数 */
-export type GroupRoleRelationSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
-};
-
-/** 角色 组 关系列表 订阅参数 */
-export type GroupRoleRelationListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 组 关系列表 订阅参数 */
-export type GroupRoleRelationConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 组 引用 */
-  groupRef?: InputMaybe<StringExpression>;
-  /** 组 */
-  group?: InputMaybe<GroupExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<GroupRoleRelationOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<GroupRoleRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<GroupRoleRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 角色 关系 订阅参数 */
-export type RoleCompositeRelationSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  composite?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
-};
-
-/** 角色 角色 关系列表 订阅参数 */
-export type RoleCompositeRelationListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  composite?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 角色 关系列表 订阅参数 */
-export type RoleCompositeRelationConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 角色 引用 */
-  compositeRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  composite?: InputMaybe<RoleExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RoleCompositeRelationOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<RoleCompositeRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RoleCompositeRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 权限 关系 订阅参数 */
-export type RolePermissionRelationSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<StringExpression>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
-};
-
-/** 角色 权限 关系列表 订阅参数 */
-export type RolePermissionRelationListSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<StringExpression>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  /** 分组 */
-  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 变更内容列表 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
-/** 角色 权限 关系列表 订阅参数 */
-export type RolePermissionRelationConnectionSubscriptionArguments = {
-  /** ID */
-  id?: InputMaybe<StringExpression>;
-  /** 角色 引用 */
-  roleRef?: InputMaybe<StringExpression>;
-  /** 角色 */
-  role?: InputMaybe<RoleExpression>;
-  /** 权限 引用 */
-  permissionRef?: InputMaybe<StringExpression>;
-  /** 权限 */
-  permission?: InputMaybe<PermissionExpression>;
-  /** 包含已移除 */
-  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
-  /** 版本 */
-  version?: InputMaybe<IntExpression>;
-  /** 域 */
-  realmId?: InputMaybe<IntExpression>;
-  /** 创建者 */
-  createUserId?: InputMaybe<StringExpression>;
-  /** 创建时间 */
-  createTime?: InputMaybe<StringExpression>;
-  /** 更新者 */
-  updateUserId?: InputMaybe<StringExpression>;
-  /** 更新时间 */
-  updateTime?: InputMaybe<StringExpression>;
-  /** 创建组 */
-  createGroupId?: InputMaybe<StringExpression>;
-  /** Year of 创建时间 */
-  createTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 创建时间 */
-  createTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 创建时间 */
-  createTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 创建时间 */
-  createTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 创建时间 */
-  createTimeQuarter?: InputMaybe<IntExpression>;
-  /** Year of 更新时间 */
-  updateTimeYear?: InputMaybe<IntExpression>;
-  /** Month of 更新时间 */
-  updateTimeMonth?: InputMaybe<IntExpression>;
-  /** Day of 更新时间 */
-  updateTimeDay?: InputMaybe<IntExpression>;
-  /** Week of 更新时间 */
-  updateTimeWeek?: InputMaybe<IntExpression>;
-  /** Quarter of 更新时间 */
-  updateTimeQuarter?: InputMaybe<IntExpression>;
-  /** 排序 */
-  orderBy?: InputMaybe<RolePermissionRelationOrderBy>;
-  /** 排序 */
-  groupBy?: InputMaybe<RolePermissionRelationGroupBy>;
-  /** 取非 */
-  not?: InputMaybe<Scalars['Boolean']>;
-  /** 与/或 */
-  cond?: InputMaybe<Conditional>;
-  /** 查询表达式组 */
-  exs?: InputMaybe<Array<InputMaybe<RolePermissionRelationExpression>>>;
-  /** 前...条数 */
-  first?: InputMaybe<Scalars['Int']>;
-  /** 后...条数 */
-  last?: InputMaybe<Scalars['Int']>;
-  /** 偏移条数 */
-  offset?: InputMaybe<Scalars['Int']>;
-  /** 取...之后 */
-  after?: InputMaybe<Scalars['ID']>;
-  /** 取...之前 */
-  before?: InputMaybe<Scalars['ID']>;
-};
-
 export type Query_CurrentPermissionNameListByTypes_Arguments = {
   types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Query_CreateCurrentFileSignedUrl_Arguments = {
+  fileId: Scalars['String'];
+  ttlSeconds?: InputMaybe<Scalars['Int']>;
 };
 
 export type Mutation_CurrentUserUpdate_Arguments = {
@@ -15384,6 +9412,206 @@ export type NamedStructInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** createGroupId */
   createGroupId?: InputMaybe<Scalars['String']>;
+};
+
+/** Query Expression Input for 文件 */
+export type FileExpression = {
+  /** ID */
+  id?: InputMaybe<StringExpression>;
+  /** 文件名 */
+  name?: InputMaybe<StringExpression>;
+  /** 类型 */
+  contentType?: InputMaybe<StringExpression>;
+  /** 长度 */
+  contentLength?: InputMaybe<IntExpression>;
+  /** 内容 */
+  content?: InputMaybe<StringExpression>;
+  /** URL */
+  url?: InputMaybe<StringExpression>;
+  /** Include Deprecated */
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<IntExpression>;
+  /** Realm ID */
+  realmId?: InputMaybe<IntExpression>;
+  /** Create User ID */
+  createUserId?: InputMaybe<StringExpression>;
+  /** Create Time */
+  createTime?: InputMaybe<StringExpression>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<StringExpression>;
+  /** Update Time */
+  updateTime?: InputMaybe<StringExpression>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<StringExpression>;
+  /** Year of Create Time */
+  createTimeYear?: InputMaybe<IntExpression>;
+  /** Month of Create Time */
+  createTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of Create Time */
+  createTimeDay?: InputMaybe<IntExpression>;
+  /** Week of Create Time */
+  createTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of Create Time */
+  createTimeQuarter?: InputMaybe<IntExpression>;
+  /** Year of Update Time */
+  updateTimeYear?: InputMaybe<IntExpression>;
+  /** Month of Update Time */
+  updateTimeMonth?: InputMaybe<IntExpression>;
+  /** Day of Update Time */
+  updateTimeDay?: InputMaybe<IntExpression>;
+  /** Week of Update Time */
+  updateTimeWeek?: InputMaybe<IntExpression>;
+  /** Quarter of Update Time */
+  updateTimeQuarter?: InputMaybe<IntExpression>;
+  /** Not */
+  not?: InputMaybe<Scalars['Boolean']>;
+  /** Condition */
+  cond?: InputMaybe<Conditional>;
+  /** Expressions */
+  exs?: InputMaybe<Array<InputMaybe<FileExpression>>>;
+  /** Order By */
+  orderBy?: InputMaybe<FileOrderBy>;
+  /** Group By */
+  groupBy?: InputMaybe<FileGroupBy>;
+  /** First */
+  first?: InputMaybe<Scalars['Int']>;
+  /** Last */
+  last?: InputMaybe<Scalars['Int']>;
+  /** Offset */
+  offset?: InputMaybe<Scalars['Int']>;
+  /** After */
+  after?: InputMaybe<Scalars['ID']>;
+  /** Before */
+  before?: InputMaybe<Scalars['ID']>;
+};
+
+/** Mutation Input for 文件 */
+export type FileInput = {
+  /** ID */
+  id?: InputMaybe<Scalars['ID']>;
+  /** 文件名 */
+  name?: InputMaybe<Scalars['String']>;
+  /** 类型 */
+  contentType?: InputMaybe<Scalars['String']>;
+  /** 长度 */
+  contentLength?: InputMaybe<Scalars['Int']>;
+  /** 内容 */
+  content?: InputMaybe<Scalars['String']>;
+  /** URL */
+  url?: InputMaybe<Scalars['String']>;
+  /** Is Deprecated */
+  isDeprecated?: InputMaybe<Scalars['Boolean']>;
+  /** Version */
+  version?: InputMaybe<Scalars['Int']>;
+  /** Realm ID */
+  realmId?: InputMaybe<Scalars['Int']>;
+  /** Create User ID */
+  createUserId?: InputMaybe<Scalars['String']>;
+  /** Create Time */
+  createTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<Scalars['String']>;
+  /** Update Time */
+  updateTime?: InputMaybe<Scalars['Timestamp']>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<Scalars['String']>;
+  /** Input */
+  input?: InputMaybe<FileInput>;
+  /** Input List */
+  list?: InputMaybe<Array<InputMaybe<FileInput>>>;
+  /** Where */
+  where?: InputMaybe<FileExpression>;
+};
+
+/** Order Input for 文件 */
+export type FileOrderBy = {
+  /** ID */
+  id?: InputMaybe<Sort>;
+  /** 文件名 */
+  name?: InputMaybe<Sort>;
+  /** 类型 */
+  contentType?: InputMaybe<Sort>;
+  /** 长度 */
+  contentLength?: InputMaybe<Sort>;
+  /** 内容 */
+  content?: InputMaybe<Sort>;
+  /** URL */
+  url?: InputMaybe<Sort>;
+  /** Is Deprecated */
+  isDeprecated?: InputMaybe<Sort>;
+  /** Version */
+  version?: InputMaybe<Sort>;
+  /** Realm ID */
+  realmId?: InputMaybe<Sort>;
+  /** Create User ID */
+  createUserId?: InputMaybe<Sort>;
+  /** Create Time */
+  createTime?: InputMaybe<Sort>;
+  /** Update User ID */
+  updateUserId?: InputMaybe<Sort>;
+  /** Update Time */
+  updateTime?: InputMaybe<Sort>;
+  /** Create Group ID */
+  createGroupId?: InputMaybe<Sort>;
+  /** Count of 文件 */
+  idCount?: InputMaybe<Sort>;
+  /** Count of 文件名 */
+  nameCount?: InputMaybe<Sort>;
+  /** Count of 类型 */
+  contentTypeCount?: InputMaybe<Sort>;
+  /** Count of 长度 */
+  contentLengthCount?: InputMaybe<Sort>;
+  /** Count of 内容 */
+  contentCount?: InputMaybe<Sort>;
+  /** Count of URL */
+  urlCount?: InputMaybe<Sort>;
+  /** Max of 长度 */
+  contentLengthMax?: InputMaybe<Sort>;
+  /** Min of 长度 */
+  contentLengthMin?: InputMaybe<Sort>;
+  /** Sum of 长度 */
+  contentLengthSum?: InputMaybe<Sort>;
+  /** Avg of 长度 */
+  contentLengthAvg?: InputMaybe<Sort>;
+  /** Year of Create Time */
+  createTimeYear?: InputMaybe<Sort>;
+  /** Month of Create Time */
+  createTimeMonth?: InputMaybe<Sort>;
+  /** Day of Create Time */
+  createTimeDay?: InputMaybe<Sort>;
+  /** Week of Create Time */
+  createTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of Create Time */
+  createTimeQuarter?: InputMaybe<Sort>;
+  /** Year of Update Time */
+  updateTimeYear?: InputMaybe<Sort>;
+  /** Month of Update Time */
+  updateTimeMonth?: InputMaybe<Sort>;
+  /** Day of Update Time */
+  updateTimeDay?: InputMaybe<Sort>;
+  /** Week of Update Time */
+  updateTimeWeek?: InputMaybe<Sort>;
+  /** Quarter of Update Time */
+  updateTimeQuarter?: InputMaybe<Sort>;
+  /** OrderByes */
+  obs?: InputMaybe<Array<InputMaybe<FileOrderBy>>>;
+};
+
+/** Group Input for 文件 */
+export type FileGroupBy = {
+  /** Group By Field Names */
+  by?: InputMaybe<Array<Scalars['String']>>;
+  /** OrderByes */
+  gbs?: InputMaybe<Array<InputMaybe<FileGroupBy>>>;
+};
+
+export type Mutation_SingleUpload_Arguments = {
+  file?: InputMaybe<Scalars['Upload']>;
+};
+
+export type Mutation_MultipleUpload_Arguments = {
+  files?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
 };
 
 export type IdExpression = {

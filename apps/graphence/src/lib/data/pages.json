@@ -38,5 +38,13 @@
         "authPermissions": [
             "Permission::*::*"
         ]
+	},
+	{
+        "name": "File",
+        "tags": "File",
+        "href": "/file",
+        "authPermissions": [
+            "File::*::*"
+        ]
 	}
 ]

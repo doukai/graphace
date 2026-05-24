@@ -218,7 +218,6 @@
 		>
 			{#if auth('Role::*::WRITE')}
 				<RoleTableDialog
-					args={{ exs: [{ not: true, users: { id: { val: user?.id } } }] }}
 					class="btn-accent"
 					on:select={(e) => {
 						if (Array.isArray(e.detail.value)) {

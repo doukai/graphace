@@ -183,9 +183,6 @@
 		>
 			{#if auth('{{ fieldObjectInfo.name }}::*::WRITE')}
 				<{{ fieldObjectInfo.name }}TableDialog
-					{%- if fieldInfo.pairFieldName %}
-					args={% raw %}{{{% endraw %} exs: [{ not: true, {{ fieldInfo.pairFieldName }}: { {{ idName }}: { val: {{ name | camelCase }}?.{{ idName }} } } }] {% raw %}}}{% endraw %}
-					{%- endif %}
 					singleChoice
 					class="btn-accent"
 					on:select={(e) => {

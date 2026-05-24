@@ -23,5 +23,4 @@ export const fragment_PermissionFields = /* GraphQL */ `fragment PermissionField
     updateUserId
     updateTime
     createGroupId
-    syncPermissionPolicy
   }`;

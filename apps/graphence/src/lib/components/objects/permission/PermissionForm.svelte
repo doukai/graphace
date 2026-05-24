@@ -82,6 +82,27 @@
 			{/if}
 		</span>
 	</slot>
+	<slot name="tabs">
+		{#if tabs?.($LL, args)}
+			<Tabs
+				bind:value={tab}
+				tabs={tabs?.($LL, args)}
+				class="max-md:hidden"
+				on:change={(e) => {
+					dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+					if (e.detail.value !== e.detail.origin) {
+						permissionFormTabChange(e.detail.value, args, value)
+							.then((args) => {
+								dispatch('query', {
+									args
+								});
+							})
+							.catch((e) => (errors = e));
+					}
+				}}
+			/>
+		{/if}
+	</slot>
 	<Buttons
 		showRemoveButton={showRemoveButton && value?.id != null}
 		showUnbindButton={showUnbindButton && value?.id != null}
@@ -101,24 +122,27 @@
 		<slot />
 	</Buttons>
 </div>
-{#if tabs?.($LL, args)}
-	<Tabs
-		bind:value={tab}
-		tabs={tabs?.($LL, args)}
-		on:change={(e) => {
-			dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
-			if (e.detail.value !== e.detail.origin) {
-				permissionFormTabChange(e.detail.value, args, value)
-					.then((args) => {
-						dispatch('query', {
-							args
-						});
-					})
-					.catch((e) => (errors = e));
-			}
-		}}
-	/>
-{/if}
+<slot name="tabs-sm">
+	{#if tabs?.($LL, args)}
+		<Tabs
+			bind:value={tab}
+			tabs={tabs?.($LL, args)}
+			class="md:hidden"
+			on:change={(e) => {
+				dispatch('tabChange', { tab: e.detail.value, origin: e.detail.origin });
+				if (e.detail.value !== e.detail.origin) {
+					permissionFormTabChange(e.detail.value, args, value)
+						.then((args) => {
+							dispatch('query', {
+								args
+							});
+						})
+						.catch((e) => (errors = e));
+				}
+			}}
+		/>
+	{/if}
+</slot>
 <Form class={className}>
 	{#if isFetching}
 		<Loading class="col-span-full" />

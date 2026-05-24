@@ -30,7 +30,6 @@ export const fragment_RoleFields = /* GraphQL */ `fragment RoleFields on Role {
     updateUserId
     updateTime
     createGroupId
-    syncRolePolicy
   }`;
 
 export const fragment_RoleNamedFields = /* GraphQL */ `fragment RoleNamedFields on Role {

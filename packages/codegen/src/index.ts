@@ -13,8 +13,6 @@ import {
     isOperationType,
     isConnection,
     isEdge,
-    isPageInfo,
-    isInnerEnum,
     isIntrospection,
     getFieldType,
     getIDFieldName,
@@ -22,13 +20,15 @@ import {
     inComponentEnum,
     inComponentObject,
     inRouteObject,
-    isAggregate,
     getQueryFieldInfo,
     getObjectFieldInfo,
     getMutationFieldInfo,
     getObjectFieldInfos,
     getObjectInfo,
-    getImportInfo
+    getImportInfo,
+    typeHasInput,
+    fieldInInput,
+    typeInObject
 } from 'graphace-codegen-commons';
 import type { GraphacePluginConfig } from './config.js';
 import { buildFileContent } from "./builder.js";
@@ -40,25 +40,24 @@ const getObjectTypes = (schema: GraphQLSchema) =>
         .filter(type => !isOperationType(type.name))
         .filter(type => !isConnection(type.name))
         .filter(type => !isEdge(type.name))
-        .filter(type => !isPageInfo(type.name))
-        .filter(type => !isAggregate(type.name))
         .filter(type => !isIntrospection(type.name))
         .filter(type => isObjectType(type))
         .filter(type => getIDFieldName(type))
+        .filter(type => typeHasInput(schema, type.name))
         .map(type => assertObjectType(type))
         .map(objectType => ({
             ...objectType,
             fields: Object.values(objectType.getFields())
                 .filter(field => !isEdge(getFieldType(field.type).name))
-                .filter(field => !isPageInfo(getFieldType(field.type).name))
                 .filter(field => !isIntrospection(getFieldType(field.type).name))
+                .filter(field => fieldInInput(schema, getFieldType(field.type).name, field.name))
         }));
 
 const getEnumTypes = (schema: GraphQLSchema) =>
     Object.values(schema.getTypeMap())
         .filter(type => isEnumType(type))
         .filter(type => !isIntrospection(type.name))
-        .filter(type => !isInnerEnum(type.name))
+        .filter(type => typeInObject(schema, type.name))
         .map(type => assertEnumType(type))
         .map(enumType => ({
             ...enumType,
@@ -199,9 +198,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inDetail)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -219,9 +218,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inDetail)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -239,9 +238,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inDetail)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -259,9 +258,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -279,9 +278,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -299,9 +298,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -319,9 +318,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -339,9 +338,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -359,9 +358,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -379,9 +378,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -399,9 +398,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -419,9 +418,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -444,7 +443,7 @@ const renders: Record<Template, Render> = {
                         .filter(type => !isOperationType(type.name))
                         .filter(type => !isConnection(type.name))
                         .filter(type => !isEdge(type.name))
-                        .filter(type => !isPageInfo(type.name))
+                        .filter(type => typeHasInput(schema, type.name))
                         .filter(type => !isIntrospection(type.name))
                         .filter(type => getIDFieldName(type))
                         .map(type => assertObjectType(type))
@@ -525,7 +524,7 @@ const renders: Record<Template, Render> = {
                         .filter(type => isEnumType(type))
                         .filter(type => inComponentEnum(type.name))
                         .filter(type => !isIntrospection(type.name))
-                        .filter(type => !isInnerEnum(type.name))
+                        .filter(type => typeInObject(schema, type.name))
                         .map(type => assertEnumType(type))
                 }
             ),
@@ -536,9 +535,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -556,9 +555,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -576,9 +575,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -596,9 +595,9 @@ const renders: Record<Template, Render> = {
         if (objectInfo) {
             const fields = objectInfo.fields
                 ?.filter(field => field.inList)
-                .filter(field => !field.isAggregate)
+                .filter(field => field.inInput)
                 .filter(field => !field.isConnection);
-            const importInfo = getImportInfo(fields);
+            const importInfo = getImportInfo(schema, fields);
             return {
                 content: buildFileContent(config.template, {
                     ...objectInfo,
@@ -620,9 +619,9 @@ const renders: Record<Template, Render> = {
                 if (fieldObjectInfo) {
                     const fields = fieldObjectInfo.fields
                         ?.filter(field => field.inList)
-                        .filter(field => !field.isAggregate)
+                        .filter(field => field.inInput)
                         .filter(field => !field.isConnection);
-                    const importInfo = getImportInfo(fields);
+                    const importInfo = getImportInfo(schema, fields);
                     return {
                         content: buildFileContent(config.template, {
                             ...objectInfo,
@@ -647,9 +646,9 @@ const renders: Record<Template, Render> = {
                 if (fieldObjectInfo) {
                     const fields = fieldObjectInfo.fields
                         ?.filter(field => field.inList)
-                        .filter(field => !field.isAggregate)
+                        .filter(field => field.inInput)
                         .filter(field => !field.isConnection);
-                    const importInfo = getImportInfo(fields);
+                    const importInfo = getImportInfo(schema, fields);
                     return {
                         content: buildFileContent(config.template, {
                             ...objectInfo,
@@ -674,9 +673,9 @@ const renders: Record<Template, Render> = {
                 if (fieldObjectInfo) {
                     const fields = fieldObjectInfo.fields
                         ?.filter(field => field.inList)
-                        .filter(field => !field.isAggregate)
+                        .filter(field => field.inInput)
                         .filter(field => !field.isConnection);
-                    const importInfo = getImportInfo(fields);
+                    const importInfo = getImportInfo(schema, fields);
                     return {
                         content: buildFileContent(config.template, {
                             ...objectInfo,
@@ -701,9 +700,9 @@ const renders: Record<Template, Render> = {
                 if (fieldObjectInfo) {
                     const fields = fieldObjectInfo.fields
                         ?.filter(field => field.inList)
-                        .filter(field => !field.isAggregate)
+                        .filter(field => field.inInput)
                         .filter(field => !field.isConnection);
-                    const importInfo = getImportInfo(fields);
+                    const importInfo = getImportInfo(schema, fields);
                     return {
                         content: buildFileContent(config.template, {
                             ...objectInfo,
@@ -728,9 +727,9 @@ const renders: Record<Template, Render> = {
                 if (fieldObjectInfo) {
                     const fields = fieldObjectInfo.fields
                         ?.filter(field => field.inList)
-                        .filter(field => !field.isAggregate)
+                        .filter(field => field.inInput)
                         .filter(field => !field.isConnection);
-                    const importInfo = getImportInfo(fields);
+                    const importInfo = getImportInfo(schema, fields);
                     return {
                         content: buildFileContent(config.template, {
                             ...objectInfo,
@@ -755,9 +754,9 @@ const renders: Record<Template, Render> = {
                 if (fieldObjectInfo) {
                     const fields = fieldObjectInfo.fields
                         ?.filter(field => field.inList)
-                        .filter(field => !field.isAggregate)
+                        .filter(field => field.inInput)
                         .filter(field => !field.isConnection);
-                    const importInfo = getImportInfo(fields);
+                    const importInfo = getImportInfo(schema, fields);
                     return {
                         content: buildFileContent(config.template, {
                             ...objectInfo,

@@ -1,7 +1,7 @@
 export const fragment_{{ name }}Fields = /* GraphQL */ `fragment {{ name }}Fields on {{ name }} {
     {%- if fields and fields.length > 0 %}
     {%- for field in fields %}
-    {%- if field.isAggregate == false %}
+    {%- if hasInput == false or field.inInput %}
     {%- if field.isLeafType %}
     {{ field.fieldName }}
     {%- elsif field.isFile %}
