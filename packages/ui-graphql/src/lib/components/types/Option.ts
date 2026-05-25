@@ -107,6 +107,22 @@ export function dateFromRecord(
 	return undefined;
 }
 
+export function formatDateTime(date?: Date | null | undefined): string | undefined {
+	if (date == null) {
+		return undefined;
+	}
+	const pad = (n: number) => String(n).padStart(2, '0');
+	return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+}
+
+export function formatDate(date?: Date | null | undefined): string | undefined {
+	if (date == null) {
+		return undefined;
+	}
+	const pad = (n: number) => String(n).padStart(2, '0');
+	return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
 export function booleanFromRecord(
 	record?: Record<string, string | null | undefined>,
 	title?: string,
@@ -668,31 +684,3 @@ export function createConverters<
 
 	return { toRecords, toErrors, fromRecords };
 }
-
-export type ScalarFieldProps = {
-	'tr'?: {} | undefined;
-	'th'?: {} | undefined;
-	'td'?: {} | undefined;
-	'form-control'?: {} | undefined;
-	'input'?: {} | undefined;
-};
-
-export type EnumFieldProps = {
-	'tr'?: {} | undefined;
-	'th'?: {} | undefined;
-	'td'?: {} | undefined;
-	'form-control'?: {} | undefined;
-	'select'?: {} | undefined;
-};
-
-export type ObjectFieldProps = {
-	'tr'?: {} | undefined;
-	'th'?: {} | undefined;
-	'td'?: {} | undefined;
-	'form-control'?: {} | undefined;
-	'table'?: {} | undefined;
-	'form'?: {} | undefined;
-	'combobox'?: {} | undefined;
-	'dialog'?: {} | undefined;
-	'link'?: {} | undefined;
-};

@@ -1,6 +1,5 @@
-import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
-import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters, type ScalarFieldProps, type EnumFieldProps, type ObjectFieldProps } from '@graphace/ui-graphql';
+import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters } from '@graphace/ui-graphql';
 {%- for object in objects %}
 {%- if object != name %}
 import { {{ object | camelCase }}Fields, type {{ object }}Fields } from '~/{{ componentsPath }}/objects/{{ object | paramCase }}/{{ object }}Option';
@@ -54,13 +53,25 @@ export type {{ name }}FieldsArgs = {
 
 export type {{ name }}FieldsProps = {
 	{%- for field in fields %}
-	{%- if field.isScalarType or field.isFile %}
-	{{ field.fieldName }}?: ScalarFieldProps | undefined;
-	{%- elsif field.isEnumType %}
-	{{ field.fieldName }}?: EnumFieldProps | undefined;
-	{%- else %}
-	{{ field.fieldName }}?: ObjectFieldProps | undefined;
-	{%- endif %}
+	{{ field.fieldName }}?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		{%- if field.isScalarType %}
+		'input'?: {} | undefined;
+		{%- elsif field.isFile %}
+		'file-input'?: {} | undefined;
+		{%- elsif field.isEnumType %}
+		'select'?: {} | undefined;
+		{%- else %}
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+		{%- endif %}
+	} | undefined;
 	{%- endfor %}
 };
 

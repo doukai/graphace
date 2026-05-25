@@ -1,6 +1,5 @@
-import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
-import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters, type ScalarFieldProps, type EnumFieldProps, type ObjectFieldProps } from '@graphace/ui-graphql';
+import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters } from '@graphace/ui-graphql';
 import { roleFields, type RoleFields } from '~/lib/components/objects/role/RoleOption';
 import { realmFields, type RealmFields } from '~/lib/components/objects/realm/RealmOption';
 import type {
@@ -44,13 +43,63 @@ export type PermissionFieldsArgs = {
 };
 
 export type PermissionFieldsProps = {
-	name?: ScalarFieldProps | undefined;
-	description?: ScalarFieldProps | undefined;
-	field?: ScalarFieldProps | undefined;
-	type?: ScalarFieldProps | undefined;
-	permissionType?: EnumFieldProps | undefined;
-	roles?: ObjectFieldProps | undefined;
-	realm?: ObjectFieldProps | undefined;
+	name?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	description?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	field?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	type?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	permissionType?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'select'?: {} | undefined;
+	} | undefined;
+	roles?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	realm?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
 };
 
 export type PermissionFields = {

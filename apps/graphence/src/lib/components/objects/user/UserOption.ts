@@ -1,6 +1,5 @@
-import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
-import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters, type ScalarFieldProps, type EnumFieldProps, type ObjectFieldProps } from '@graphace/ui-graphql';
+import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters } from '@graphace/ui-graphql';
 import { groupFields, type GroupFields } from '~/lib/components/objects/group/GroupOption';
 import { roleFields, type RoleFields } from '~/lib/components/objects/role/RoleOption';
 import { realmFields, type RealmFields } from '~/lib/components/objects/realm/RealmOption';
@@ -48,16 +47,88 @@ export type UserFieldsArgs = {
 };
 
 export type UserFieldsProps = {
-	name?: ScalarFieldProps | undefined;
-	description?: ScalarFieldProps | undefined;
-	lastName?: ScalarFieldProps | undefined;
-	login?: ScalarFieldProps | undefined;
-	email?: ScalarFieldProps | undefined;
-	phones?: ScalarFieldProps | undefined;
-	disable?: ScalarFieldProps | undefined;
-	groups?: ObjectFieldProps | undefined;
-	roles?: ObjectFieldProps | undefined;
-	realm?: ObjectFieldProps | undefined;
+	name?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	description?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	lastName?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	login?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	email?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	phones?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	disable?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	groups?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	roles?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	realm?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
 };
 
 export type UserFields = {

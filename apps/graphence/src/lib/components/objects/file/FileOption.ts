@@ -1,6 +1,5 @@
-import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
-import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters, type ScalarFieldProps, type EnumFieldProps, type ObjectFieldProps } from '@graphace/ui-graphql';
+import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters } from '@graphace/ui-graphql';
 import type {
 	FileInput,
 	QueryFileArgs,
@@ -37,11 +36,41 @@ export type FileFieldsArgs = {
 };
 
 export type FileFieldsProps = {
-	name?: ScalarFieldProps | undefined;
-	contentType?: ScalarFieldProps | undefined;
-	contentLength?: ScalarFieldProps | undefined;
-	content?: ScalarFieldProps | undefined;
-	url?: ScalarFieldProps | undefined;
+	name?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	contentType?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	contentLength?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	content?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	url?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
 };
 
 export type FileFields = {

@@ -1,6 +1,5 @@
-import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
-import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters, type ScalarFieldProps, type EnumFieldProps, type ObjectFieldProps } from '@graphace/ui-graphql';
+import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters } from '@graphace/ui-graphql';
 import { userFields, type UserFields } from '~/lib/components/objects/user/UserOption';
 import { roleFields, type RoleFields } from '~/lib/components/objects/role/RoleOption';
 import { realmFields, type RealmFields } from '~/lib/components/objects/realm/RealmOption';
@@ -48,16 +47,96 @@ export type GroupFieldsArgs = {
 };
 
 export type GroupFieldsProps = {
-	name?: ScalarFieldProps | undefined;
-	description?: ScalarFieldProps | undefined;
-	path?: ScalarFieldProps | undefined;
-	deep?: ScalarFieldProps | undefined;
-	parentId?: ScalarFieldProps | undefined;
-	parent?: ObjectFieldProps | undefined;
-	subGroups?: ObjectFieldProps | undefined;
-	users?: ObjectFieldProps | undefined;
-	roles?: ObjectFieldProps | undefined;
-	realm?: ObjectFieldProps | undefined;
+	name?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	description?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	path?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	deep?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	parentId?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	parent?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	subGroups?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	users?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	roles?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	realm?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
 };
 
 export type GroupFields = {

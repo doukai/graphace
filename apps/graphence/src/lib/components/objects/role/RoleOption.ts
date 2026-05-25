@@ -1,6 +1,5 @@
-import type { Errors } from '@graphace/commons';
 import type { TabInfo } from '@graphace/ui';
-import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters, type ScalarFieldProps, type EnumFieldProps, type ObjectFieldProps } from '@graphace/ui-graphql';
+import { type Option, stringFromRecord, numberFromRecord, floatFromRecord, dateTimeFromRecord, dateFromRecord, booleanFromRecord, enumFromRecord, stringListFromRecord, numberListFromRecord, floatListFromRecord, booleanListFromRecord, enumListFromRecord, objectFromRecord, objectListFromRecord, stringToString, numberToString, floatToString, booleanToString, enumToString, stringListToString, numberListToString, floatListToString, booleanListToString, enumListToString, objectToRecord, objectListToRecord, createValidators, createConverters } from '@graphace/ui-graphql';
 import { userFields, type UserFields } from '~/lib/components/objects/user/UserOption';
 import { groupFields, type GroupFields } from '~/lib/components/objects/group/GroupOption';
 import { permissionFields, type PermissionFields } from '~/lib/components/objects/permission/PermissionOption';
@@ -47,13 +46,75 @@ export type RoleFieldsArgs = {
 };
 
 export type RoleFieldsProps = {
-	name?: ScalarFieldProps | undefined;
-	description?: ScalarFieldProps | undefined;
-	users?: ObjectFieldProps | undefined;
-	groups?: ObjectFieldProps | undefined;
-	composites?: ObjectFieldProps | undefined;
-	permissions?: ObjectFieldProps | undefined;
-	realm?: ObjectFieldProps | undefined;
+	name?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	description?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
+	users?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	groups?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	composites?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	permissions?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
+	realm?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
 };
 
 export type RoleFields = {

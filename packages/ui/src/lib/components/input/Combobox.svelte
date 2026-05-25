@@ -181,7 +181,7 @@
 					{id}
 					bind:value={searchValue}
 					type="text"
-					class="input px-0 h-5 min-w-5 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+					class="input px-0 h-5 min-w-5 shrink grow basis-0 border-0 rounded-none outline-none focus:rounded-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 					on:focus={(e) => {
 						if ($touchedInput) {
 							debounce(() => {
