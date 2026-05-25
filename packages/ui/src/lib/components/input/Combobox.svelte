@@ -58,6 +58,8 @@
 		change: { value: Option | Option[]; original?: Option | Option[] };
 	}>();
 
+	let searchValue: string | undefined = undefined;
+
 	const {
 		elements: { menu, input, option, label, group, groupLabel },
 		states: { open, inputValue, touchedInput, selected },
@@ -77,6 +79,7 @@
 			value = Array.isArray(next) ? next.map((item) => item.value) : next?.value;
 			let original = Array.isArray(curr) ? curr.map((item) => item.value) : curr?.value;
 			dispatch('change', { value, original });
+			searchValue = undefined;
 			return next;
 		}
 	});
@@ -134,7 +137,7 @@
 		class="grid grid-cols-[1fr_auto] items-center textarea{errors?.errors ||
 		(errors?.iterms && Object.keys(errors?.iterms).length > 0)
 			? ' textarea-error focus-within:outline-error'
-			: ' focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered min-h-12 p-1 gap-1"
+			: ' focus-within:outline-base-content/20'} focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 textarea-bordered min-h-12 px-4 gap-1"
 	>
 		<div class="flex flex-wrap items-center gap-1 min-w-0">
 			{#each $tags as t, index}
@@ -143,7 +146,7 @@
 					use:melt={$tag(t)}
 					class="badge{errors?.iterms?.[index]
 						? ' badge-error'
-						: ' badge-neutral'} flex items-center max-w-full [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
+						: ' badge-neutral'} flex items-center px-2 max-w-full [word-break:break-word] data-[selected]:bg-neutral-focus data-[disabled]:hover:cursor-default data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
 				>
 					<span
 						data-part="text"
@@ -176,8 +179,9 @@
 				<input
 					data-part="search"
 					{id}
+					bind:value={searchValue}
 					type="text"
-					class="input h-5 min-w-5 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
+					class="input px-0 h-5 min-w-5 shrink grow basis-0 border-0 outline-none focus:outline-none focus:!ring-0 data-[invalid]:text-error"
 					on:focus={(e) => {
 						if ($touchedInput) {
 							debounce(() => {
@@ -209,7 +213,7 @@
 	<ul
 		data-part="menu"
 		class="menu rounded shadow bg-base-100 z-[{zIndex +
-			9}] w-full max-h-80 mt-2 flex-nowrap overflow-y-auto"
+			9}] w-full max-h-80 mt-1 flex-nowrap overflow-y-auto"
 		use:melt={$menu}
 		transition:fade={{ duration: 100 }}
 	>

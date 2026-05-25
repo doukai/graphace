@@ -5,7 +5,8 @@
 
 	export let title: string | undefined = undefined;
 	import { zIndex } from '~';
-	let className: string | undefined = '[&_[data-part=modal-box]]:w-11/12 [&_[data-part=modal-box]]:max-w-5xl';
+	let className: string | undefined =
+		'[&_[data-part=modal-box]]:w-11/12 [&_[data-part=modal-box]]:max-w-5xl';
 	export { className as class };
 
 	const contextClass = getContext<string>('ui.dialog') || '';
@@ -60,7 +61,7 @@
 			{#if title}
 				<h2 use:melt={$titleEle} data-part="modal-title" class="font-bold text-lg">{title}</h2>
 			{/if}
-			<div class="flex flex-col flex-1 min-h-0 py-4">
+			<div class="flex flex-col flex-1 gap-2 min-h-0 pt-4">
 				<slot zIndex={nextZIndex} />
 			</div>
 		</div>

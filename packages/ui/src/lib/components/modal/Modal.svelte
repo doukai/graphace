@@ -40,7 +40,7 @@
 		{#if title}
 			<h2 data-part="modal-title" class="font-bold text-lg">{title}</h2>
 		{/if}
-		<div class="flex flex-col flex-1 min-h-0 py-4">
+		<div class="flex flex-col flex-1 gap-2 min-h-0 pt-4">
 			<slot />
 		</div>
 	</div>

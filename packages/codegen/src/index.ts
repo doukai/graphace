@@ -27,7 +27,6 @@ import {
     getObjectInfo,
     getImportInfo,
     typeHasInput,
-    fieldInInput,
     typeInObject
 } from 'graphace-codegen-commons';
 import type { GraphacePluginConfig } from './config.js';
@@ -43,14 +42,11 @@ const getObjectTypes = (schema: GraphQLSchema) =>
         .filter(type => !isIntrospection(type.name))
         .filter(type => isObjectType(type))
         .filter(type => getIDFieldName(type))
-        .filter(type => typeHasInput(schema, type.name))
         .map(type => assertObjectType(type))
         .map(objectType => ({
             ...objectType,
             fields: Object.values(objectType.getFields())
-                .filter(field => !isEdge(getFieldType(field.type).name))
                 .filter(field => !isIntrospection(getFieldType(field.type).name))
-                .filter(field => fieldInInput(schema, getFieldType(field.type).name, field.name))
         }));
 
 const getEnumTypes = (schema: GraphQLSchema) =>
@@ -74,7 +70,8 @@ const renders: Record<Template, Render> = {
             content: buildFileContent(config.template,
                 {
                     objects: getObjectTypes(schema)
-                        .filter(type => inRouteObject(type.name)),
+                        .filter(type => inRouteObject(type.name))
+                        .filter(type => typeHasInput(schema, type.name)),
                     ...buildConfig(config)
                 }
             ),
