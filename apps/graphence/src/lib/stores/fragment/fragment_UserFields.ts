@@ -9,6 +9,12 @@ export const fragment_UserFields = /* GraphQL */ `fragment UserFields on User {
     email
     phones
     disable
+    dataPermissionLevel
+    group {
+      id
+      name
+      description
+    }
     groups {
       id
       name
@@ -32,6 +38,7 @@ export const fragment_UserFields = /* GraphQL */ `fragment UserFields on User {
     updateUserId
     updateTime
     createGroupId
+    groupId
   }`;
 
 export const fragment_UserNamedFields = /* GraphQL */ `fragment UserNamedFields on User {

@@ -35,6 +35,12 @@ const en: BaseTranslation = {
 				disable: {
 					name: 'disable',
 				},
+				dataPermissionLevel: {
+					name: 'dataPermissionLevel',
+				},
+				group: {
+					name: 'group',
+				},
 				groups: {
 					name: 'groups',
 				},
@@ -67,6 +73,9 @@ const en: BaseTranslation = {
 				},
 				createGroupId: {
 					name: 'createGroupId',
+				},
+				groupId: {
+					name: 'groupId',
 				},
 				userPhonesRelation: {
 					name: 'userPhonesRelation',
@@ -133,6 +142,12 @@ const en: BaseTranslation = {
 				},
 				disableCount: {
 					name: 'disableCount',
+				},
+				dataPermissionLevelCount: {
+					name: 'dataPermissionLevelCount',
+				},
+				groupIdCount: {
+					name: 'groupIdCount',
 				},
 				createTimeYear: {
 					name: 'createTimeYear',
@@ -1296,6 +1311,23 @@ const en: BaseTranslation = {
 				},
 				ANY: {
 					name: 'ANY',
+				}
+			}
+		},
+		DataPermissionLevel: {
+			name: 'DataPermissionLevel',
+			values: {
+				ALL: {
+					name: 'ALL',
+				},
+				SAME_LEVEL: {
+					name: 'SAME_LEVEL',
+				},
+				SAME_AND_LOWER: {
+					name: 'SAME_AND_LOWER',
+				},
+				LOWER_ONLY: {
+					name: 'LOWER_ONLY',
 				}
 			}
 		}

@@ -97,7 +97,10 @@
 						<span class="uppercase text-[#E535AB]">ACE</span>
 					</div>
 				</a>
-				<Typeahead placeholder={$LL.graphence.components.search.label()} class="max-lg:hidden" />
+				<Typeahead
+					placeholder={$LL.graphence.components.search.label()}
+					class="typeahead-bordered max-lg:hidden"
+				/>
 			</NavBarStart>
 			<NavBarEnd class="flex items-center space-x-1">
 				<ThemeDropdown zIndex={$zIndex + 1} />
@@ -160,7 +163,10 @@
 						<span class="uppercase text-[#E535AB]">ACE</span>
 					</div>
 				</a>
-				<Typeahead placeholder={$LL.graphence.components.search.label()} class="w-full lg:hidden" />
+				<Typeahead
+					placeholder={$LL.graphence.components.search.label()}
+					class="typeahead-bordered w-full lg:hidden"
+				/>
 			</div>
 			<SideBarMenu />
 		</div>

@@ -841,6 +841,18 @@ export type NamespaceGraphqlTranslation = {
 					 */
 					name: string
 				}
+				dataPermissionLevel: {
+					/**
+					 * d​a​t​a​P​e​r​m​i​s​s​i​o​n​L​e​v​e​l
+					 */
+					name: string
+				}
+				group: {
+					/**
+					 * g​r​o​u​p
+					 */
+					name: string
+				}
 				groups: {
 					/**
 					 * g​r​o​u​p​s
@@ -904,6 +916,12 @@ export type NamespaceGraphqlTranslation = {
 				createGroupId: {
 					/**
 					 * c​r​e​a​t​e​G​r​o​u​p​I​d
+					 */
+					name: string
+				}
+				groupId: {
+					/**
+					 * g​r​o​u​p​I​d
 					 */
 					name: string
 				}
@@ -1036,6 +1054,18 @@ export type NamespaceGraphqlTranslation = {
 				disableCount: {
 					/**
 					 * d​i​s​a​b​l​e​C​o​u​n​t
+					 */
+					name: string
+				}
+				dataPermissionLevelCount: {
+					/**
+					 * d​a​t​a​P​e​r​m​i​s​s​i​o​n​L​e​v​e​l​C​o​u​n​t
+					 */
+					name: string
+				}
+				groupIdCount: {
+					/**
+					 * g​r​o​u​p​I​d​C​o​u​n​t
 					 */
 					name: string
 				}
@@ -3341,6 +3371,38 @@ export type NamespaceGraphqlTranslation = {
 				}
 			}
 		}
+		DataPermissionLevel: {
+			/**
+			 * D​a​t​a​P​e​r​m​i​s​s​i​o​n​L​e​v​e​l
+			 */
+			name: string
+			values: {
+				ALL: {
+					/**
+					 * A​L​L
+					 */
+					name: string
+				}
+				SAME_LEVEL: {
+					/**
+					 * S​A​M​E​_​L​E​V​E​L
+					 */
+					name: string
+				}
+				SAME_AND_LOWER: {
+					/**
+					 * S​A​M​E​_​A​N​D​_​L​O​W​E​R
+					 */
+					name: string
+				}
+				LOWER_ONLY: {
+					/**
+					 * L​O​W​E​R​_​O​N​L​Y
+					 */
+					name: string
+				}
+			}
+		}
 	}
 }
 
@@ -4506,6 +4568,18 @@ export type TranslationFunctions = {
 						 */
 						name: () => LocalizedString
 					}
+					dataPermissionLevel: {
+						/**
+						 * dataPermissionLevel
+						 */
+						name: () => LocalizedString
+					}
+					group: {
+						/**
+						 * group
+						 */
+						name: () => LocalizedString
+					}
 					groups: {
 						/**
 						 * groups
@@ -4569,6 +4643,12 @@ export type TranslationFunctions = {
 					createGroupId: {
 						/**
 						 * createGroupId
+						 */
+						name: () => LocalizedString
+					}
+					groupId: {
+						/**
+						 * groupId
 						 */
 						name: () => LocalizedString
 					}
@@ -4701,6 +4781,18 @@ export type TranslationFunctions = {
 					disableCount: {
 						/**
 						 * disableCount
+						 */
+						name: () => LocalizedString
+					}
+					dataPermissionLevelCount: {
+						/**
+						 * dataPermissionLevelCount
+						 */
+						name: () => LocalizedString
+					}
+					groupIdCount: {
+						/**
+						 * groupIdCount
 						 */
 						name: () => LocalizedString
 					}
@@ -7001,6 +7093,38 @@ export type TranslationFunctions = {
 					ANY: {
 						/**
 						 * ANY
+						 */
+						name: () => LocalizedString
+					}
+				}
+			}
+			DataPermissionLevel: {
+				/**
+				 * DataPermissionLevel
+				 */
+				name: () => LocalizedString
+				values: {
+					ALL: {
+						/**
+						 * ALL
+						 */
+						name: () => LocalizedString
+					}
+					SAME_LEVEL: {
+						/**
+						 * SAME_LEVEL
+						 */
+						name: () => LocalizedString
+					}
+					SAME_AND_LOWER: {
+						/**
+						 * SAME_AND_LOWER
+						 */
+						name: () => LocalizedString
+					}
+					LOWER_ONLY: {
+						/**
+						 * LOWER_ONLY
 						 */
 						name: () => LocalizedString
 					}

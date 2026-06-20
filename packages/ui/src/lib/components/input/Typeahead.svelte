@@ -64,7 +64,7 @@
 <div
 	data-element="typeahead"
 	data-part="root"
-	class="flex flex-wrap items-center textarea focus-within:outline focus-within:outline-2 focus-within:outline-base-content/20 focus-within:outline-offset-2 textarea-bordered min-h-12 p-1 gap-1 {contextClass} {className}"
+	class="typeahead {className} {contextClass} typeahead-bordered"
 	bind:this={rootElement}
 >
 	<Icon src={MagnifyingGlass} data-part="icon" class="size-4 ml-2" />
@@ -87,7 +87,7 @@
 		on:keydown
 		let:result
 	>
-		<div data-part="text" class="py-1 text-sm font-normal">
+		<div data-part="text" class="py-1 font-normal">
 			{result.original.name}
 		</div>
 	</Typeahead>
@@ -105,65 +105,141 @@
 	</div>
 </div>
 
-<style global>
-	[data-svelte-typeahead][data-svelte-typeahead] {
+<style>
+	/* =========================================================================
+	   Typeahead 组件样式（自包含，随组件 import 自动注入）
+	   - 基于第三方 svelte-typeahead，内部 DOM 用 :global() 命中（沿用其双属性提权写法压过库样式）
+	   - 命名空间 .typeahead-*，采用 DaisyUI 主题变量，风格对齐 Combobox
+	   ========================================================================= */
+
+	/* —— 基础盒子（默认对齐 DaisyUI input md；flex 容纳 图标/输入/kbd）—— */
+	:global(.typeahead) {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.25rem;
+		min-height: 3rem;
+		padding: 0.375rem 1rem;
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		border: 1px solid hsl(var(--bc) / 0);
+		background-color: hsl(var(--b1) / 1);
+		border-radius: var(--rounded-btn, 0.5rem);
+	}
+	:global(.typeahead:focus-within) {
+		outline: 2px solid hsl(var(--bc) / 0.2);
+		outline-offset: 2px;
+	}
+
+	/* —— variant —— */
+	:global(.typeahead-bordered) {
+		border-color: hsl(var(--bc) / 0.2);
+	}
+	:global(.typeahead-ghost) {
+		background-color: hsl(var(--bc) / 0.05);
+	}
+	:global(.typeahead-ghost:focus-within) {
+		background-color: hsl(var(--b1) / 1);
+	}
+
+	/* —— size（min-height + padding + font-size，与 Combobox 各档一致）—— */
+	:global(.typeahead-xs) {
+		min-height: 1.5rem;
+		padding: 0.0625rem 0.5rem;
+		font-size: 0.75rem;
+		gap: 0.125rem;
+	}
+	:global(.typeahead-sm) {
+		min-height: 2rem;
+		padding: 0.125rem 0.75rem;
+		font-size: 0.875rem;
+	}
+	:global(.typeahead-md) {
+		min-height: 3rem;
+		padding: 0.375rem 1rem;
+		font-size: 0.875rem;
+	}
+	:global(.typeahead-lg) {
+		min-height: 4rem;
+		padding: 0.5rem 1.5rem;
+		font-size: 1.125rem;
+	}
+
+	/* —— 第三方容器透明，避免盖住盒子背景（含 ghost 底色）——
+	   svelte-typeahead 自带 [data-svelte-typeahead].svelte-HASH.svelte-HASH 白底 (0,3,0)，
+	   这里用三重属性 (0,4,0) 压过它（库的 hash 会变，不能直接命中类名）*/
+	:global(.typeahead [data-svelte-typeahead][data-svelte-typeahead][data-svelte-typeahead]) {
 		background-color: transparent;
 	}
-	[data-svelte-search][data-svelte-search] input {
+
+	/* —— 搜索输入：完全自包含，透明背景 + 字号跟随尺寸 —— */
+	:global(.typeahead [data-svelte-search][data-svelte-search] input) {
 		flex-shrink: 1;
-		font-size: 1rem /* 16px */;
-		line-height: 1.25rem /* 20px */;
-		--tw-bg-opacity: 1;
-		background-color: hsl(var(--b1) / var(--tw-bg-opacity));
-		border-width: 0px;
-		padding-left: 0.25rem /* 4px */;
-		padding-right: 0.25rem /* 4px */;
 		width: 100%;
-		outline: 2px solid transparent;
-		outline-offset: 2px;
+		padding: 0 0.25rem;
+		border: none;
+		border-radius: 0;
+		outline: none;
+		background-color: transparent;
+		color: hsl(var(--bc) / 1);
+		font-size: inherit;
+		line-height: inherit;
 	}
-	[data-svelte-search][data-svelte-search] input::placeholder {
-		color: hsl(var(--bc) / var(--tw-placeholder-opacity));
-		--tw-placeholder-opacity: 0.2;
+	:global(.typeahead [data-svelte-search][data-svelte-search] input:focus) {
+		outline: none;
+		box-shadow: none;
+		background-color: transparent;
 	}
-	[data-svelte-search][data-svelte-search] input:focus {
-		outline: 2px solid transparent;
-		outline-offset: 2px;
-		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
-			var(--tw-ring-offset-color) !important;
-		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width))
-			var(--tw-ring-color) !important;
-		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000) !important;
+	:global(.typeahead [data-svelte-search][data-svelte-search] input::placeholder) {
+		color: hsl(var(--bc) / 0.4);
 	}
-	[data-svelte-typeahead][data-svelte-typeahead].dropdown[aria-expanded='true']
-		.svelte-typeahead-list {
-		transform: translateY(0.5em);
-		background: hsl(var(--b1) / 0.99);
-		border: 0 solid hsl(var(--bc) / 0.2);
-		border-radius: 0.25rem /* 4px */;
-		overflow: hidden;
-		padding: 0.5rem;
-		backdrop-filter: blur(1rem);
+
+	/* —— 搜索图标：跟随尺寸缩放 —— */
+	:global(.typeahead-xs [data-part='icon']),
+	:global(.typeahead-sm [data-part='icon']) {
+		width: 0.875rem;
+		height: 0.875rem;
+	}
+	:global(.typeahead-lg [data-part='icon']) {
+		width: 1.25rem;
+		height: 1.25rem;
+	}
+
+	/* —— 下拉列表（对齐 Combobox 菜单：rounded-box + 阴影 + bc/.1 高亮）—— */
+	:global(
+			.typeahead
+				[data-svelte-typeahead][data-svelte-typeahead].dropdown[aria-expanded='true']
+				.svelte-typeahead-list
+		) {
 		margin-top: 0.5rem;
-		--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-		--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-			var(--tw-shadow);
+		padding: 0.5rem;
+		background-color: hsl(var(--b1) / 1);
+		border: none;
+		border-radius: var(--rounded-box, 0.5rem);
+		overflow: hidden;
+		box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 	}
-	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list .selected,
-	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list .selected:hover {
-		background: hsl(var(--n));
-		color: hsl(var(--nc));
+	:global(.typeahead [data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list li) {
+		color: hsl(var(--bc) / 1);
+		border-radius: var(--rounded-btn, 0.5rem);
 	}
-	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list li {
-		color: hsl(var(--bc));
-		border-radius: var(--rounded-btn, 0.5rem /* 8px */);
-	}
-	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list li:hover {
-		background: hsl(var(--b2));
-		color: hsl(var(--bc));
-	}
-	[data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list li:not(:last-of-type) {
+	:global(
+			.typeahead
+				[data-svelte-typeahead][data-svelte-typeahead]
+				.svelte-typeahead-list
+				li:not(:last-of-type)
+		) {
 		border-bottom: none;
+	}
+	:global(.typeahead [data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list li:hover),
+	:global(.typeahead [data-svelte-typeahead][data-svelte-typeahead] .svelte-typeahead-list .selected),
+	:global(
+			.typeahead
+				[data-svelte-typeahead][data-svelte-typeahead]
+				.svelte-typeahead-list
+				.selected:hover
+		) {
+		background-color: hsl(var(--bc) / 0.1);
+		color: hsl(var(--bc) / 1);
 	}
 </style>

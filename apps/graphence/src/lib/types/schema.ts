@@ -42,6 +42,10 @@ export type User = NamedStruct & Meta & {
   phones?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** 禁用 */
   disable?: Maybe<Scalars['Boolean']>;
+  /** 数据权限等级 */
+  dataPermissionLevel?: Maybe<DataPermissionLevel>;
+  /** 归属 */
+  group?: Maybe<Group>;
   /** 组 */
   groups?: Maybe<Array<Maybe<Group>>>;
   /** 角色 */
@@ -64,6 +68,8 @@ export type User = NamedStruct & Meta & {
   updateTime?: Maybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: Maybe<Scalars['String']>;
+  /** 归属 引用 */
+  groupId?: Maybe<Scalars['String']>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: Maybe<Array<Maybe<UserPhonesRelation>>>;
   /** 用户 组 关系 */
@@ -108,6 +114,10 @@ export type User = NamedStruct & Meta & {
   emailCount?: Maybe<Scalars['Int']>;
   /** 禁用 数量 */
   disableCount?: Maybe<Scalars['Int']>;
+  /** 数据权限等级 数量 */
+  dataPermissionLevelCount?: Maybe<Scalars['Int']>;
+  /** 归属 引用 数量 */
+  groupIdCount?: Maybe<Scalars['Int']>;
   /** Year of 创建时间 */
   createTimeYear?: Maybe<Scalars['Int']>;
   /** Month of 创建时间 */
@@ -143,6 +153,31 @@ export type UserPhonesArgs = {
   sort?: InputMaybe<Sort>;
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
+};
+
+
+/** 用户 */
+export type UserGroupArgs = {
+  id?: InputMaybe<StringExpression>;
+  name?: InputMaybe<StringExpression>;
+  description?: InputMaybe<StringExpression>;
+  path?: InputMaybe<StringExpression>;
+  deep?: InputMaybe<IntExpression>;
+  parentId?: InputMaybe<StringExpression>;
+  parent?: InputMaybe<GroupExpression>;
+  subGroups?: InputMaybe<GroupExpression>;
+  users?: InputMaybe<UserExpression>;
+  roles?: InputMaybe<RoleExpression>;
+  realm?: InputMaybe<RealmExpression>;
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+  version?: InputMaybe<IntExpression>;
+  realmId?: InputMaybe<IntExpression>;
+  createUserId?: InputMaybe<StringExpression>;
+  createTime?: InputMaybe<StringExpression>;
+  updateUserId?: InputMaybe<StringExpression>;
+  updateTime?: InputMaybe<StringExpression>;
+  createGroupId?: InputMaybe<StringExpression>;
+  groupBy?: InputMaybe<GroupGroupBy>;
 };
 
 
@@ -658,6 +693,8 @@ export type RoleUsersArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -669,6 +706,7 @@ export type RoleUsersArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -908,6 +946,8 @@ export type RoleUsersAggregateArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -919,6 +959,7 @@ export type RoleUsersAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -952,6 +993,8 @@ export type RoleUsersConnectionArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -963,6 +1006,7 @@ export type RoleUsersConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -1514,6 +1558,8 @@ export type GroupUsersArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -1525,6 +1571,7 @@ export type GroupUsersArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -1731,6 +1778,8 @@ export type GroupUsersAggregateArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -1742,6 +1791,7 @@ export type GroupUsersAggregateArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -1775,6 +1825,8 @@ export type GroupUsersConnectionArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -1786,6 +1838,7 @@ export type GroupUsersConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -2428,6 +2481,8 @@ export type QueryUserArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -2439,6 +2494,7 @@ export type QueryUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -2470,6 +2526,8 @@ export type QueryUserListArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -2481,6 +2539,7 @@ export type QueryUserListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -2519,6 +2578,8 @@ export type QueryUserConnectionArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -2530,6 +2591,7 @@ export type QueryUserConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -3875,6 +3937,8 @@ export type MutationUserArgs = {
   email?: InputMaybe<Scalars['String']>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevel>;
+  group?: InputMaybe<GroupInput>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
@@ -3886,6 +3950,7 @@ export type MutationUserArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  groupId?: InputMaybe<Scalars['String']>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
@@ -3906,6 +3971,8 @@ export type MutationUserListArgs = {
   email?: InputMaybe<Scalars['String']>;
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   disable?: InputMaybe<Scalars['Boolean']>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevel>;
+  group?: InputMaybe<GroupInput>;
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   roles?: InputMaybe<Array<InputMaybe<RoleInput>>>;
   realm?: InputMaybe<RealmInput>;
@@ -3917,6 +3984,7 @@ export type MutationUserListArgs = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  groupId?: InputMaybe<Scalars['String']>;
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   groupUserRelation?: InputMaybe<Array<InputMaybe<GroupUserRelationInput>>>;
   roleUserRelation?: InputMaybe<Array<InputMaybe<RoleUserRelationInput>>>;
@@ -4528,6 +4596,8 @@ export type SubscriptionUserArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -4539,6 +4609,7 @@ export type SubscriptionUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -4570,6 +4641,8 @@ export type SubscriptionUserListArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -4581,6 +4654,7 @@ export type SubscriptionUserListArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -4619,6 +4693,8 @@ export type SubscriptionUserConnectionArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -4630,6 +4706,7 @@ export type SubscriptionUserConnectionArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -5951,6 +6028,8 @@ export type UserPhonesRelationUserArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -5962,6 +6041,7 @@ export type UserPhonesRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -6048,6 +6128,8 @@ export type GroupUserRelationUserArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -6059,6 +6141,7 @@ export type GroupUserRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -6182,6 +6265,8 @@ export type RoleUserRelationUserArgs = {
   email?: InputMaybe<StringExpression>;
   phones?: InputMaybe<StringExpression>;
   disable?: InputMaybe<BooleanExpression>;
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  group?: InputMaybe<GroupExpression>;
   groups?: InputMaybe<GroupExpression>;
   roles?: InputMaybe<RoleExpression>;
   realm?: InputMaybe<RealmExpression>;
@@ -6193,6 +6278,7 @@ export type RoleUserRelationUserArgs = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  groupId?: InputMaybe<StringExpression>;
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   groupUserRelation?: InputMaybe<GroupUserRelationExpression>;
   roleUserRelation?: InputMaybe<RoleUserRelationExpression>;
@@ -6863,10 +6949,14 @@ export type Current = {
   login?: Maybe<Scalars['String']>;
   /** 租户ID */
   realmId?: Maybe<Scalars['Int']>;
+  /** 归属 */
+  groupId?: Maybe<Scalars['String']>;
   /** 组 */
   groups?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** 角色 */
   roles?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /** 数据权限等级 */
+  dataPermissionLevel?: Maybe<Scalars['Int']>;
 };
 
 /** Policy */
@@ -7014,6 +7104,7 @@ export type MetaInput = {
   updateUserId?: InputMaybe<Scalars['String']>;
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   createGroupId?: InputMaybe<Scalars['String']>;
+  where?: InputMaybe<MetaExpression>;
 };
 
 export type MetaExpression = {
@@ -7024,6 +7115,7 @@ export type MetaExpression = {
   updateUserId?: InputMaybe<StringExpression>;
   updateTime?: InputMaybe<StringExpression>;
   createGroupId?: InputMaybe<StringExpression>;
+  exs?: InputMaybe<Array<InputMaybe<MetaExpression>>>;
 };
 
 /** 用户 查询表达式 */
@@ -7048,6 +7140,10 @@ export type UserExpression = {
   phones?: InputMaybe<StringExpression>;
   /** 禁用 */
   disable?: InputMaybe<BooleanExpression>;
+  /** 数据权限等级 */
+  dataPermissionLevel?: InputMaybe<DataPermissionLevelExpression>;
+  /** 归属 */
+  group?: InputMaybe<GroupExpression>;
   /** 组 */
   groups?: InputMaybe<GroupExpression>;
   /** 角色 */
@@ -7070,6 +7166,8 @@ export type UserExpression = {
   updateTime?: InputMaybe<StringExpression>;
   /** 创建组 */
   createGroupId?: InputMaybe<StringExpression>;
+  /** 归属 引用 */
+  groupId?: InputMaybe<StringExpression>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationExpression>;
   /** 用户 组 关系 */
@@ -7140,6 +7238,10 @@ export type UserInput = {
   phones?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   /** 禁用 */
   disable?: InputMaybe<Scalars['Boolean']>;
+  /** 数据权限等级 */
+  dataPermissionLevel?: InputMaybe<DataPermissionLevel>;
+  /** 归属 */
+  group?: InputMaybe<GroupInput>;
   /** 组 */
   groups?: InputMaybe<Array<InputMaybe<GroupInput>>>;
   /** 角色 */
@@ -7162,6 +7264,8 @@ export type UserInput = {
   updateTime?: InputMaybe<Scalars['Timestamp']>;
   /** 创建组 */
   createGroupId?: InputMaybe<Scalars['String']>;
+  /** 归属 引用 */
+  groupId?: InputMaybe<Scalars['String']>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<Array<InputMaybe<UserPhonesRelationInput>>>;
   /** 用户 组 关系 */
@@ -7198,6 +7302,10 @@ export type UserOrderBy = {
   phones?: InputMaybe<Sort>;
   /** 禁用 */
   disable?: InputMaybe<Sort>;
+  /** 数据权限等级 */
+  dataPermissionLevel?: InputMaybe<Sort>;
+  /** 归属 */
+  group?: InputMaybe<GroupOrderBy>;
   /** 组 */
   groups?: InputMaybe<GroupOrderBy>;
   /** 角色 */
@@ -7220,6 +7328,8 @@ export type UserOrderBy = {
   updateTime?: InputMaybe<Sort>;
   /** 创建组 */
   createGroupId?: InputMaybe<Sort>;
+  /** 归属 引用 */
+  groupId?: InputMaybe<Sort>;
   /** 用户 手机号 关系 */
   userPhonesRelation?: InputMaybe<UserPhonesRelationOrderBy>;
   /** 用户 组 关系 */
@@ -7254,6 +7364,10 @@ export type UserOrderBy = {
   emailCount?: InputMaybe<Sort>;
   /** 禁用 数量 */
   disableCount?: InputMaybe<Sort>;
+  /** 数据权限等级 数量 */
+  dataPermissionLevelCount?: InputMaybe<Sort>;
+  /** 归属 引用 数量 */
+  groupIdCount?: InputMaybe<Sort>;
   /** Year of 创建时间 */
   createTimeYear?: InputMaybe<Sort>;
   /** Month of 创建时间 */
@@ -7282,6 +7396,8 @@ export type UserOrderBy = {
 export type UserGroupBy = {
   /** Group By Field Names */
   by?: InputMaybe<Array<Scalars['String']>>;
+  /** 归属 */
+  group?: InputMaybe<GroupGroupBy>;
   /** 组 */
   groups?: InputMaybe<GroupGroupBy>;
   /** 角色 */
@@ -9234,6 +9350,16 @@ export type PermissionTypeExpression = {
   arr?: InputMaybe<Array<InputMaybe<PermissionType>>>;
 };
 
+/** 数据权限等级 查询表达式 */
+export type DataPermissionLevelExpression = {
+  /** 条件 */
+  opr?: InputMaybe<Operator>;
+  /** 值 */
+  val?: InputMaybe<DataPermissionLevel>;
+  /** 组 */
+  arr?: InputMaybe<Array<InputMaybe<DataPermissionLevel>>>;
+};
+
 export type Query_CurrentPermissionNameListByTypes_Arguments = {
   types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -9712,6 +9838,17 @@ export type PermissionType =
   | 'WRITE'
   /** 全部 */
   | 'ANY';
+
+/** 数据权限等级 */
+export type DataPermissionLevel =
+  /** 全部 */
+  | 'ALL'
+  /** 同级 */
+  | 'SAME_LEVEL'
+  /** 同级与下级 */
+  | 'SAME_AND_LOWER'
+  /** 仅下级 */
+  | 'LOWER_ONLY';
 
 export type Operator =
   | 'EQ'

@@ -15,6 +15,7 @@
 		to
 	} from '@graphace/ui';
 	import { StringInput, BooleanInput, ObjectLink } from '@graphace/ui-graphql';
+	import DataPermissionLevelInput from '~/lib/components/enums/data-permission-level/DataPermissionLevelInput.svelte';
 	import GroupSelect from '~/lib/components/objects/group/GroupSelect.svelte';
 	import RoleSelect from '~/lib/components/objects/role/RoleSelect.svelte';
 	import RealmTableDialog from '~/lib/components/objects/realm/RealmTableDialog.svelte';
@@ -344,6 +345,62 @@
 				</FormControl>
 			{/if}
 		</slot>
+		<slot name="dataPermissionLevel" {value} {errors} {fields}>
+			{#if !fields?.dataPermissionLevel?.hidden?.(value, tab, fieldsArgs?.dataPermissionLevel)}
+				<FormControl let:id {...fields?.dataPermissionLevel?.props?.($LL, value, fieldsArgs?.dataPermissionLevel)?.['form-control']}>
+					<Label
+						{id}
+						text={fields?.dataPermissionLevel?.title?.($LL, fieldsArgs?.dataPermissionLevel) || $LL.graphql.objects.User.fields.dataPermissionLevel.name()}
+						required={fields?.dataPermissionLevel?.required?.(value)}
+					/>
+					<DataPermissionLevelInput
+						{id}
+						name="dataPermissionLevel"
+						bind:value={value.dataPermissionLevel}
+						errors={errors.dataPermissionLevel}
+						readonly={fields?.dataPermissionLevel?.readonly?.(value, fieldsArgs?.dataPermissionLevel)}
+						disabled={fields?.dataPermissionLevel?.disabled?.(value, fieldsArgs?.dataPermissionLevel)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.dataPermissionLevel
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.dataPermissionLevel)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, dataPermissionLevel: e }));
+							}
+						}}
+						{...fields?.dataPermissionLevel?.props?.($LL, value, fieldsArgs?.dataPermissionLevel)?.['select']}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="group" {value} {errors} {fields}>
+			{#if !fields?.group?.hidden?.(value, tab, fieldsArgs?.group)}
+				<FormControl let:id {...fields?.group?.props?.($LL, value, fieldsArgs?.group)?.['form-control']}>
+					<Label
+						{id}
+						text={fields?.group?.title?.($LL, fieldsArgs?.group) || $LL.graphql.objects.User.fields.group.name()}
+						required={fields?.group?.required?.(value)}
+					/>
+					<GroupSelect
+						{id}
+						name="group"
+						bind:value={value.group}
+						errors={errors.group}
+						readonly={fields?.group?.readonly?.(value, fieldsArgs?.group)}
+						disabled={fields?.group?.disabled?.(value, fieldsArgs?.group)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.group
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.group)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, group: e }));
+							}
+						}}
+						{...fields?.group?.props?.($LL, value, fieldsArgs?.group)?.['combobox']}
+					/>
+				</FormControl>
+			{/if}
+		</slot>
 		<slot name="groups" {value} {errors} {fields}>
 			{#if !fields?.groups?.hidden?.(value, tab, fieldsArgs?.groups)}
 				<FormControl let:id {...fields?.groups?.props?.($LL, value, fieldsArgs?.groups)?.['form-control']}>
@@ -439,6 +496,34 @@
 						/>
 					{/if}
 					<ErrorLabels {id} errors={errors.realm} />
+				</FormControl>
+			{/if}
+		</slot>
+		<slot name="groupId" {value} {errors} {fields}>
+			{#if !fields?.groupId?.hidden?.(value, tab, fieldsArgs?.groupId)}
+				<FormControl let:id {...fields?.groupId?.props?.($LL, value, fieldsArgs?.groupId)?.['form-control']}>
+					<Label
+						{id}
+						text={fields?.groupId?.title?.($LL, fieldsArgs?.groupId) || $LL.graphql.objects.User.fields.groupId.name()}
+						required={fields?.groupId?.required?.(value)}
+					/>
+					<StringInput
+						{id}
+						name="groupId"
+						bind:value={value.groupId}
+						errors={errors.groupId}
+						readonly={fields?.groupId?.readonly?.(value, fieldsArgs?.groupId)}
+						disabled={fields?.groupId?.disabled?.(value, fieldsArgs?.groupId)}
+						on:change={(e) => {
+							if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+								fields?.groupId
+									?.onChange?.($LL, e.detail.value, value, fieldsArgs?.groupId)
+									.then((next) => (value = next))
+									.catch((e) => (errors = { ...errors, groupId: e }));
+							}
+						}}
+						{...fields?.groupId?.props?.($LL, value, fieldsArgs?.groupId)?.['input']}
+					/>
 				</FormControl>
 			{/if}
 		</slot>

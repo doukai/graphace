@@ -4,6 +4,8 @@ export const fragment_CurrentFields = /* GraphQL */ `fragment CurrentFields on C
     lastName
     login
     realmId
+    groupId
     groups
     roles
+    dataPermissionLevel
   }`;

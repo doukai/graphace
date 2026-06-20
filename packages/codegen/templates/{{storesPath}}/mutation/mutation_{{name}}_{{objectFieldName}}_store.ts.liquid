@@ -47,6 +47,7 @@ const query = ({ fields, directives }: QueryParams) =>/* GraphQL */ `mutation Mu
         {{ subField.fieldName }} {
           id
           name
+          contentType
         }
         {%- elsif subField.isNamed %}
         {{ subField.fieldName }}{% if subField.isListType and subField.isSelect == false %}(first: 3){% endif %} {

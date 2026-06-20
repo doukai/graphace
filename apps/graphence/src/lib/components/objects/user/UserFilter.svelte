@@ -7,6 +7,7 @@
 	import { hasArguments, hasAsc, hasDesc } from '@graphace/graphql';
 	import { Form, FormControl, Label } from '@graphace/ui';
 	import { SortSelect, StringFilter, BooleanFilter } from '@graphace/ui-graphql';
+	import DataPermissionLevelFilter from '~/lib/components/enums/data-permission-level/DataPermissionLevelFilter.svelte';
 	import UserSelectFilter from '~/lib/components/objects/user/UserSelectFilter.svelte';
 	import GroupSelectFilter from '~/lib/components/objects/group/GroupSelectFilter.svelte';
 	import RoleSelectFilter from '~/lib/components/objects/role/RoleSelectFilter.svelte';
@@ -47,9 +48,12 @@
 		email: undefined,
 		phones: undefined,
 		disable: undefined,
+		dataPermissionLevel: undefined,
+		group: { id: {} },
 		groups: { id: {} },
 		roles: { id: {} },
-		realm: {}
+		realm: {},
+		groupId: undefined
 	}
 
 	let _orderBy: UserOrderBy = {
@@ -61,9 +65,12 @@
 		email: undefined,
 		phones: undefined,
 		disable: undefined,
+		dataPermissionLevel: undefined,
+		group: {},
 		groups: {},
 		roles: {},
-		realm: {}
+		realm: {},
+		groupId: undefined
 	}
 
 	const filter = (): void => {
@@ -83,9 +90,12 @@
 			email: undefined,
 			phones: undefined,
 			disable: undefined,
+			dataPermissionLevel: undefined,
+			group: { id: {} },
 			groups: { id: {} },
 			roles: { id: {} },
-			realm: {}
+			realm: {},
+			groupId: undefined
 		};
 		_orderBy = {
 			id: undefined,
@@ -96,9 +106,12 @@
 			email: undefined,
 			phones: undefined,
 			disable: undefined,
+			dataPermissionLevel: undefined,
+			group: {},
 			groups: {},
 			roles: {},
-			realm: {}
+			realm: {},
+			groupId: undefined
 		};
 		value = _value;
 		orderBy = _orderBy;
@@ -196,6 +209,21 @@
 						<SortSelect {disabled} bind:value={_orderBy.disable} />
 					</div>
 				{/if}
+				{#if !fields?.dataPermissionLevel?.hiddenFilter?.(_value, fieldsArgs?.dataPermissionLevel)}
+					<Label {id} text={$LL.graphql.objects.User.fields.dataPermissionLevel.name()} />
+					<div class="grid gap-1 grid-cols-[auto_minmax(0,1fr)_auto]">
+						<DataPermissionLevelFilter {id} name="dataPermissionLevel" bind:value={_value.dataPermissionLevel} />
+						<SortSelect {disabled} bind:value={_orderBy.dataPermissionLevel} />
+					</div>
+				{/if}
+				{#if !fields?.group?.hiddenFilter?.(_value, fieldsArgs?.group)}
+					{#if _value?.group?.id}
+						<Label {id} text={$LL.graphql.objects.User.fields.group.name()} />
+						<div class="grid gap-1 grid-cols-[auto_minmax(0,1fr)]">
+							<GroupSelectFilter {id} name="group" bind:value={_value.group.id} />
+						</div>
+					{/if}
+				{/if}
 				{#if !fields?.groups?.hiddenFilter?.(_value, fieldsArgs?.groups)}
 					{#if _value?.groups?.id}
 						<Label {id} text={$LL.graphql.objects.User.fields.groups.name()} />
@@ -221,6 +249,13 @@
 							<RealmFilter bind:value={_value.realm} bind:orderBy={_orderBy.realm} />
 						</div>
 					{/if}
+				{/if}
+				{#if !fields?.groupId?.hiddenFilter?.(_value, fieldsArgs?.groupId)}
+					<Label {id} text={$LL.graphql.objects.User.fields.groupId.name()} />
+					<div class="grid gap-1 grid-cols-[auto_minmax(0,1fr)_auto]">
+						<StringFilter {id} name="groupId" bind:value={_value.groupId} />
+						<SortSelect {disabled} bind:value={_orderBy.groupId} />
+					</div>
 				{/if}
 			</FormControl>
 		</Form>

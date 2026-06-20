@@ -25,7 +25,7 @@
 	export let disabled = false;
 	export let placeholder: string = '';
 	export let zIndex: number = 0;
-	let className: string | undefined = 'p-1';
+	let className: string | undefined = undefined;
 	export { className as class };
 	
 	const contextClass = getContext<string>('ui.popover-content') || '';
@@ -118,13 +118,14 @@
 
 {#if $open}
 	<div use:melt={$overlay} class="fixed inset-0 z-[{zIndex + 5}]" />
-	<div class="z-[{zIndex + 5}] {contextClass} {className}" use:melt={$content}>
+	<div class="z-[{zIndex + 5}] {contextClass} p-1" use:melt={$content}>
 		<div use:melt={$arrow} />
 		<div class="flex items-start space-x-1" transition:fade={{ duration: 100 }}>
 			<FormControl>
 				<RoleSelect
 					{id}
 					{name}
+					class={className}
 					bind:value
 					bind:selected
 					bind:args

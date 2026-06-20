@@ -9,7 +9,8 @@ import type {
 	QueryUserListArgs,
 	GroupInput,
 	RoleInput,
-	RealmInput
+	RealmInput,
+	DataPermissionLevel
 } from '~/lib/types/schema';
 import type { TranslationFunctions } from '$i18n/i18n-types';
 import { permissions } from '~/utils';
@@ -41,9 +42,12 @@ export type UserFieldsArgs = {
 	email?: {} | undefined;
 	phones?: {} | undefined;
 	disable?: {} | undefined;
+	dataPermissionLevel?: {} | undefined;
+	group?: {} | undefined;
 	groups?: {} | undefined;
 	roles?: {} | undefined;
 	realm?: {} | undefined;
+	groupId?: {} | undefined;
 };
 
 export type UserFieldsProps = {
@@ -96,6 +100,24 @@ export type UserFieldsProps = {
 		'form-control'?: {} | undefined;
 		'input'?: {} | undefined;
 	} | undefined;
+	dataPermissionLevel?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'select'?: {} | undefined;
+	} | undefined;
+	group?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'table'?: {} | undefined;
+		'form'?: {} | undefined;
+		'combobox'?: {} | undefined;
+		'dialog'?: {} | undefined;
+		'link'?: {} | undefined;
+	} | undefined;
 	groups?: {
 		'tr'?: {} | undefined;
 		'th'?: {} | undefined;
@@ -129,6 +151,13 @@ export type UserFieldsProps = {
 		'dialog'?: {} | undefined;
 		'link'?: {} | undefined;
 	} | undefined;
+	groupId?: {
+		'tr'?: {} | undefined;
+		'th'?: {} | undefined;
+		'td'?: {} | undefined;
+		'form-control'?: {} | undefined;
+		'input'?: {} | undefined;
+	} | undefined;
 };
 
 export type UserFields = {
@@ -139,9 +168,12 @@ export type UserFields = {
 	email?: Option<TranslationFunctions, UserInput, QueryUserListArgs, string | null | undefined, UserFieldsArgs['email'], UserFieldsProps['email'], {}> | undefined;
 	phones?: Option<TranslationFunctions, UserInput, QueryUserListArgs, (string | null | undefined)[] | null | undefined, UserFieldsArgs['phones'], UserFieldsProps['phones'], {}> | undefined;
 	disable?: Option<TranslationFunctions, UserInput, QueryUserListArgs, boolean | null | undefined, UserFieldsArgs['disable'], UserFieldsProps['disable'], {}> | undefined;
+	dataPermissionLevel?: Option<TranslationFunctions, UserInput, QueryUserListArgs, DataPermissionLevel | null | undefined, UserFieldsArgs['dataPermissionLevel'], UserFieldsProps['dataPermissionLevel'], {}> | undefined;
+	group?: Option<TranslationFunctions, UserInput, QueryUserListArgs, GroupInput | null | undefined, UserFieldsArgs['group'], UserFieldsProps['group'], GroupFields> | undefined;
 	groups?: Option<TranslationFunctions, UserInput, QueryUserListArgs, (GroupInput | null | undefined)[] | null | undefined, UserFieldsArgs['groups'], UserFieldsProps['groups'], GroupFields> | undefined;
 	roles?: Option<TranslationFunctions, UserInput, QueryUserListArgs, (RoleInput | null | undefined)[] | null | undefined, UserFieldsArgs['roles'], UserFieldsProps['roles'], RoleFields> | undefined;
 	realm?: Option<TranslationFunctions, UserInput, QueryUserListArgs, RealmInput | null | undefined, UserFieldsArgs['realm'], UserFieldsProps['realm'], RealmFields> | undefined;
+	groupId?: Option<TranslationFunctions, UserInput, QueryUserListArgs, string | null | undefined, UserFieldsArgs['groupId'], UserFieldsProps['groupId'], {}> | undefined;
 };
 
 export const userFields: UserFields = {
@@ -411,6 +443,87 @@ export const userFields: UserFields = {
 			return booleanToString(value, 'disable', $LL.graphence.components.label.true(), $LL.graphence.components.label.false());
 		}
 	},
+	dataPermissionLevel: {
+		readonly: (value, fieldArg) => {
+			return !auth('User::dataPermissionLevel::WRITE');
+		},
+		disabled: (value, fieldArg) => {
+			return !auth('User::dataPermissionLevel::WRITE');
+		},
+		hidden: (value, tab, fieldArg) => {
+			return !auth('User::dataPermissionLevel::READ');
+		},
+		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::dataPermissionLevel::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('User::dataPermissionLevel::READ');
+		},
+		required: (value) => {
+			return false;
+		},
+		validate: async ($LL, value) => {
+			return [];
+		},
+		onChange: async ($LL, fieldValue, value, fieldArg) => {
+			return value;
+		},
+		props: ($LL, value, fieldArg) => {
+			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.User.fields.dataPermissionLevel.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			return enumFromRecord(record, title, $LL.graphql.enums.DataPermissionLevel.values);
+		},
+		toString: ($LL, value, fieldArg) => {
+			return enumToString(value, 'dataPermissionLevel', $LL.graphql.enums.DataPermissionLevel.values);
+		}
+	},
+	group: {
+		readonly: (value, fieldArg) => {
+			return !auth('User::group::WRITE');
+		},
+		disabled: (value, fieldArg) => {
+			return !auth('User::group::WRITE');
+		},
+		hidden: (value, tab, fieldArg) => {
+			return !auth('User::group::READ');
+		},
+		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::group::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('User::group::READ');
+		},
+		required: (value) => {
+			return false;
+		},
+		validate: async ($LL, value) => {
+			return [];
+		},
+		onChange: async ($LL, fieldValue, value, fieldArg) => {
+			return value;
+		},
+		props: ($LL, value, fieldArg) => {
+			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.User.fields.group.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			return objectFromRecord($LL, fields, title, record, fieldArg);
+		},
+		toFields: (fieldArg) => {
+			const { name } = groupFields;
+			return { name };
+		},
+		toRecord: ($LL, fields, title, value, fieldArg) => {
+			return objectToRecord($LL, fields, title, value, 'group', fieldArg);
+		},
+		fields: (value, fieldArg) => groupFields
+	},
 	groups: {
 		readonly: (value, fieldArg) => {
 			return !auth('User::groups::WRITE');
@@ -539,6 +652,44 @@ export const userFields: UserFields = {
 			return objectToRecord($LL, fields, title, value, 'realm', fieldArg);
 		},
 		fields: (value, fieldArg) => realmFields
+	},
+	groupId: {
+		readonly: (value, fieldArg) => {
+			return !auth('User::groupId::WRITE');
+		},
+		disabled: (value, fieldArg) => {
+			return !auth('User::groupId::WRITE');
+		},
+		hidden: (value, tab, fieldArg) => {
+			return !auth('User::groupId::READ');
+		},
+		hiddenCol: (args, tab, fieldArg) => {
+			return !auth('User::groupId::READ');
+		},
+		hiddenFilter: (args, fieldArg) => {
+			return !auth('User::groupId::READ');
+		},
+		required: (value) => {
+			return false;
+		},
+		validate: async ($LL, value) => {
+			return [];
+		},
+		onChange: async ($LL, fieldValue, value, fieldArg) => {
+			return value;
+		},
+		props: ($LL, value, fieldArg) => {
+			return {};
+		},
+		title: ($LL, fieldArg) => {
+			return $LL.graphql.objects.User.fields.groupId.name();
+		},
+		fromRecord: ($LL, fields, title, record, fieldArg) => {
+			return stringFromRecord(record, title);
+		},
+		toString: ($LL, value, fieldArg) => {
+			return stringToString(value, 'groupId');
+		}
 	}
 };
 

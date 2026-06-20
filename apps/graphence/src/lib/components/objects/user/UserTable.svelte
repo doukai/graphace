@@ -19,6 +19,8 @@
 	import { StringTh, StringTd, BooleanTh, BooleanTd, ObjectLink } from '@graphace/ui-graphql';
 	import UserFilter from '~/lib/components/objects/user/UserFilter.svelte';
 	import UserFormDialog from '~/lib/components/objects/user/UserFormDialog.svelte';
+	import DataPermissionLevelTh from '~/lib/components/enums/data-permission-level/DataPermissionLevelTh.svelte';
+	import DataPermissionLevelTd from '~/lib/components/enums/data-permission-level/DataPermissionLevelTd.svelte';
 	import GroupTh from '~/lib/components/objects/group/GroupTh.svelte';
 	import RoleTh from '~/lib/components/objects/role/RoleTh.svelte';
 	import RealmTh from '~/lib/components/objects/realm/RealmTh.svelte';
@@ -336,6 +338,32 @@
 					/>
 				{/if}
 			</slot>
+			<slot name="dataPermissionLevel-th" {args} {orderBy} {fields}>
+				{#if !fields?.dataPermissionLevel?.hiddenCol?.(args, tab, fieldsArgs?.dataPermissionLevel)}
+					<DataPermissionLevelTh
+						name={fields?.dataPermissionLevel?.title?.($LL, fieldsArgs?.dataPermissionLevel) || $LL.graphql.objects.User.fields.dataPermissionLevel.name()}
+						bind:value={args.dataPermissionLevel}
+						bind:sort={orderBy.dataPermissionLevel}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.dataPermissionLevel?.required?.()}
+						{zIndex}
+						{...fields?.dataPermissionLevel?.props?.($LL, undefined, fieldsArgs?.dataPermissionLevel)?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="group-th" {args} {orderBy} {fields}>
+				{#if !fields?.group?.hiddenCol?.(args, tab, fieldsArgs?.group)}
+					<GroupTh
+						name={fields?.group?.title?.($LL, fieldsArgs?.group) || $LL.graphql.objects.User.fields.group.name()}
+						bind:value={args.group}
+						bind:orderBy={orderBy.group}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.group?.required?.()}
+						{zIndex}
+						{...fields?.group?.props?.($LL, undefined, fieldsArgs?.group)?.['th']}
+					/>
+				{/if}
+			</slot>
 			<slot name="groups-th" {args} {orderBy} {fields}>
 				{#if !fields?.groups?.hiddenCol?.(args, tab, fieldsArgs?.groups)}
 					<GroupTh
@@ -372,6 +400,19 @@
 						required={fields?.realm?.required?.()}
 						{zIndex}
 						{...fields?.realm?.props?.($LL, undefined, fieldsArgs?.realm)?.['th']}
+					/>
+				{/if}
+			</slot>
+			<slot name="groupId-th" {args} {orderBy} {fields}>
+				{#if !fields?.groupId?.hiddenCol?.(args, tab, fieldsArgs?.groupId)}
+					<StringTh
+						name={fields?.groupId?.title?.($LL, fieldsArgs?.groupId) || $LL.graphql.objects.User.fields.groupId.name()}
+						bind:value={args.groupId}
+						bind:sort={orderBy.groupId}
+						on:filter={(e) => dispatch('query', { args, orderBy })}
+						required={fields?.groupId?.required?.()}
+						{zIndex}
+						{...fields?.groupId?.props?.($LL, undefined, fieldsArgs?.groupId)?.['th']}
 					/>
 				{/if}
 			</slot>
@@ -666,6 +707,82 @@
 								/>
 							{/if}
 						</slot>
+						<slot name="dataPermissionLevel" {node} {errors} {fields} {row}>
+							{#if !fields?.dataPermissionLevel?.hiddenCol?.(args, tab, fieldsArgs?.dataPermissionLevel)}
+								<DataPermissionLevelTd
+									name="dataPermissionLevel"
+									bind:value={node.dataPermissionLevel}
+									on:save={(e) =>
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { dataPermissionLevel: node?.dataPermissionLevel, where: { id: { val: node?.id } } }
+												})
+											)
+											.catch((e) => (errors = e))}
+									readonly={fields?.dataPermissionLevel?.readonly?.(node, fieldsArgs?.dataPermissionLevel)}
+									disabled={fields?.dataPermissionLevel?.disabled?.(node, fieldsArgs?.dataPermissionLevel)}
+									on:change={(e) => {
+										if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+											fields?.dataPermissionLevel
+												?.onChange?.($LL, e.detail.value, node, fieldsArgs?.dataPermissionLevel)
+												.then((next) => (node = next))
+												.catch(
+													(e) =>
+														(errors = {
+															...errors,
+															[row]: {
+																...errors?.[row],
+																iterms: { ...errors?.[row]?.iterms, dataPermissionLevel: e }
+															}
+														})
+												);
+										}
+									}}
+									errors={errors?.[row]?.iterms?.dataPermissionLevel}
+									{zIndex}
+									{...fields?.dataPermissionLevel?.props?.($LL, node, fieldsArgs?.dataPermissionLevel)?.['select']}
+								/>
+							{/if}
+						</slot>
+						<slot name="group" {node} {errors} {fields} {row}>
+							{#if !fields?.group?.hiddenCol?.(args, tab, fieldsArgs?.group)}
+								<GroupSelectTd
+									name="group"
+									bind:value={node.group}
+									errors={errors?.[row]?.iterms?.group}
+									readonly={fields?.group?.readonly?.(node, fieldsArgs?.group)}
+									disabled={fields?.group?.disabled?.(node, fieldsArgs?.group)}
+									on:save={(e) =>
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { group: node?.group, where: { id: { val: node?.id } } }
+												})
+											)
+											.catch((e) => (errors = e))}
+									on:change={(e) => {
+										if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+											fields?.group
+												?.onChange?.($LL, e.detail.value, node, fieldsArgs?.group)
+												.then((next) => (node = next))
+												.catch(
+													(e) =>
+														(errors = {
+															...errors,
+															[row]: {
+																...errors?.[row],
+																iterms: { ...errors?.[row]?.iterms, group: e }
+															}
+														})
+												);
+										}
+									}}
+									{zIndex}
+									{...fields?.group?.props?.($LL, node, fieldsArgs?.group)?.['combobox']}
+								/>
+							{/if}
+						</slot>
 						<slot name="groups" {node} {errors} {fields} {row}>
 							{#if !fields?.groups?.hiddenCol?.(args, tab, fieldsArgs?.groups)}
 								<GroupSelectTd
@@ -785,6 +902,44 @@
 										/>
 									{/if}
 								</Td>
+							{/if}
+						</slot>
+						<slot name="groupId" {node} {errors} {fields} {row}>
+							{#if !fields?.groupId?.hiddenCol?.(args, tab, fieldsArgs?.groupId)}
+								<StringTd
+									name="groupId"
+									bind:value={node.groupId}
+									on:save={(e) =>
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { groupId: node?.groupId, where: { id: { val: node?.id } } }
+												})
+											)
+											.catch((e) => (errors = e))}
+									readonly={fields?.groupId?.readonly?.(node, fieldsArgs?.groupId)}
+									disabled={fields?.groupId?.disabled?.(node, fieldsArgs?.groupId)}
+									on:change={(e) => {
+										if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+											fields?.groupId
+												?.onChange?.($LL, e.detail.value, node, fieldsArgs?.groupId)
+												.then((next) => (node = next))
+												.catch(
+													(e) =>
+														(errors = {
+															...errors,
+															[row]: {
+																...errors?.[row],
+																iterms: { ...errors?.[row]?.iterms, groupId: e }
+															}
+														})
+												);
+										}
+									}}
+									errors={errors?.[row]?.iterms?.groupId}
+									{zIndex}
+									{...fields?.groupId?.props?.($LL, node, fieldsArgs?.groupId)?.['input']}
+								/>
 							{/if}
 						</slot>
 						<th class="hover:z-[{zIndex + 3}]">
@@ -1263,6 +1418,106 @@
 							</Tr>
 						{/if}
 					</slot>
+					<slot name="dataPermissionLevel-sm" {node} {errors} {fields} {row}>
+						{#if !fields?.dataPermissionLevel?.hiddenCol?.(args, tab, fieldsArgs?.dataPermissionLevel)}
+							<Tr class="hover" let:id {...fields?.dataPermissionLevel?.props?.($LL, node, fieldsArgs?.dataPermissionLevel)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={fields?.dataPermissionLevel?.title?.($LL, fieldsArgs?.dataPermissionLevel) || 
+											$LL.graphql.objects.User.fields.dataPermissionLevel.name()}
+										required={fields?.dataPermissionLevel?.required?.(node)}
+										class="truncate"
+									/>
+								</td>
+								<DataPermissionLevelTd
+									{id}
+									name="dataPermissionLevel"
+									bind:value={node.dataPermissionLevel}
+									on:save={(e) =>
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { dataPermissionLevel: node?.dataPermissionLevel, where: { id: { val: node?.id } } }
+												})
+											)
+											.catch((e) => (errors = e))}
+									on:change={(e) => {
+										if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+											fields?.dataPermissionLevel
+												?.onChange?.($LL, e.detail.value, node, fieldsArgs?.dataPermissionLevel)
+												.then((next) => (node = next))
+												.catch(
+													(e) =>
+														(errors = {
+															...errors,
+															[row]: {
+																...errors?.[row],
+																iterms: { ...errors?.[row]?.iterms, dataPermissionLevel: e }
+															}
+														})
+												);
+										}
+									}}
+									readonly={fields?.dataPermissionLevel?.readonly?.(node, fieldsArgs?.dataPermissionLevel)}
+									disabled={fields?.dataPermissionLevel?.disabled?.(node, fieldsArgs?.dataPermissionLevel)}
+									errors={errors?.[row]?.iterms?.dataPermissionLevel}
+									{zIndex}
+									{...fields?.dataPermissionLevel?.props?.($LL, node, fieldsArgs?.dataPermissionLevel)?.['select']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="group-sm" {node} {errors} {fields} {row}>
+						{#if !fields?.group?.hiddenCol?.(args, tab, fieldsArgs?.group)}
+							<Tr class="hover" let:id {...fields?.group?.props?.($LL, node, fieldsArgs?.group)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={fields?.group?.title?.($LL, fieldsArgs?.group) || 
+											$LL.graphql.objects.User.fields.group.name()}
+										required={fields?.group?.required?.(node)}
+										class="truncate"
+									/>
+								</td>
+								<GroupSelectTd
+									{id}
+									name="group"
+									bind:value={node.group}
+									errors={errors?.[row]?.iterms?.group}
+									readonly={fields?.group?.readonly?.(node, fieldsArgs?.group)}
+									disabled={fields?.group?.disabled?.(node, fieldsArgs?.group)}
+									on:save={(e) =>
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { group: node?.group, where: { id: { val: node?.id } } }
+												})
+											)
+											.catch((e) => (errors = e))}
+									on:change={(e) => {
+										if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+											fields?.group
+												?.onChange?.($LL, e.detail.value, node, fieldsArgs?.group)
+												.then((next) => (node = next))
+												.catch(
+													(e) =>
+														(errors = {
+															...errors,
+															[row]: {
+																...errors?.[row],
+																iterms: { ...errors?.[row]?.iterms, group: e }
+															}
+														})
+												);
+										}
+									}}
+									{zIndex}
+									{...fields?.group?.props?.($LL, node, fieldsArgs?.group)?.['combobox']}
+								/>
+							</Tr>
+						{/if}
+					</slot>
 					<slot name="groups-sm" {node} {errors} {fields} {row}>
 						{#if !fields?.groups?.hiddenCol?.(args, tab, fieldsArgs?.groups)}
 							<Tr class="hover" let:id {...fields?.groups?.props?.($LL, node, fieldsArgs?.groups)?.['tr']}>
@@ -1416,6 +1671,56 @@
 										/>
 									{/if}
 								</Td>
+							</Tr>
+						{/if}
+					</slot>
+					<slot name="groupId-sm" {node} {errors} {fields} {row}>
+						{#if !fields?.groupId?.hiddenCol?.(args, tab, fieldsArgs?.groupId)}
+							<Tr class="hover" let:id {...fields?.groupId?.props?.($LL, node, fieldsArgs?.groupId)?.['tr']}>
+								<td>
+									<Label
+										{id}
+										text={fields?.groupId?.title?.($LL, fieldsArgs?.groupId) || 
+											$LL.graphql.objects.User.fields.groupId.name()}
+										required={fields?.groupId?.required?.(node)}
+										class="truncate"
+									/>
+								</td>
+								<StringTd
+									{id}
+									name="groupId"
+									bind:value={node.groupId}
+									on:save={(e) =>
+										validate($LL, node)
+											.then((node) =>
+												dispatch('save', {
+													value: { groupId: node?.groupId, where: { id: { val: node?.id } } }
+												})
+											)
+											.catch((e) => (errors = e))}
+									on:change={(e) => {
+										if (!Array.isArray(e.detail.value) || e.detail.value == null) {
+											fields?.groupId
+												?.onChange?.($LL, e.detail.value, node, fieldsArgs?.groupId)
+												.then((next) => (node = next))
+												.catch(
+													(e) =>
+														(errors = {
+															...errors,
+															[row]: {
+																...errors?.[row],
+																iterms: { ...errors?.[row]?.iterms, groupId: e }
+															}
+														})
+												);
+										}
+									}}
+									readonly={fields?.groupId?.readonly?.(node, fieldsArgs?.groupId)}
+									disabled={fields?.groupId?.disabled?.(node, fieldsArgs?.groupId)}
+									errors={errors?.[row]?.iterms?.groupId}
+									{zIndex}
+									{...fields?.groupId?.props?.($LL, node, fieldsArgs?.groupId)?.['input']}
+								/>
 							</Tr>
 						{/if}
 					</slot>

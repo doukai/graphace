@@ -35,6 +35,12 @@ const zh: NamespaceGraphqlTranslation = {
 				disable: {
 					name: '禁用',
 				},
+				dataPermissionLevel: {
+					name: '数据权限等级',
+				},
+				group: {
+					name: '归属',
+				},
 				groups: {
 					name: '组',
 				},
@@ -67,6 +73,9 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				createGroupId: {
 					name: '创建组',
+				},
+				groupId: {
+					name: '归属 引用',
 				},
 				userPhonesRelation: {
 					name: '用户 手机号 关系',
@@ -133,6 +142,12 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				disableCount: {
 					name: '禁用 数量',
+				},
+				dataPermissionLevelCount: {
+					name: '数据权限等级 数量',
+				},
+				groupIdCount: {
+					name: '归属 引用 数量',
 				},
 				createTimeYear: {
 					name: 'Year of 创建时间',
@@ -1296,6 +1311,23 @@ const zh: NamespaceGraphqlTranslation = {
 				},
 				ANY: {
 					name: '全部',
+				}
+			}
+		},
+		DataPermissionLevel: {
+			name: '数据权限等级',
+			values: {
+				ALL: {
+					name: '全部',
+				},
+				SAME_LEVEL: {
+					name: '同级',
+				},
+				SAME_AND_LOWER: {
+					name: '同级与下级',
+				},
+				LOWER_ONLY: {
+					name: '仅下级',
 				}
 			}
 		}

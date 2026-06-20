@@ -270,6 +270,7 @@
 						login: { opr: 'LK', val: e.detail.value },
 						email: { opr: 'LK', val: e.detail.value },
 						phones: { opr: 'LK', val: e.detail.value },
+						groupId: { opr: 'LK', val: e.detail.value },
 						first: pageSize,
 						offset: 0
 					};
